@@ -11,3 +11,6 @@ And dependencies
 
 ## Building
 `mkdocs build`
+
+## Deploying
+TBD
