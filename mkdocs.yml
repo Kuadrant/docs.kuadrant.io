@@ -1,10 +1,14 @@
 site_name: Kuadrant Documentation
 site_url: https://docs.kuadrant.io/
+repo_url: https://github.com/kuadrant
 theme:
   name: material
-  logo: assets/logo.png
+  logo: assets/images/logo.png
+  custom_dir: overrides
 extra_css:
-  - stylesheets/extra.css
+  - assets/stylesheets/extra.css
+watch:
+  - overrides
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
@@ -17,21 +21,128 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
+  - footnotes
 plugins:
   - search
   - multirepo:
       cleanup: true
       keep_docs_dir: true
-      repos:
-        - section: Kuadrant Operator
-          import_url: 'https://github.com/kuadrant/kuadrant-operator?edit_uri=/blob/main/&branch=main&docs_dir=doc/*&extra_imports=["README.md"]'
-        - section: Authorino
-          import_url: 'https://github.com/kuadrant/authorino?edit_uri=/blob/main/&branch=main&extra_imports=["README.md"]'
-        - section: Authorino Operator
-          import_url: 'https://github.com/kuadrant/authorino-operator?edit_uri=/blob/main/&branch=main&extra_imports=["README.md"]'
-        - section: Limitador
-          import_url: 'https://github.com/kuadrant/limitador?edit_uri=/blob/main/&branch=main&docs_dir=doc/*&extra_imports=["README.md"]'
-        - section: Multicluster Gateway Controller
-          import_url: 'https://github.com/kuadrant/multicluster-gateway-controller?edit_uri=/blob/main/&branch=main&extra_imports=["README.md"]'
-        - section: Architecture
-          import_url: 'https://github.com/kuadrant/architecture?edit_uri=/blob/main/&branch=main&extra_imports=["README.md"]'
+      nav_repos:
+        - name: kuadrant-operator
+          import_url: 'https://github.com/kuadrant/kuadrant-operator?edit_uri=/blob/main/&branch=main'
+          imports:
+            - /README.md
+            - /doc/*
+        - name: authorino
+          import_url: 'https://github.com/kuadrant/authorino?edit_uri=/blob/main/&branch=main'
+          imports:
+            - /README.md
+            - /docs/*
+            - /docs/user-guides/*
+        - name: authorino-operator
+          import_url: 'https://github.com/kuadrant/authorino-operator?edit_uri=/blob/main/&branch=main'
+          imports:
+            - /README.md
+        - name: limitador
+          import_url: 'https://github.com/kuadrant/limitador?edit_uri=/blob/main/&branch=main'
+          imports:
+            - /README.md
+            - /doc/*
+            - /limitador-server/README.md
+            - /limitador-server/docs/*
+            - /limitador/README.md
+        - name: limitador-operator
+          import_url: 'https://github.com/kuadrant/limitador-operator?edit_uri=/blob/main/&branch=main'
+          imports:
+            - /README.md
+            - /doc/*
+        - name: multicluster-gateway-controller
+          import_url: 'https://github.com/kuadrant/multicluster-gateway-controller?edit_uri=/blob/main/&branch=main'
+          imports:
+            - /README.md
+            - /docs/*
+        - name: architecture
+          import_url: 'https://github.com/kuadrant/architecture?edit_uri=/blob/main/&branch=main'
+          imports:
+            - /rfcs/*
+nav:
+  - 'Getting Started': index.md
+  - 'Kuadrant Operator':
+    - 'Overview': kuadrant-operator/README.md
+    - 'How-to':
+      - kuadrant-operator/doc/user-guides/simple-rl-for-api-owners.md
+      - kuadrant-operator/doc/user-guides/gateway-rl-for-cluster-operators.md
+      - kuadrant-operator/doc/user-guides/authenticated-rl-for-api-owners.md
+      - kuadrant-operator/doc/user-guides/authenticated-rl-with-jwt-and-k8s-authnz.md
+      - kuadrant-operator/doc/logging.md
+    - 'Reference':
+      - 'RateLimitPolicy Overview': kuadrant-operator/doc/rate-limiting.md
+      - 'RateLimitPolicy (v1beta1)': kuadrant-operator/doc/ratelimitpolicy-reference.md
+      - 'RateLimitPolicy (v1beta2)': architecture/rfcs/0001-rlp-v2.md
+    - "Developer's Guide": kuadrant-operator/doc/development.md
+  - 'Authorino':
+    - 'Overview': authorino/README.md
+    - 'Authorino Operator': authorino-operator/README.md
+    - 'Getting Started': authorino/docs/getting-started.md
+    - 'Architecture': authorino/docs/architecture.md
+    - 'Reference': authorino/docs/features.md
+    - 'How-to':
+      - 'Hello World': authorino/docs/user-guides/hello-world.md
+      - 'Authentication with Kubernetes tokens (TokenReview API)': authorino/docs/user-guides/kubernetes-tokenreview.md
+      - 'Authentication with API keys': authorino/docs/user-guides/api-key-authentication.md
+      - 'Authentication with X.509 certificates and mTLS': authorino/docs/user-guides/mtls-authentication.md
+      - 'OpenID Connect Discovery and authentication with JWTs': authorino/docs/user-guides/oidc-jwt-authentication.md
+      - 'OAuth 2.0 token introspection (RFC 7662)': authorino/docs/user-guides/oauth2-token-introspection.md
+      - 'Passing credentials (`Authorization` header, cookie headers and others)': authorino/docs/user-guides/passing-credentials.md
+      - 'HTTP "Basic" Authentication (RFC 7235)': authorino/docs/user-guides/http-basic-authentication.md
+      - 'Anonymous access': authorino/docs/user-guides/anonymous-access.md
+      - 'Token normalization': authorino/docs/user-guides/token-normalization.md
+      - 'Edge Authentication Architecture (EAA)': authorino/docs/user-guides/edge-authentication-architecture-festival-wristbands.md
+      - 'Fetching auth metadata from external sources': authorino/docs/user-guides/external-metadata.md
+      - 'OpenID Connect UserInfo': authorino/docs/user-guides/oidc-user-info.md
+      - 'Resource-level authorization with User-Managed Access (UMA) resource registry': authorino/docs/user-guides/resource-level-authorization-uma.md
+      - 'Simple pattern-matching authorization policies': authorino/docs/user-guides/json-pattern-matching-authorization.md
+      - 'OpenID Connect (OIDC) and Role-Based Access Control (RBAC) with Authorino and Keycloak': authorino/docs/user-guides/oidc-rbac.md
+      - 'Open Policy Agent (OPA) Rego policies': authorino/docs/user-guides/opa-authorization.md
+      - 'Kubernetes RBAC for service authorization (SubjectAccessReview API)': authorino/docs/user-guides/kubernetes-subjectaccessreview.md
+      - 'Authorization with Keycloak Authorization Services': authorino/docs/user-guides/keycloak-authorization-services.md
+      - 'Integration with Authzed/SpiceDB': authorino/docs/user-guides/authzed.md
+      - 'Injecting data in the request': authorino/docs/user-guides/injecting-data.md
+      - 'Authenticated rate limiting (with Envoy Dynamic Metadata)': authorino/docs/user-guides/authenticated-rate-limiting-envoy-dynamic-metadata.md
+      - 'Redirecting to a login page': authorino/docs/user-guides/deny-with-redirect-to-login.md
+      - 'Mixing Envoy built-in filter for auth and Authorino': authorino/docs/user-guides/envoy-jwt-authn-and-authorino.md
+      - 'Host override via context extension': authorino/docs/user-guides/host-override.md
+      - 'Using Authorino as ValidatingWebhook service': authorino/docs/user-guides/validating-webhook.md
+      - 'Reducing the operational space: sharding, noise and multi-tenancy': authorino/docs/user-guides/sharding.md
+      - 'Caching': authorino/docs/user-guides/caching.md
+      - 'Observability': authorino/docs/user-guides/observability.md
+    - "Developer's Guide": authorino/docs/contributing.md
+  - 'Limitador':
+    - 'Overview': limitador/README.md
+    - 'How it works': limitador/doc/how-it-works.md
+    - 'Topologies': limitador/doc/topologies.md
+    - 'Server':
+      - 'Overview': limitador/limitador-server/README.md
+      - 'Sandbox': limitador/limitador-server/docs/sandbox.md
+    - 'Crate': limitador/limitador/README.md
+    - 'Limitador Operator':
+      - 'Overview': limitador-operator/README.md
+      - 'Storage': limitador-operator/doc/storage.md
+      - 'Rate limit headers': limitador-operator/doc/rate-limit-headers.md
+      - "Developer's Guide": limitador-operator/doc/development.md
+      - limitador-operator/doc/logging.md
+  - 'Multicluster Gateway Controller':
+    - 'Overview': multicluster-gateway-controller/README.md
+    - 'How-to':
+      - multicluster-gateway-controller/docs/how-to/ocm-control-plane-walkthrough.md
+      - multicluster-gateway-controller/docs/how-to/kuadrant-addon-walkthrough.md
+      - multicluster-gateway-controller/docs/how-to/managedZone.md
+      - multicluster-gateway-controller/docs/how-to/ratelimiting-shared-redis.md
+      - multicluster-gateway-controller/docs/how-to/submariner-poc-hub-gateway-walkthrough.md
+      - multicluster-gateway-controller/docs/how-to/submariner-poc-2-gateways-resiliency-walkthrough.md
+      - multicluster-gateway-controller/docs/how-to/vscode-debugging.md
+    - 'Reference':
+        - multicluster-gateway-controller/docs/proposals/DNSPolicy.md
+        - multicluster-gateway-controller/docs/proposals/DNSRecordStructure.md
+        - multicluster-gateway-controller/docs/proposals/multiple-dns-provider-support.md
+        - multicluster-gateway-controller/docs/proposals/status-aggregation.md
