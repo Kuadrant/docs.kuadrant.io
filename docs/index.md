@@ -4,7 +4,7 @@ Kuadrant brings together [Gateway API](https://gateway-api.sigs.k8s.io/) and [Op
 
 ## Single-cluster
 
-Kuadrant can be used to manage ingress gateways based on [Gateway API](https://gateway-api.sigs.k8s.io/)[^1] for policy enforcement (rate limit and auth) in a Kuberentes cluster.
+Kuadrant can be used to protect ingress gateways based on [Gateway API](https://gateway-api.sigs.k8s.io/)[^1] with policy enforcement (rate limit and auth) in a Kuberentes cluster.
 
 [^1]: <b>Supported implementations:</b> <a href="https://istio.io/">Istio</a>, <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/what-is-openshift-service-mesh">OpenShift Service Mesh</a>.</sup>
 
@@ -16,7 +16,7 @@ Kuadrant can be used to manage ingress gateways based on [Gateway API](https://g
 
 ## Multi-cluster
 
-You can also leverage Kuadrant for the multi-cluster environment[^2] to manage your geo-locations, global DNS, and load-balancing, and ensure gateway and policy consistency across clusters.
+In the multi-cluster environment[^2], you can utilize Kuadrant to manage DNS-based north-south connectivity, which can provide global load balancing underpinned by your cluster topology. Kuadrant's multi-cluster functionality also ensures gateway and policy consistency across clusters, focusing on critical aspects like TLS and application health.
 
 [^2]: Based on <a href="https://open-cluster-management.io/">Open Cluster Management</a>.
 
