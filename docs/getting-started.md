@@ -27,9 +27,11 @@ One of Kuadrant's components, the Multicluster Gateway Controller, programs DNS 
 
 ### Set Up Clusters and Kuadrant
 
-   ```bash
-  curl https://raw.githubusercontent.com/kuadrant/multicluster-gateway-controller/main/hack/quickstart-setup.sh | bash
-   ```
+Run the following:
+
+```bash
+curl https://raw.githubusercontent.com/kuadrant/multicluster-gateway-controller/main/hack/quickstart-setup.sh | bash
+```
 
 ### What's Next
 
