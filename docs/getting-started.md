@@ -16,14 +16,14 @@ Export environment variables with the keys listed below for your desired provide
 
 ### AWS
 
-| Env Var                      | Example Value               | Description                                                    |
-|------------------------------|-----------------------------|----------------------------------------------------------------|
-| `MGC_ZONE_ROOT_DOMAIN`       | `jbloggs.hcpapps.net`       | Hostname for the root Domain                                   |
-| `MGC_AWS_DNS_PUBLIC_ZONE_ID` | `Z01234567US0IQE3YLO00`     | AWS Route 53 Zone ID for specified `MGC_ZONE_ROOT_DOMAIN`      | 
-| `MGC_AWS_ACCESS_KEY_ID`      | `AKIA1234567890000000`      | Access Key ID, with access to resources in Route 53            |
-| `MGC_AWS_SECRET_ACCESS_KEY`  | `Z01234567US0000000`        | Access Secret Access Key, with access to resources in Route 53 |
-| `MGC_AWS_REGION`             | `eu-west-1`                 | AWS Region                                                     |
-| `MGC_SUB_DOMAIN`             | `myapp.jbloggs.hcpapps.net` | Desired Sub domain                                             |
+| Env Var                      | Example Value               | Description                                                                                                 |
+|------------------------------|-----------------------------|-------------------------------------------------------------------------------------------------------------|
+| `MGC_ZONE_ROOT_DOMAIN`       | `jbloggs.hcpapps.net`       | Hostname for the root Domain                                                                                |
+| `MGC_AWS_DNS_PUBLIC_ZONE_ID` | `Z01234567US0IQE3YLO00`     | AWS Route 53 Zone ID for specified `MGC_ZONE_ROOT_DOMAIN`                                                   |
+| `MGC_AWS_ACCESS_KEY_ID`      | `AKIA1234567890000000`      | Access Key ID, for user with permissions to Route 53 in the account where root domain is created            |
+| `MGC_AWS_SECRET_ACCESS_KEY`  | `Z01234567US0000000`        | Access Secret Access Key, for user with permissions to Route 53 in the account where root domain is created |
+| `MGC_AWS_REGION`             | `eu-west-1`                 | AWS Region                                                                                                  |
+| `MGC_SUB_DOMAIN`             | `myapp.jbloggs.hcpapps.net` | Desired Sub domain                                                                                          |
 
 
 ### GCP
