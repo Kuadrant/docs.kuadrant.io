@@ -30,7 +30,7 @@ Export environment variables with the keys listed below for your desired provide
 
    | Env Var                 | Example Value          | Description                                                    |
    |-------------------------|------------------------|----------------------------------------------------------------|
-   | `GOOGLE`     | `{"client_id": "00000000-00000000000000.apps.googleusercontent.com","client_secret": "d-FL95Q00000000000000","refresh_token": "00000aaaaa00000000-AAAAAAAAAAAAKFGJFJDFKDK","type": "authorized_user"}` |  This is the JSON created from either the credential created by the cli or the json from the Service account             |
+   | `GOOGLE`     | `{"client_id": "00000000-00000000000000.apps.googleusercontent.com","client_secret": "d-FL95Q00000000000000","refresh_token": "00000aaaaa00000000-AAAAAAAAAAAAKFGJFJDFKDK","type": "authorized_user"}` |  This is the JSON created from either the JSON credentials created by the Google Cloud CLI or a Service account             |
    | `PROJECT_ID` | `my_project_id`   | ID to the google project |
    | `ZONE_NAME`       | `jbloggs-google`   | Zone name                          |
    | `ZONE_DNS_NAME` | `jbloggs.google.hcpapps.net`   | DNS name                        |
@@ -48,5 +48,5 @@ curl https://raw.githubusercontent.com/kuadrant/multicluster-gateway-controller/
 
 ### What's Next
 
-Now that you have two Kind clusters configured with the Multicluster Gateway Controller installed you are ready to begin [the Multicluster Gateways walkthrough.](how-to/multicluster-gateways-walkthrough.md)
+Now that you have two Kind clusters configured with Kuadrant installed you are ready to begin [the Multicluster Gateways walkthrough.](https://docs.kuadrant.io/multicluster-gateway-controller/docs/how-to/multicluster-gateways-walkthrough/)
 
