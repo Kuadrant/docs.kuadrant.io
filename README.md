@@ -20,4 +20,8 @@ Outputs static content to `site`.
 ## Deploying
 This is deployed via GitHub Pages, on merge to `main`.
 
-If you need to re-trigger a deployment from main for any reason, manually run `Actions`>`ci` for the latest workflow run. This will build a docs bundle, and then trigger the `pages-build-deployment` action afterwards to push changes to the `gh-pages` branch.
+If you need to re-trigger a deployment from main for any reason, manually run `Actions > ci > Run Workflow`:
+
+![alt text](docs/assets/images/deploy.png)
+
+This will build a docs bundle, and then trigger the `pages-build-deployment` action afterwards to push changes to the `gh-pages` branch.
