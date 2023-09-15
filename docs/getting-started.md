@@ -23,8 +23,6 @@ Export environment variables with the keys listed below for your desired provide
 | `MGC_AWS_ACCESS_KEY_ID`      | `AKIA1234567890000000`      | Access Key ID, for user with permissions to Route 53 in the account where root domain is created            |
 | `MGC_AWS_SECRET_ACCESS_KEY`  | `Z01234567US0000000`        | Access Secret Access Key, for user with permissions to Route 53 in the account where root domain is created |
 | `MGC_AWS_REGION`             | `eu-west-1`                 | AWS Region                                                                                                  |
-| `MGC_SUB_DOMAIN`             | `myapp.jbloggs.hcpapps.net` | Desired Sub domain                                                                                          |
-
 
 ### GCP
 
