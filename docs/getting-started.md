@@ -40,7 +40,7 @@ Export environment variables with the keys listed below for your desired provide
 
 export MGC_BRANCH=release-0.1
 
-### Set Up Clusters and Multicluster Gateway Controller
+### Set Up Clusters and install Kuadrant
 
 Run the following:
 
