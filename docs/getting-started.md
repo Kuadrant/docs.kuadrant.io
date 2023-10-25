@@ -36,7 +36,7 @@ Export environment variables with the keys listed below for your desired provide
 
 >Alternatively, to set defaults, add the above environment variables to your `.zshrc` or `.bash_profile`.
 
-### Set Up Clusters and Multicluster Gateway Controller
+### Set Up Clusters and install Kuadrant
 
 Run the following:
 
