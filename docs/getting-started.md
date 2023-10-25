@@ -38,7 +38,9 @@ Export environment variables with the keys listed below for your desired provide
 
 ### Set the release you want to use 
 
+```bash
 export MGC_BRANCH=release-0.1
+```
 
 ### Set Up Clusters and install Kuadrant
 
