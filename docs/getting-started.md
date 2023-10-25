@@ -36,12 +36,16 @@ Export environment variables with the keys listed below for your desired provide
 
 >Alternatively, to set defaults, add the above environment variables to your `.zshrc` or `.bash_profile`.
 
+### Set the release you want to use 
+
+export MGC_BRANCH=release-0.1
+
 ### Set Up Clusters and install Kuadrant
 
 Run the following:
 
 ```bash
-curl https://raw.githubusercontent.com/kuadrant/multicluster-gateway-controller/main/hack/quickstart-setup.sh | bash
+curl https://raw.githubusercontent.com/kuadrant/multicluster-gateway-controller/${MGC_BRANCH}/hack/quickstart-setup.sh | bash
 ```
 
 ### What's Next
