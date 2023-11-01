@@ -47,7 +47,7 @@ export MGC_BRANCH=release-0.1
 Run the following:
 
 ```bash
-curl https://raw.githubusercontent.com/kuadrant/multicluster-gateway-controller/${MGC_BRANCH}/hack/quickstart-setup.sh | bash
+curl "https://raw.githubusercontent.com/kuadrant/multicluster-gateway-controller/${MGC_BRANCH}/hack/quickstart-setup.sh" | bash
 ```
 
 ### What's Next
