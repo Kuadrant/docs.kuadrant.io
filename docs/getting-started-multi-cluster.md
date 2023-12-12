@@ -1,9 +1,5 @@
-## Kuadrant Getting Started - Single Cluster
+## Kuadrant Getting Started - Multi Cluster
 
-## Overview 
-
-In this quick start, we will cover: 
-- setup of Kuadrant in a singe local kind cluster
 
 ### Prerequisites
 
@@ -14,10 +10,9 @@ In this quick start, we will cover:
 - AWS account with Route 53 enabled or GCP with Cloud DNS enabled
 - [Docker Mac Net Connect](https://github.com/chipmk/docker-mac-net-connect) (macOS users only)
 
-
 ### DNS Environmental Variables
 
-If you want to make use of the Kuadrant `DNSPolicy` you should setup the following environmental variables depending on your DNS Provider:
+Export environment variables with the keys listed below for your desired provider. Fill in your own values as appropriate. Note that you will need to have created a root domain in AWS Route 53 or in GCP Cloud DNS:
 
 ### AWS
 
@@ -44,22 +39,18 @@ If you want to make use of the Kuadrant `DNSPolicy` you should setup the followi
 ### Set the release you want to use 
 
 ```bash
-export KUADRANT_REF=v0.6.0
+export MGC_BRANCH=release-0.2
 ```
 
-### Set Up a kind cluster and install Kuadrant
+### Set Up Clusters and install Kuadrant
 
 Run the following:
 
 ```bash
-curl "https://raw.githubusercontent.com/kuadrant/kuadrant-operator/${KUADRANT_REF}/hack/quickstart-setup.sh" | bash
+curl "https://raw.githubusercontent.com/kuadrant/multicluster-gateway-controller/${MGC_BRANCH}/hack/quickstart-setup.sh" | bash
 ```
-This will setup a single kind cluster, install Istio via the `project sail` operator and install Kuadrant. Once this completes you should be able to move on to using the various policy apis offered by Kuadrant
 
 ### What's Next
 
-The next step is to setup and use the policies provided by Kuadrant. 
-
-[Secure, Protect and Connect your Gateway](https://docs.kuadrant.io/kuadrant-operator/docs/how-to/secure-protect-connect/)
-
+Now that you have two Kind clusters configured with Kuadrant installed you are ready to begin [the Multicluster Gateways walkthrough.](https://docs.kuadrant.io/multicluster-gateway-controller/docs/how-to/multicluster-gateways-walkthrough/)
 
