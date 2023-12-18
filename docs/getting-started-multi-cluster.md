@@ -1,4 +1,4 @@
-## Getting Started
+## Kuadrant Getting Started - Multi Cluster
 
 
 ### Prerequisites
@@ -10,7 +10,7 @@
 - AWS account with Route 53 enabled or GCP with Cloud DNS enabled
 - [Docker Mac Net Connect](https://github.com/chipmk/docker-mac-net-connect) (macOS users only)
 
-### Config
+### DNS Environmental Variables
 
 Export environment variables with the keys listed below for your desired provider. Fill in your own values as appropriate. Note that you will need to have created a root domain in AWS Route 53 or in GCP Cloud DNS:
 
@@ -39,7 +39,7 @@ Export environment variables with the keys listed below for your desired provide
 ### Set the release you want to use 
 
 ```bash
-export MGC_BRANCH=release-0.2
+export MGC_BRANCH=release-0.3
 ```
 
 ### Set Up Clusters and install Kuadrant
