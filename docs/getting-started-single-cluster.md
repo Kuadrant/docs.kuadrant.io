@@ -60,6 +60,6 @@ This will setup a single kind cluster, install Istio via the `project sail` oper
 
 The next step is to setup and use the policies provided by Kuadrant. 
 
-[Secure, Protect and Connect your Gateway](https://docs.kuadrant.io/kuadrant-operator/doc/how-to/secure-protect-connect/)
+[Secure, Protect and Connect your Gateway](https://docs.kuadrant.io/kuadrant-operator/doc/user-guides/secure-protect-connect/)
 
 
