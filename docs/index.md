@@ -3,7 +3,7 @@
 Kuadrant brings together [Gateway API](https://gateway-api.sigs.k8s.io/) and [Open Cluster Management](https://open-cluster-management.io/) to help you scale, load-balance and secure your Ingress Gateways as a key part of your application connectivity, in the single or multi-cluster environment.
 
 # Getting Started
-To quickly get started with Kuadrant locally, see our [Getting Started guide](getting-started.md).
+To quickly get started with Kuadrant locally, see our **Getting Started** guides for the [Single Cluster](getting-started-single-cluster.md) or [Multi Cluster](getting-started-multi-cluster.md) use cases.
 
 ## Single-cluster
 
