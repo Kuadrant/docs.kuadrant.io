@@ -11,7 +11,7 @@ theme:
 extra_css:
   - assets/stylesheets/extra.css
 watch:
-  - overrides
+  - overrides 
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
@@ -37,22 +37,24 @@ plugins:
       keep_docs_dir: true
       nav_repos:
         - name: kuadrant-operator
-          import_url: 'https://github.com/kuadrant/kuadrant-operator?edit_uri=/blob/main/&branch=v0.6.0'
+          import_url: 'https://github.com/kuadrant/kuadrant-operator?edit_uri=/blob/main/&branch=main'
           imports:
             - /README.md
             - /doc/*
+            - /config/samples/*
         - name: authorino
-          import_url: 'https://github.com/kuadrant/authorino?edit_uri=/blob/main/&branch=v0.16.0'
+          import_url: 'https://github.com/kuadrant/authorino?edit_uri=/blob/main/&branch=main'
           imports:
             - /README.md
             - /docs/*
             - /docs/user-guides/*
+            - /install/crd/*
         - name: authorino-operator
-          import_url: 'https://github.com/kuadrant/authorino-operator?edit_uri=/blob/main/&branch=v0.10.0'
+          import_url: 'https://github.com/kuadrant/authorino-operator?edit_uri=/blob/main/&branch=main'
           imports:
             - /README.md
         - name: limitador
-          import_url: 'https://github.com/kuadrant/limitador?edit_uri=/blob/main/&branch=v1.3.0'
+          import_url: 'https://github.com/kuadrant/limitador?edit_uri=/blob/main/&branch=main'
           imports:
             - /README.md
             - /doc/*
@@ -60,13 +62,15 @@ plugins:
             - /limitador-server/docs/*
             - /limitador/README.md
             - /limitador-server/kubernetes/*
+            - /limitador-server/sandbox/*
+            - /LICENSE
         - name: limitador-operator
-          import_url: 'https://github.com/kuadrant/limitador-operator?edit_uri=/blob/main/&branch=v0.7.0'
+          import_url: 'https://github.com/kuadrant/limitador-operator?edit_uri=/blob/main/&branch=main'
           imports:
             - /README.md
             - /doc/*
         - name: multicluster-gateway-controller
-          import_url: 'https://github.com/kuadrant/multicluster-gateway-controller?edit_uri=/blob/main/&branch=release-0.3'
+          import_url: 'https://github.com/kuadrant/multicluster-gateway-controller?edit_uri=/blob/main/&branch=main'
           imports:
             - /README.md
             - /docs/*
@@ -85,6 +89,12 @@ plugins:
           imports:
             - /README.md
             - /doc/*
+        - name: dns-operator
+          import_url: 'https://github.com/kuadrant/dns-operator?edit_uri=/blob/main/&branch=main'
+          imports:
+            - /README.md
+            - /docs/*
+            - /config/samples/*
 nav:
   - 'Overview': index.md
   - 'Getting Started':
@@ -97,14 +107,14 @@ nav:
       - 'Service Protection installation with Existing OCM': multicluster-gateway-controller/docs/installation/service-protection-installation.md
   - 'Concepts and APIs':
     - 'DNSPolicy':
-      - 'Overview': multicluster-gateway-controller/docs/dnspolicy/dnspolicy.md
-      - 'Reference': multicluster-gateway-controller/docs/reference/dnspolicy.md
+      - 'Reference': kuadrant-operator/doc/reference/dnspolicy.md
+      - 'Gateway DNS for Cluster Operators': kuadrant-operator/doc/user-guides/gateway-dns.md
     - 'ManagedZone':
-      -  'Overview': multicluster-gateway-controller/docs/managed-zone.md
-      -  'Reference': multicluster-gateway-controller/docs/reference/managedzone.md
+      -  'Overview': dns-operator/docs/managedzone.md
+      -  'Reference': dns-operator/docs/reference/managedzone.md
     - 'TLSPolicy':
-      - 'Overview': multicluster-gateway-controller/docs/tlspolicy/tls-policy.md
-      - 'Reference': multicluster-gateway-controller/docs/reference/tlspolicy.md
+      - 'Overview': kuadrant-operator/doc/tls.md
+      - 'Reference': kuadrant-operator/doc/reference/tlspolicy.md
     - 'AuthPolicy':
       - 'Overview': kuadrant-operator/doc/auth.md
       - 'Reference': kuadrant-operator/doc/reference/authpolicy.md
@@ -119,12 +129,11 @@ nav:
     - 'Single Cluster':
       - 'Secure, connect and protect': kuadrant-operator/doc/user-guides/secure-protect-connect.md
     - 'DNS configuration and load balancing':
-      - 'Basic DNSPolicy': multicluster-gateway-controller/docs/dnspolicy/dnspolicy-quickstart.md
-      - 'DNS Health Checks': multicluster-gateway-controller/docs/dnspolicy/dns-health-checks.md
-      - 'DNS Providers': multicluster-gateway-controller/docs/dnspolicy/dns-provider.md
+      - 'DNS Health Checks': kuadrant-operator/doc/dnshealthchecks.md
+      # - 'DNS Providers': multicluster-gateway-controller/docs/dnspolicy/dns-provider.md # TODO: this seems to have been lost recently
       - 'Advanced DNS based LoadBalancing': multicluster-gateway-controller/docs/how-to/multicluster-loadbalanced-dnspolicy.md
     - 'TLS configuration':
-      - 'TLSPolicy and Cert-Manager': multicluster-gateway-controller/docs/tlspolicy/tls-policy.md # new doc needed but this one is ok for now
+      - 'Gateway TLS for Cluster Operators': kuadrant-operator/doc/user-guides/gateway-tls.md
     - 'Authentication & Authorization':
       - 'AuthPolicy for Application Developers and Platform Engineers': kuadrant-operator/doc/user-guides/auth-for-app-devs-and-platform-engineers.md
       - 'Authentication with Kubernetes tokens (TokenReview API)': authorino/docs/user-guides/kubernetes-tokenreview.md
@@ -161,8 +170,6 @@ nav:
       - 'Multi-Cluster Metrics': multicluster-gateway-controller/docs/how-to/metrics-walkthrough.md
       - 'Authentication and Authorization': authorino/docs/user-guides/observability.md
   - 'Experimental':
-    - 'Kuadrant and Skupper Gateway Resiliency': multicluster-gateway-controller/docs/experimental/skupper-poc-2-gateways-resiliency-walkthrough.md
-    - 'Kuadrant and Submariner Gateway Resiliency': multicluster-gateway-controller/docs/experimental/submariner-poc-2-gateways-resiliency-walkthrough.md
     - 'API Quickstart': 'api-quickstart/README.md'
   - 'Proposals':
     - 'Request For Comments (RFC)':
@@ -174,7 +181,11 @@ nav:
       - 'RFC 0006: Configuration of Kuadrant Sub Components': architecture/rfcs/0006-kuadrant_sub_components_configurations.md
       - 'RFC 0007: Policy Sync': architecture/rfcs/0007-policy-sync-v1.md
     - 'Multicluster Gateway Controller':
-      - 'Multiple DNS Provider Support': multicluster-gateway-controller/docs/proposals/multiple-dns-provider-support.md
+      - 'Multiple DNS Provider Support':
+        - 'Overview': multicluster-gateway-controller/docs/proposals/multiple-dns-provider-support.md
+        - 'Google DNS': multicluster-gateway-controller/docs/proposals/assets/multiple-dns-provider-support/google/google.md
+        - 'AWS DNS': multicluster-gateway-controller/docs/proposals/assets/multiple-dns-provider-support/aws/aws.md
+        - 'Azure DNS': multicluster-gateway-controller/docs/proposals/assets/multiple-dns-provider-support/azure/azure.md
       - 'Aggregation of Status Conditions': multicluster-gateway-controller/docs/proposals/status-aggregation.md
   - 'Components':
     - 'Kuadrant Operator':
@@ -199,7 +210,7 @@ nav:
       - 'Server':
         - 'Overview': limitador/limitador-server/README.md
         - 'Kubernetes': limitador/limitador-server/kubernetes/README.md
-        - 'Sandbox': limitador/limitador-server/docs/sandbox.md
+        - 'Sandbox': limitador/limitador-server/sandbox/README.md
       - 'Crate': limitador/limitador/README.md
       - 'Limitador Operator':
         - 'Overview': limitador-operator/README.md

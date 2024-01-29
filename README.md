@@ -8,14 +8,14 @@ And dependencies
 
 
 ## Running Locally
-`mkdocs serve`
+`mkdocs serve -s`
 
 The docs should then be available locally from http://127.0.0.1:8000/
 
 **Note:** `mkdocs` will automatically clone component repositories as configured via `mkdocs.yml`.
 
 ## Building
-`mkdocs build`
+`mkdocs build -s`
 
 Outputs static content to `site`.
 
