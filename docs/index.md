@@ -33,11 +33,11 @@ In the multi-cluster environment[^2], you can utilize Kuadrant to manage DNS-bas
 
 ## Component Documentation
 
-* [Kuadrant Operator](/kuadrant-operator)<br/>
+* [Kuadrant Operator](kuadrant-operator/README.md)<br/>
   Install and manage the lifecycle of the Kuadrant deployments and core Kuadrant policies for the data plane.
-* [Authorino](/authorino)<br/>
+* [Authorino](authorino/README.md)<br/>
   Flexible, cloud-native, and lightweight external authorization server to implement identity verification (Kubernetes TokenReview, OIDC, OAuth2, API key, mTLS) and authorization policy rules (Kuberentes SubjectAccessReview, JWT claims, OPA, request pattern-matching, resource metadata, RBAC, ReBAC, ABAC, etc).
-* [Limitador](/limitador)<br/>
+* [Limitador](limitador/README.md)<br/>
   Fast rate-limiter implemented in Rust, that can be used as a library, or as a service plugged in to the API gateway.
-* [Multicluster Gateway Controller](/multicluster-gateway-controller)<br/>
+* [Multicluster Gateway Controller](multicluster-gateway-controller/README.md)<br/>
   Manage multi-cluster gateways, integrate with DNS providers, TLS providers and OCM (Open Cluster Management).
