@@ -15,7 +15,12 @@ In this quick start, we will cover:
 - [Docker Mac Net Connect](https://github.com/chipmk/docker-mac-net-connect) (macOS users only)
 
 
-### DNS Environmental Variables
+### Environmental Variables
+
+### General
+| Env Var                      | Example Value               | Description                                                                                                 |
+|------------------------------|-----------------------------|-------------------------------------------------------------------------------------------------------------|
+| `ISTIO_INSTALL_SAIL`       | `true`       | Whether to install istio through project sail, default `false`                                                                                |
 
 If you want to make use of the Kuadrant `DNSPolicy` you should setup the following environmental variables depending on your DNS Provider:
 
@@ -44,7 +49,7 @@ If you want to make use of the Kuadrant `DNSPolicy` you should setup the followi
 ### Set the release you want to use 
 
 ```bash
-export KUADRANT_REF=v0.6.0
+export KUADRANT_REF=v0.6.1
 ```
 
 ### Set Up a kind cluster and install Kuadrant
@@ -54,7 +59,7 @@ Run the following:
 ```bash
 curl "https://raw.githubusercontent.com/kuadrant/kuadrant-operator/${KUADRANT_REF}/hack/quickstart-setup.sh" | bash
 ```
-This will setup a single kind cluster, install Istio via the `project sail` operator and install Kuadrant. Once this completes you should be able to move on to using the various policy apis offered by Kuadrant
+This will setup a single kind cluster, install Istio and install Kuadrant. Once this completes you should be able to move on to using the various policy apis offered by Kuadrant. To use `project sail` to install istio, ensure you set the  `ISTIO_INSTALL_SAIL=true` env var before executing the quick start.
 
 ### What's Next
 
