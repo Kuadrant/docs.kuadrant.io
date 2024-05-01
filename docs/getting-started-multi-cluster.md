@@ -1,56 +1,36 @@
 ## Kuadrant Getting Started - Multi Cluster
 
+## Overview
+
+In this quick start, we will cover the setup of Kuadrant in multiple local kind clusters.
+This document is intended as a follow on to the single cluster guide.
+It can be used for adding 1 or more clusters to your local setup.
 
 ### Prerequisites
 
-- [Docker](https://docs.docker.com/engine/install/)
-- [Kind](https://kind.sigs.k8s.io/)
-- [Kubectl](https://kubernetes.io/docs/tasks/tools/)
-- OpenSSL >= 3
-- AWS account with Route 53 enabled or GCP with Cloud DNS enabled
-- [Docker Mac Net Connect](https://github.com/chipmk/docker-mac-net-connect) (macOS users only)
+- Completed the [Single-cluster Quick Start](https://docs.kuadrant.io/getting-started-single-cluster/)
 
-### DNS Environmental Variables
+### Environmental Variables
 
-Export environment variables with the keys listed below for your desired provider. Fill in your own values as appropriate. Note that you will need to have created a root domain in AWS Route 53 or in GCP Cloud DNS:
+The same environment variable requirements from the [Single-cluster Quick Start](https://docs.kuadrant.io/getting-started-single-cluster/) apply to this document,
+including the `KUADRANT_REF` variable.
 
-### AWS
+### Set Up a kind cluster and install Kuadrant
 
-| Env Var                      | Example Value               | Description                                                                                                 |
-|------------------------------|-----------------------------|-------------------------------------------------------------------------------------------------------------|
-| `MGC_ZONE_ROOT_DOMAIN`       | `jbloggs.hcpapps.net`       | Hostname for the root Domain                                                                                |
-| `MGC_AWS_DNS_PUBLIC_ZONE_ID` | `Z01234567US0IQE3YLO00`     | AWS Route 53 Zone ID for specified `MGC_ZONE_ROOT_DOMAIN`                                                   |
-| `MGC_AWS_ACCESS_KEY_ID`      | `AKIA1234567890000000`      | Access Key ID, for user with permissions to Route 53 in the account where root domain is created            |
-| `MGC_AWS_SECRET_ACCESS_KEY`  | `Z01234567US0000000`        | Access Secret Access Key, for user with permissions to Route 53 in the account where root domain is created |
-| `MGC_AWS_REGION`             | `eu-west-1`                 | AWS Region                                                                                                  |
-
-### GCP
-
-   | Env Var                 | Example Value          | Description                                                    |
-   |-------------------------|------------------------|----------------------------------------------------------------|
-   | `GOOGLE`     | `{"client_id": "00000000-00000000000000.apps.googleusercontent.com","client_secret": "d-FL95Q00000000000000","refresh_token": "00000aaaaa00000000-AAAAAAAAAAAAKFGJFJDFKDK","type": "authorized_user"}` |  This is the JSON created from either the JSON credentials created by the Google Cloud CLI or a Service account             |
-   | `PROJECT_ID` | `my_project_id`   | ID to the google project |
-   | `ZONE_NAME`       | `jbloggs-google`   | Zone name                          |
-   | `ZONE_DNS_NAME` | `jbloggs.google.hcpapps.net`   | DNS name                        |
-   | `LOG_LEVEL`              | `1`                     | Log level for the Controller                          |
-
->Alternatively, to set defaults, add the above environment variables to your `.zshrc` or `.bash_profile`.
-
-### Set the release you want to use 
+Run the same quickstart script from the single cluster quick start:
 
 ```bash
-export MGC_BRANCH=release-0.3
+curl "https://raw.githubusercontent.com/kuadrant/kuadrant-operator/${KUADRANT_REF}/hack/quickstart-setup.sh" | bash
 ```
 
-### Set Up Clusters and install Kuadrant
-
-Run the following:
-
-```bash
-curl "https://raw.githubusercontent.com/kuadrant/multicluster-gateway-controller/${MGC_BRANCH}/hack/quickstart-setup.sh" | bash
-```
+The script will detect if you already have a cluster from the single cluster setup running, and prompt you for a multi cluster setup.
+This will setup an additional kind cluster, install Istio and install Kuadrant.
+You can re-run the script multiple times to add more clusters.
+Each cluster will have a number suffix in the name. For example: `kuadrant-local-1`, `kuadrant-local-2`, `kuadrant-local-3`.
+The original cluster from the single cluster setup will keep its name of just `kuadrant-local`.
 
 ### What's Next
 
-Now that you have two Kind clusters configured with Kuadrant installed you are ready to begin [the Multicluster Gateways walkthrough.](https://docs.kuadrant.io/multicluster-gateway-controller/docs/how-to/multicluster-gateways-walkthrough/)
+The next step is to setup and use the policies provided by Kuadrant. 
 
+[Secure, Protect and Connect your Gateway](https://docs.kuadrant.io/kuadrant-operator/doc/user-guides/secure-protect-connect/)
