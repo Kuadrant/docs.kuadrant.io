@@ -1,43 +1,10 @@
 # Overview
 
-Kuadrant brings together [Gateway API](https://gateway-api.sigs.k8s.io/) and [Open Cluster Management](https://open-cluster-management.io/) to help you scale, load-balance and secure your Ingress Gateways as a key part of your application connectivity, in the single or multi-cluster environment.
+Kuadrant combines [Gateway API](https://gateway-api.sigs.k8s.io/) and [Istio](https://istio.io/latest/docs/tasks/traffic-management/ingress/gateway-api/)-based gateway controllers to enhance application connectivity. It enables platform engineers and application developers to easily connect, secure, and protect their services and infrastructure across multiple clusters with policies for [TLS](kuadrant-operator/doc/tls.md), [DNS](kuadrant-operator/doc/reference/dnspolicy.md), application [authentication & authorization](kuadrant-operator/doc/auth.md), and [rate limiting](kuadrant-operator/doc/rate-limiting.md). Additionally, Kuadrant offers [observability templates](kuadrant-operator/doc/observability/examples.md) to further support infrastructure management.
 
-<iframe width="100%" height="400" src="https://www.youtube.com/embed/TyhpIQXiPUo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="100%" height="400" src="https://www.youtube.com/embed/cLFAMpKYfvA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-# Getting Started
-To quickly get started with Kuadrant locally, see our **Getting Started** guides for the [Single Cluster](getting-started-single-cluster.md) or [Multi Cluster](getting-started-multi-cluster.md) use cases.
+## Getting Started
 
-## Single-cluster
-
-Kuadrant can be used to protect ingress gateways based on [Gateway API](https://gateway-api.sigs.k8s.io/)[^1] with policy enforcement (rate limit and auth) in a Kuberentes cluster.
-
-[^1]: <b>Supported implementations:</b> <a href="https://istio.io/">Istio</a>, <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/what-is-openshift-service-mesh">OpenShift Service Mesh</a>.</sup>
-
-<details>
-  <summary>Topology</summary>
-
-  <img src="assets/images/architecture-single-cluster.png" alt="Single cluster architecture"/>
-</details>
-
-## Multi-cluster
-
-In the multi-cluster environment[^2], you can utilize Kuadrant to manage DNS-based north-south connectivity, which can provide global load balancing underpinned by your cluster topology. Kuadrant's multi-cluster functionality also ensures gateway and policy consistency across clusters, focusing on critical aspects like TLS and application health.
-
-[^2]: Based on <a href="https://open-cluster-management.io/">Open Cluster Management</a>.
-
-<details>
-  <summary>Topology</summary>
-
-  <img src="assets/images/architecture-multi-cluster.png" alt="Multi cluster architecture"/>
-</details>
-
-## Component Documentation
-
-* [Kuadrant Operator](kuadrant-operator/README.md)<br/>
-  Install and manage the lifecycle of the Kuadrant deployments and core Kuadrant policies for the data plane.
-* [Authorino](authorino/README.md)<br/>
-  Flexible, cloud-native, and lightweight external authorization server to implement identity verification (Kubernetes TokenReview, OIDC, OAuth2, API key, mTLS) and authorization policy rules (Kuberentes SubjectAccessReview, JWT claims, OPA, request pattern-matching, resource metadata, RBAC, ReBAC, ABAC, etc).
-* [Limitador](limitador/README.md)<br/>
-  Fast rate-limiter implemented in Rust, that can be used as a library, or as a service plugged in to the API gateway.
-* [Multicluster Gateway Controller](multicluster-gateway-controller/README.md)<br/>
-  Manage multi-cluster gateways, integrate with DNS providers, TLS providers and OCM (Open Cluster Management).
+For a quick local setup of Kuadrant, see our [Single Cluster](getting-started-single-cluster.md) or [Multi Cluster](getting-started-multi-cluster.md) guides.
+Explore the single and multi-cluster architecture in our [Architectural Overview](architecture/docs/design/architectural-overview-v1.md).
