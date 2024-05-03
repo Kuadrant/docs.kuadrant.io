@@ -3190,7 +3190,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../limitador/limitador-server/docs/sandbox.md" class="md-nav__link">
+      <a href="../../../../limitador/limitador-server/docs/sandbox/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3606,17 +3606,13 @@
 </table>
 
 <p><br/></p>
-<p>In this guide:</p>
-<ul>
-<li><a href="#example-of-host-override-for-path-prefix-based-lookup">Example of host override for path prefix-based lookup</a></li>
-<li><a href="#example-of-host-override-for-wildcard-subdomain-lookup">Example of host override for wildcard subdomain lookup</a></li>
-</ul>
+<p>In this guide:
+- <a href="#example-of-host-override-for-path-prefix-based-lookup">Example of host override for path prefix-based lookup</a>
+- <a href="#example-of-host-override-for-wildcard-subdomain-lookup">Example of host override for wildcard subdomain lookup</a></p>
 <h2 id="example-of-host-override-for-path-prefix-based-lookup">Example of host override for path prefix-based lookup</h2>
-<p>In this use case, 2 different APIs (i.e. <strong>Dogs API</strong> and <strong>Cats API</strong>) are served under the same base domain, and differentiated by the path prefix:</p>
-<ul>
-<li><code>pets.com/dogs</code> →  Dogs API</li>
-<li><code>pets.com/cats</code> →  Cats API</li>
-</ul>
+<p>In this use case, 2 different APIs (i.e. <strong>Dogs API</strong> and <strong>Cats API</strong>) are served under the same base domain, and differentiated by the path prefix:
+- <code>pets.com/dogs</code> →  Dogs API
+- <code>pets.com/cats</code> →  Cats API</p>
 <p>Edit the Envoy config to extend the external authorization settings at the level of the routes, with the <code>host</code> value that will be favored by Authorino before the actual host attribute of the HTTP request:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">virtual_hosts</span><span class="p">:</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pets-api</span>
@@ -3667,11 +3663,9 @@
 </span></code></pre></div>
 <p>Notice that the host subdomains <code>dogs.pets.com</code> and <code>cats.pets.com</code> are not really requested by the API consumers. Rather, users send requests to <code>pets.com/dogs</code> and <code>pets.com/cats</code>. When routing those requests, Envoy makes sure to inject the corresponding context extensions that will induce the right lookup in Authorino.</p>
 <h2 id="example-of-host-override-for-wildcard-subdomain-lookup">Example of host override for wildcard subdomain lookup</h2>
-<p>In this use case, a single <strong>Pets API</strong> serves requests for any subdomain that matches <code>*.pets.com</code>, e.g.:</p>
-<ul>
-<li><code>dogs.pets.com</code> →  Pets API</li>
-<li><code>cats.pets.com</code> →  Pets API</li>
-</ul>
+<p>In this use case, a single <strong>Pets API</strong> serves requests for any subdomain that matches <code>*.pets.com</code>, e.g.:
+- <code>dogs.pets.com</code> →  Pets API
+- <code>cats.pets.com</code> →  Pets API</p>
 <p>Edit the Envoy config to extend the external authorization settings at the level of the virtual host, with the <code>host</code> value that will be favored by Authorino before the actual host attribute of the HTTP request:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">virtual_hosts</span><span class="p">:</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pets-api</span>

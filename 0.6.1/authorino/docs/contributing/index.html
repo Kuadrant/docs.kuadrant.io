@@ -3317,7 +3317,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../limitador/limitador-server/docs/sandbox.md" class="md-nav__link">
+      <a href="../../../limitador/limitador-server/docs/sandbox/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3848,34 +3848,47 @@
 
 
 <h1 id="developers-guide">Developer's Guide</h1>
-<h2 id="technology-stack-for-developers">Technology stack for developers</h2>
-<p>Minimum requirements to contribute to Authorino are:</p>
 <ul>
-<li><a href="https://golang.org">Golang v1.20+</a></li>
-<li><a href="https://docker.com">Docker</a></li>
+<li><a href="#technology-stack-for-developers">Technology stack for developers</a></li>
+<li><a href="#workflow">Workflow</a></li>
+<li><a href="#check-the-issues">Check the issues</a></li>
+<li><a href="#clone-the-repo-and-setup-the-local-environment">Clone the repo and setup the local environment</a></li>
+<li><a href="#make-your-changes">Make your changes</a></li>
+<li><a href="#run-the-tests">Run the tests</a></li>
+<li><a href="#try-locally">Try locally</a><ul>
+<li><a href="#build-deploy-and-try-authorino-in-a-local-cluster">Build, deploy and try Authorino in a local cluster</a></li>
+<li><a href="#additional-tools-for-specific-use-cases">Additional tools (for specific use-cases)</a></li>
+<li><a href="#re-build-and-rollout-latest">Re-build and rollout latest</a></li>
+<li><a href="#clean-up">Clean-up</a></li>
 </ul>
+</li>
+<li><a href="#sign-your-commits">Sign your commits</a></li>
+<li><a href="#logging-policy">Logging policy</a></li>
+<li><a href="#additional-resources">Additional resources</a></li>
+<li><a href="#reach-out">Reach out</a></li>
+</ul>
+<h2 id="technology-stack-for-developers">Technology stack for developers</h2>
+<p>Minimum requirements to contribute to Authorino are:
+- <a href="https://golang.org">Golang v1.20+</a>
+- <a href="https://docker.com">Docker</a></p>
 <p>Authorino's code was originally bundled using the <a href="https://sdk.operatorframework.io/">Operator SDK</a> (v1.9.0).</p>
 <p>The following tools can be installed as part of the development workflow:</p>
 <ul>
-<li>
-<p><em>Installed with <code>go install</code> to the <code>$PROJECT_DIR/bin</code> directory:</em></p>
-<ul>
+<li><em>Installed with <code>go install</code> to the <code>$PROJECT_DIR/bin</code> directory:</em></li>
 <li><a href="https://book.kubebuilder.io/reference/controller-gen.html">controller-gen</a>: for building custom types and manifests</li>
 <li><a href="https://kustomize.io/">Kustomize</a>: for assembling flavoured manifests and installing/deploying</li>
-<li><a href="https://book.kubebuilder.io/reference/envtest.html">setup-envtest</a>: for running the tests – extra tools installed to <code>./testbin</code></li>
+<li><a href="https://v0-19-x.sdk.operatorframework.io/docs/golang/references/env-test-setup">setup-envtest</a>: for running the tests – extra tools installed to <code>./testbin</code></li>
 <li><a href="https://cs.opensource.google/go/x/perf">benchstat</a>: for human-friendly test benchmark reports</li>
-<li><a href="https://github.com/golang/mock">mockgen</a>: to generate mocks for tests – e.g. <code>./bin/mockgen -source=pkg/auth/auth.go -destination=pkg/auth/mocks/mock_auth.go</code></li>
-<li><a href="https://kind.sigs.k8s.io">Kind</a>: for deploying a containerized Kubernetes cluster for integration testing purposes</li>
-</ul>
+<li><a href="https://github.com/golang/mock/mockgen">mockgen</a>: to generate mocks for tests – e.g. <code>./bin/mockgen -source=pkg/auth/auth.go -destination=pkg/auth/mocks/mock_auth.go</code></li>
+<li>
+<p><a href="https://kind.sigs.k8s.io">Kind</a>: for deploying a containerized Kubernetes cluster for integration testing purposes</p>
 </li>
 <li>
 <p><em>Other recommended tools to have installed:</em></p>
-<ul>
-<li><a href="https://stedolan.github.io/jq/">jq</a></li>
-<li><a href="https://mikefarah.github.io/yq/">yq</a></li>
-<li><a href="https://www.gnu.org/software/sed/">gnu-sed</a></li>
-</ul>
 </li>
+<li><a href="https://stedolan.github.io/jq/">jq</a></li>
+<li><a href="http://mikefarah.github.io/yq/">yq</a></li>
+<li><a href="https://www.gnu.org/software/sed/">gnu-sed</a></li>
 </ul>
 <h2 id="workflow">Workflow</h2>
 <p><img alt="Development workflow" src="http://www.plantuml.com/plantuml/png/LKz1QiGm3Bpx5MBlfJye2uNU2alR3nXNn26s5IJvaD_NKbBm7gBCQ0RD-2uQMNijGRQrxP5ZXKgDKcQg2CeTGs1C6jjI46xl6TC6cX5MaOvoWoWdd5qVnDjhAjJGhOmxkT40pCRFk24Sr1bI7glhteLdum-AkgO3F0byGA4KIpbEdOzP_bwNTWLGhQkU0JAsi-lH9NlJnvVh--0X-BFWvSrh1nj6_ijTVrjv9nj6hC3u37gC3ID-yuxjjzVo1m00" /></p>
@@ -3893,31 +3906,27 @@
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>make<span class="w"> </span><span class="nb">help</span>
 </span></code></pre></div>
 <h3 id="make-your-changes">Make your changes</h3>
-<p>Good changes...</p>
-<ul>
-<li>follow the <a href="https://golang.org/doc/effective_go">Golang conventions</a></li>
-<li>have proper test coverage</li>
-<li>address corresponding updates to the <a href="../">docs</a></li>
-<li>help us fix wherever we failed to do the above 😜</li>
-</ul>
+<p>Good changes...
+- follow the <a href="https://golang.org/doc/effective_go">Golang conventions</a>
+- have proper test coverage
+- address corresponding updates to the <a href="./">docs</a>
+- help us fix wherever we failed to do the above 😜</p>
 <h3 id="run-the-tests">Run the tests</h3>
 <p>To run the tests:</p>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>make<span class="w"> </span><span class="nb">test</span>
 </span></code></pre></div>
 <h3 id="try-locally">Try locally</h3>
 <h4 id="build-deploy-and-try-authorino-in-a-local-cluster">Build, deploy and try Authorino in a local cluster</h4>
-<p>The following command will:</p>
-<ul>
-<li>Start a local Kubernetes cluster (using Kind)</li>
-<li>Install <a href="https://github.com/jetstack/cert-manager">cert-manager</a> in the cluster</li>
-<li>Install the <a href="https://github.com/kuadrant/authorino-operator">Authorino Operator</a> and Authorino CRDs</li>
-<li>Build an image of Authorino based on the current branch</li>
-<li>Push the freshly built image to the cluster's registry</li>
-<li>Generate TLS certificates for the Authorino service</li>
-<li>Deploy an instance of Authorino</li>
-<li>Deploy the example application <a href="https://github.com/kuadrant/authorino-examples#talker-api"><strong>Talker API</strong></a>, a simple HTTP API that echoes back whatever it gets in the request</li>
-<li>Setup Envoy for proxying to the Talker API and using Authorino for external authorization</li>
-</ul>
+<p>The following command will:
+- Start a local Kubernetes cluster (using Kind)
+- Install <a href="https://github.com/jetstack/cert-manager">cert-manager</a> in the cluster
+- Install the <a href="https://github.com/kuadrant/authorino-operator">Authorino Operator</a> and Authorino CRDs
+- Build an image of Authorino based on the current branch
+- Push the freshly built image to the cluster's registry
+- Generate TLS certificates for the Authorino service
+- Deploy an instance of Authorino
+- Deploy the example application <a href="https://github.com/kuadrant/authorino-examples#talker-api"><strong>Talker API</strong></a>, a simple HTTP API that echoes back whatever it gets in the request
+- Setup Envoy for proxying to the Talker API and using Authorino for external authorization</p>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>make<span class="w"> </span>local-setup
 </span></code></pre></div>
 <p>You will be prompted to edit the <code>Authorino</code> custom resource.</p>
@@ -3946,7 +3955,7 @@
 <summary><strong>Keycloak</strong></summary>
 <p>Authorino examples include a bundle of <a href="https://www.keycloak.org">Keycloak</a> preloaded with the following realm setup:</p>
 <ul>
-<li>Admin console: <a href="http://localhost:8080/admin">http://localhost:8080/admin</a>  (admin/p)</li>
+<li>Admin console: http://localhost:8080/auth/admin (admin/p)</li>
 <li>Preloaded realm: <strong>kuadrant</strong></li>
 <li>Preloaded clients:<ul>
 <li><strong>demo</strong>: to which API consumers delegate access and therefore the one which access tokens are issued to</li>
@@ -4032,12 +4041,10 @@
 <h3 id="sign-your-commits">Sign your commits</h3>
 <p>All commits to be accepted to Authorino's code are required to be signed. Refer to <a href="https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits">this page</a> about signing your commits.</p>
 <h2 id="logging-policy">Logging policy</h2>
-<p>A few guidelines for adding logging messages in your code:</p>
-<ol>
-<li>Make sure you understand Authorino's <a href="../user-guides/observability/#logging">Logging</a> architecture and policy regarding log levels, log modes, tracing IDs, etc.</li>
-<li>Respect controller-runtime's <a href="https://github.com/kubernetes-sigs/controller-runtime/blob/master/TMP-LOGGING.md">Logging Guidelines</a>.</li>
-<li>Do not add sensitive data to your <code>info</code> log messages; instead, redact all sensitive data in your log messages or use <code>debug</code> log level by mutating the logger with <code>V(1)</code> before outputting the message.</li>
-</ol>
+<p>A few guidelines for adding logging messages in your code:
+1. Make sure you understand Authorino's <a href="../user-guides/observability/#logging">Logging</a> architecture and policy regarding log levels, log modes, tracing IDs, etc.
+2. Respect controller-runtime's <a href="https://github.com/kubernetes-sigs/controller-runtime/blob/master/TMP-LOGGING.md">Logging Guidelines</a>.
+3. Do not add sensitive data to your <code>info</code> log messages; instead, redact all sensitive data in your log messages or use <code>debug</code> log level by mutating the logger with <code>V(1)</code> before outputting the message.</p>
 <h2 id="additional-resources">Additional resources</h2>
 <p>Here in the repo:</p>
 <ul>

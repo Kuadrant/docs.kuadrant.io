@@ -2761,6 +2761,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#getting-started" class="md-nav__link">
     <span class="md-ellipsis">
       Getting started
@@ -3233,7 +3242,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../limitador/limitador-server/docs/sandbox.md" class="md-nav__link">
+      <a href="../limitador/limitador-server/docs/sandbox/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3594,6 +3603,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#getting-started" class="md-nav__link">
     <span class="md-ellipsis">
       Getting started
@@ -3688,6 +3706,17 @@ JWT authentication, API key, mTLS, pattern-matching authz, OPA, K8s SA tokens, K
 <a href="https://github.com/Kuadrant/authorino/actions/workflows/go-test.yaml"><img alt="Unit Tests" src="https://github.com/Kuadrant/authorino/actions/workflows/go-test.yaml/badge.svg" /></a>
 <a href="https://github.com/Kuadrant/authorino/actions/workflows/e2e-test.yaml"><img alt="End-to-end Tests" src="https://github.com/Kuadrant/authorino/actions/workflows/e2e-test.yaml/badge.svg" /></a>
 <a href="https://github.com/Kuadrant/authorino/actions/workflows/integration-test.yaml"><img alt="Smoke Tests" src="https://github.com/Kuadrant/authorino/actions/workflows/integration-test.yaml/badge.svg" /></a></p>
+<h2 id="table-of-contents">Table of contents</h2>
+<ul>
+<li><a href="#getting-started">Getting started</a></li>
+<li><a href="#use-cases">Use-cases</a></li>
+<li><a href="#how-it-works">How it works</a></li>
+<li><a href="#list-of-features">List of features</a></li>
+<li><a href="docs/">Documentation</a></li>
+<li><a href="#faq">FAQ</a></li>
+<li><a href="#benchmarks">Benchmarks</a></li>
+<li><a href="#contributing">Contributing</a></li>
+</ul>
 <h2 id="getting-started">Getting started</h2>
 <ol>
 <li>Deploy with the <a href="https://github.com/kuadrant/authorino-operator">Authorino Operator</a></li>
@@ -3886,7 +3915,7 @@ JWT authentication, API key, mTLS, pattern-matching authz, OPA, K8s SA tokens, K
 <p>Authorino implements Envoy's <a href="https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes/ext_authz">external authorization</a> gRPC protocol and therefore will accept any client request that complies.</p>
 <p>Authorino also provides a second interface for <a href="docs/architecture/#raw-http-authorization-interface">raw HTTP authorization</a>, suitable for using with Kubernetes ValidatingWebhook and other integrations (e.g. other proxies).</p>
 <p>The only attribute of the authorization request that is strictly required is the host name. (See <a href="docs/architecture/#host-lookup">Host lookup</a> for more information.) The other attributes, such as method, path, headers, etc, might as well be required, depending on each <code>AuthConfig</code>. In the case of the gRPC <a href="https://pkg.go.dev/github.com/envoyproxy/go-control-plane/envoy/service/auth/v3?utm_source=gopls#CheckRequest"><code>CheckRequest</code></a> method, the host is supplied in <code>Attributes.Request.Http.Host</code> and alternatively in <code>Attributes.ContextExtensions["host"]</code>. For raw HTTP authorization requests, the host must be supplied in <code>Host</code> HTTP header.</p>
-<p>Check out <a href="https://docs.kuadrant.io/kuadrant-operator">Kuadrant</a> for easy-to-use Envoy and Authorino deployment &amp; configuration for API management use-cases, using Kubernetes Custom Resources.</p>
+<p>Check out <a href="https://github.com/kuadrant/kuadrant-controller">Kuadrant</a> for easy-to-use Envoy and Authorino deployment &amp; configuration for API management use-cases, using Kubernetes Custom Resources.</p>
 </details>
 <details>
 <summary><strong>Is Authorino an Identity Provider (IdP)?</strong></summary>
@@ -3923,19 +3952,17 @@ JWT authentication, API key, mTLS, pattern-matching authz, OPA, K8s SA tokens, K
 <summary><strong>Should I use Authorino if I already have Istio configured?</strong></summary>
 <p>Istio is a great solution for managing service meshes. It delivers an excellent platform with an interesting layer of abstraction on top of Envoy proxy's virtual omnipresence within the mesh.</p>
 <p>There are lots of similarities, but also complementarity between Authorino and Istio and <a href="https://istio.io/latest/docs/concepts/security/#authorization">Istio Authorization</a> in special.</p>
-<p>Istio provides a simple way to enable features that are, in many cases, features of Envoy, such as authorization based on JWTs, authorization based on attributes of the request, and activation of external authorization services, without having to deal with complex Envoy config files. See <a href="https://doc.kuadrant.io/kuadrant-operator">Kuadrant</a> for a similar approach, nonetheless leveraging features of Istio as well.</p>
+<p>Istio provides a simple way to enable features that are, in many cases, features of Envoy, such as authorization based on JWTs, authorization based on attributes of the request, and activation of external authorization services, without having to deal with complex Envoy config files. See <a href="https://github.com/kuadrant/kuadrant-controller">Kuadrant</a> for a similar approach, nonetheless leveraging features of Istio as well.</p>
 <p>Authorino is an Envoy-compatible external authorization service. One can use Authorino with or without Istio.</p>
 <p>In particular, <a href="https://istio.io/latest/docs/reference/config/security/authorization-policy/">Istio Authorization Policies</a> can be seen, in terms of functionality and expressiveness, as a subset of one type of authorization policies supported by Authorino, the <a href="docs/features/#pattern-matching-authorization-authorizationpatternmatching">pattern-matching authorization</a> policies. While Istio, however, is heavily focused on specific use cases of API Management, offering a relatively limited list of <a href="https://istio.io/latest/docs/reference/config/security/conditions/">supported attribute conditions</a>, Authorino is more generic, allowing to express authorization rules for a wider spectrum of use cases – ACLs, RBAC, ABAC, etc, pretty much counting on any attribute of the Envoy payload, identity object and external metadata available.</p>
 <p>Authorino also provides built-in OPA authorization, several other methods of authentication and identity verification (e.g. Kubernetes token validation, API key-based authentication, OAuth token introspection, OIDC-discoverable JWT verification, etc), and features like fetching of external metadata (HTTP services, OIDC userinfo, UMA resource data), token normalization, wristband tokens and dynamic responses. These all can be used independently or combined, in a simple and straightforward Kubernetes-native fashion.</p>
-<p>In summary, one might value Authorino when looking for a policy enforcer that offers:</p>
-<ol>
-<li>multiple supported methods and protocols for rather hybrid authentication, encompassing future and legacy auth needs;</li>
-<li>broader expressiveness and more functionalities for the authorization rules;</li>
-<li>authentication and authorization in one single declarative manifest;</li>
-<li>capability to fetch auth metadata from external sources on-the-fly;</li>
-<li>built-in OPA module;</li>
-<li>easy token normalization and/or aiming for Edge Authentication Architecture (EAA).</li>
-</ol>
+<p>In summary, one might value Authorino when looking for a policy enforcer that offers:
+  1. multiple supported methods and protocols for rather hybrid authentication, encompassing future and legacy auth needs;
+  2. broader expressiveness and more functionalities for the authorization rules;
+  3. authentication and authorization in one single declarative manifest;
+  4. capability to fetch auth metadata from external sources on-the-fly;
+  5. built-in OPA module;
+  6. easy token normalization and/or aiming for Edge Authentication Architecture (EAA).</p>
 <p>The good news is that, if you have Istio configured, then you have Envoy and the whole platform for wiring Authorino up if you want to. 😉</p>
 </details>
 <details>
@@ -3963,7 +3990,7 @@ JWT authentication, API key, mTLS, pattern-matching authz, OPA, K8s SA tokens, K
 </details>
 <details>
 <summary><strong>Do I have to be admin of the cluster to install Authorino?</strong></summary>
-<p>To install the Authorino Custom Resource Definition (CRD) and to define cluster roles required by the Authorino service, admin privilege to the Kubernetes cluster is required. This step happens only once per cluster and is usually equivalent to installing the <a href="https://docs.kuadrant.io/authorino-operator">Authorino Operator</a>.</p>
+<p>To install the Authorino Custom Resource Definition (CRD) and to define cluster roles required by the Authorino service, admin privilege to the Kubernetes cluster is required. This step happens only once per cluster and is usually equivalent to installing the <a href="https://github.com/kuadrant/authorino-operator">Authorino Operator</a>.</p>
 <p>Thereafter, deploying instances of the Authorino service and applying <code>AuthConfig</code> custom resources to a namespace depend on the permissions set by the cluster administrator – either directly by editing the bindings in the cluster's RBAC, or via options of the operator. In most cases, developers will be granted permissions to create and manage <code>AuthConfig</code>s, and sometimes to deploy their own instances of Authorino.</p>
 </details>
 <details>
@@ -3979,55 +4006,14 @@ JWT authentication, API key, mTLS, pattern-matching authz, OPA, K8s SA tokens, K
 <p>You can, but you shouldn't. Check out instead <a href="https://github.com/kuadrant/limitador">Limitador</a>, for simple and efficient global rate limiting. Combine it with Authorino and Authorino's support for <a href="docs/features/#envoy-dynamic-metadata">Envoy Dynamic Metadata</a> for authenticated rate limiting.</p>
 </details>
 <h2 id="benchmarks">Benchmarks</h2>
-<p><strong>Configuration of the tests (Authorino features):</strong></p>
-<table>
-<thead>
-<tr>
-<th>Performance test</th>
-<th style="text-align: center;">Identity</th>
-<th style="text-align: center;">Metadata</th>
-<th style="text-align: center;">Authorization</th>
-<th style="text-align: center;">Response</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>ReconcileAuthConfig</code></td>
-<td style="text-align: center;">OIDC/JWT</td>
-<td style="text-align: center;">UserInfo, UMA</td>
-<td style="text-align: center;">OPA<br/><sup>(inline Rego)</sup></td>
-<td style="text-align: center;">-</td>
-</tr>
-<tr>
-<td><code>AuthPipeline</code></td>
-<td style="text-align: center;">OIDC/JWT</td>
-<td style="text-align: center;">-</td>
-<td style="text-align: center;">JSON pattern-matching<br/><sup>(JWT claim check)</sup></td>
-<td style="text-align: center;">-</td>
-</tr>
-<tr>
-<td><code>APIKeyAuthn</code></td>
-<td style="text-align: center;">API key</td>
-<td style="text-align: center;">N/A</td>
-<td style="text-align: center;">N/A</td>
-<td style="text-align: center;">N/A</td>
-</tr>
-<tr>
-<td><code>JSONPatternMatchingAuthz</code></td>
-<td style="text-align: center;">N/A</td>
-<td style="text-align: center;">N/A</td>
-<td style="text-align: center;">JSON pattern-matching</td>
-<td style="text-align: center;">N/A</td>
-</tr>
-<tr>
-<td><code>OPAAuthz</code></td>
-<td style="text-align: center;">N/A</td>
-<td style="text-align: center;">N/A</td>
-<td style="text-align: center;">OPA<br/><sup>(inline Rego)</sup></td>
-<td style="text-align: center;">N/A</td>
-</tr>
-</tbody>
-</table>
+<p><strong>Configuration of the tests (Authorino features):</strong>
+| Performance test           | Identity  | Metadata      | Authorization                                          | Response |
+|----------------------------|:---------:|:-------------:|:------------------------------------------------------:|:--------:|
+| <code>ReconcileAuthConfig</code>      | OIDC/JWT  | UserInfo, UMA | OPA<br/><sup>(inline Rego)</sup>                       | -        |
+| <code>AuthPipeline</code>             | OIDC/JWT  | -             | JSON pattern-matching<br/><sup>(JWT claim check)</sup> | -        |
+| <code>APIKeyAuthn</code>              | API key   | N/A           | N/A                                                    | N/A      |
+| <code>JSONPatternMatchingAuthz</code> | N/A       | N/A           | JSON pattern-matching                                  | N/A      |
+| <code>OPAAuthz</code>                 | N/A       | N/A           | OPA<br/><sup>(inline Rego)</sup>                       | N/A      |</p>
 <p><strong>Platform:</strong> linux/amd64<br/>
 <strong>CPU:</strong> Intel® Xeon® Platinum 8370C 2.80GHz<br/>
 <strong>Cores:</strong> 1, 4, 10<br/></p>

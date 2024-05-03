@@ -3122,7 +3122,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../limitador-server/docs/sandbox.md" class="md-nav__link">
+      <a href="../../../limitador-server/docs/sandbox/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3655,15 +3655,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#tracing_endpoint" class="md-nav__link">
-    <span class="md-ellipsis">
-      TRACING_ENDPOINT
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#redis_local_cache_enabled" class="md-nav__link">
     <span class="md-ellipsis">
       REDIS_LOCAL_CACHE_ENABLED
@@ -3825,18 +3816,14 @@
 </span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>          Include the Limit Name in prometheus label
 </span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>  -v...
 </span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>          Sets the level of verbosity
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>      --tracing-endpoint &lt;tracing_endpoint&gt;
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>          The endpoint for the tracing service
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>      --validate
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>          Validates the LIMITS_FILE and exits
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>  -H, --rate-limit-headers &lt;rate_limit_headers&gt;
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>          Enables rate limit response headers [default: NONE] [possible values: NONE, DRAFT_VERSION_03]
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>      --grpc-reflection-service
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>          Enables gRPC server reflection service
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>  -h, --help
-</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>          Print help
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>  -V, --version
-</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>          Print version
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>      --validate
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>          Validates the LIMITS_FILE and exits
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>  -H, --rate-limit-headers &lt;rate_limit_headers&gt;
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>          Enables rate limit response headers [default: NONE] [possible values: NONE, DRAFT_VERSION_03]
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>  -h, --help
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>          Print help
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>  -V, --version
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>          Print version
 </span></code></pre></div>
 <p>The values used are authoritative over any <a href="#configuration-using-environment-variables">environment variables</a> independently set.</p>
 <h3 id="limit-definitions">Limit definitions</h3>
@@ -3918,91 +3905,65 @@ the counters in a redis instance using the provided <code>URL</code>. Increments
 itself, providing accuracy over these, races tho can occur when multiple Limitador servers are used against a single
 redis and using "stacked" limits (i.e. over different periods). Latency is also impacted, as it results in one
 additional hop to talk to redis and maintain the counters.</p>
-<p><strong>TLS Support</strong></p>
-<p>Connect to a redis instance using the <code>rediss://</code> URL scheme.</p>
-<p>To enable insecure mode, append <code>#insecure</code> at the end of the URL. For example:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>limitador-server &lt;LIMITS_FILE&gt; redis rediss://127.0.0.1/#insecure&quot;
-</span></code></pre></div>
-<p><strong>Authentication</strong></p>
-<p>To enable authentication, use the username and password properties of the URL scheme. For example:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>limitador-server &lt;LIMITS_FILE&gt; redis redis://my-username:my-password@127.0.0.1&quot;
-</span></code></pre></div>
-<p>when the username is omitted, redis assumes <code>default</code> user. For example:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>limitador-server &lt;LIMITS_FILE&gt; redis redis://:my-password@127.0.0.1&quot;
-</span></code></pre></div>
-<p><strong>Usage</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Uses Redis to store counters
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Usage: limitador-server &lt;LIMITS_FILE&gt; redis &lt;URL&gt;
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>Arguments:
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  &lt;URL&gt;  Redis URL to use
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>Options:
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>  -h, --help  Print help
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Uses Redis to store counters
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Usage: limitador-server &lt;LIMITS_FILE&gt; redis &lt;URL&gt;
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>Arguments:
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  &lt;URL&gt;  Redis URL to use
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>Options:
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  -h, --help  Print help
 </span></code></pre></div>
 <h4 id="redis_cached"><code>redis_cached</code></h4>
 <p>In order to avoid some communication overhead to redis, <code>redis_cached</code> adds an in memory caching layer within the
 Limitador servers. This lowers the latency, but sacrifices some accuracy as it will not only cache counters, but also
 coalesce counters updates to redis over time. See <a href="#redis_local_cache_enabled">this configuration</a> option for more
 information.</p>
-<p><strong>TLS Support</strong></p>
-<p>Connect to a redis instance using the <code>rediss://</code> URL scheme.</p>
-<p>To enable insecure mode, append <code>#insecure</code> at the end of the URL. For example:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>limitador-server &lt;LIMITS_FILE&gt; redis rediss://127.0.0.1/#insecure&quot;
-</span></code></pre></div>
-<p><strong>Authentication</strong></p>
-<p>To enable authentication, use the username and password properties of the URL scheme. For example:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>limitador-server &lt;LIMITS_FILE&gt; redis redis://my-username:my-password@127.0.0.1&quot;
-</span></code></pre></div>
-<p>when the username is omitted, redis assumes <code>default</code> user. For example:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>limitador-server &lt;LIMITS_FILE&gt; redis redis://:my-password@127.0.0.1&quot;
-</span></code></pre></div>
-<p><strong>Usage</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Uses Redis to store counters, with an in-memory cache
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>Usage: limitador-server &lt;LIMITS_FILE&gt; redis_cached [OPTIONS] &lt;URL&gt;
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>Arguments:
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>  &lt;URL&gt;  Redis URL to use
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>Options:
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>      --ttl &lt;TTL&gt;             TTL for cached counters in milliseconds [default: 5000]
-</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>      --ratio &lt;ratio&gt;         Ratio to apply to the TTL from Redis on cached counters [default: 10000]
-</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>      --flush-period &lt;flush&gt;  Flushing period for counters in milliseconds [default: 1000]
-</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>      --max-cached &lt;max&gt;      Maximum amount of counters cached [default: 10000]
-</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>  -h, --help                  Print help
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Uses Redis to store counters, with an in-memory cache
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Usage: limitador-server &lt;LIMITS_FILE&gt; redis_cached [OPTIONS] &lt;URL&gt;
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Arguments:
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  &lt;URL&gt;  Redis URL to use
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>Options:
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>      --ttl &lt;TTL&gt;             TTL for cached counters in milliseconds [default: 5000]
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>      --ratio &lt;ratio&gt;         Ratio to apply to the TTL from Redis on cached counters [default: 10000]
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>      --flush-period &lt;flush&gt;  Flushing period for counters in milliseconds [default: 1000]
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>      --max-cached &lt;max&gt;      Maximum amount of counters cached [default: 10000]
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>  -h, --help                  Print help
 </span></code></pre></div>
 <h4 id="disk"><code>disk</code></h4>
 <p>Disk storage using <a href="https://rocksdb.org/">RocksDB</a>. Counters are held on disk (persistent).</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Counters are held on disk (persistent)
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>Usage: limitador-server &lt;LIMITS_FILE&gt; disk [OPTIONS] &lt;PATH&gt;
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>Arguments:
-</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>  &lt;PATH&gt;  Path to counter DB
-</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>
-</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>Options:
-</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>      --optimize &lt;OPTIMIZE&gt;  Optimizes either to save disk space or higher throughput [default: throughput] [possible values: throughput, disk]
-</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>  -h, --help                 Print help
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Counters are held on disk (persistent)
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Usage: limitador-server &lt;LIMITS_FILE&gt; disk [OPTIONS] &lt;PATH&gt;
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>Arguments:
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>  &lt;PATH&gt;  Path to counter DB
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>Options:
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>      --optimize &lt;OPTIMIZE&gt;  Optimizes either to save disk space or higher throughput [default: throughput] [possible values: throughput, disk]
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>  -h, --help                 Print help
 </span></code></pre></div>
 <h4 id="infinispan-optional-storage-experimental"><code>infinispan</code> optional storage - <em>experimental</em></h4>
 <p>The default binary will <em>not</em> support <a href="https://infinispan.org/">Infinispan</a> as a storage backend for counters. If you
 want to give it a try, you would need to build your own binary of the server using:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cargo build --release --features=infinispan
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cargo build --release --features=infinispan
 </span></code></pre></div>
 <p>Which will add the <code>infinispan</code> to the supported <code>STORAGES</code>.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>USAGE:
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    limitador-server &lt;LIMITS_FILE&gt; infinispan [OPTIONS] &lt;URL&gt;
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
-</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>ARGS:
-</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    &lt;URL&gt;    Infinispan URL to use
-</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
-</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>OPTIONS:
-</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>    -n, --cache-name &lt;cache name&gt;      Name of the cache to store counters in [default: limitador]
-</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>    -c, --consistency &lt;consistency&gt;    The consistency to use to read from the cache [default:
-</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>                                       Strong] [possible values: Strong, Weak]
-</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>    -h, --help                         Print help information
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>USAGE:
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    limitador-server &lt;LIMITS_FILE&gt; infinispan [OPTIONS] &lt;URL&gt;
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>ARGS:
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    &lt;URL&gt;    Infinispan URL to use
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>OPTIONS:
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    -n, --cache-name &lt;cache name&gt;      Name of the cache to store counters in [default: limitador]
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    -c, --consistency &lt;consistency&gt;    The consistency to use to read from the cache [default:
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>                                       Strong] [possible values: Strong, Weak]
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>    -h, --help                         Print help information
 </span></code></pre></div>
 <p>For an in-depth coverage of the different topologies supported and how they affect the behavior, see the
 <a href="../../topologies/">topologies' document</a>.</p>
@@ -4050,12 +4011,6 @@ problem when defining lots of limits. See the caution note in the <a href="https
 docs</a></li>
 <li>Optional. Disabled by default.</li>
 <li>Format: <code>bool</code>, set to <code>"1"</code> to enable.</li>
-</ul>
-<h4 id="tracing_endpoint"><code>TRACING_ENDPOINT</code></h4>
-<ul>
-<li>The endpoint of the OTLP tracing collector (scheme://host:port).</li>
-<li>Optional. Default to <code>""</code> (tracing disabled)</li>
-<li>Format: <code>string</code></li>
 </ul>
 <h4 id="redis_local_cache_enabled"><code>REDIS_LOCAL_CACHE_ENABLED</code></h4>
 <ul>

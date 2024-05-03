@@ -3122,7 +3122,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../limitador/limitador-server/docs/sandbox.md" class="md-nav__link">
+      <a href="../../../../limitador/limitador-server/docs/sandbox/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3590,197 +3590,124 @@ where it installs Istio, Kubernetes Gateway API, CertManager and Kuadrant itself
 <p>Setup the environment:</p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>local-setup
 </span></code></pre></div>
+<p>Deploy policy controller and install TLSPolicy CRD:
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>make<span class="w"> </span>deploy-policy-controller
+</span></code></pre></div></p>
 <p>Create a namespace:
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span>my-gateways
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span>my-gateways
 </span></code></pre></div></p>
 <h3 id="create-an-ingress-gateway">Create an ingress gateway</h3>
 <p>Create a gateway:
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>my-gateways<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="s">apiVersion: gateway.networking.k8s.io/v1</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="s">kind: Gateway</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="s">metadata:</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="s">  name: prod-web</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="s">spec:</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="s">  gatewayClassName: istio</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="s">  listeners:</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="s">    - allowedRoutes:</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="s">        namespaces:</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="s">          from: All</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="s">      name: api</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="s">      hostname: &quot;*.toystore.local&quot;</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="s">      port: 443</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="s">      protocol: HTTPS</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="s">      tls:</span>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="s">        mode: Terminate</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="s">        certificateRefs:</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="s">          - name: toystore-local-tls</span>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="s">            kind: Secret</span>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="s">EOF</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>my-gateways<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="s">apiVersion: gateway.networking.k8s.io/v1</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="s">kind: Gateway</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="s">metadata:</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="s">  name: prod-web</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="s">spec:</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="s">  gatewayClassName: istio</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="s">  listeners:</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="s">    - allowedRoutes:</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="s">        namespaces:</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="s">          from: All</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="s">      name: api</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="s">      hostname: &quot;*.toystore.local&quot;</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="s">      port: 443</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="s">      protocol: HTTPS</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="s">      tls:</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="s">        mode: Terminate</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="s">        certificateRefs:</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="s">          - name: toystore-local-tls</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="s">            kind: Secret</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="s">EOF</span>
 </span></code></pre></div></p>
 <h3 id="enable-tls-on-the-gateway">Enable TLS on the gateway</h3>
 <p>The TLSPolicy requires a reference to an existing <a href="https://cert-manager.io/docs/configuration/">CertManager Issuer</a>.</p>
 <p>Create a CertManager Issuer:
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-n<span class="w"> </span>my-gateways<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="s">apiVersion: cert-manager.io/v1</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="s">kind: Issuer</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="s">metadata:</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="s">  name: selfsigned-issuer</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="s">spec:</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="s">  selfSigned: {}</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="s">EOF</span>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-n<span class="w"> </span>my-gateways<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="s">apiVersion: cert-manager.io/v1</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="s">kind: Issuer</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="s">metadata:</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="s">  name: selfsigned-issuer</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="s">spec:</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="s">  selfSigned: {}</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="s">EOF</span>
 </span></code></pre></div></p>
 <blockquote>
 <p><strong>Note:</strong> We are using a <a href="https://cert-manager.io/docs/configuration/selfsigned/">self-signed</a> issuer here but any supported CerManager issuer or cluster issuer can be used.</p>
 </blockquote>
-<p><div class="language-shell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>issuer<span class="w"> </span>selfsigned-issuer<span class="w"> </span>-n<span class="w"> </span>my-gateways
+<p><div class="language-shell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>issuer<span class="w"> </span>selfsigned-issuer<span class="w"> </span>-n<span class="w"> </span>my-gateways
 </span></code></pre></div>
 Response:
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>NAME<span class="w">                        </span>READY<span class="w">   </span>AGE
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>selfsigned-issuer<span class="w">   </span>True<span class="w">    </span>18s
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>NAME<span class="w">                        </span>READY<span class="w">   </span>AGE
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>selfsigned-issuer<span class="w">   </span>True<span class="w">    </span>18s
 </span></code></pre></div></p>
 <p>Create a Kuadrant <code>TLSPolicy</code> to configure TLS:
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-n<span class="w"> </span>my-gateways<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="s">apiVersion: kuadrant.io/v1alpha1</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="s">kind: TLSPolicy</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="s">metadata:</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="s">  name: prod-web</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="s">spec:</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="s">  targetRef:</span>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="s">    name: prod-web</span>
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="s">    group: gateway.networking.k8s.io</span>
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="s">    kind: Gateway</span>
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="s">  issuerRef:</span>
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="s">    group: cert-manager.io</span>
-</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="s">    kind: Issuer</span>
-</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="s">    name: selfsigned-issuer</span>
-</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="s">EOF</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-n<span class="w"> </span>my-gateways<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="s">apiVersion: kuadrant.io/v1alpha1</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="s">kind: TLSPolicy</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="s">metadata:</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="s">  name: prod-web</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="s">spec:</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="s">  targetRef:</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="s">    name: prod-web</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="s">    group: gateway.networking.k8s.io</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="s">    kind: Gateway</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="s">  issuerRef:</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="s">    group: cert-manager.io</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="s">    kind: Issuer</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="s">    name: selfsigned-issuer</span>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="s">EOF</span>
 </span></code></pre></div></p>
 <p>Check policy status:
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>tlspolicy<span class="w"> </span>-o<span class="w"> </span>wide<span class="w"> </span>-n<span class="w"> </span>my-gateways
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>tlspolicy<span class="w"> </span>-n<span class="w"> </span>my-gateways
 </span></code></pre></div>
 Response:
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>NAME<span class="w">       </span>STATUS<span class="w">     </span>TARGETREFKIND<span class="w">   </span>TARGETREFNAME<span class="w">   </span>AGE
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>prod-web<span class="w">   </span>Accepted<span class="w">   </span>Gateway<span class="w">         </span>prod-web<span class="w">        </span>13s
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>NAME<span class="w">       </span>READY
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>prod-web<span class="w">   </span>True
 </span></code></pre></div></p>
 <p>Check a Certificate resource was created:
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>certificates<span class="w"> </span>-n<span class="w"> </span>my-gateways
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>certificates<span class="w"> </span>-n<span class="w"> </span>my-gateways
 </span></code></pre></div>
 Response
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>NAME<span class="w">                 </span>READY<span class="w">   </span>SECRET<span class="w">               </span>AGE
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>toystore-local-tls<span class="w">   </span>True<span class="w">    </span>toystore-local-tls<span class="w">   </span>7m30s
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>NAME<span class="w">                 </span>READY<span class="w">   </span>SECRET<span class="w">               </span>AGE
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>toystore-local-tls<span class="w">   </span>True<span class="w">    </span>toystore-local-tls<span class="w">   </span>7m30s
 </span></code></pre></div></p>
 <p>Check a TLS Secret resource was created:
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>secrets<span class="w"> </span>-n<span class="w"> </span>my-gateways<span class="w"> </span>--field-selector<span class="o">=</span><span class="s2">&quot;type=kubernetes.io/tls&quot;</span>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>secrets<span class="w"> </span>-n<span class="w"> </span>my-gateways<span class="w"> </span>--field-selector<span class="o">=</span><span class="s2">&quot;type=kubernetes.io/tls&quot;</span>
 </span></code></pre></div>
 Response:
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>NAME<span class="w">                 </span>TYPE<span class="w">                </span>DATA<span class="w">   </span>AGE
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>toystore-local-tls<span class="w">   </span>kubernetes.io/tls<span class="w">   </span><span class="m">3</span><span class="w">      </span>7m42s
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>NAME<span class="w">                 </span>TYPE<span class="w">                </span>DATA<span class="w">   </span>AGE
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>toystore-local-tls<span class="w">   </span>kubernetes.io/tls<span class="w">   </span><span class="m">3</span><span class="w">      </span>7m42s
 </span></code></pre></div></p>
 <h3 id="deploy-a-sample-api-to-test-tls">Deploy a sample API to test TLS</h3>
 <p>Deploy the sample API:
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>my-gateways<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>examples/toystore/toystore.yaml
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>my-gateways<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>--for<span class="o">=</span><span class="nv">condition</span><span class="o">=</span>Available<span class="w"> </span>deployments<span class="w"> </span>toystore<span class="w"> </span>--timeout<span class="o">=</span>60s
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>my-gateways<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>examples/toystore/toystore.yaml
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>my-gateways<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>--for<span class="o">=</span><span class="nv">condition</span><span class="o">=</span>Available<span class="w"> </span>deployments<span class="w"> </span>toystore<span class="w"> </span>--timeout<span class="o">=</span>60s
 </span></code></pre></div></p>
 <p>Route traffic to the API from our gateway:
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>my-gateways<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="s">apiVersion: gateway.networking.k8s.io/v1</span>
-</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="s">kind: HTTPRoute</span>
-</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="s">metadata:</span>
-</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="s">  name: toystore</span>
-</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="s">spec:</span>
-</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="s">  parentRefs:</span>
-</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="s">  - name: prod-web</span>
-</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="s">    namespace: my-gateways</span>
-</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="s">  hostnames:</span>
-</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="s">  - &quot;*.toystore.local&quot;</span>
-</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="s">  rules:</span>
-</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="s">  - backendRefs:</span>
-</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="s">    - name: toystore</span>
-</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="s">      port: 80</span>
-</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="s">EOF</span>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>my-gateways<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="s">apiVersion: gateway.networking.k8s.io/v1</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="s">kind: HTTPRoute</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="s">metadata:</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="s">  name: toystore</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="s">spec:</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="s">  parentRefs:</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="s">  - name: prod-web</span>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="s">    namespace: my-gateways</span>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="s">  hostnames:</span>
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="s">  - &quot;*.toystore.local&quot;</span>
+</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="s">  rules:</span>
+</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="s">  - backendRefs:</span>
+</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="s">    - name: toystore</span>
+</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="s">      port: 80</span>
+</span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="s">EOF</span>
 </span></code></pre></div></p>
 <h3 id="verify-tls-works-by-sending-requests">Verify TLS works by sending requests</h3>
-<p>Get the gateway address@
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nv">GWADDRESS</span><span class="o">=</span><span class="sb">`</span>kubectl<span class="w"> </span>get<span class="w"> </span>gateway/prod-web<span class="w"> </span>-n<span class="w"> </span>my-gateways<span class="w"> </span>-o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.addresses[?(@.type==&quot;IPAddress&quot;)].value}&#39;</span><span class="sb">`</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="nb">echo</span><span class="w"> </span><span class="nv">$GWADDRESS</span>
-</span></code></pre></div>
-Response:
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="m">172</span>.18.200.1
-</span></code></pre></div></p>
 <p>Verify we can access the service via TLS:
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>curl<span class="w"> </span>-vkI<span class="w"> </span>https://api.toystore.local<span class="w"> </span>--resolve<span class="w"> </span><span class="s2">&quot;api.toystore.local:443:</span><span class="nv">$GWADDRESS</span><span class="s2">&quot;</span>
-</span></code></pre></div>
-Response:
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>*<span class="w"> </span>Added<span class="w"> </span>api.toystore.local:443:172.18.200.1<span class="w"> </span>to<span class="w"> </span>DNS<span class="w"> </span>cache
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>*<span class="w"> </span>Hostname<span class="w"> </span>api.toystore.local<span class="w"> </span>was<span class="w"> </span>found<span class="w"> </span><span class="k">in</span><span class="w"> </span>DNS<span class="w"> </span>cache
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>*<span class="w">   </span>Trying<span class="w"> </span><span class="m">172</span>.18.200.1:443...
-</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>*<span class="w"> </span>Connected<span class="w"> </span>to<span class="w"> </span>api.toystore.local<span class="w"> </span><span class="o">(</span><span class="m">172</span>.18.200.1<span class="o">)</span><span class="w"> </span>port<span class="w"> </span><span class="m">443</span><span class="w"> </span><span class="o">(</span><span class="c1">#0)</span>
-</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>*<span class="w"> </span>ALPN:<span class="w"> </span>offers<span class="w"> </span>h2
-</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>*<span class="w"> </span>ALPN:<span class="w"> </span>offers<span class="w"> </span>http/1.1
-</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>*<span class="w"> </span>TLSv1.0<span class="w"> </span><span class="o">(</span>OUT<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>header,<span class="w"> </span>Certificate<span class="w"> </span>Status<span class="w"> </span><span class="o">(</span><span class="m">22</span><span class="o">)</span>:
-</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>*<span class="w"> </span>TLSv1.3<span class="w"> </span><span class="o">(</span>OUT<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>handshake,<span class="w"> </span>Client<span class="w"> </span>hello<span class="w"> </span><span class="o">(</span><span class="m">1</span><span class="o">)</span>:
-</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>*<span class="w"> </span>TLSv1.2<span class="w"> </span><span class="o">(</span>IN<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>header,<span class="w"> </span>Certificate<span class="w"> </span>Status<span class="w"> </span><span class="o">(</span><span class="m">22</span><span class="o">)</span>:
-</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>*<span class="w"> </span>TLSv1.3<span class="w"> </span><span class="o">(</span>IN<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>handshake,<span class="w"> </span>Server<span class="w"> </span>hello<span class="w"> </span><span class="o">(</span><span class="m">2</span><span class="o">)</span>:
-</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>*<span class="w"> </span>TLSv1.2<span class="w"> </span><span class="o">(</span>IN<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>header,<span class="w"> </span>Finished<span class="w"> </span><span class="o">(</span><span class="m">20</span><span class="o">)</span>:
-</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>*<span class="w"> </span>TLSv1.2<span class="w"> </span><span class="o">(</span>IN<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>header,<span class="w"> </span>Supplemental<span class="w"> </span>data<span class="w"> </span><span class="o">(</span><span class="m">23</span><span class="o">)</span>:
-</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>*<span class="w"> </span>TLSv1.3<span class="w"> </span><span class="o">(</span>IN<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>handshake,<span class="w"> </span>Encrypted<span class="w"> </span>Extensions<span class="w"> </span><span class="o">(</span><span class="m">8</span><span class="o">)</span>:
-</span><span id="__span-19-14"><a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>*<span class="w"> </span>TLSv1.3<span class="w"> </span><span class="o">(</span>IN<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>handshake,<span class="w"> </span>Certificate<span class="w"> </span><span class="o">(</span><span class="m">11</span><span class="o">)</span>:
-</span><span id="__span-19-15"><a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>*<span class="w"> </span>TLSv1.3<span class="w"> </span><span class="o">(</span>IN<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>handshake,<span class="w"> </span>CERT<span class="w"> </span>verify<span class="w"> </span><span class="o">(</span><span class="m">15</span><span class="o">)</span>:
-</span><span id="__span-19-16"><a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a>*<span class="w"> </span>TLSv1.3<span class="w"> </span><span class="o">(</span>IN<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>handshake,<span class="w"> </span>Finished<span class="w"> </span><span class="o">(</span><span class="m">20</span><span class="o">)</span>:
-</span><span id="__span-19-17"><a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a>*<span class="w"> </span>TLSv1.2<span class="w"> </span><span class="o">(</span>OUT<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>header,<span class="w"> </span>Finished<span class="w"> </span><span class="o">(</span><span class="m">20</span><span class="o">)</span>:
-</span><span id="__span-19-18"><a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a>*<span class="w"> </span>TLSv1.3<span class="w"> </span><span class="o">(</span>OUT<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>change<span class="w"> </span>cipher,<span class="w"> </span>Change<span class="w"> </span>cipher<span class="w"> </span>spec<span class="w"> </span><span class="o">(</span><span class="m">1</span><span class="o">)</span>:
-</span><span id="__span-19-19"><a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a>*<span class="w"> </span>TLSv1.2<span class="w"> </span><span class="o">(</span>OUT<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>header,<span class="w"> </span>Supplemental<span class="w"> </span>data<span class="w"> </span><span class="o">(</span><span class="m">23</span><span class="o">)</span>:
-</span><span id="__span-19-20"><a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a>*<span class="w"> </span>TLSv1.3<span class="w"> </span><span class="o">(</span>OUT<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>handshake,<span class="w"> </span>Finished<span class="w"> </span><span class="o">(</span><span class="m">20</span><span class="o">)</span>:
-</span><span id="__span-19-21"><a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a>*<span class="w"> </span>SSL<span class="w"> </span>connection<span class="w"> </span>using<span class="w"> </span>TLSv1.3<span class="w"> </span>/<span class="w"> </span>TLS_AES_256_GCM_SHA384
-</span><span id="__span-19-22"><a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a>*<span class="w"> </span>ALPN:<span class="w"> </span>server<span class="w"> </span>accepted<span class="w"> </span>h2
-</span><span id="__span-19-23"><a id="__codelineno-19-23" name="__codelineno-19-23" href="#__codelineno-19-23"></a>*<span class="w"> </span>Server<span class="w"> </span>certificate:
-</span><span id="__span-19-24"><a id="__codelineno-19-24" name="__codelineno-19-24" href="#__codelineno-19-24"></a>*<span class="w">  </span>subject:<span class="w"> </span><span class="o">[</span>NONE<span class="o">]</span>
-</span><span id="__span-19-25"><a id="__codelineno-19-25" name="__codelineno-19-25" href="#__codelineno-19-25"></a>*<span class="w">  </span>start<span class="w"> </span>date:<span class="w"> </span>Feb<span class="w"> </span><span class="m">15</span><span class="w"> </span><span class="m">11</span>:46:50<span class="w"> </span><span class="m">2024</span><span class="w"> </span>GMT
-</span><span id="__span-19-26"><a id="__codelineno-19-26" name="__codelineno-19-26" href="#__codelineno-19-26"></a>*<span class="w">  </span>expire<span class="w"> </span>date:<span class="w"> </span>May<span class="w"> </span><span class="m">15</span><span class="w"> </span><span class="m">11</span>:46:50<span class="w"> </span><span class="m">2024</span><span class="w"> </span>GMT
-</span><span id="__span-19-27"><a id="__codelineno-19-27" name="__codelineno-19-27" href="#__codelineno-19-27"></a>*<span class="w"> </span>Using<span class="w"> </span>HTTP2,<span class="w"> </span>server<span class="w"> </span>supports<span class="w"> </span>multiplexing
-</span><span id="__span-19-28"><a id="__codelineno-19-28" name="__codelineno-19-28" href="#__codelineno-19-28"></a>*<span class="w"> </span>Copying<span class="w"> </span>HTTP/2<span class="w"> </span>data<span class="w"> </span><span class="k">in</span><span class="w"> </span>stream<span class="w"> </span>buffer<span class="w"> </span>to<span class="w"> </span>connection<span class="w"> </span>buffer<span class="w"> </span>after<span class="w"> </span>upgrade:<span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">0</span>
-</span><span id="__span-19-29"><a id="__codelineno-19-29" name="__codelineno-19-29" href="#__codelineno-19-29"></a>*<span class="w"> </span>TLSv1.2<span class="w"> </span><span class="o">(</span>OUT<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>header,<span class="w"> </span>Supplemental<span class="w"> </span>data<span class="w"> </span><span class="o">(</span><span class="m">23</span><span class="o">)</span>:
-</span><span id="__span-19-30"><a id="__codelineno-19-30" name="__codelineno-19-30" href="#__codelineno-19-30"></a>*<span class="w"> </span>TLSv1.2<span class="w"> </span><span class="o">(</span>OUT<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>header,<span class="w"> </span>Supplemental<span class="w"> </span>data<span class="w"> </span><span class="o">(</span><span class="m">23</span><span class="o">)</span>:
-</span><span id="__span-19-31"><a id="__codelineno-19-31" name="__codelineno-19-31" href="#__codelineno-19-31"></a>*<span class="w"> </span>TLSv1.2<span class="w"> </span><span class="o">(</span>OUT<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>header,<span class="w"> </span>Supplemental<span class="w"> </span>data<span class="w"> </span><span class="o">(</span><span class="m">23</span><span class="o">)</span>:
-</span><span id="__span-19-32"><a id="__codelineno-19-32" name="__codelineno-19-32" href="#__codelineno-19-32"></a>*<span class="w"> </span>h2h3<span class="w"> </span><span class="o">[</span>:method:<span class="w"> </span>HEAD<span class="o">]</span>
-</span><span id="__span-19-33"><a id="__codelineno-19-33" name="__codelineno-19-33" href="#__codelineno-19-33"></a>*<span class="w"> </span>h2h3<span class="w"> </span><span class="o">[</span>:path:<span class="w"> </span>/<span class="o">]</span>
-</span><span id="__span-19-34"><a id="__codelineno-19-34" name="__codelineno-19-34" href="#__codelineno-19-34"></a>*<span class="w"> </span>h2h3<span class="w"> </span><span class="o">[</span>:scheme:<span class="w"> </span>https<span class="o">]</span>
-</span><span id="__span-19-35"><a id="__codelineno-19-35" name="__codelineno-19-35" href="#__codelineno-19-35"></a>*<span class="w"> </span>h2h3<span class="w"> </span><span class="o">[</span>:authority:<span class="w"> </span>api.toystore.local<span class="o">]</span>
-</span><span id="__span-19-36"><a id="__codelineno-19-36" name="__codelineno-19-36" href="#__codelineno-19-36"></a>*<span class="w"> </span>h2h3<span class="w"> </span><span class="o">[</span>user-agent:<span class="w"> </span>curl/7.85.0<span class="o">]</span>
-</span><span id="__span-19-37"><a id="__codelineno-19-37" name="__codelineno-19-37" href="#__codelineno-19-37"></a>*<span class="w"> </span>h2h3<span class="w"> </span><span class="o">[</span>accept:<span class="w"> </span>*/*<span class="o">]</span>
-</span><span id="__span-19-38"><a id="__codelineno-19-38" name="__codelineno-19-38" href="#__codelineno-19-38"></a>*<span class="w"> </span>Using<span class="w"> </span>Stream<span class="w"> </span>ID:<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">(</span>easy<span class="w"> </span>handle<span class="w"> </span>0x5623e4fe5bf0<span class="o">)</span>
-</span><span id="__span-19-39"><a id="__codelineno-19-39" name="__codelineno-19-39" href="#__codelineno-19-39"></a>*<span class="w"> </span>TLSv1.2<span class="w"> </span><span class="o">(</span>OUT<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>header,<span class="w"> </span>Supplemental<span class="w"> </span>data<span class="w"> </span><span class="o">(</span><span class="m">23</span><span class="o">)</span>:
-</span><span id="__span-19-40"><a id="__codelineno-19-40" name="__codelineno-19-40" href="#__codelineno-19-40"></a>&gt;<span class="w"> </span>HEAD<span class="w"> </span>/<span class="w"> </span>HTTP/2
-</span><span id="__span-19-41"><a id="__codelineno-19-41" name="__codelineno-19-41" href="#__codelineno-19-41"></a>&gt;<span class="w"> </span>Host:<span class="w"> </span>api.toystore.local
-</span><span id="__span-19-42"><a id="__codelineno-19-42" name="__codelineno-19-42" href="#__codelineno-19-42"></a>&gt;<span class="w"> </span>user-agent:<span class="w"> </span>curl/7.85.0
-</span><span id="__span-19-43"><a id="__codelineno-19-43" name="__codelineno-19-43" href="#__codelineno-19-43"></a>&gt;<span class="w"> </span>accept:<span class="w"> </span>*/*
-</span><span id="__span-19-44"><a id="__codelineno-19-44" name="__codelineno-19-44" href="#__codelineno-19-44"></a>&gt;<span class="w"> </span>
-</span><span id="__span-19-45"><a id="__codelineno-19-45" name="__codelineno-19-45" href="#__codelineno-19-45"></a>*<span class="w"> </span>TLSv1.2<span class="w"> </span><span class="o">(</span>IN<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>header,<span class="w"> </span>Supplemental<span class="w"> </span>data<span class="w"> </span><span class="o">(</span><span class="m">23</span><span class="o">)</span>:
-</span><span id="__span-19-46"><a id="__codelineno-19-46" name="__codelineno-19-46" href="#__codelineno-19-46"></a>*<span class="w"> </span>TLSv1.3<span class="w"> </span><span class="o">(</span>IN<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>handshake,<span class="w"> </span>Newsession<span class="w"> </span>Ticket<span class="w"> </span><span class="o">(</span><span class="m">4</span><span class="o">)</span>:
-</span><span id="__span-19-47"><a id="__codelineno-19-47" name="__codelineno-19-47" href="#__codelineno-19-47"></a>*<span class="w"> </span>TLSv1.3<span class="w"> </span><span class="o">(</span>IN<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>handshake,<span class="w"> </span>Newsession<span class="w"> </span>Ticket<span class="w"> </span><span class="o">(</span><span class="m">4</span><span class="o">)</span>:
-</span><span id="__span-19-48"><a id="__codelineno-19-48" name="__codelineno-19-48" href="#__codelineno-19-48"></a>*<span class="w"> </span>old<span class="w"> </span>SSL<span class="w"> </span>session<span class="w"> </span>ID<span class="w"> </span>is<span class="w"> </span>stale,<span class="w"> </span>removing
-</span><span id="__span-19-49"><a id="__codelineno-19-49" name="__codelineno-19-49" href="#__codelineno-19-49"></a>*<span class="w"> </span>TLSv1.2<span class="w"> </span><span class="o">(</span>IN<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>header,<span class="w"> </span>Supplemental<span class="w"> </span>data<span class="w"> </span><span class="o">(</span><span class="m">23</span><span class="o">)</span>:
-</span><span id="__span-19-50"><a id="__codelineno-19-50" name="__codelineno-19-50" href="#__codelineno-19-50"></a>*<span class="w"> </span>Connection<span class="w"> </span>state<span class="w"> </span>changed<span class="w"> </span><span class="o">(</span><span class="nv">MAX_CONCURRENT_STREAMS</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">2147483647</span><span class="o">)</span>!
-</span><span id="__span-19-51"><a id="__codelineno-19-51" name="__codelineno-19-51" href="#__codelineno-19-51"></a>*<span class="w"> </span>TLSv1.2<span class="w"> </span><span class="o">(</span>OUT<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>header,<span class="w"> </span>Supplemental<span class="w"> </span>data<span class="w"> </span><span class="o">(</span><span class="m">23</span><span class="o">)</span>:
-</span><span id="__span-19-52"><a id="__codelineno-19-52" name="__codelineno-19-52" href="#__codelineno-19-52"></a>*<span class="w"> </span>TLSv1.2<span class="w"> </span><span class="o">(</span>IN<span class="o">)</span>,<span class="w"> </span>TLS<span class="w"> </span>header,<span class="w"> </span>Supplemental<span class="w"> </span>data<span class="w"> </span><span class="o">(</span><span class="m">23</span><span class="o">)</span>:
-</span><span id="__span-19-53"><a id="__codelineno-19-53" name="__codelineno-19-53" href="#__codelineno-19-53"></a>&lt;<span class="w"> </span>HTTP/2<span class="w"> </span><span class="m">200</span><span class="w"> </span>
-</span><span id="__span-19-54"><a id="__codelineno-19-54" name="__codelineno-19-54" href="#__codelineno-19-54"></a>HTTP/2<span class="w"> </span><span class="m">200</span><span class="w"> </span>
-</span><span id="__span-19-55"><a id="__codelineno-19-55" name="__codelineno-19-55" href="#__codelineno-19-55"></a>&lt;<span class="w"> </span>content-type:<span class="w"> </span>application/json
-</span><span id="__span-19-56"><a id="__codelineno-19-56" name="__codelineno-19-56" href="#__codelineno-19-56"></a>content-type:<span class="w"> </span>application/json
-</span><span id="__span-19-57"><a id="__codelineno-19-57" name="__codelineno-19-57" href="#__codelineno-19-57"></a>&lt;<span class="w"> </span>server:<span class="w"> </span>istio-envoy
-</span><span id="__span-19-58"><a id="__codelineno-19-58" name="__codelineno-19-58" href="#__codelineno-19-58"></a>server:<span class="w"> </span>istio-envoy
-</span><span id="__span-19-59"><a id="__codelineno-19-59" name="__codelineno-19-59" href="#__codelineno-19-59"></a>&lt;<span class="w"> </span>date:<span class="w"> </span>Thu,<span class="w"> </span><span class="m">15</span><span class="w"> </span>Feb<span class="w"> </span><span class="m">2024</span><span class="w"> </span><span class="m">12</span>:13:27<span class="w"> </span>GMT
-</span><span id="__span-19-60"><a id="__codelineno-19-60" name="__codelineno-19-60" href="#__codelineno-19-60"></a>date:<span class="w"> </span>Thu,<span class="w"> </span><span class="m">15</span><span class="w"> </span>Feb<span class="w"> </span><span class="m">2024</span><span class="w"> </span><span class="m">12</span>:13:27<span class="w"> </span>GMT
-</span><span id="__span-19-61"><a id="__codelineno-19-61" name="__codelineno-19-61" href="#__codelineno-19-61"></a>&lt;<span class="w"> </span>content-length:<span class="w"> </span><span class="m">1658</span>
-</span><span id="__span-19-62"><a id="__codelineno-19-62" name="__codelineno-19-62" href="#__codelineno-19-62"></a>content-length:<span class="w"> </span><span class="m">1658</span>
-</span><span id="__span-19-63"><a id="__codelineno-19-63" name="__codelineno-19-63" href="#__codelineno-19-63"></a>&lt;<span class="w"> </span>x-envoy-upstream-service-time:<span class="w"> </span><span class="m">1</span>
-</span><span id="__span-19-64"><a id="__codelineno-19-64" name="__codelineno-19-64" href="#__codelineno-19-64"></a>x-envoy-upstream-service-time:<span class="w"> </span><span class="m">1</span>
-</span><span id="__span-19-65"><a id="__codelineno-19-65" name="__codelineno-19-65" href="#__codelineno-19-65"></a>
-</span><span id="__span-19-66"><a id="__codelineno-19-66" name="__codelineno-19-66" href="#__codelineno-19-66"></a>&lt;<span class="w"> </span>
-</span><span id="__span-19-67"><a id="__codelineno-19-67" name="__codelineno-19-67" href="#__codelineno-19-67"></a>*<span class="w"> </span>Connection<span class="w"> </span><span class="c1">#0 to host api.toystore.local left intact</span>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>curl<span class="w"> </span>-vkI<span class="w"> </span>https://api.toystore.local<span class="w"> </span>--resolve<span class="w"> </span><span class="s1">&#39;api.toystore.local:443:172.18.200.0&#39;</span>
 </span></code></pre></div></p>
 <h2 id="cleanup">Cleanup</h2>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>make<span class="w"> </span>local-cleanup
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>make<span class="w"> </span>local-cleanup
 </span></code></pre></div>
 
 

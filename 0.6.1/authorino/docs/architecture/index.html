@@ -3395,7 +3395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../limitador/limitador-server/docs/sandbox.md" class="md-nav__link">
+      <a href="../../../limitador/limitador-server/docs/sandbox/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4004,6 +4004,31 @@
 
 
 <h1 id="architecture">Architecture</h1>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#topologies">Topologies</a></li>
+<li><a href="#centralized-gateway">Centralized gateway</a></li>
+<li><a href="#centralized-authorization-service">Centralized authorization service</a></li>
+<li><a href="#sidecars">Sidecars</a></li>
+<li><a href="#cluster-wide-vs-namespaced-instances">Cluster-wide vs. Namespaced instances</a></li>
+<li><a href="#the-authorino-authconfig-custom-resource-definition-crd">The Authorino <code>AuthConfig</code> Custom Resource Definition (CRD)</a></li>
+<li><a href="#resource-reconciliation-and-status-update">Resource reconciliation and status update</a></li>
+<li><a href="#the-auth-pipeline-aka-enforcing-protection-in-request-time">The "Auth Pipeline" (<em>aka:</em> enforcing protection in request-time)</a></li>
+<li><a href="#host-lookup">Host lookup</a></li>
+<li><a href="#avoiding-host-name-collision">Avoiding host name collision</a></li>
+<li><a href="#the-authorization-json">The Authorization JSON</a></li>
+<li><a href="#raw-http-authorization-interface">Raw HTTP Authorization interface</a></li>
+<li><a href="#caching">Caching</a></li>
+<li><a href="#openid-connect-and-user-managed-access-configs">OpenID Connect and User-Managed Access configs</a></li>
+<li><a href="#json-web-keys-jwks-and-json-web-key-sets-jwks">JSON Web Keys (JWKs) and JSON Web Key Sets (JWKS)</a></li>
+<li><a href="#revoked-access-tokens">Revoked access tokens</a></li>
+<li><a href="#external-metadata">External metadata</a></li>
+<li><a href="#compiled-rego-policies">Compiled Rego policies</a></li>
+<li><a href="#repeated-requests">Repeated requests</a></li>
+<li><a href="#sharding">Sharding</a></li>
+<li><a href="#rbac">RBAC</a></li>
+<li><a href="#observability">Observability</a></li>
+</ul>
 <h2 id="overview">Overview</h2>
 <p><img alt="Architecture" src="../architecture.gif" /></p>
 <p>There are a few concepts to understand Authorino's architecture. The main components are: <strong>Authorino</strong>, <strong>Envoy</strong> and the <strong>Upstream</strong> service to be protected. Envoy proxies requests to the configured <strong>virtual host</strong> upstream service, first contacting with Authorino to decide on authN/authZ.</p>
@@ -4016,12 +4041,10 @@
 <p>On every request, Authorino's "working memory" is called <a href="#the-authorization-json"><strong>Authorization JSON</strong></a>, a data structure that holds information about the context (the HTTP request) and objects from each phase of the auth pipeline: i.e., authentication verification (phase i), ad-hoc metadata fetching (phase ii), authorization policy enforcement (phase iii), dynamic response (phase iv), and callbacks (phase v). The evaluators in each of these phases can both read and write from the Authorization JSON for dynamic steps and decisions of authN/authZ.</p>
 <h2 id="topologies">Topologies</h2>
 <p>Typically, upstream APIs are deployed to the same Kubernetes cluster and namespace where the Envoy proxy and Authorino is running (although not necessarily). Whatever is the case, Envoy must be proxying to the upstream API (see Envoy's <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/route/v3/route_components.proto">HTTP route components</a> and virtual hosts) and pointing to Authorino in the external authorization filter.</p>
-<p>This can be achieved with different topologies:</p>
-<ul>
-<li>Envoy can be a <a href="#centralized-gateway">centralized gateway</a> with one dedicated instance of Authorino, proxying to one or more upstream services</li>
-<li>Envoy can be deployed as a sidecar of each protected service, but still contacting from a <a href="#centralized-authorization-service">centralized Authorino authorization service</a></li>
-<li>Both Envoy and Authorino deployed as <a href="#sidecars">sidecars</a> of the protected service, restricting all communication between them to localhost</li>
-</ul>
+<p>This can be achieved with different topologies:
+- Envoy can be a <a href="#centralized-gateway">centralized gateway</a> with one dedicated instance of Authorino, proxying to one or more upstream services
+- Envoy can be deployed as a sidecar of each protected service, but still contacting from a <a href="#centralized-authorization-service">centralized Authorino authorization service</a>
+- Both Envoy and Authorino deployed as <a href="#sidecars">sidecars</a> of the protected service, restricting all communication between them to localhost</p>
 <p>Each topology above induces different measures for security.</p>
 <h3 id="centralized-gateway">Centralized gateway</h3>
 <p><img alt="Centralized gateway topology" src="http://www.plantuml.com/plantuml/png/XOynJiKm343tdCBw0rk75aQ4_XyOsBY2rPWc-eaTEGa88Gu26pkduYJyfYf2KCJav5alJzddWbfg32OVFITKZ125PNGgaQ1e9MCIZaUS299Om3oF7fuCWD9OaAT0iFjuVO73xSrktcFolNdUqeP_j65RE_-blR_1DT_BOnDfFlrHlFYfNfvbvodOApZKuaGzor9VR-qXpuNq3iUJ06tj-nFieLjZou2kfcxvxmgiF713mnTIFxdIVI_iYMsDuHC0" /></p>
@@ -4035,7 +4058,7 @@
 <p>Apart from that, protected service should only listen on <code>localhost</code> and all traffic can be considered safe.</p>
 <h2 id="cluster-wide-vs-namespaced-instances">Cluster-wide vs. Namespaced instances</h2>
 <p>Authorino instances can run in either <strong>cluster-wide</strong> or <strong>namespaced</strong> mode.</p>
-<p>Namespace-scoped instances only watch resources (<code>AuthConfig</code>s and <code>Secret</code>s) created in a given namespace. This deployment mode does not require admin privileges over the Kubernetes cluster to deploy the instance of the service (given Authorino's CRDs have been installed beforehand, such as when Authorino is installed using the <a href="https://github.com/kuadrant/authorino-operator">Authorino Operator</a>).</p>
+<p>Namespace-scoped instances only watch resources (<code>AuthConfig</code>s and <code>Secret</code>s) created in a given namespace. This deployment mode does not require admin privileges over the Kubernetes cluster to deploy the instance of the service (given Authorino's CRDs have been installed beforehand, such as when Authorino is installed using the <a href="https://github.com/kuadrant-authorino-operator">Authorino Operator</a>).</p>
 <p>Cluster-wide deployment mode, in contraposition, deploys instances of Authorino that watch resources across the entire cluster, consolidating all resources into a multi-namespace index of auth configs. Admin privileges over the Kubernetes cluster is required to deploy Authorino in cluster-wide mode.</p>
 <p>Be careful to avoid superposition when combining multiple Authorino instances and instance modes in the same Kubernetes cluster. Apart from caching unnecessary auth config data in the instances depending on your routing settings, the leaders of each instance (set of replicas) may compete for updating the status of the custom resources that are reconciled. See <a href="#resource-reconciliation-and-status-update">Resource reconciliation and status update</a> for more information.</p>
 <p>If necessary, use label selectors to narrow down the space of resources watched and reconciled by each Authorino instance. Check out the <a href="#sharding">Sharding</a> section below for details.</p>
@@ -4114,7 +4137,7 @@
 </span><span id="__span-0-70"><a id="__codelineno-0-70" name="__codelineno-0-70" href="#__codelineno-0-70"></a><span class="w">  </span><span class="c1"># - Endpoints for HTTP requests</span>
 </span><span id="__span-0-71"><a id="__codelineno-0-71" name="__codelineno-0-71" href="#__codelineno-0-71"></a><span class="w">  </span><span class="nt">callbacks</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="s">&quot;name&quot;</span><span class="w"> </span><span class="nv">→</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">},</span><span class="w"> </span><span class="nv">…</span><span class="p p-Indicator">}</span>
 </span></code></pre></div>
-<p>Check out the <a href="../install/crd/authorino.kuadrant.io_authconfigs.yaml">OAS</a> of the <code>AuthConfig</code> CRD for a formal specification of the options for <code>authentication</code> verification, external <code>metadata</code> fetching, <code>authorization</code> policies, and dynamic <code>response</code>, as well as any other host protection capability implemented by Authorino.</p>
+<p>Check out the <a href="/install/crd/authorino.kuadrant.io_authconfigs.yaml">OAS</a> of the <code>AuthConfig</code> CRD for a formal specification of the options for <code>authentication</code> verification, external <code>metadata</code> fetching, <code>authorization</code> policies, and dynamic <code>response</code>, as well as any other host protection capability implemented by Authorino.</p>
 <p>You can also read the specification from the CLI using the <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#explain"><code>kubectl explain</code></a> command. The Authorino CRD is required to have been installed in Kubernetes cluster. E.g. <code>kubectl explain authconfigs.spec.authentication.overrides</code>.</p>
 <p>A complete description of supported features and corresponding configuration options within an <code>AuthConfig</code> CR can be found in the <a href="../features/">Features</a> page.</p>
 <p>More concrete examples of <code>AuthConfig</code>s for specific use-cases can be found in the <a href="../user-guides/">User guides</a>.</p>
@@ -4145,15 +4168,13 @@
 <p>When more than one host name is specified in the <code>AuthConfig</code>, all of them can be used as key, i.e. all of them can be requested in the authorization request and will be mapped to the same config.</p>
 <p><strong>Example.</strong> Host lookup with wildcards.</p>
 <p><img alt="Domain tree" src="http://www.plantuml.com/plantuml/png/RP71ReCm38RlVWhKuoGcjN2U-YPLb6MTDS0e9E-_v8zgNC4fyVU5nFo-Ryd5bEU9Ol39BSyfT9VFI-UsBeeaijZB355MYzUGDl2wiU93wQE-OfNpSu2jcpUnil97AOxtmU0-wrWWMOuVi1oUNtY5Agl5oKr_8VQl7bg9BiXpzEWlfrylomy_-oiELN0zqpVLjpCzg1xEzAXw92g1TtrU-pQI6YXA3AB6iLSQTaEOo2lAXX2uPcWOiPX7M8ndePAKxlTSW90Y4O80-DB8yVUDsJGjrev1XqPr_82ZXJXw3yjtdgT_" /></p>
-<p>The domain tree above induces the following relation:</p>
-<ul>
-<li><code>foo.nip.io</code> → <code>authconfig-1</code> (matches <code>*.io</code>)</li>
-<li><code>talker-api.nip.io</code> → <code>authconfig-2</code> (matches <code>talker-api.nip.io</code>)</li>
-<li><code>dogs.pets.com</code> → <code>authconfig-2</code> (matches <code>*.pets.com</code>)</li>
-<li><code>api.acme.com</code> → <code>authconfig-3</code> (matches <code>api.acme.com</code>)</li>
-<li><code>www.acme.com</code> → <code>authconfig-4</code> (matches <code>*.acme.com</code>)</li>
-<li><code>foo.org</code> → <code>404 Not found</code></li>
-</ul>
+<p>The domain tree above induces the following relation:
+- <code>foo.nip.io</code> → <code>authconfig-1</code> (matches <code>*.io</code>)
+- <code>talker-api.nip.io</code> → <code>authconfig-2</code> (matches <code>talker-api.nip.io</code>)
+- <code>dogs.pets.com</code> → <code>authconfig-2</code> (matches <code>*.pets.com</code>)
+- <code>api.acme.com</code> → <code>authconfig-3</code> (matches <code>api.acme.com</code>)
+- <code>www.acme.com</code> → <code>authconfig-4</code> (matches <code>*.acme.com</code>)
+- <code>foo.org</code> → <code>404 Not found</code></p>
 <p><br/></p>
 <p>The host can include the port number (i.e. <code>hostname:port</code>) or it can be just the name of the host name. Authorino will first try finding in the index a config associated to <code>hostname:port</code>, as supplied in the authorization request; if the index misses an entry for <code>hostname:port</code>, Authorino will then remove the <code>:port</code> suffix and repeat the lookup using just <code>hostname</code> as key. This provides implicit support for multiple port numbers for a same host without having to list all combinations in the <code>AuthConfig</code>.</p>
 <h3 id="avoiding-host-name-collision">Avoiding host name collision</h3>
@@ -4219,12 +4240,10 @@
 <p><a href="../features/#festival-wristband-tokens-responsesuccessheadersdynamicmetadatawristband">Festival Wristbands</a> and <a href="../features/#json-injection-responsesuccessheadersdynamicmetadatajson">Dynamic JSON</a> responses can include dynamic values (custom claims/properties) fetched from the authorization JSON. These can be returned to the external authorization client in added HTTP headers or as Envoy <a href="https://www.envoyproxy.io/docs/envoy/latest/configuration/advanced/well_known_dynamic_metadata">Well Known Dynamic Metadata</a>. Check out <a href="../features/#custom-response-features-response">Custom response features</a> for details.</p>
 <p>For information about reading and fetching data from the Authorization JSON (syntax, functions, etc), check out <a href="../features/#common-feature-json-paths-selector">JSON paths</a>.</p>
 <h2 id="raw-http-authorization-interface">Raw HTTP Authorization interface</h2>
-<p>Besides providing the gRPC authorization interface – that implements the Envoy gRPC authorization server –, Authorino also provides another interface for <strong>raw HTTP authorization</strong>. This second interface responds to <code>GET</code> and <code>POST</code> HTTP requests sent to <code>:5001/check</code>, and is suitable for other forms of integration, such as:</p>
-<ul>
-<li>using Authorino as Kubernetes ValidatingWebhook service (<a href="../user-guides/validating-webhook/">example</a>);</li>
-<li>other HTTP proxies and API gateways;</li>
-<li>old versions of Envoy incompatible with the latest version of gRPC external authorization protocol (Authorino is based on v3.19.1 of Envoy external authorization API)</li>
-</ul>
+<p>Besides providing the gRPC authorization interface – that implements the Envoy gRPC authorization server –, Authorino also provides another interface for <strong>raw HTTP authorization</strong>. This second interface responds to <code>GET</code> and <code>POST</code> HTTP requests sent to <code>:5001/check</code>, and is suitable for other forms of integration, such as:
+- using Authorino as Kubernetes ValidatingWebhook service (<a href="../user-guides/validating-webhook/">example</a>);
+- other HTTP proxies and API gateways;
+- old versions of Envoy incompatible with the latest version of gRPC external authorization protocol (Authorino is based on v3.19.1 of Envoy external authorization API)</p>
 <p>In the raw HTTP interface, the host used to <a href="#host-lookup">lookup</a> for an <code>AuthConfig</code> must be supplied in the <code>Host</code> HTTP header of the request. Other attributes of the HTTP request are also passed in the context to evaluate the <code>AuthConfig</code>, including the body of the request.</p>
 <h2 id="caching">Caching</h2>
 <h3 id="openid-connect-and-user-managed-access-configs">OpenID Connect and User-Managed Access configs</h3>
@@ -4262,11 +4281,9 @@
 <h2 id="sharding">Sharding</h2>
 <p>By default, Authorino instances will watch <code>AuthConfig</code> CRs in the entire space (namespace or entire cluster; see <a href="#cluster-wide-vs-namespaced-instances">Cluster-wide vs. Namespaced instances</a> for details). To support combining multiple Authorino instances and instance modes in the same Kubernetes cluster, and yet avoiding superposition between the instances (i.e. multiple instances reconciling the same <code>AuthConfig</code>s), Authorino offers support for data sharding, i.e. to horizontally narrow down the space of reconciliation of an Authorino instance to a subset of that space.</p>
 <p>The benefits of limiting the space of reconciliation of an Authorino instance include avoiding unnecessary caching and workload in instances that do not receive corresponding traffic (according to your routing settings) and preventing leaders of multiple instances (sets of replicas) to compete on resource status updates (see <a href="#resource-reconciliation-and-status-update">Resource reconciliation and status update</a> for details).</p>
-<p>Use-cases for sharding of <code>AuthConfig</code>s:</p>
-<ul>
-<li>Horizontal load balancing of traffic of authorization requests</li>
-<li>Supporting for managed centralized instances of Authorino to API owners who create and maintain their own <code>AuthConfig</code>s within their own user namespaces.</li>
-</ul>
+<p>Use-cases for sharding of <code>AuthConfig</code>s:
+- Horizontal load balancing of traffic of authorization requests
+- Supporting for managed centralized instances of Authorino to API owners who create and maintain their own <code>AuthConfig</code>s within their own user namespaces.</p>
 <p>Authorino's custom controllers filter the <code>AuthConfig</code>-related events to be reconciled using <a href="https://pkg.go.dev/k8s.io/apimachinery/pkg/labels#Parse">Kubernetes label selectors</a>, defined for the Authorino instance via <code>--auth-config-label-selector</code> command-line flag. By default, <code>--auth-config-label-selector</code> is empty, meaning all <code>AuthConfig</code>s in the space are watched; this variable can be set to any value parseable as a valid label selector, causing Authorino to then watch only events of <code>AuthConfig</code>s whose <code>metadata.labels</code> match the selector.</p>
 <p>The following are all valid examples of <code>AuthConfig</code> label selector filters:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>--auth-config-label-selector=&quot;authorino.kuadrant.io/managed-by=authorino&quot;

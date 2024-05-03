@@ -3296,7 +3296,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../limitador/limitador-server/docs/sandbox.md" class="md-nav__link">
+      <a href="../../../../limitador/limitador-server/docs/sandbox/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4866,11 +4866,9 @@
 </span></code></pre></div>
 </details>
 <h2 id="readiness-check">Readiness check</h2>
-<p>Authorino exposes two main endpoints for health and readiness check of the AuthConfig controller:</p>
-<ul>
-<li><code>/healthz</code>: Health probe (ping) – reports "ok" if the controller is healthy.</li>
-<li><code>/readyz</code>: Readiness probe – reports "ok" if the controller is ready to reconcile AuthConfig-related events.</li>
-</ul>
+<p>Authorino exposes two main endpoints for health and readiness check of the AuthConfig controller:
+- <code>/healthz</code>: Health probe (ping) – reports "ok" if the controller is healthy.
+- <code>/readyz</code>: Readiness probe – reports "ok" if the controller is ready to reconcile AuthConfig-related events.</p>
 <p>In general, the endpoints return either <code>200</code> ("ok", i.e. all checks have passed) or <code>500</code> (when one or more checks failed).</p>
 <p>The default binding network address is <code>:8081</code>, which can be changed by setting the command-line flag <code>--health-probe-addr</code>.</p>
 <p>The following additional subpath is available and its corresponding check can be aggregated into the response from the main readiness probe:
@@ -4883,28 +4881,22 @@
   </tbody>
 </table>
 
-<p>Apart from <code>include</code> to add the aggregated status of the AuthConfigs, the following additional query string parameters are available:</p>
-<ul>
-<li><code>verbose=true|false</code> - provides more verbose response messages;</li>
-<li><code>exclude=(check name)</code> – to exclude a particular readiness check (for future usage).</li>
-</ul>
+<p>Apart from <code>include</code> to add the aggregated status of the AuthConfigs, the following additional query string parameters are available:
+- <code>verbose=true|false</code> - provides more verbose response messages;
+- <code>exclude=(check name)</code> – to exclude a particular readiness check (for future usage).</p>
 <h2 id="logging">Logging</h2>
 <p>Authorino provides structured log messages ("production") or more log messages output to stdout in a more user-friendly format ("development" mode) and different level of logging.</p>
 <h3 id="log-levels-and-log-modes">Log levels and log modes</h3>
-<p>Authorino outputs 3 levels of log messages: (from lowest to highest level)</p>
-<ol>
-<li><code>debug</code></li>
-<li><code>info</code> (default)</li>
-<li><code>error</code></li>
-</ol>
+<p>Authorino outputs 3 levels of log messages: (from lowest to highest level)
+1. <code>debug</code>
+2. <code>info</code> (default)
+3. <code>error</code></p>
 <p><code>info</code> logging is restricted to high-level information of the gRPC and HTTP authorization services, limiting messages to incoming request and respective outgoing response logs, with reduced details about the corresponding objects (request payload and authorization result), and without any further detailed logs of the steps in between, except for errors.</p>
 <p>Only <code>debug</code> logging will include processing details of each <a href="../../architecture/#the-auth-pipeline-aka-enforcing-protection-in-request-time">Auth Pipeline</a>, such as intermediary requests to validate identities with external auth servers, requests to external sources of auth metadata or authorization policies.</p>
 <p>To configure the desired log level, set the <code>spec.logLevel</code> field of the <a href="https://github.com/Kuadrant/authorino-operator/blob/main/config/crd/bases/operator.authorino.kuadrant.io_authorinos.yaml"><code>Authorino</code></a> custom resource (or <code>--log-level</code> command-line flag in the Authorino deployment), to one of the supported values listed above. Default log level is <code>info</code>.</p>
-<p>Apart from log level, Authorino can output messages to the logs in 2 different formats:</p>
-<ul>
-<li><code>production</code> (default): each line is a parseable JSON object with properties <code>{"level":string, "ts":int, "msg":string, "logger":string, extra values...}</code></li>
-<li><code>development</code>: more human-readable outputs, extra stack traces and logging info, plus extra values output as JSON, in the format: <code>&lt;timestamp-iso-8601&gt;\t&lt;log-level&gt;\t&lt;logger&gt;\t&lt;message&gt;\t{extra-values-as-json}</code></li>
-</ul>
+<p>Apart from log level, Authorino can output messages to the logs in 2 different formats:
+- <code>production</code> (default): each line is a parseable JSON object with properties <code>{"level":string, "ts":int, "msg":string, "logger":string, extra values...}</code>
+- <code>development</code>: more human-readable outputs, extra stack traces and logging info, plus extra values output as JSON, in the format: <code>&lt;timestamp-iso-8601&gt;\t&lt;log-level&gt;\t&lt;logger&gt;\t&lt;message&gt;\t{extra-values-as-json}</code></p>
 <p>To configure the desired log mode, set the <code>spec.logMode</code> field of the <a href="https://github.com/Kuadrant/authorino-operator/blob/main/config/crd/bases/operator.authorino.kuadrant.io_authorinos.yaml"><code>Authorino</code></a> custom resource (or <code>--log-mode</code> command-line flag in the Authorino deployment), to one of the supported values listed above. Default log level is <code>production</code>.</p>
 <p>Example of <code>Authorino</code> custom resource with log level <code>debug</code> and log mode <code>production</code>:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">operator.authorino.kuadrant.io/v1beta1</span>
@@ -5565,13 +5557,11 @@
 </details>
 <h2 id="tracing">Tracing</h2>
 <h3 id="request-id">Request ID</h3>
-<p>Processes related to the authorization request are identified and linked together by a <em>request ID</em>. The request ID can be:</p>
-<ul>
-<li>generated outside Authorino and passed in the authorization request – this is essentially the case of requests via GRPC authorization interface initiated by the Envoy;</li>
-<li>generated by Authorino – requests via <a href="../../architecture/#raw-http-authorization-interface">Raw HTTP Authorization interface</a>.</li>
-</ul>
+<p>Processes related to the authorization request are identified and linked together by a <em>request ID</em>. The request ID can be:
+* generated outside Authorino and passed in the authorization request – this is essentially the case of requests via GRPC authorization interface initiated by the Envoy;
+* generated by Authorino – requests via <a href="../../architecture/#raw-http-authorization-interface">Raw HTTP Authorization interface</a>.</p>
 <h3 id="propagation">Propagation</h3>
-<p>Authorino propagates trace identifiers compatible with the W3C Trace Context format <a href="https://www.w3.org/TR/trace-context/">https://www.w3.org/TR/trace-context/</a> and user-defined baggage data in the W3C Baggage format <a href="https://www.w3.org/TR/baggage">https://www.w3.org/TR/baggage</a>.</p>
+<p>Authorino propagates trace identifiers compatible with the W3C Trace Context format (https://www.w3.org/TR/trace-context/) and user-defined baggage data in the W3C Baggage format (https://www.w3.org/TR/baggage).</p>
 <h3 id="log-tracing">Log tracing</h3>
 <p>Most log messages associated with an authorization request include the <a href="#request-id"><code>request id</code></a> value. This value can be used to match incoming request and corresponding outgoing response log messages, including at deep level when more fine-grained log details are enabled (<a href="#log-levels-and-log-modes"><code>debug</code> level level</a>).</p>
 <h3 id="opentelemetry-integration">OpenTelemetry integration</h3>

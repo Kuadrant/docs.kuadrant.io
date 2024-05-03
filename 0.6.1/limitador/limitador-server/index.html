@@ -3181,7 +3181,7 @@
   
   
     <li class="md-nav__item">
-      <a href="docs/sandbox.md" class="md-nav__link">
+      <a href="docs/sandbox/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3575,7 +3575,7 @@
 
 <h1 id="limitador-server">Limitador (server)</h1>
 <p><a href="https://quay.io/repository/kuadrant/limitador"><img alt="Docker Repository on Quay" src="https://quay.io/repository/kuadrant/limitador/status" title="Docker Repository on Quay" /></a></p>
-<p>By default, Limitador starts the HTTP server in <code>localhost:8080</code>, and the grpc
+<p>By default, Limitador starts the HTTP server in <code>localhost:8080</code> and the grpc
 service that implements the Envoy Rate Limit protocol in <code>localhost:8081</code>. That
 can be configured with these ENVs: <code>ENVOY_RLS_HOST</code>, <code>ENVOY_RLS_PORT</code>,
 <code>HTTP_API_HOST</code>, and <code>HTTP_API_PORT</code>.</p>
@@ -3606,32 +3606,31 @@ can be configured with these ENVs: <code>ENVOY_RLS_HOST</code>, <code>ENVOY_RLS_
 </span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>          Include the Limit Name in prometheus label
 </span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>  -v...
 </span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>          Sets the level of verbosity
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>      --tracing-endpoint &lt;tracing_endpoint&gt;
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>          The endpoint for the tracing service
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>      --validate
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>          Validates the LIMITS_FILE and exits
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>  -H, --rate-limit-headers &lt;rate_limit_headers&gt;
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>          Enables rate limit response headers [default: NONE] [possible values: NONE, DRAFT_VERSION_03]
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>  -h, --help
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>          Print help
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>  -V, --version
-</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>          Print version
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>      --validate
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>          Validates the LIMITS_FILE and exits
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>  -H, --rate-limit-headers &lt;rate_limit_headers&gt;
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>          Enables rate limit response headers [default: NONE] [possible values: NONE, DRAFT_VERSION_03]
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>  -h, --help
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>          Print help
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>  -V, --version
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>          Print version
 </span></code></pre></div>
 <p>When using environment variables, these will override the defaults. While environment variable are themselves
 overridden by the command line arguments provided. See the individual <code>STORAGES</code> help for more options relative to
 each of the storages.</p>
 <p>The OpenAPI spec of the HTTP service is
 <a href="docs/http_server_spec.json">here</a>.</p>
-<p>Limitador has to be started with a YAML file that has some limits defined.
-There's an <a href="https://github.com/Kuadrant/limitador/blob/main/limitador-server/examples/limits.yaml">example file</a> that allows 10 requests per minute and per <code>user_id</code> when the HTTP method is <code>"GET"</code> and 5 when it is a <code>"POST"</code>.
-You can run it with Docker (replace <code>latest</code> with the version you want):
+<p>Limitador has to be started with a YAML file that has some limits defined. There's an <a href="examples/limits.yaml">example
+file</a> that allows 10 requests per minute
+and per <code>user_id</code> when the HTTP method is <code>"GET"</code> and 5 when it is a <code>"POST"</code>. You can
+run it with Docker (replace <code>latest</code> with the version you want):
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--net<span class="o">=</span>host<span class="w"> </span>-it<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/examples/limits.yaml:/home/limitador/my_limits.yaml:ro<span class="w"> </span>quay.io/kuadrant/limitador:latest<span class="w"> </span>limitador-server<span class="w"> </span>/home/limitador/my_limits.yaml
 </span></code></pre></div></p>
 <p>You can also use the YAML file when running locally:
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cargo<span class="w"> </span>run<span class="w"> </span>--release<span class="w"> </span>--bin<span class="w"> </span>limitador-server<span class="w"> </span>./examples/limits.yaml
 </span></code></pre></div></p>
 <p>If you want to use Limitador with Envoy, there's a minimal Envoy config for
-testing purposes <a href="https://github.com/Kuadrant/limitador/blob/main/limitador-server/examples/envoy.yaml">here</a>. The config
+testing purposes <a href="examples/envoy.yaml">here</a>. The config
 forwards the "userid" header and the request method to Limitador. It assumes
 that there's an upstream API deployed on port 1323. You can use
 <a href="https://github.com/labstack/echo">echo</a>, for example.</p>

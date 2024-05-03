@@ -3578,7 +3578,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../limitador/limitador-server/docs/sandbox.md" class="md-nav__link">
+      <a href="../../../limitador/limitador-server/docs/sandbox/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4370,11 +4370,57 @@
 
 
 <h1 id="features">Features</h1>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#common-feature-json-paths-selector">Common feature: JSON paths (<code>selector</code>)</a></li>
+<li><a href="#syntax">Syntax</a></li>
+<li><a href="#string-modifiers">String modifiers</a></li>
+<li><a href="#interpolation">Interpolation</a></li>
+<li><a href="#identity-verification--authentication-features-authentication">Identity verification \&amp; authentication features (<code>authentication</code>)</a></li>
+<li><a href="#api-key-authenticationapikey">API key (<code>authentication.apiKey</code>)</a></li>
+<li><a href="#kubernetes-tokenreview-authenticationkubernetestokenreview">Kubernetes TokenReview (<code>authentication.kubernetesTokenReview</code>)</a></li>
+<li><a href="#jwt-verification-authenticationjwt">JWT verification (<code>authentication.jwt</code>)</a></li>
+<li><a href="#oauth-20-introspection-authenticationoauth2introspection">OAuth 2.0 introspection (<code>authentication.oauth2Introspection</code>)</a></li>
+<li><a href="#x509-client-certificate-authentication-authenticationx509">X.509 client certificate authentication (<code>authentication.x509</code>)</a></li>
+<li><a href="#plain-authenticationplain">Plain (<code>authentication.plain</code>)</a></li>
+<li><a href="#anonymous-access-authenticationanonymous">Anonymous access (<code>authentication.anonymous</code>)</a></li>
+<li><a href="#festival-wristband-authentication">Festival Wristband authentication</a></li>
+<li><a href="#extra-auth-credentials-authenticationcredentials"><em>Extra:</em> Auth credentials (<code>authentication.credentials</code>)</a></li>
+<li><a href="#extra-identity-extension-authenticationdefaults-and-authenticationoverrides"><em>Extra:</em> Identity extension (<code>authentication.defaults</code> and <code>authentication.overrides</code>)</a></li>
+<li><a href="#external-auth-metadata-features-metadata">External auth metadata features (<code>metadata</code>)</a></li>
+<li><a href="#http-getget-by-post-metadatahttp">HTTP GET/GET-by-POST (<code>metadata.http</code>)</a></li>
+<li><a href="#oidc-userinfo-metadatauserinfo">OIDC UserInfo (<code>metadata.userInfo</code>)</a></li>
+<li><a href="#user-managed-access-uma-resource-registry-metadatauma">User-Managed Access (UMA) resource registry (<code>metadata.uma</code>)</a></li>
+<li><a href="#authorization-features-authorization">Authorization features (<code>authorization</code>)</a></li>
+<li><a href="#pattern-matching-authorization-authorizationpatternmatching">Pattern-matching authorization (<code>authorization.patternMatching</code>)</a></li>
+<li><a href="#open-policy-agent-opa-rego-policies-authorizationopa">Open Policy Agent (OPA) Rego policies (<code>authorization.opa</code>)</a></li>
+<li><a href="#kubernetes-subjectaccessreview-authorizationkubernetessubjectaccessreview">Kubernetes SubjectAccessReview (<code>authorization.kubernetesSubjectAccessReview</code>)</a></li>
+<li><a href="#spicedb-authorizationspicedb">SpiceDB (<code>authorization.spicedb</code>)</a></li>
+<li><a href="#custom-response-features-response">Custom response features (<code>response</code>)</a></li>
+<li><a href="#custom-response-forms-successful-authorization-vs-custom-denial-status">Custom response forms: successful authorization vs custom denial status</a><ul>
+<li><a href="#added-http-headers">Added HTTP headers</a></li>
+<li><a href="#envoy-dynamic-metadata">Envoy Dynamic Metadata</a></li>
+<li><a href="#custom-denial-status-responseunauthenticated-and-responseunauthorized">Custom denial status (<code>response.unauthenticated</code> and <code>response.unauthorized</code>)</a></li>
+</ul>
+</li>
+<li><a href="#custom-response-methods">Custom response methods</a><ul>
+<li><a href="#plain-text-responsesuccessheadersdynamicmetadataplain">Plain text (<code>response.success.&lt;headers|dynamicMetadata&gt;.plain</code>)</a></li>
+<li><a href="#json-injection-responsesuccessheadersdynamicmetadatajson">JSON injection (<code>response.success.&lt;headers|dynamicMetadata&gt;.json</code>)</a></li>
+<li><a href="#festival-wristband-tokens-responsesuccessheadersdynamicmetadatawristband">Festival Wristband tokens (<code>response.success.&lt;headers|dynamicMetadata&gt;.wristband</code>)</a></li>
+</ul>
+</li>
+<li><a href="#callbacks-callbacks">Callbacks (<code>callbacks</code>)</a></li>
+<li><a href="#http-endpoints-callbackshttp">HTTP endpoints (<code>callbacks.http</code>)</a></li>
+<li><a href="#common-feature-priorities">Common feature: Priorities</a></li>
+<li><a href="#common-feature-conditions-when">Common feature: Conditions (<code>when</code>)</a></li>
+<li><a href="#common-feature-caching-cache">Common feature: Caching (<code>cache</code>)</a></li>
+<li><a href="#common-feature-metrics-metrics">Common feature: Metrics (<code>metrics</code>)</a></li>
+</ul>
 <h2 id="overview">Overview</h2>
 <p>We call <em>features</em> of Authorino the different things one can do to enforce identity verification &amp; authentication and authorization on requests to protected services. These can be a specific identity verification method based on a supported authentication protocol, or a method to fetch additional auth metadata in request-time, etc.</p>
 <p>Most features of Authorino relate to the different phases of the <a href="../architecture/#the-auth-pipeline-aka-enforcing-protection-in-request-time">Auth Pipeline</a> and therefore are configured in the Authorino <a href="../architecture/#the-authorino-authconfig-custom-resource-definition-crd"><code>AuthConfig</code></a>. An <em>identity verification/authentication feature</em> usually refers to a functionality of Authorino such as the <a href="#api-key-authenticationapikey">API key-based authentication</a>, the <a href="#jwt-verification-authenticationjwt">validation of JWTs/OIDC ID tokens</a>, and authentication based on <a href="#kubernetes-tokenreview-authenticationkubernetestokenreview">Kubernetes TokenReviews</a>. Analogously, <a href="#open-policy-agent-opa-rego-policies-authorizationopa">OPA</a>, <a href="#pattern-matching-authorization-authorizationpatternmatching">pattern-matching</a> and <a href="#kubernetes-subjectaccessreview-authorizationkubernetessubjectaccessreview">Kubernetes SubjectAccessReview</a> are examples of <em>authorization features</em> of Authorino.</p>
 <p>At a deeper level, a <em>feature</em> can also be an additional functionality within a bigger feature, usually applicable to the whole class the bigger feature belongs to. For instance, the configuration of how <a href="#extra-auth-credentials-authenticationcredentials">auth credentials</a> expected to be carried in the request, which is broadly available for any identity verification method. Other examples are: <a href="#extra-identity-extension-authenticationdefaults-and-authenticationoverrides"><em>Identity extension</em></a> and <a href="#common-feature-priorities">Priorities</a>.</p>
-<p>A full specification of all features of Authorino that can be configured in an <code>AuthConfig</code> can be found in the official <a href="https://github.com/Kuadrant/authorino/blob/main/install/crd/authorino.kuadrant.io_authconfigs.yaml">spec</a> of the custom resource definition.</p>
+<p>A full specification of all features of Authorino that can be configured in an <code>AuthConfig</code> can be found in the official <a href="../install/crd/authorino.kuadrant.io_authconfigs.yaml">spec</a> of the custom resource definition.</p>
 <p>You can also learn about Authorino features by using the <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#explain"><code>kubectl explain</code></a> command in a Kubernetes cluster where the Authorino CRD has been installed. E.g. <code>kubectl explain authconfigs.spec.authentication.credentials</code>.</p>
 <h2 id="common-feature-json-paths-selector">Common feature: JSON paths (<a href="https://pkg.go.dev/github.com/kuadrant/authorino/api/v1beta2?utm_source=gopls#ValueOrSelector"><code>selector</code></a>)</h2>
 <p>The first feature of Authorino to learn about is a common functionality used in the specification of many other features. <em>JSON paths</em> are selectors of data from the <a href="../architecture/#the-authorization-json">Authorization JSON</a> used in parts of an AuthConfig for referring to dynamic values of each authorization request.</p>
@@ -4506,7 +4552,6 @@ base64-encodes or decodes a string value. E.g. <code>auth.identity.username.deco
 <p>Authorino can verify X.509 certificates presented by clients for authentication on the request to the protected APIs, at application level.</p>
 <p>Trusted root Certificate Authorities (CA) are stored in Kubernetes Secrets labeled according to selectors specified in the AuthConfig, watched and indexed by Authorino. Make sure to create proper <code>kubernetes.io/tls</code>-typed Kubernetes Secrets, containing the public certificates of the CA stored in either a <code>tls.crt</code> or <code>ca.crt</code> entry inside the secret.</p>
 <p>Trusted root CA secrets must be created in the same namespace of the <code>AuthConfig</code> (default) or <code>spec.authentication.x509.allNamespaces</code> must be set to <code>true</code> (only works with <a href="../architecture/#cluster-wide-vs-namespaced-instances">cluster-wide Authorino instances</a>).</p>
-<p>Client certificates must include x509 v3 extension specifying 'Client Authentication' extended key usage.</p>
 <p>The identity object resolved out of a client x509 certificate is equal to the subject field of the certificate, and it serializes as JSON within the Authorization JSON usually as follows:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>{
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    &quot;auth&quot;: {
