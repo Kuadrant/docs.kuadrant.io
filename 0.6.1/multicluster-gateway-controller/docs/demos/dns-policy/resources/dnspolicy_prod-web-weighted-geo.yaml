@@ -1,0 +1,24 @@
+apiVersion: kuadrant.io/v1alpha1
+kind: DNSPolicy
+metadata:
+  name: prod-web
+  namespace: multi-cluster-gateways
+spec:
+  targetRef:
+    name: prod-web
+    group: gateway.networking.k8s.io
+    kind: Gateway
+  loadBalancing:
+    geo:
+      defaultGeo: US
+    weighted:
+      defaultWeight: 120
+      custom:
+        - weight: 10
+          selector:
+            matchLabels:
+              kuadrant.io/lb-attribute-custom-weight: AWS
+        - weight: 255
+          selector:
+            matchLabels:
+              kuadrant.io/lb-attribute-custom-weight: GCP
