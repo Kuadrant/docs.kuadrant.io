@@ -33,4 +33,4 @@ The original cluster from the single cluster setup will keep its name of just `k
 
 The next step is to setup and use the policies provided by Kuadrant. 
 
-[Secure, Protect and Connect your Gateway](https://docs.kuadrant.io/kuadrant-operator/doc/user-guides/secure-protect-connect/)
+[Secure, Protect and Connect your Gateway](https://docs.kuadrant.io/kuadrant-operator/doc/user-guides/secure-protect-connect-single-multi-cluster/)
