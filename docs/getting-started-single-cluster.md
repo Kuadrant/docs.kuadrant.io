@@ -65,6 +65,6 @@ This will setup a single kind cluster, install Istio and install Kuadrant. Once 
 
 The next step is to setup and use the policies provided by Kuadrant. 
 
-[Secure, Protect and Connect your Gateway](https://docs.kuadrant.io/kuadrant-operator/doc/user-guides/secure-protect-connect/)
+[Secure, Protect and Connect your Gateway](kuadrant-operator/doc/user-guides/secure-protect-connect.md)
 
 
