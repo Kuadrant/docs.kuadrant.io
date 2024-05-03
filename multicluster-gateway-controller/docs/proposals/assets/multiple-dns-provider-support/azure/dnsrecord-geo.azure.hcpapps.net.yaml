@@ -1,0 +1,72 @@
+apiVersion: kuadrant.io/v1alpha1
+kind: DNSRecord
+metadata:
+  name: dnsrecord-geo.azure.hcpapps.net
+spec:
+  endpoints:
+    - dnsName: dnsrecord-geo.azure.hcpapps.net
+      recordTTL: 60
+      recordType: CNAME
+      setIdentifier: NA
+      providerSpecific:
+        - name: "azure/geolocation-regional-grouping"
+          value: "North America"
+      labels:
+        id: NA
+      targets:
+        - dnsrecord-geo.na.azure.hcpapps.net
+    - dnsName: dnsrecord-geo.azure.hcpapps.net
+      recordTTL: 60
+      recordType: CNAME
+      setIdentifier: EU
+      providerSpecific:
+        - name: "azure/geolocation-regional-grouping"
+          value: "Europe"
+      labels:
+        id: EU
+      targets:
+        - dnsrecord-geo.eu.azure.hcpapps.net
+    - dnsName: dnsrecord-geo.na.azure.hcpapps.net
+      recordTTL: 60
+      recordType: A
+      setIdentifier: 172.31.0.1
+      providerSpecific:
+        - name: "azure/weight"
+          value: "60"
+      labels:
+        id: 172.31.0.1
+      targets:
+        - 172.31.0.1
+    - dnsName: dnsrecord-geo.na.azure.hcpapps.net
+      recordTTL: 60
+      recordType: A
+      setIdentifier: 172.31.0.2
+      providerSpecific:
+        - name: "azure/weight"
+          value: "60"
+      labels:
+        id: 172.31.0.2
+      targets:
+        - 172.31.0.2
+    - dnsName: dnsrecord-geo.eu.azure.hcpapps.net
+      recordTTL: 60
+      recordType: A
+      setIdentifier: 172.31.0.3
+      providerSpecific:
+        - name: "azure/weight"
+          value: "60"
+      labels:
+        id: 172.31.0.3
+      targets:
+        - 172.31.0.3
+    - dnsName: dnsrecord-geo.eu.azure.hcpapps.net
+      recordTTL: 60
+      recordType: A
+      setIdentifier: 172.31.0.4
+      providerSpecific:
+        - name: "azure/weight"
+          value: "60"
+      labels:
+        id: 172.31.0.4
+      targets:
+        - 172.31.0.4
