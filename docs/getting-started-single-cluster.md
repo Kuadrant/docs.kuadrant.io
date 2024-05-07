@@ -50,6 +50,7 @@ If you want to make use of the Kuadrant `DNSPolicy` you should setup the followi
 
 ```bash
 export KUADRANT_REF=main
+export ISTIO_INSTALL_SAIL=true
 ```
 
 ### Set Up a kind cluster and install Kuadrant
@@ -59,7 +60,7 @@ Run the following:
 ```bash
 curl "https://raw.githubusercontent.com/kuadrant/kuadrant-operator/${KUADRANT_REF}/hack/quickstart-setup.sh" | bash
 ```
-This will setup a single kind cluster, install Istio and install Kuadrant. Once this completes you should be able to move on to using the various policy apis offered by Kuadrant. To use `project sail` to install istio, ensure you set the  `ISTIO_INSTALL_SAIL=true` env var before executing the quick start.
+This will setup a single kind cluster, install Istio and install Kuadrant. Once this completes you should be able to move on to using the various policy apis offered by Kuadrant.
 
 ### What's Next
 
