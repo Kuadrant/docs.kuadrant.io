@@ -48,25 +48,32 @@ Stable releases should be tagged (e.g. `git tag 0.6.1`).
 
 ### Stable releases:
 
-To mark a new release as stable:
+A scenario:
+
+- 0.6.1 was the stable release
+- 0.7.0 has just been released, and we want to mark it as stable
+- Changes on the `HEAD` of `main` will continue to flow to the `dev` release
+
+To mark this new release as stable:
 
 - Branch from `main`, e.g. `git checkout -b 0.7.x`
-- Update `mkdocs.yml` to update the `branch=` refs to tags for all components
-- Tag the repo (e.g. `git tag 0.7.0 && git push --tags <upstream-origin>`)
-- Set latest release as default:
-  - Update `mkdocs.yml` to set latest default release:
-    ```yaml
-    extra:
-      version:
-        provider: mike
-        default:
-          - 0.7.0
-    ```
-  - Update refs in `gh-pages` branch:
-    - `mike set-default 0.7.0`
-  - Update changes, push deploy:
-    - `mike deploy 0.7.0 -t "0.7.0" --push`
-  - Update refs in `main`
+- In your release branch, e.g. `0.7.x`:
+  - Update `mkdocs.yml` to update the `branch=` refs to tags for all components
+  - Tag the repo (e.g. `git tag 0.7.0 && git push --tags <upstream-origin>`)
+  - Set latest release as default:
+    - Update `mkdocs.yml` to set latest default release:
+      ```yaml
+      extra:
+        version:
+          provider: mike
+          default:
+            - 0.7.0
+      ```
+    - Update refs in `gh-pages` branch:
+      - `mike set-default 0.7.0`
+    - Update changes, push deploy:
+      - `mike deploy 0.7.0 -t "0.7.0" --push`
+- Back on `main`:
     - `git checkout main`
     - Update `mkdocs.yml`:
       ```yaml
