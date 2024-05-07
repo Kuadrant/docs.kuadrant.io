@@ -56,10 +56,11 @@ A scenario:
 
 To mark this new release as stable:
 
+> **Note:** This is quite manual right now. It will be automated soon.
+
 - Branch from `main`, e.g. `git checkout -b 0.7.x`
 - In your release branch, e.g. `0.7.x`:
   - Update `mkdocs.yml` to update the `branch=` refs to tags for all components
-  - Tag the repo (e.g. `git tag 0.7.0 && git push --tags <upstream-origin>`)
   - Set latest release as default:
     - Update `mkdocs.yml` to set latest default release:
       ```yaml
@@ -69,10 +70,12 @@ To mark this new release as stable:
           default:
             - 0.7.0
       ```
+    - Update `export KUADRANT_REF=v0.7.0` in `getting-started-single-cluster.md`
     - Update refs in `gh-pages` branch:
       - `mike set-default 0.7.0`
     - Update changes, push deploy:
       - `mike deploy 0.7.0 -t "0.7.0" --push`
+  - Tag the repo (e.g. `git tag 0.7.0 && git push --tags <upstream-origin>`)
 - Back on `main`:
     - `git checkout main`
     - Update `mkdocs.yml`:
@@ -81,6 +84,32 @@ To mark this new release as stable:
         - 0.7.0
       ```
     - `mike deploy dev -t "dev" --push`
+
+## Re-release docs
+
+Generally not advised given how `mike` works, but if you need to patch an existing release (in this example, `0.7.0`):
+
+- Fetch: `git fetch --all` (need latest gh-pages branch)
+- Check out the release branch:`git checkout 0.7.x`
+- Make your changes
+- `mike deploy 0.7.0 -t "0.7.0" --push`
+- You may receive an error like:
+  ```bash
+  error: failed to push branch gh-pages to origin:
+  To github.com:Kuadrant/docs.kuadrant.io.git
+   ! [rejected]        gh-pages -> gh-pages (non-fast-forward)
+  error: failed to push some refs to 'github.com:Kuadrant/docs.kuadrant.io.git'
+  hint: Updates were rejected because a pushed branch tip is behind its remote
+  hint: counterpart. Check out this branch and integrate the remote changes
+  hint: (e.g. 'git pull ...') before pushing again.
+  hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+  ```
+- If this happens:
+  - `git checkout gh-pages`
+  - `git rebase upstream gh-pages`
+  - Re-run: `mike deploy 0.7.0 -t "0.7.0" --push`
+  - Delete and re-tag
+
 
 ## Deploying
 This is deployed via GitHub Pages, on merge to `main`.
