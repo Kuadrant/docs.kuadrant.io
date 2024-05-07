@@ -46,6 +46,27 @@ Dev releases from main will always be deployed to "x.x.x (dev)" as a fast channe
 
 Stable releases should be tagged (e.g. `git tag 0.6.1`).
 
+### Stable releases:
+
+To mark a new release as stable:
+
+- Branch from `main`
+- Update `mkdocs.yml` to update the `branch=` refs to tags for all components
+- Tag the repo (e.g. `git tag 0.7.0 && git push --tags <upstream-origin>`)
+- Set latest release as default:
+  - Update `mkdocs.yml` to set latest default release:
+    ```yaml
+    extra:
+      version:
+        provider: mike
+        default:
+          - 0.7.0
+    ```
+  - Update refs in `gh-pages` branch:
+    - `mike set-default 0.7.0`
+  - Update changes, push deploy:
+    - `mike deploy 0.7.0 -t "0.7.0" --push`
+
 ## Deploying
 This is deployed via GitHub Pages, on merge to `main`.
 
