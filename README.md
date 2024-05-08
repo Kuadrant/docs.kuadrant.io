@@ -10,19 +10,22 @@ And dependencies
 ## Running Locally
 `mkdocs serve -s`
 
-The docs should then be available locally from http://127.0.0.1:8000/
+The docs should then be available locally from http://127.0.0.1:8000/, from the current branch.
+
+If you'd like to test multi-versioning, run locally with the `mike` equivalent:
+
+`mike serve`
 
 **Note:** `mkdocs` will automatically clone component repositories as configured via `mkdocs.yml`.
 
 ## Building
-`mkdocs build -s`
 
-Outputs static content to `site`.
+See `.github/workflows/build.yaml`
 
 ## `mike`
 We use `mike` for multi-versioned docs. It's quite straight-forward: it works by adding new commits to the `gh-pages` branch each time you run `mike deploy`. It takes care of setting up the aliases, and leaves previously "deployed" docs untouched, in their old folders. These old deployments shouldn't be touched, but can be re-built if necessary.
 
-It  Some useful commands:
+Some useful commands:
 
 List releases:
 
@@ -40,9 +43,16 @@ Run a multi-version release:
 
 `mike serve -S`
 
+## Mike aliases
+
+We have two aliases in use:
+
+- `latest` which should always point at the latest, stable released docs (e.g. `latest` - > `0.7.0`)
+- `dev` which always points at the `HEAD` of main, for publishing unstable/pre-release docs quickly
+
 ## Releases
 
-Dev releases from main will always be deployed to "x.x.x (dev)" as a fast channel. The `latest` docs version will always be a known, stable release. The version picker defaults to the latest stable release - newer docs can be found by looking at the latest dev release.
+Dev releases from main will always be deployed to `dev` as a fast channel. The `latest` docs version will always be a known, stable release. The version picker defaults to the latest stable release - newer docs can be found by looking at the latest dev release.
 
 Stable releases should be tagged (e.g. `git tag 0.6.1`).
 
@@ -71,6 +81,8 @@ To mark this new release as stable:
             - 0.7.0
       ```
     - Update `export KUADRANT_REF=v0.7.0` in `getting-started-single-cluster.md`
+    - Update the `latest` alias to point to our newest stable release:
+      - `mike deploy --update-aliases 0.7.0 latest`
     - Update refs in `gh-pages` branch:
       - `mike set-default 0.7.0`
     - Update changes, push deploy:
@@ -106,7 +118,7 @@ Generally not advised given how `mike` works, but if you need to patch an existi
   ```
 - If this happens:
   - `git checkout gh-pages`
-  - `git rebase upstream gh-pages`
+  - `git rebase upstream gh-pages` or (to reset) `git reset --hard upstream/gh-pages`
   - Re-run: `mike deploy 0.7.0 -t "0.7.0" --push`
   - Delete and re-tag
 
