@@ -49,7 +49,7 @@ If you want to make use of the Kuadrant `DNSPolicy` you should setup the followi
 ### Set the release you want to use 
 
 ```bash
-export KUADRANT_REF=main
+export KUADRANT_REF=0.7.1
 export ISTIO_INSTALL_SAIL=true
 ```
 
@@ -61,6 +61,11 @@ Run the following:
 curl "https://raw.githubusercontent.com/kuadrant/kuadrant-operator/${KUADRANT_REF}/hack/quickstart-setup.sh" | bash
 ```
 This will setup a single kind cluster, install Istio and install Kuadrant. Once this completes you should be able to move on to using the various policy apis offered by Kuadrant.
+
+### Clean Up
+
+To ensure that any DNS records are removed, you should remove any `DNSPolicy` and `TLSPolicy` resources before deleting the local cluster.
+
 
 ### What's Next
 
