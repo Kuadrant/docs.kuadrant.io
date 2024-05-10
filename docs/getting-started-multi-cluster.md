@@ -29,6 +29,10 @@ You can re-run the script multiple times to add more clusters.
 Each cluster will have a number suffix in the name. For example: `kuadrant-local-1`, `kuadrant-local-2`, `kuadrant-local-3`.
 The original cluster from the single cluster setup will keep its name of just `kuadrant-local`.
 
+### Clean Up
+
+To ensure that any DNS records are removed, you should remove any `DNSPolicy` and `TLSPolicy` resources before deleting the local cluster.
+
 ### What's Next
 
 The next step is to setup and use the policies provided by Kuadrant. 
