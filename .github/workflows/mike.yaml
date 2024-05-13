@@ -1,0 +1,62 @@
+name: Mike Deployment Trigger
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  handle_comment:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issue_comment' && (startsWith(github.event.comment.body, '/mike deploy') || startsWith(github.event.comment.body, '/mike help'))
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+
+      - name: Install Requirements
+        run: pip install -r requirements.txt
+
+      - name: Validate User
+        if: startsWith(github.event.comment.body, '/mike deploy')
+        run: |
+          if [[ "$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/collaborators/${{ github.actor }}/permission")" \
+            =~ (\"permission\": \"admin\") ]]; then
+            echo "User is authorized to deploy."
+          else
+            echo "::error::User is not authorized to deploy."
+            exit 1
+          fi
+
+      - name: Setup Docs Deploy
+        if: startsWith(github.event.comment.body, '/mike deploy')
+        run: |
+          git config --global user.name "Docs Deploy"
+          git config --global user.email "kuadrant@googlegroups.com"
+
+      - name: Deploy Docs
+        if: steps.validate_user.outcome == 'success'
+        run: |
+          VERSION=$(echo "${{ github.event.comment.body }}" | cut -d " " -f 3)
+          BRANCH=$(echo "${{ github.event.comment.body }}" | cut -d "=" -f 2)
+          mike deploy $VERSION -t "$VERSION" --push --branch $BRANCH
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Provide Help
+        if: startsWith(github.event.comment.body, '/mike help')
+        run: |
+          echo "To deploy documentation using mike, use the command format:" > comment.md
+          echo "/mike deploy [version] sourceBranch=[branch]" >> comment.md
+          echo "Example: /mike deploy 0.7.0 sourceBranch=0.7.x" >> comment.md
+          gh pr comment --body "$(cat comment.md)" --repo ${{ github.repository }} --comment-id ${{ github.event.comment.id }}
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
