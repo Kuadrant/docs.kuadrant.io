@@ -18,6 +18,11 @@ If you'd like to test multi-versioning, run locally with the `mike` equivalent:
 
 **Note:** `mkdocs` will automatically clone component repositories as configured via `mkdocs.yml`.
 
+## /mike GitHub action
+```
+/mike help
+```
+
 ## Building
 
 See `.github/workflows/build.yaml`
