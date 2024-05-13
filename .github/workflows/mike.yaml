@@ -7,20 +7,24 @@ on:
 jobs:
   handle_comment:
     runs-on: ubuntu-latest
-    if: github.event_name == 'issue_comment' && (startsWith(github.event.comment.body, '/mike deploy') || startsWith(github.event.comment.body, '/mike help'))
     steps:
-      - name: Validate User and Setup for Deploy
-        if: startsWith(github.event.comment.body, '/mike deploy')
+      - name: Checkout Repo
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v4
+        if: startsWith(github.event.comment.body, '/mike deploy') || startsWith(github.event.comment.body, '/mike help')
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
         if: startsWith(github.event.comment.body, '/mike deploy')
         with:
           python-version: 3.x
-      - run: pip install -r requirements.txt
+      
+      - name: Install Requirements
+        run: pip install -r requirements.txt
         if: startsWith(github.event.comment.body, '/mike deploy')
-      - run: |
+      
+      - name: Validate User
+        if: startsWith(github.event.comment.body, '/mike deploy')
+        run: |
           if [[ "$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/${{ github.repository }}/collaborators/${{ github.actor }}/permission")" \
             =~ (\"permission\": \"admin\") ]]; then
@@ -31,18 +35,22 @@ jobs:
             echo "::set-output name=can_deploy::false"
           fi
         id: validate_user
-        if: startsWith(github.event.comment.body, '/mike deploy')
-      - run: |
+
+      - name: Setup Git Config
+        if: steps.validate_user.outputs.can_deploy == 'true'
+        run: |
           git config --global user.name "Docs Deploy"
           git config --global user.email "kuadrant@googlegroups.com"
+      
+      - name: Deploy Docs
         if: steps.validate_user.outputs.can_deploy == 'true'
-      - run: |
+        run: |
           VERSION=$(echo "${{ github.event.comment.body }}" | cut -d " " -f 3)
           BRANCH=$(echo "${{ github.event.comment.body }}" | cut -d "=" -f 2)
           mike deploy $VERSION -t "$VERSION" --push --branch $BRANCH
-        if: steps.validate_user.outputs.can_deploy == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
       - name: Provide Help
         if: startsWith(github.event.comment.body, '/mike help')
         run: |
@@ -50,6 +58,5 @@ jobs:
           echo "/mike deploy [version] sourceBranch=[branch]" >> comment.md
           echo "Example: /mike deploy 0.7.0 sourceBranch=0.7.x" >> comment.md
           gh issue comment ${{ github.event.issue.number }} --body "$(cat comment.md)"
-
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
