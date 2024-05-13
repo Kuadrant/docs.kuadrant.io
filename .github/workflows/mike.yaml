@@ -54,6 +54,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Comment Deployment Status
+        if: steps.validate_user.outputs.can_deploy == 'true'
+        run: |
+          VERSION=$(echo "${{ github.event.comment.body }}" | cut -d " " -f 3)
+          echo "Deployed $VERSION to https://docs.kuadrant.io/$VERSION" > comment.md
+          gh issue comment ${{ github.event.issue.number }} --body "$(cat comment.md)"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Provide Help
         if: startsWith(github.event.comment.body, '/mike help')
         run: |
