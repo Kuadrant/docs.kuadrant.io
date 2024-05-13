@@ -49,7 +49,7 @@ If you want to make use of the Kuadrant `DNSPolicy` you should setup the followi
 ### Set the release you want to use 
 
 ```bash
-export KUADRANT_REF=v0.7.0
+export KUADRANT_REF=v0.7.1
 export ISTIO_INSTALL_SAIL=true
 ```
 
