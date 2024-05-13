@@ -1,0 +1,4447 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://docs.kuadrant.io/0.7.0/authorino/">
+      
+      
+        <link rel="prev" href="../kuadrant-operator/doc/logging/">
+      
+      
+        <link rel="next" href="../authorino-operator/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.14">
+    
+    
+      
+        <title>Overview - Kuadrant Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.10ba22f1.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#authorino" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  These docs are unstable, from our development branches (main).
+  <a href="../.."> 
+    <strong>Click here to go to latest, stable docs.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Kuadrant Documentation" class="md-header__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+      
+  <img src="../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kuadrant Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Overview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kuadrant/docs.kuadrant.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Kuadrant Documentation" class="md-nav__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+      
+  <img src="../assets/images/logo.png" alt="logo">
+
+    </a>
+    Kuadrant Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kuadrant/docs.kuadrant.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started-single-cluster/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Single-Cluster
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started-multi-cluster/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Multi-Cluster
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/docs/design/architectural-overview-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/install/install-openshift/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenShift
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Concepts and APIs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Concepts and APIs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DNSPolicy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            DNSPolicy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/reference/dnspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/user-guides/gateway-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway DNS for Cluster Operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    ManagedZone
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            ManagedZone
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dns-operator/docs/managedzone/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dns-operator/docs/reference/managedzone/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TLSPolicy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            TLSPolicy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/reference/tlspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    AuthPolicy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            AuthPolicy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/auth/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/reference/authpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    RateLimitPolicy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            RateLimitPolicy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/reference/ratelimitpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    How-to Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            How-to Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/user-guides/secure-protect-connect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Secure, connect and protect - Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/user-guides/secure-protect-connect-single-multi-cluster/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Secure, connect and protect - OpenShift
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DNS configuration and load balancing
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            DNS configuration and load balancing
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/dnshealthchecks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNS Health Checks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multicluster-gateway-controller/docs/how-to/multicluster-loadbalanced-dnspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Advanced DNS based LoadBalancing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TLS configuration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            TLS configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/user-guides/gateway-tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway TLS for Cluster Operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Authentication & Authorization
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            Authentication & Authorization
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/user-guides/auth-for-app-devs-and-platform-engineers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AuthPolicy for Application Developers and Platform Engineers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/kubernetes-tokenreview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication with Kubernetes tokens (TokenReview API)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/api-key-authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication with API keys
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/mtls-authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication with X.509 certificates and mTLS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/oidc-jwt-authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenID Connect Discovery and authentication with JWTs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/oauth2-token-introspection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0 token introspection (RFC 7662)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/passing-credentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Passing credentials (`Authorization` header, cookie headers and others)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/http-basic-authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP "Basic" Authentication (RFC 7235)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/anonymous-access/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Anonymous access
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/token-normalization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token normalization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/edge-authentication-architecture-festival-wristbands/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Edge Authentication Architecture (EAA)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/external-metadata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fetching auth metadata from external sources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/oidc-user-info/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenID Connect UserInfo
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/resource-level-authorization-uma/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Resource-level authorization with User-Managed Access (UMA) resource registry
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/json-pattern-matching-authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Simple pattern-matching authorization policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/oidc-rbac/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenID Connect (OIDC) and Role-Based Access Control (RBAC) with Keycloak
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/opa-authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Open Policy Agent (OPA) Rego policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/kubernetes-subjectaccessreview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes RBAC for service authorization (SubjectAccessReview API)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/keycloak-authorization-services/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorization with Keycloak Authorization Services
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/authzed/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Integration with Authzed/SpiceDB
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/injecting-data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Injecting data in the request
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/authenticated-rate-limiting-envoy-dynamic-metadata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Emitting Envoy Dynamic Metadata
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/deny-with-redirect-to-login/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redirecting to a login page
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/envoy-jwt-authn-and-authorino/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reusing Envoy built-in authentication filter result
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/validating-webhook/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Setting up Kuadrant authorization service as a Validating Webhook
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_6" id="__nav_6_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Rate Limiting
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_6">
+            <span class="md-nav__icon md-icon"></span>
+            Rate Limiting
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multicluster-gateway-controller/docs/how-to/simple-ratelimitpolicy-for-app-developers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RateLimitPolicy for Application Developers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/user-guides/gateway-rl-for-cluster-operators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RateLimitPolicy for Platform Engineers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/user-guides/authenticated-rl-for-app-developers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limiting for Application Developers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/user-guides/authenticated-rl-with-jwt-and-k8s-authnz/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limiting with JWTs and Kubernetes RBAC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_7" id="__nav_6_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Observability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_7">
+            <span class="md-nav__icon md-icon"></span>
+            Observability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/observability/metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Metrics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/observability/examples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dashboards and Alerts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/observability/tracing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tracing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication and Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_8" id="__nav_6_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Multicluster Gateways with OCM
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_8">
+            <span class="md-nav__icon md-icon"></span>
+            Multicluster Gateways with OCM
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started-multi-cluster-ocm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started with OCM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multicluster-gateway-controller/docs/gateways/define-and-place-a-gateway/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Distributing Gateways with OCM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multicluster-gateway-controller/docs/gateways/gateway-deletion/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway Deletion
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multicluster-gateway-controller/docs/how-to/multicluster-gateways-walkthrough/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Multicluster Walkthrough
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multicluster-gateway-controller/docs/installation/control-plane-installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Control Plane installation with Existing OCM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multicluster-gateway-controller/docs/installation/service-protection-installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Service Protection installation with Existing OCM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Experimental
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Experimental
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-quickstart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Quickstart
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Proposals
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Proposals
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_1" id="__nav_8_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Request For Comments (RFC)
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_1">
+            <span class="md-nav__icon md-icon"></span>
+            Request For Comments (RFC)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/rfcs/0001-rlp-v2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0001: RateLimitPolicy API "v2"
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/rfcs/0002-well-known-attributes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0002: Well-known Attributes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/rfcs/0003-dns-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0003: DNSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/rfcs/0004-policy-status/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0004: Policy Status
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/rfcs/0005-single-cluster-dnspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0005: Single Cluster DNSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/rfcs/0006-kuadrant_sub_components_configurations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0006: Configuration of Kuadrant Sub Components
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/rfcs/0007-policy-sync-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0007: Policy Sync
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/rfcs/0008-kuadrant-release-process/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0008: Kuadrant Release Process
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/rfcs/0009-defaults-and-overrides/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0009: Defaults & Overrides
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_2" id="__nav_8_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Multicluster Gateway Controller
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_2">
+            <span class="md-nav__icon md-icon"></span>
+            Multicluster Gateway Controller
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_2_1" id="__nav_8_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Multiple DNS Provider Support
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            Multiple DNS Provider Support
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multicluster-gateway-controller/docs/proposals/multiple-dns-provider-support/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multicluster-gateway-controller/docs/proposals/assets/multiple-dns-provider-support/google/google/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Google DNS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multicluster-gateway-controller/docs/proposals/assets/multiple-dns-provider-support/aws/aws/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS DNS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multicluster-gateway-controller/docs/proposals/assets/multiple-dns-provider-support/azure/azure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure DNS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multicluster-gateway-controller/docs/proposals/status-aggregation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Aggregation of Status Conditions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Components
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Components
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_1" id="__nav_9_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Kuadrant Operator
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_1">
+            <span class="md-nav__icon md-icon"></span>
+            Kuadrant Operator
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/development/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrant-operator/doc/logging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Logging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_9_2" id="__nav_9_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Authorino
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9_2">
+            <span class="md-nav__icon md-icon"></span>
+            Authorino
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting started
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use-cases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How it works
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-of-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      List of features
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      FAQ
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benchmarks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benchmarks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contributing
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authorino-operator/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorino Operator
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/hello-world/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hello World
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_2_7" id="__nav_9_2_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Advanced features
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced features
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/host-override/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Host override via context extension
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/user-guides/sharding/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reducing the operational space: sharding, noise and multi-tenancy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_3" id="__nav_9_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Limitador
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3">
+            <span class="md-nav__icon md-icon"></span>
+            Limitador
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../limitador/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../limitador/doc/how-it-works/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How it works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../limitador/doc/topologies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topologies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_3_4" id="__nav_9_3_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Server
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Server
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../limitador/limitador-server/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../limitador/limitador-server/kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../limitador/limitador-server/sandbox/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sandbox
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../limitador/limitador/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Crate
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_3_6" id="__nav_9_3_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Limitador Operator
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Limitador Operator
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../limitador-operator/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../limitador-operator/doc/storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../limitador-operator/doc/rate-limit-headers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rate limit headers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../limitador-operator/doc/development/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../limitador-operator/doc/logging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Logging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_4" id="__nav_9_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Multicluster Gateway Controller
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_4">
+            <span class="md-nav__icon md-icon"></span>
+            Multicluster Gateway Controller
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multicluster-gateway-controller/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_4_2" id="__nav_9_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Contribution
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Contribution
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multicluster-gateway-controller/docs/contribution/vscode-debugging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Debugging with VSCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_5" id="__nav_9_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    kuadrantctl
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_5">
+            <span class="md-nav__icon md-icon"></span>
+            kuadrantctl
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrantctl/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrantctl/doc/generate-gateway-api-httproute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generating Gateway API HTTPRoutes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrantctl/doc/generate-kuadrant-auth-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generating Kuadrant AuthPolicies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrantctl/doc/generate-kuadrant-rate-limit-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generating Kuadrant RateLimitPolicies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrantctl/doc/kuadrantctl-ci-cd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CI/CD with kuadrantctl & Tekton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrantctl/doc/openapi-apicurio/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Apicurio Studio with Kuadrant OAS extensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kuadrantctl/doc/openapi-openshift-dev-spaces/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using OpenShift Dev Spaces with Kuadrant OAS extensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting started
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use-cases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How it works
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-of-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      List of features
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      FAQ
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benchmarks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benchmarks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contributing
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/kuadrant/authorino/blob/main/README.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="authorino">Authorino<a class="headerlink" href="#authorino" title="Permanent link">&para;</a></h1>
+<p><strong>Kubernetes-native authorization service for tailor-made Zero Trust API security.</strong><br/></p>
+<p>A lightweight Envoy external authorization server fully manageable via Kubernetes Custom Resources.<br/>
+JWT authentication, API key, mTLS, pattern-matching authz, OPA, K8s SA tokens, K8s RBAC, external metadata fetching, and <a href="#list-of-features">more</a>, with minimum to no coding at all, no rebuilding of your applications.</p>
+<p>Authorino is not about inventing anything new. It's about making the best things about auth out there easy and simple to use. Authorino is multi-tenant, it's cloud-native and it's open source.</p>
+<p><a href="http://www.apache.org/licenses/LICENSE-2.0"><img alt="License" src="https://img.shields.io/badge/license-Apache--2.0-blue.svg" /></a>
+<a href="https://github.com/Kuadrant/authorino/actions/workflows/go-test.yaml"><img alt="Unit Tests" src="https://github.com/Kuadrant/authorino/actions/workflows/go-test.yaml/badge.svg" /></a>
+<a href="https://github.com/Kuadrant/authorino/actions/workflows/e2e-test.yaml"><img alt="End-to-end Tests" src="https://github.com/Kuadrant/authorino/actions/workflows/e2e-test.yaml/badge.svg" /></a>
+<a href="https://github.com/Kuadrant/authorino/actions/workflows/integration-test.yaml"><img alt="Smoke Tests" src="https://github.com/Kuadrant/authorino/actions/workflows/integration-test.yaml/badge.svg" /></a></p>
+<h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Deploy with the <a href="https://github.com/kuadrant/authorino-operator">Authorino Operator</a></li>
+<li>Setup Envoy proxy and the <a href="https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes/ext_authz">external authorization</a> filter</li>
+<li>Apply an Authorino <a href="docs/architecture/#the-authorino-authconfig-custom-resource-definition-crd"><code>AuthConfig</code></a> custom resource</li>
+<li>Obtain an authentication token and start sending requests</li>
+</ol>
+<p>The full <a href="docs/getting-started/">Getting started</a> page of the docs provides details for the steps above, as well as information about requirements and next steps.</p>
+<p>Or try out our <a href="docs/user-guides/hello-world/">Hello World</a> example.</p>
+<p>For general information about protecting your service using Authorino, check out the <a href="docs/">docs</a>.</p>
+<h2 id="use-cases">Use-cases<a class="headerlink" href="#use-cases" title="Permanent link">&para;</a></h2>
+<p>The <a href="docs/user-guides/">User guides</a> section of the docs gathers several AuthN/AuthZ use-cases as well as the instructions to implement them using Authorino. A few examples are:</p>
+<ul>
+<li><a href="docs/user-guides/oidc-jwt-authentication/">Authentication with JWTs and OpenID Connect Discovery</a></li>
+<li><a href="docs/user-guides/api-key-authentication/">Authentication with API keys</a></li>
+<li><a href="docs/user-guides/kubernetes-tokenreview/">Authentication with Kubernetes SA tokens (TokenReview API)</a></li>
+<li><a href="docs/user-guides/mtls-authentication/">Authentication with X.509 certificates and mTLS</a></li>
+<li><a href="docs/user-guides/json-pattern-matching-authorization/">Authorization with JSON pattern-matching rules (e.g. JWT claims, request attributes, etc)</a></li>
+<li><a href="docs/user-guides/opa-authorization/">Authorization with Open Policy Agent (OPA) Rego policies</a></li>
+<li><a href="docs/user-guides/kubernetes-subjectaccessreview/">Authorization using the Kubernetes RBAC (rules stated in K8s <code>Role</code> and <code>RoleBinding</code> resources)</a></li>
+<li><a href="docs/user-guides/external-metadata/">Authorization using auth metadata fetched from external sources</a></li>
+<li><a href="docs/user-guides/oidc-rbac/">OIDC authentication and RBAC with Keycloak JWTs</a></li>
+<li><a href="docs/user-guides/injecting-data/">Injecting auth data into the request (HTTP headers, Wristband tokens, rate-limit metadata, etc)</a></li>
+<li><a href="docs/user-guides/validating-webhook/">Authorino for the Kubernetes control plane (aka Authorino as ValidatingWebhook service)</a></li>
+</ul>
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
+<p>Authorino enables hybrid API security, with usually no code changes required to your application, tailor-made for your own combination of authentication standards and protocols and authorization policies of choice.</p>
+<p>Authorino implements <a href="https://www.envoyproxy.io">Envoy Proxy</a>'s <a href="https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes/ext_authz">external authorization</a> gRPC protocol, and is a part of Red Hat <a href="https://github.com/kuadrant">Kuadrant</a> architecture.</p>
+<p>Under the hood, Authorino is based on Kubernetes <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources">Custom Resource Definitions</a> and the <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/operator">Operator pattern</a>.</p>
+<p><strong>Bootstrap and configuration:</strong></p>
+<ol>
+<li>Deploy the service/API to be protected (<em>"Upstream"</em>), Authorino and Envoy</li>
+<li>Write and apply an Authorino <code>AuthConfig</code> Custom Resource associated to the public host of the service</li>
+</ol>
+<p><strong>Request-time:</strong></p>
+<p><picture>
+  <source media="(prefers-color-scheme: light)" srcset="http://www.plantuml.com/plantuml/png/VP51IyH038NlyojoNyIx1rbTLeI2NMJreXwodRGTx4ngaX7ghtTGALMXrvVllS1xMpKKot5mc8rJZYSIj-EaEPB0sINiqpjFS06tn-C1XDuogRbliLolilKi8N4Xkll3pdN2UVoIIqWREWS02-gFvP4aj1C4Jyc2JUlm3LdJGoH3ZuRhx3wrB0q15kq3HXv24qZNFTSv31wQhCOHX7JafBHksU4mdB1vLKV9kmMsAAwkpk_g2fxJvb_sNEF3g2Q4iU1FTVNogspO07fF7df2Jw9kXiiNcAVwMMZEtbBoPTPF">
+  <img alt="How it works" src="http://www.plantuml.com/plantuml/dpng/VP51IyH038NlyojoNyIx1rbTLeI2NMJreXwodRGTx4ngaX7ghtTGALMXrvVllS1xMpKKot5mc8rJZYSIj-EaEPB0sINiqpjFS06tn-C1XDuogRbliLolilKi8N4Xkll3pdN2UVoIIqWREWS02-gFvP4aj1C4Jyc2JUlm3LdJGoH3ZuRhx3wrB0q15kq3HXv24qZNFTSv31wQhCOHX7JafBHksU4mdB1vLKV9kmMsAAwkpk_g2fxJvb_sNEF3g2Q4iU1FTVNogspO07fF7df2Jw9kXiiNcAVwMMZEtbBoPTPF">
+</picture></p>
+<ol>
+<li>A user or service account (<em>"Consumer"</em>) obtains an access token to consume resources of the <em>Upstream</em> service, and sends a request to the <em>Envoy</em> ingress endpoint</li>
+<li>The Envoy proxy establishes fast gRPC connection with <em>Authorino</em> carrying data of the HTTP request (context info), which causes Authorino to lookup for an <code>AuthConfig</code> Custom Resource to enforce (pre-cached)</li>
+<li><strong>Identity verification (authentication) phase</strong> - Authorino verifies the identity of the consumer, where at least one authentication method/identity provider must go through</li>
+<li><strong>External metadata phase</strong> - Authorino fetches additional metadata for the authorization from external sources (optional)</li>
+<li><strong>Policy enforcement (authorization) phase</strong> - Authorino takes as input a JSON composed out of context data, resolved identity object and fetched additional metadata from previous phases, and triggers the evaluation of user-defined authorization policies</li>
+<li><strong>Response (metadata-out) phase</strong> – Authorino builds user-defined custom responses (dynamic JSON objects and/or <em>Festival Wristband</em> OIDC tokens), to be supplied back to the client and/or upstream service within added HTTP headers or as Envoy Dynamic Metadata (optional)</li>
+<li><strong>Callbacks phase</strong> – Authorino sends callbacks to specified HTTP endpoints (optional)</li>
+<li>Authorino and Envoy settle the authorization protocol with either OK/NOK response</li>
+<li>If authorized, Envoy triggers other HTTP filters in the chain (if any), pre-injecting eventual dynamic metadata returned by Authorino, and ultimately redirects the request to the <em>Upstream</em></li>
+<li>The <em>Upstream</em> serves the requested resource to the consumer</li>
+</ol>
+<details>
+<summary>More</summary>
+<p>The <a href="docs/architecture/">Architecture</a> section of the docs covers details of protecting your APIs with Envoy and Authorino, including information about topology (centralized gateway, centralized authorization service or sidecars), deployment modes (cluster-wide reconciliation vs. namespaced instances), an specification of Authorino's <a href="docs/architecture/#the-authorino-authconfig-custom-resource-definition-crd"><code>AuthConfig</code></a> Custom Resource Definition (CRD) and more.</p>
+<p>You will also find in that section information about what happens in request-time (aka Authorino's <a href="docs/architecture/#the-auth-pipeline-aka-enforcing-protection-in-request-time">Auth Pipeline</a>) and how to leverage the <a href="docs/architecture/#the-authorization-json">Authorization JSON</a> for writing policies, dynamic responses and other features of Authorino.</p>
+</details>
+<h2 id="list-of-features">List of features<a class="headerlink" href="#list-of-features" title="Permanent link">&para;</a></h2>
+<table>
+  <thead>
+    <tr>
+      <th colspan="2">Feature</th>
+      <th>Stage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="9">Identity verification & authentication</td>
+      <td>JOSE/JWT validation <small>(OpenID Connect)</small></td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>OAuth 2.0 Token Introspection <small>(opaque tokens)</small></td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>Kubernetes TokenReview <small>(SA tokens)</small></td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>OpenShift User-echo endpoint</td>
+      <td>In analysis</td>
+    </tr>
+    <tr>
+      <td>API key authentication</td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>mTLS authentication</td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>HMAC authentication</td>
+      <td>Planned (<a href="https://github.com/kuadrant/authorino/issues/9">#9</a>)</td>
+    </tr>
+    <tr>
+      <td>Plain (resolved beforehand and injected in the payload)</td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>Anonymous access</td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td rowspan="3">Ad hoc external metadata fetching</td>
+      <td>OpenID Connect User Info</td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>UMA-protected resource attributes</td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>HTTP GET/GET-by-POST</td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td rowspan="5">Policy enforcement/authorization</td>
+      <td>JSON pattern matching <small>(e.g. JWT claims, request attributes checking)</small></td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>OPA/Rego policies <small>(inline and pull from registry)</small></td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>Kubernetes SubjectAccessReview <small>(resource and non-resource attributes)</small></td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>Authzed/SpiceDB</td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>Keycloak Authorization Services (UMA-compliant Authorization API)</td>
+      <td>In analysis</td>
+    </tr>
+    <tr>
+      <td rowspan="4">Custom responses</td>
+      <td>Festival Wristbands tokens <small>(token normalization, Edge Authentication Architecture)</small></td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>JSON injection <small>(header injection, Envoy Dynamic Metadata)</small></td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>Plain text value <small>(header injection)</small></td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>Custom response status code/messages <small>(e.g. redirect)</small></td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>Callbacks</td>
+      <td>HTTP endpoints</td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td rowspan="6">Caching</td>
+      <td>OpenID Connect and User-Managed Access configs</td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>JSON Web Keys (JWKs) and JSON Web Key Sets (JWKS)</td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>Access tokens</td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>External metadata</td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>Precompiled Rego policies</td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td>Policy evaluation</td>
+      <td><i>Ready</i></td>
+    </tr>
+    <tr>
+      <td colspan="2">Sharding <small>(lookup performance, multitenancy)</small></td>
+      <td><i>Ready</i></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>For a detailed description of the features above, refer to the <a href="docs/features/">Features</a> page.</p>
+<h2 id="faq">FAQ<a class="headerlink" href="#faq" title="Permanent link">&para;</a></h2>
+<details>
+<summary><strong>Do I need to deploy Envoy?</strong></summary>
+<p>Authorino is built from the ground up to work well with Envoy. It is strongly recommended that you leverage Envoy along side Authorino. That said, it is possible to use Authorino without Envoy.</p>
+<p>Authorino implements Envoy's <a href="https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes/ext_authz">external authorization</a> gRPC protocol and therefore will accept any client request that complies.</p>
+<p>Authorino also provides a second interface for <a href="docs/architecture/#raw-http-authorization-interface">raw HTTP authorization</a>, suitable for using with Kubernetes ValidatingWebhook and other integrations (e.g. other proxies).</p>
+<p>The only attribute of the authorization request that is strictly required is the host name. (See <a href="docs/architecture/#host-lookup">Host lookup</a> for more information.) The other attributes, such as method, path, headers, etc, might as well be required, depending on each <code>AuthConfig</code>. In the case of the gRPC <a href="https://pkg.go.dev/github.com/envoyproxy/go-control-plane/envoy/service/auth/v3?utm_source=gopls#CheckRequest"><code>CheckRequest</code></a> method, the host is supplied in <code>Attributes.Request.Http.Host</code> and alternatively in <code>Attributes.ContextExtensions["host"]</code>. For raw HTTP authorization requests, the host must be supplied in <code>Host</code> HTTP header.</p>
+<p>Check out <a href="https://docs.kuadrant.io/kuadrant-operator">Kuadrant</a> for easy-to-use Envoy and Authorino deployment &amp; configuration for API management use-cases, using Kubernetes Custom Resources.</p>
+</details>
+<details>
+<summary><strong>Is Authorino an Identity Provider (IdP)?</strong></summary>
+<p>No, Authorino is not an Identity Provider (IdP). Neither it is an auth server of any kind, such as an OAuth2 server, an OpenID Connect (OIDC) server, a Single Sign On (SSO) server.</p>
+<p>Authorino is not an identity broker either. It can verify access tokens from multiple trusted sources of identity and protocols, but it will not negotiate authentication flows for non-authenticated access requests. Some tricks nonetheless can be done, for example, to <a href="docs/user-guides/deny-with-redirect-to-login/">redirect unauthenticated users to a login page</a>.</p>
+<p>For an excellent auth server that checks all the boxes above, check out <a href="https://www.keycloak.org">Keycloak</a>.</p>
+</details>
+<details>
+<summary><strong>How does Authorino compare to Keycloak?</strong></summary>
+<p>Keycloak is a proper auth server and identity provider (IdP). It offers a huge set of features for managing identities, identity sources with multiple user federation options, and a platform for authentication and authorization services.</p>
+<p>Keycloak exposes authenticators that implement protocols such as OpenID Connect. The is a one-time flow that establishes the delegation of power to a client, for a short period of time. To be consistent with Zero Trust security, you want a validator to verify the short-lived tokens in every request that tries to reach your protected service/resource. This step that will repeat everytime could save heavy looking up into big tables of tokens and leverage cached authorization policies for fast in-memory evaluation. This is where Authorino comes in.</p>
+<p>Authorino verifies and validates Keycloak-issued ID tokens. OpenID Connect Discovery is used to request and cache JSON Web Key Sets (JWKS), used to verify the signature of the tokens without having to contact again with the Keycloak server, or looking in a table of credentials. Moreover, user long-lived credentials are safe, rather than spread in hops across the network.</p>
+<p>You can also use Keycloak for storing auth-relevant resource metadata. These can be fetched by Authorino in request-time, to be combined into your authorization policies. See Keycloak Authorization Services and User-Managed Access (UMA) support, as well as Authorino <a href="docs/features/#user-managed-access-uma-resource-registry-metadatauma">UMA external metadata</a> counter-part.</p>
+</details>
+<details>
+<summary><strong>Why doesn't Authorino handle OAuth flows?</strong></summary>
+<p>It has to do with trust. OAuth grants are supposed to be negotiated directly between whoever owns the long-lived credentials in one hand (user, service accounts), and the trustworthy auth server that receives those credentials – ideally with minimum number of hops in the middle – and exchanges them for short-lived access tokens, on the other end.</p>
+<p>There are use-cases for Authorino running in the edge (e.g. Edge Authentication Architecture and token normalization), but in most cases Authorino should be seen as a last-mile component that provides decoupled identity verification and authorization policy enforcement to protected services in request-time. In this sense, the OAuth grant is a pre-flight exchange that happens once and as direct and safe as possible, whereas auth enforcement is kept lightweight and efficient.</p>
+</details>
+<details>
+<summary><strong>Where does Authorino store users and roles?</strong></summary>
+<p>Authorino does not store users, roles, role bindings, access control lists, or any raw authorization data. Authorino handles policies, where even these policies can be stored elsewhere (as opposed to stated inline inside of an Authorino <code>AuthConfig</code> CR).</p>
+<p>Authorino evaluates policies for stateless authorization requests. Any additional context is either resolved from the provided payload or static definitions inside the policies. That includes extracting user information from a JWT or client TLS certificate, requesting user metadata from opaque authentication tokens (e.g. API keys) to the trusted sources actually storing that content, obtaining synchronous HTTP metadata from services, etc.</p>
+<p>In the case of authentication with API keys, as well as its derivative to model HTTP Basic Auth, user data are stored in Kubernetes <code>Secret</code>s. The secret's keys, annotations and labels are usually the structures used to organize the data that later a policy evaluated in Authorino may require. Strictly, those are not Authorino data structures.</p>
+</details>
+<details>
+<summary><strong>Can't I just use Envoy JWT Authentication and RBAC filters?</strong></summary>
+<p>Envoy's <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/http/jwt_authn/v3/config.proto.html">JWT Authentication</a> works pretty much similar to Authorino's <a href="docs/features/#jwt-verification-authenticationjwt">JOSE/JWT verification and validation for OpenID Connect</a>. In both cases, the JSON Web Key Sets (JWKS) to verify the JWTs are auto-loaded and cached to be used in request-time. Moreover, you can configure for details such as where to extract the JWT from the HTTP request (header, param or cookie) and do some cool tricks regarding how dynamic metadata based on JWT claims can be injected to consecutive filters in the chain.</p>
+<p>However, in terms of authorization, while Envoy's implementation essentially allows to check for the list of audiences (<code>aud</code> JWT claim), Authorino opens up for a lot more options such as pattern-matching rules with operators and conditionals, built-in OPA and other methods of evaluating authorization policies.</p>
+<p>Authorino also allows to combine JWT authentication with other types of authentication to support different sources of identity and groups of users such as API keys, Kubernetes tokens, OAuth opaque tokens , etc.</p>
+<p>In summary, Envoy's JWT Authentication and Envoy RBAC filter are excellent solutions for simple use-cases where JWTs from one single issuer is the only authentication method you are planning to support and limited to no authorization rules suffice. On the other hand, if you need to integrate more identity sources, different types of authentication, authorization policies, etc, you might to consider Authorino.</p>
+</details>
+<details>
+<summary><strong>Should I use Authorino if I already have Istio configured?</strong></summary>
+<p>Istio is a great solution for managing service meshes. It delivers an excellent platform with an interesting layer of abstraction on top of Envoy proxy's virtual omnipresence within the mesh.</p>
+<p>There are lots of similarities, but also complementarity between Authorino and Istio and <a href="https://istio.io/latest/docs/concepts/security/#authorization">Istio Authorization</a> in special.</p>
+<p>Istio provides a simple way to enable features that are, in many cases, features of Envoy, such as authorization based on JWTs, authorization based on attributes of the request, and activation of external authorization services, without having to deal with complex Envoy config files. See <a href="https://doc.kuadrant.io/kuadrant-operator">Kuadrant</a> for a similar approach, nonetheless leveraging features of Istio as well.</p>
+<p>Authorino is an Envoy-compatible external authorization service. One can use Authorino with or without Istio.</p>
+<p>In particular, <a href="https://istio.io/latest/docs/reference/config/security/authorization-policy/">Istio Authorization Policies</a> can be seen, in terms of functionality and expressiveness, as a subset of one type of authorization policies supported by Authorino, the <a href="docs/features/#pattern-matching-authorization-authorizationpatternmatching">pattern-matching authorization</a> policies. While Istio, however, is heavily focused on specific use cases of API Management, offering a relatively limited list of <a href="https://istio.io/latest/docs/reference/config/security/conditions/">supported attribute conditions</a>, Authorino is more generic, allowing to express authorization rules for a wider spectrum of use cases – ACLs, RBAC, ABAC, etc, pretty much counting on any attribute of the Envoy payload, identity object and external metadata available.</p>
+<p>Authorino also provides built-in OPA authorization, several other methods of authentication and identity verification (e.g. Kubernetes token validation, API key-based authentication, OAuth token introspection, OIDC-discoverable JWT verification, etc), and features like fetching of external metadata (HTTP services, OIDC userinfo, UMA resource data), token normalization, wristband tokens and dynamic responses. These all can be used independently or combined, in a simple and straightforward Kubernetes-native fashion.</p>
+<p>In summary, one might value Authorino when looking for a policy enforcer that offers:</p>
+<ol>
+<li>multiple supported methods and protocols for rather hybrid authentication, encompassing future and legacy auth needs;</li>
+<li>broader expressiveness and more functionalities for the authorization rules;</li>
+<li>authentication and authorization in one single declarative manifest;</li>
+<li>capability to fetch auth metadata from external sources on-the-fly;</li>
+<li>built-in OPA module;</li>
+<li>easy token normalization and/or aiming for Edge Authentication Architecture (EAA).</li>
+</ol>
+<p>The good news is that, if you have Istio configured, then you have Envoy and the whole platform for wiring Authorino up if you want to. 😉</p>
+</details>
+<details>
+<summary><strong>Do I have to learn OPA/Rego language to use Authorino?</strong></summary>
+<p>No, you do not. However, if you are comfortable with <a href="https://www.openpolicyagent.org/docs/latest/policy-language/">Rego</a> from Open Policy Agent (OPA), there are some quite interesting things you can do in Authorino, just as you would in any OPA server or OPA plugin, but leveraging Authorino's <a href="docs/features/#open-policy-agent-opa-rego-policies-authorizationopa">built-in OPA module</a> instead. Authorino's OPA module is compiled as part of Authorino's code directly from the Golang packages, and imposes no extra latency to the evaluation of your authorization policies. Even the policies themselves are pre-compiled in reconciliation-time, for fast evaluation afterwards, in request-time.</p>
+<p>On the other hand, if you do not want to learn Rego or in any case would like to combine it with declarative and Kubernetes-native authN/authZ spec for your services, Authorino does complement OPA with at least two other methods for expressing authorization policies – i.e. <a href="docs/features/#pattern-matching-authorization-authorizationpatternmatching">pattern-matching authorization</a> and <a href="docs/features/#kubernetes-subjectaccessreview-authorizationkubernetessubjectaccessreview">Kubernetes SubjectAccessReview</a>, the latter allowing to rely completely on the Kubernetes RBAC.</p>
+<p>You break down, mix and combine these methods and technolgies in as many authorization policies as you want, potentially applying them according to specific conditions. Authorino will trigger the evaluation of concurrent policies in parallel, aborting the context if any of the processes denies access.</p>
+<p>Authorino also packages well-established industry standards and protocols for identity verification (JOSE/JWT validation, OAuth token introspection, Kubernetes TokenReview) and ad-hoc request-time metadata fetching (OIDC userinfo, User-Managed Access (UMA)), and corresponding layers of caching, without which such functionalities would have to be implemented by code.</p>
+</details>
+<details>
+<summary><strong>Can I use Authorino to protect non-REST APIs?</strong></summary>
+<p>Yes, you can. In principle, the API format (REST, gRPC, GraphQL, etc) should not matter for the authN/authZ enforcer. There are a couple points to consider though.</p>
+<p>While REST APIs are designed in a way that, in most cases, information usually needed for the evaluation of authorization policies are available in the metadata of the HTTP request (method, path, headers), other API formats quite often will require processing of the HTTP body. By default, Envoy's external authorization HTTP filter will not forward the body of the request to Authorino; to change that, enable the <code>with_request_body</code> option in the Envoy configuration for the external authorization filter. E.g.:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">with_request_body</span><span class="p">:</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">max_request_bytes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">allow_partial_message</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">pack_as_bytes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span></code></pre></div>
+<p>Additionally, when enabling the request body passed in the payload to Authorino, parsing of the content should be of concern as well. Authorino provides easy access to attributes of the HTTP request, parsed as part of the <a href="docs/architecture/#the-authorization-json">Authorization JSON</a>, however the body of the request is passed as string and should be parsed by the user according to each case.</p>
+<p>Check out Authorino <a href="docs/features/#open-policy-agent-opa-rego-policies-authorizationopa">OPA authorization</a> and the Rego <a href="https://www.openpolicyagent.org/docs/latest/policy-reference/#encoding">Encoding</a> functions for options to parse serialized JSON, YAML and URL-encoded params. For XML transformation, an external parsing service connected via Authorino's <a href="docs/features/#http-getget-by-post-metadatahttp">HTTP GET/GET-by-POST external metadata</a> might be required.</p>
+</details>
+<details>
+<summary><strong>Can I run Authorino other than on Kubernetes?</strong></summary>
+<p>As of today, no, you cannot, or at least it wouldn't suit production requirements.</p>
+</details>
+<details>
+<summary><strong>Do I have to be admin of the cluster to install Authorino?</strong></summary>
+<p>To install the Authorino Custom Resource Definition (CRD) and to define cluster roles required by the Authorino service, admin privilege to the Kubernetes cluster is required. This step happens only once per cluster and is usually equivalent to installing the <a href="https://docs.kuadrant.io/authorino-operator">Authorino Operator</a>.</p>
+<p>Thereafter, deploying instances of the Authorino service and applying <code>AuthConfig</code> custom resources to a namespace depend on the permissions set by the cluster administrator – either directly by editing the bindings in the cluster's RBAC, or via options of the operator. In most cases, developers will be granted permissions to create and manage <code>AuthConfig</code>s, and sometimes to deploy their own instances of Authorino.</p>
+</details>
+<details>
+<summary><strong>Is it OK to store AuthN/AuthZ configs as Kubernetes objects?</strong></summary>
+<p>Authorino's API checks all the bullets to be <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#should-i-add-a-custom-resource-to-my-kubernetes-cluster">aggregated to the Kubernetes cluster APIs</a>, and therefore using Custom Resource Definition (CRD) and the <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/operator">Operator pattern</a> has always been an easy design decision.</p>
+<p>By merging the definitions of service authN/authZ to the control plane, Authorino <code>AuthConfig</code> resources can be thought as extensions of the specs of the desired state of services regarding the data flow security. The Authorino custom controllers, built-in into the authorization service, are the agents that read from that desired state and reconcile the processes operating in the data plane.</p>
+<p>Authorino is declarative and seamless for developers and cluster administrators managing the state of security of the applications running in the server, used to tools such as <code>kubectl</code>, the Kubernetes UI and its dashboards. Instead of learning about yet another configuration API format, Authorino users can jump straight to applying and editing YAML or JSON structures they already know, in a way that things such as <code>spec</code>, <code>status</code>, <code>namespace</code> and <code>labels</code> have the meaning they are expected to have, and docs are as close as <code>kubectl explain</code>. Moreover, Authorino does not pile up any other redundant layers of APIs, event-processing, RBAC, transformation and validation webhooks, etc. It is Kubernetes in its best.</p>
+<p>In terms of scale, Authorino <code>AuthConfig</code>s should grow proportionally to the number of protected services, virtually limited by nothing but the Kubernetes API data storage, while <a href="docs/architecture/#cluster-wide-vs-namespaced-instances">namespace division</a> and <a href="docs/architecture/#sharding">label selectors</a> help adjust horizontally and keep distributed.</p>
+<p>In other words, there are lots of benefits of using Kubernetes custom resources and custom controllers, and unless you are planning on bursting your server with more services than it can keep record, it is totally 👍 to store your AuthN/AuthZ configs as cluster API objects.</p>
+</details>
+<details>
+<summary><strong>Can I use Authorino for rate limiting?</strong></summary>
+<p>You can, but you shouldn't. Check out instead <a href="https://github.com/kuadrant/limitador">Limitador</a>, for simple and efficient global rate limiting. Combine it with Authorino and Authorino's support for <a href="docs/features/#envoy-dynamic-metadata">Envoy Dynamic Metadata</a> for authenticated rate limiting.</p>
+</details>
+<h2 id="benchmarks">Benchmarks<a class="headerlink" href="#benchmarks" title="Permanent link">&para;</a></h2>
+<p><strong>Configuration of the tests (Authorino features):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Performance test</th>
+<th style="text-align: center;">Identity</th>
+<th style="text-align: center;">Metadata</th>
+<th style="text-align: center;">Authorization</th>
+<th style="text-align: center;">Response</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ReconcileAuthConfig</code></td>
+<td style="text-align: center;">OIDC/JWT</td>
+<td style="text-align: center;">UserInfo, UMA</td>
+<td style="text-align: center;">OPA<br/><sup>(inline Rego)</sup></td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr>
+<td><code>AuthPipeline</code></td>
+<td style="text-align: center;">OIDC/JWT</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">JSON pattern-matching<br/><sup>(JWT claim check)</sup></td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr>
+<td><code>APIKeyAuthn</code></td>
+<td style="text-align: center;">API key</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">N/A</td>
+</tr>
+<tr>
+<td><code>JSONPatternMatchingAuthz</code></td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">JSON pattern-matching</td>
+<td style="text-align: center;">N/A</td>
+</tr>
+<tr>
+<td><code>OPAAuthz</code></td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">OPA<br/><sup>(inline Rego)</sup></td>
+<td style="text-align: center;">N/A</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Platform:</strong> linux/amd64<br/>
+<strong>CPU:</strong> Intel® Xeon® Platinum 8370C 2.80GHz<br/>
+<strong>Cores:</strong> 1, 4, 10<br/></p>
+<p><strong>Results:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ReconcileAuthConfig:
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>        │   sec/op    │     B/op     │  allocs/op  │
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>*         1.533m ± 2%   264.4Ki ± 0%   6.470k ± 0%
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>*-4       1.381m ± 6%   264.5Ki ± 0%   6.471k ± 0%
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>*-10      1.563m ± 5%   270.2Ki ± 0%   6.426k ± 0%
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>geomean   1.491m        266.4Ki        6.456k
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>AuthPipeline:
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>        │   sec/op    │     B/op     │ allocs/op  │
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>*         388.0µ ± 2%   80.70Ki ± 0%   894.0 ± 0%
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>*-4       348.4µ ± 5%   80.67Ki ± 2%   894.0 ± 3%
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>*-10      356.4µ ± 2%   78.97Ki ± 0%   860.0 ± 0%
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>geomean   363.9µ        80.11Ki        882.5
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>APIKeyAuthn:
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>        │   sec/op    │    B/op      │ allocs/op  │
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>*         3.246µ ± 1%   480.0 ± 0%     6.000 ± 0%
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>*-4       3.111µ ± 0%   480.0 ± 0%     6.000 ± 0%
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>*-10      3.091µ ± 1%   480.0 ± 0%     6.000 ± 0%
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>geomean   3.148µ        480.0          6.000
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>OPAAuthz vs JSONPatternMatchingAuthz:
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>        │   OPAAuthz   │      JSONPatternMatchingAuthz       │
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>        │    sec/op    │   sec/op     vs base                │
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>*         87.469µ ± 1%   1.797µ ± 1%  -97.95% (p=0.000 n=10)
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>*-4       95.954µ ± 3%   1.766µ ± 0%  -98.16% (p=0.000 n=10)
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>*-10      96.789µ ± 4%   1.763µ ± 0%  -98.18% (p=0.000 n=10)
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>geomean    93.31µ        1.775µ       -98.10%
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>        │   OPAAuthz    │      JSONPatternMatchingAuthz      │
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>        │     B/op      │    B/op     vs base                │
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>*         28826.00 ± 0%   64.00 ± 0%  -99.78% (p=0.000 n=10)
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>*-4       28844.00 ± 0%   64.00 ± 0%  -99.78% (p=0.000 n=10)
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>*-10      28862.00 ± 0%   64.00 ± 0%  -99.78% (p=0.000 n=10)
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>geomean    28.17Ki        64.00       -99.78%
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>        │   OPAAuthz   │      JSONPatternMatchingAuthz      │
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>        │  allocs/op   │ allocs/op   vs base                │
+</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>*         569.000 ± 0%   2.000 ± 0%  -99.65% (p=0.000 n=10)
+</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>*-4       569.000 ± 0%   2.000 ± 0%  -99.65% (p=0.000 n=10)
+</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>*-10      569.000 ± 0%   2.000 ± 0%  -99.65% (p=0.000 n=10)
+</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>geomean     569.0        2.000       -99.65%
+</span></code></pre></div></p>
+<h2 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">&para;</a></h2>
+<p>If you are interested in contributing to Authorino, please refer to the <a href="docs/contributing/">Developer's guide</a> for info about the stack and requirements, workflow, policies and Code of Conduct.</p>
+<p>Join us on the <a href="https://kubernetes.slack.com/archives/C05J0D0V525">#kuadrant</a> channel in the Kubernetes Slack workspace, for live discussions about the roadmap and more.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer id="footer" class="footer">
+  <div class="copyright">
+    © Copyright 2024 <strong><span>Kuadrant contributors</span></strong>. All Rights Reserved.
+  </div>
+
+  <div class="sponsored-by">
+    <p>
+      Sponsored by: <a href="https://www.redhat.com"><img src="/assets/images/redhat.png" class="logo" alt="Red Hat logo"></a>
+    </p>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.code.copy"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.7.0", "latest"], "provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.bd41221c.min.js"></script>
+      
+    
+  </body>
+</html>
