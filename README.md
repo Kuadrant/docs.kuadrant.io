@@ -16,14 +16,16 @@ If you'd like to test multi-versioning, run locally with the `mike` equivalent:
 
 `mike serve`
 
+This will serve docs directly from the `gh-pages` branch, with multi-versioning. For general local development and testing of changes, you probably want `mkdocs serve`.
+
 **Note:** `mkdocs` will automatically clone component repositories as configured via `mkdocs.yml`.
 
 ## Building
 
-See `.github/workflows/build.yaml`
+See `.github/workflows/build.yaml` & `.github/workflows/manual-deploy.yaml`
 
 ## `mike`
-We use `mike` for multi-versioned docs. It's quite straight-forward: it works by adding new commits to the `gh-pages` branch each time you run `mike deploy`. It takes care of setting up the aliases, and leaves previously "deployed" docs untouched, in their old folders. These old deployments shouldn't be touched, but can be re-built if necessary.
+We use `mike` for multi-versioned docs. It's quite straight-forward: it works by adding new commits to the `gh-pages` branch each time you run `mike deploy`. It takes care of setting up the aliases, and leaves previously "deployed" docs untouched, in their old folders. These old deployments ideally shouldn't be touched, but can be re-built if necessary.
 
 Some useful commands:
 
@@ -57,6 +59,8 @@ Dev releases from main will always be deployed to `dev` as a fast channel. The `
 Stable releases should be tagged (e.g. `git tag 0.6.1`).
 
 ### Stable releases:
+
+This describes the manual steps needed to create a new release and mark that as stable.
 
 A scenario:
 
@@ -101,6 +105,21 @@ To mark this new release as stable:
 
 Generally not advised given how `mike` works, but if you need to patch an existing release (in this example, `0.7.0`):
 
+### Via CI (recommended)
+To re-release docs via CI:
+
+- Go to `Actions` -> `Re-deploy via mike` -> `Run Workflow`
+  - For version to deploy, pick an existing version (e.g. `0.7.0`)
+  - For source branch, pick a release branch (e.g. `0.7.x`) or `main`
+  - This will:
+    - Checkout your source branch
+    - Build your docs (new changes will be pulled in via git-refs in `mkdocs.yml`)
+    - And run the equivalent of `mike deploy 0.7.0 -t "0.7.0" --push`
+
+### Manually
+
+To do this manually:
+
 - Fetch: `git fetch --all` (need latest gh-pages branch)
 - Check out the release branch:`git checkout 0.7.x`
 - Make your changes
@@ -121,6 +140,9 @@ Generally not advised given how `mike` works, but if you need to patch an existi
   - `git rebase upstream gh-pages` or (to reset) `git reset --hard upstream/gh-pages`
   - Re-run: `mike deploy 0.7.0 -t "0.7.0" --push`
   - Delete and re-tag
+
+
+
 
 
 ## Deploying
