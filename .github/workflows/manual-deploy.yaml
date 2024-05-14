@@ -1,0 +1,29 @@
+name: Manual Deployment
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The version to deploy'
+        required: true
+        default: '0.7.0'
+      sourceBranch:
+        description: 'Source Branch'
+        required: true
+        default: '0.7.x'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Echo Inputs
+        run: |
+          echo "Version: ${{ github.event.inputs.version }}"
+          echo "sourceBranch: ${{ github.event.inputs.sourceBranch }}"
