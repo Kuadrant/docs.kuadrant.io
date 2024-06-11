@@ -490,6 +490,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../kuadrant-operator/doc/reference/dnspolicy/" class="md-nav__link">
         
   
@@ -3844,10 +3865,12 @@
 reconciliation and healthiness with its operator managed services, i.e., the Rate Limit service ("Limitador") and
 the Auth service ("Authorino"), referred to as "Kuadrant services".</p>
 <p>As a consequence, misleading information is shared causing unexpected errors and flawed assumptions.</p>
-<p>The following are some issues reported in relation to the aforementioned problems:
-* https://github.com/Kuadrant/kuadrant-operator/issues/87
-* https://github.com/Kuadrant/kuadrant-operator/issues/96
-* https://github.com/Kuadrant/kuadrant-operator/issues/140</p>
+<p>The following are some issues reported in relation to the aforementioned problems:</p>
+<ul>
+<li>https://github.com/Kuadrant/kuadrant-operator/issues/87</li>
+<li>https://github.com/Kuadrant/kuadrant-operator/issues/96</li>
+<li>https://github.com/Kuadrant/kuadrant-operator/issues/140</li>
+</ul>
 <h1 id="guide-level-explanation">Guide-level explanation<a class="headerlink" href="#guide-level-explanation" title="Permanent link">&para;</a></h1>
 <p>This design for setting the status of the Kuadrant policy CRs is divided in 2 stages, where each stage could be
 applied/developed in order and would reflect valuable and accurate information with different degrees of acuity.</p>
@@ -3856,22 +3879,28 @@ applied/developed in order and would reflect valuable and accurate information w
 <h2 id="stage-1">Stage 1<a class="headerlink" href="#stage-1" title="Permanent link">&para;</a></h2>
 <p><strong>State of the policy CR defined by: application, validation, and reconciliation of it</strong></p>
 <p>The main signalization at Stage 1 is about whether a policy CR has been <code>Accepted</code> or not.</p>
-<p>States rationale:
-* <code>Accepted</code>: This state is reached after the <code>Validation</code> and <code>Reconciliation</code> event has being successfully passed.
-* <code>Invalid</code>: When the <code>Validation</code> process encounters an error, this state will be set.
-* <code>TargetNotFound</code>: This state will be set when the <code>Reconciliation</code> process encounters an error.
-* <code>Conflicted</code>: This state will be set when the <code>Reconciliation</code> process encounters an error.</p>
+<p>States rationale:</p>
+<ul>
+<li><code>Accepted</code>: This state is reached after the <code>Validation</code> and <code>Reconciliation</code> event has being successfully passed.</li>
+<li><code>Invalid</code>: When the <code>Validation</code> process encounters an error, this state will be set.</li>
+<li><code>TargetNotFound</code>: This state will be set when the <code>Reconciliation</code> process encounters an error.</li>
+<li><code>Conflicted</code>: This state will be set when the <code>Reconciliation</code> process encounters an error.</li>
+</ul>
 <p><img alt="" src="../0004-policy-status-assets/policy_status_4.png" /></p>
-<p>Notes:
-* States from the Stage 2 could be implemented as well, but only relying on <em>Validation</em> and <em>Reconciliation</em> events.</p>
+<p>Notes:</p>
+<ul>
+<li>States from the Stage 2 could be implemented as well, but only relying on <em>Validation</em> and <em>Reconciliation</em> events.</li>
+</ul>
 <h2 id="stage-2">Stage 2<a class="headerlink" href="#stage-2" title="Permanent link">&para;</a></h2>
 <p><strong>Final state of the policy CR defined by: health check with the Kuadrant services (post-reconciliation)</strong></p>
 <p>The <code>Enforced</code> type is introduced to capture the difference between a policy been <em>reconciled</em> and it's been <em>enforced</em>
 at the service.</p>
-<p>States rationale:
-* <code>Enforced</code>: After a successful response of the <code>Service Probe</code>, this states communicates the policy is finally enforced.
-* <code>PartiallyEnforced</code>: This state will be set when the <code>Reconciliation</code> event encounters an overlap with other policies.
-* <code>Overridden</code>: This state will be set when the <code>Reconciliation</code> event invalidates the policy because another one takes precedence.</p>
+<p>States rationale:</p>
+<ul>
+<li><code>Enforced</code>: After a successful response of the <code>Service Probe</code>, this states communicates the policy is finally enforced.</li>
+<li><code>PartiallyEnforced</code>: This state will be set when the <code>Reconciliation</code> event encounters an overlap with other policies.</li>
+<li><code>Overridden</code>: This state will be set when the <code>Reconciliation</code> event invalidates the policy because another one takes precedence.</li>
+</ul>
 <p><img alt="" src="../0004-policy-status-assets/policy_status_5.png" /></p>
 <h1 id="reference-level-explanation">Reference-level explanation<a class="headerlink" href="#reference-level-explanation" title="Permanent link">&para;</a></h1>
 <p>In general, the new states and conditions align with <a href="https://gateway-api.sigs.k8s.io/geps/gep-713/#conditions">GEP-713</a>.</p>
@@ -3972,6 +4001,7 @@ the final design proposed.</p>
   ![](0004-policy-status-assets/policy_status_1.png)
 
   States rationale:
+
   * `Created`: The initial state. It announces that the policy has successfully being created, the operator acknowledges it.
   * `Applied`: This state is reached after the `Validation` event has being successfully passed.
   * `Failed`: This one would be set when the `Validation` process encounters an error. This could be either condition's failed/error
@@ -3987,6 +4017,7 @@ the final design proposed.</p>
   ![](0004-policy-status-assets/policy_status_2.png)
 
   States rationale:
+
   * `Applied`: The __Applied__ state would not be final, and would be preceding a `Reconciliation` event.
   * `Reconciled`: It communicates that the policy has successfully being reconciled, and any K8s object or required CR has been updated.
   * `Failed`: This one would be reached when either of `Validation` and `Reconcilation` processes have encounter any errors.
@@ -3999,6 +4030,7 @@ the final design proposed.</p>
   ![](0004-policy-status-assets/policy_status_3.png)
 
   States rationale:
+
   * `Reconciled`: This state would precede the "Health check" process  graphed as `Service Probe` event.
   * `Enforced`: After a successful response of the `Service Probe`, this states communicates the policy is finally enforced.
   This is the final top-level condition.

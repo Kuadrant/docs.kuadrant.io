@@ -490,6 +490,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../kuadrant-operator/doc/reference/dnspolicy/" class="md-nav__link">
         
   
@@ -3842,20 +3863,26 @@
 <h1 id="motivation">Motivation<a class="headerlink" href="#motivation" title="Permanent link">&para;</a></h1>
 <p>As of Kuadrant Operator <a href="https://github.com/Kuadrant/kuadrant-operator/releases/tag/v0.6.0">v0.6.0</a>, Kuadrant policy resources that have hierarchical effect across the tree of network objects (Gateway, HTTPRoute), or what is known as <a href="https://gateway-api.sigs.k8s.io/geps/gep-713/#inherited-policy-attachment-its-all-about-the-defaults-and-overrides">Inherited Policies</a>, provide only <em>limited support for setting defaults</em> and <em>no support for overrides</em> at all.</p>
 <p>The above is notably the case of the AuthPolicy and the RateLimitPolicy v1beta2 APIs, shipped with the aforementioned version of Kuadrant. These kinds of policies can be attached to Gateways or to HTTPRoutes, with cascading effects through the hierarchy that result in one <em>effective policy</em> per gateway-route combination. This effective policy is either the policy attached to the Gateway or, if present, the one attached to the HTTRoute, thus conforming with a strict case of <em>implicit defaults set at the level of the gateway</em>.</p>
-<p>Enhancing the Kuadrant Inherited Policy CRDs, so the corresponding policy instances can declare <code>defaults</code> and <code>overrides</code> stanzas, is imperative:
-1. to provide full support for D/O along the lines proposed by <a href="https://gateway-api.sigs.k8s.io/geps/gep-713">GEP-713</a> (to be superseded by <a href="https://github.com/kubernetes-sigs/gateway-api/pull/2813">GEP-2649</a><sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>) of the Kubernetes Gateway API special group (base use cases);
-2. to extend D/O support to other derivative cases, learnt to be just as important for platform engineers and app developers who require more granular policy interaction on top of the base cases;
-3. to support more sophisticated hierarchies with other kinds of network objects and/or multiples policies targetting at the same level of the hierarchy (possibly, in the future.)</p>
+<p>Enhancing the Kuadrant Inherited Policy CRDs, so the corresponding policy instances can declare <code>defaults</code> and <code>overrides</code> stanzas, is imperative:</p>
+<ol>
+<li>to provide full support for D/O along the lines proposed by <a href="https://gateway-api.sigs.k8s.io/geps/gep-713">GEP-713</a> (to be superseded by <a href="https://github.com/kubernetes-sigs/gateway-api/pull/2813">GEP-2649</a><sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>) of the Kubernetes Gateway API special group (base use cases);</li>
+<li>to extend D/O support to other derivative cases, learnt to be just as important for platform engineers and app developers who require more granular policy interaction on top of the base cases;</li>
+<li>to support more sophisticated hierarchies with other kinds of network objects and/or multiples policies targetting at the same level of the hierarchy (possibly, in the future.)</li>
+</ol>
 <h1 id="guide-level-explanation">Guide-level explanation<a class="headerlink" href="#guide-level-explanation" title="Permanent link">&para;</a></h1>
 <h2 id="conceptualization-and-user-story">Conceptualization and User story<a class="headerlink" href="#conceptualization-and-user-story" title="Permanent link">&para;</a></h2>
-<p>The base use cases for Defaults &amp; Overrides (D/O) are:
-- <strong>Defaults (D):</strong> policies declared lower in the hierarchy supersede ones set (as "defaults") at a higher level, or <em>"more specific beats less specific"</em>
-- <strong>Overrides (O):</strong> policies declared higher in the hierarchy (as "overrides") supersede ones set at the lower levels, or <em>"less specific beats more specific"</em></p>
-<p>The base cases are expanded with the following additional derivative cases and concepts:
-- <strong>Merged defaults (DR):</strong> "higher" default policy rules that are merged into more specific "lower" policies (as opposed to an atomic less specific set of rules that is activated only when another more specific one is absent)
-- <strong>Merged overrides (OR):</strong> "higher" override policy rules that are merged into more specific "lower" policies (as opposed to an atomic less specific set of rules that is activated fully replacing another more specific one that is present)
-- <strong>Constraints (C):</strong> specialization of an override that, rather than declaring concrete values, specify higher level constraints (e.g., min value, max value, enums) for lower level values, with the semantics of "clipping" lower level values so they are enforced, in an override fashion, to be the boundaries dictated by the constraints; typically employed for constraining numeric values and regular patterns (e.g. limited sets)
-- <strong>Unsetting (U):</strong> specialization that completes a merge default use case by allowing lower level policies to disable ("unset") individual defaults set a higher level (as opposed to superseding those defaults with actual, more specific, policy rules with proper meaning)</p>
+<p>The base use cases for Defaults &amp; Overrides (D/O) are:</p>
+<ul>
+<li><strong>Defaults (D):</strong> policies declared lower in the hierarchy supersede ones set (as "defaults") at a higher level, or <em>"more specific beats less specific"</em></li>
+<li><strong>Overrides (O):</strong> policies declared higher in the hierarchy (as "overrides") supersede ones set at the lower levels, or <em>"less specific beats more specific"</em></li>
+</ul>
+<p>The base cases are expanded with the following additional derivative cases and concepts:</p>
+<ul>
+<li><strong>Merged defaults (DR):</strong> "higher" default policy rules that are merged into more specific "lower" policies (as opposed to an atomic less specific set of rules that is activated only when another more specific one is absent)</li>
+<li><strong>Merged overrides (OR):</strong> "higher" override policy rules that are merged into more specific "lower" policies (as opposed to an atomic less specific set of rules that is activated fully replacing another more specific one that is present)</li>
+<li><strong>Constraints (C):</strong> specialization of an override that, rather than declaring concrete values, specify higher level constraints (e.g., min value, max value, enums) for lower level values, with the semantics of "clipping" lower level values so they are enforced, in an override fashion, to be the boundaries dictated by the constraints; typically employed for constraining numeric values and regular patterns (e.g. limited sets)</li>
+<li><strong>Unsetting (U):</strong> specialization that completes a merge default use case by allowing lower level policies to disable ("unset") individual defaults set a higher level (as opposed to superseding those defaults with actual, more specific, policy rules with proper meaning)</li>
+</ul>
 <p>Together, these concepts relate to solve the following user stories:</p>
 <table>
 <thead>
@@ -3945,23 +3972,29 @@
 <li><code>overrides</code>: a block of <em>override</em> policy rules with further specification of a strategy (<em>atomic</em> set of rules or individual rules to be <em>merged</em> into lower policies), and optional conditions for applying the overrides down through the hierarchy</li>
 <li>the bare policy rules block without further qualification as a default or override set of rules – e.g. the <code>rules</code> field in a Kuadrant AuthPolicy, the <code>limits</code> field in a RateLimitPolicy.</li>
 </ul>
-<p>Between the following mutually exclusive options, either one or the other shall be used in a policy:
-1. <code>defaults</code> and/or <code>overrides</code> blocks; or
-2. the bare set of policy rules (without further qualification as neither defaults nor overrides.)</p>
+<p>Between the following mutually exclusive options, either one or the other shall be used in a policy:</p>
+<ol>
+<li><code>defaults</code> and/or <code>overrides</code> blocks; or</li>
+<li>the bare set of policy rules (without further qualification as neither defaults nor overrides.)</li>
+</ol>
 <p>In case the bare set of policy rules is used, it is treated implicitly as a block of defaults.</p>
-<p>Supporting specifying the bare set of policy rules at the first level of the spec, alternatively to the <code>defaults</code> and <code>overrides</code> blocks, is a strategy that aims to provide:
-1. more natural usability, especially for those who write policies attached to the lowest level of the hierarchy supported; as well as
-2. backward compatibility for policies that did not support explicit D/O and later on have moved to doing so.</p>
+<p>Supporting specifying the bare set of policy rules at the first level of the spec, alternatively to the <code>defaults</code> and <code>overrides</code> blocks, is a strategy that aims to provide:</p>
+<ol>
+<li>more natural usability, especially for those who write policies attached to the lowest level of the hierarchy supported; as well as</li>
+<li>backward compatibility for policies that did not support explicit D/O and later on have moved to doing so.</li>
+</ol>
 <h3 id="inherited-policies-that-declare-an-intent">Inherited Policies that <em>declare an intent</em><a class="headerlink" href="#inherited-policies-that-declare-an-intent" title="Permanent link">&para;</a></h3>
 <p>A policy that does not specify D/O fields (<code>defaults</code>, <code>overrides</code>) is a policy that <em>declares an intent</em>.</p>
 <p>One who writes a policy without specifying <code>defaults</code> or <code>overrides</code>, but only the bare set of policy rules, may feel like declaring a <a href="https://gateway-api.sigs.k8s.io/geps/gep-713/#direct-policy-attachment"><em>Direct Policy</em></a>.
 Depending on the state of other policies indirectly affecting the same object or not, the final outcome can be the same as writing a direct policy.
 This is especially true when the policy that declares the intent targets an object whose kind is the lowest kind accepted by Kuadrant in the hierarchy of network resources, and there are no other policies with lower precedence.</p>
 <p>Nevertheless, because other policies can affect the final behavior of the target (e.g. by injecting defaults, by overriding rules, by adding more definitions beneath), policies that simply declare an intent, conceptually, are still Inherited Policies.</p>
-<p>Compared to the inherited policy that misses D/O blocks, these other policies affecting the behavior may be declared:
-- at higher levels in the hierarchy,
-- at lower levels in hierarchy, or even
-- at the same level in the hierarchy but happening to have lower precedence (if such case is allowed by the kind of policy.)</p>
+<p>Compared to the inherited policy that misses D/O blocks, these other policies affecting the behavior may be declared:</p>
+<ul>
+<li>at higher levels in the hierarchy,</li>
+<li>at lower levels in hierarchy, or even</li>
+<li>at the same level in the hierarchy but happening to have lower precedence (if such case is allowed by the kind of policy.)</li>
+</ul>
 <p>At any time, any one of these policies can be created and therefore the final behavior of a target should never be assumed to be equivalent to the intent declared by any individual policy in particular, but always collectively determined by the combination of all intents, defaults and overrides from all inherited policies affecting the target.</p>
 <p>From <a href="https://github.com/kubernetes-sigs/gateway-api/pull/2813">GEP-2649</a>:</p>
 <blockquote>
@@ -3975,9 +4008,11 @@ In the absence of any other conflicting policy affecting the same target, the <e
 The sets of rules specified in these policies affect indistinctively the targeted objects, regardless of how they are qualified.</p>
 <p>However, because other policies may ocasionally be declared with lower precedence (i.e. targeting lower levels in the hierarchy or due to ordering, see <a href="https://gateway-api.sigs.k8s.io/geps/gep-713/#conflict-resolution">Conflict Resolution</a>), one who declares a policy to modify an intent must carefuly choose between <code>defaults</code> and/or <code>overrides</code> blocks to organize the policy rules, regardless if the targeted object is of a kind that is the lowest kind in the hierarchy of network resources accepted by Kuadrant.</p>
 <p>Even in the cases where no more than one policy of a kind is allowed to target a same object (1:1 relationship) and thus there should never exist two policies affecting a target from a same level of the hierarchy simultaneaously (or equivalently a policy with lower precedence than another, both at the lowest level of the hierarchy), users must assume that this constraint may change (i.e. N:1 relationship between policies of a kind and target become allowed.)</p>
-<p>In all cases, <em>defaults</em> and <em>overrides</em> must be used with the semantics of declaring rules that modify an intent.
-- When an intent does not specify a rule for which there is a higher default declared, the default modifies the intent by setting the value specified by the default.
-- For an intent that whether specifies or omits a rule for which there is a higher override declared, the override modifies the intent by setting the value specified by the override.</p>
+<p>In all cases, <em>defaults</em> and <em>overrides</em> must be used with the semantics of declaring rules that modify an intent.</p>
+<ul>
+<li>When an intent does not specify a rule for which there is a higher default declared, the default modifies the intent by setting the value specified by the default.</li>
+<li>For an intent that whether specifies or omits a rule for which there is a higher override declared, the override modifies the intent by setting the value specified by the override.</li>
+</ul>
 <h3 id="identifying-inherited-policy-kinds">Identifying inherited policy kinds<a class="headerlink" href="#identifying-inherited-policy-kinds" title="Permanent link">&para;</a></h3>
 <p>All Custom Resource Definitions (CRDs) that define a Kuadrant inherited policy must be labeled <code>gateway.networking.k8s.io/policy: inherited</code>.</p>
 <p>Users can rely on the presence of that label to identify policy kinds whose instances are treated as inhertied policies.</p>
@@ -4018,9 +4053,11 @@ Instances of these kinds of policies implicitly declare an atomic sets of <em>de
 </span></code></pre></div>
 <p>Similarly, a set of <code>overrides</code> policy rules could be specified, instead or alongside with the <code>defaults</code> set of policy rules.</p>
 <h3 id="atomic-vs-individually-merged-policy-rules">Atomic vs. individually merged policy rules<a class="headerlink" href="#atomic-vs-individually-merged-policy-rules" title="Permanent link">&para;</a></h3>
-<p>There are 2 supported strategies for applying proper Inherited Policies down to the lower levels of the herarchy:
-- <strong>Atomic policy rules:</strong> the bare set of policy rules in a <code>defaults</code> or <code>overrides</code> block is applied as an atomic piece; i.e., a lower object than the target of the policy, that is evaluated to be potentially affected by the policy, also has an atomic set of rules if another policy is attached to this object, therefore either the <em>entire</em> set of rules declared by the higher (less specific) policy is taken or the <em>entire</em> set of rules declared by the lower (more specific) policy is taken (depending if it's <code>defaults</code> or <code>overrides</code>), but the two sets are never merged into one.
-- <strong>Merged policy rules:</strong> each <em>individual</em> policy rule within a <code>defaults</code> or <code>overrides</code> block is compared one to one against lower level policy rules and, when they conflict (i.e. have the same key with different values), either one or the other (more specific or less specific) is taken (depending if it's <code>defaults</code> or <code>overrides</code>), in a way that the final effective policy is a merge between the two policies.</p>
+<p>There are 2 supported strategies for applying proper Inherited Policies down to the lower levels of the herarchy:</p>
+<ul>
+<li><strong>Atomic policy rules:</strong> the bare set of policy rules in a <code>defaults</code> or <code>overrides</code> block is applied as an atomic piece; i.e., a lower object than the target of the policy, that is evaluated to be potentially affected by the policy, also has an atomic set of rules if another policy is attached to this object, therefore either the <em>entire</em> set of rules declared by the higher (less specific) policy is taken or the <em>entire</em> set of rules declared by the lower (more specific) policy is taken (depending if it's <code>defaults</code> or <code>overrides</code>), but the two sets are never merged into one.</li>
+<li><strong>Merged policy rules:</strong> each <em>individual</em> policy rule within a <code>defaults</code> or <code>overrides</code> block is compared one to one against lower level policy rules and, when they conflict (i.e. have the same key with different values), either one or the other (more specific or less specific) is taken (depending if it's <code>defaults</code> or <code>overrides</code>), in a way that the final effective policy is a merge between the two policies.</li>
+</ul>
 <p>Each block of <code>defaults</code> and <code>overrides</code> must specify a <code>strategy</code> field whose value is set to either <code>atomic</code> or <code>merge</code>. If omitted, <code>atomic</code> is assumed.</p>
 <h4 id="level-of-granularity-of-compared-policy-rules">Level of granularity of compared policy rules<a class="headerlink" href="#level-of-granularity-of-compared-policy-rules" title="Permanent link">&para;</a></h4>
 <p>Atomic versus merge strategies, as a specification of the <code>defaults</code> and <code>overrides</code> blocks, imply that there are only two levels of granularity for comparing policies <em>vis-a-vis</em>.</p>
@@ -4243,13 +4280,17 @@ Instances of these kinds of policies implicitly declare an atomic sets of <em>de
 </table>
 <p>The presence of the <code>PolicyAffected</code> status condition helps identify that an object is sensitive to one of more policies of a kind, and gives some specifics about the scope of that effect (entire object or selected sections.)
 In many cases, this should be enough for inferring the actual policy rules being enforced for that object.</p>
-<p>For other cases where any of the following situations hold, a more detailed view of the final <em>Effective Policy</em> must be provided to the user:
-- If the rules of the policy cannot be inferred by the name of the policy and/or the user lacks permission to read the policy object;
-- If the object is affected by more than one policy.</p>
-<p>To help visualize the effective policy for a given target object in that situation, at least one of the following options must be provided to the user:
-1. A read-only <code>EffectivePolicy</code> custom resource, defined for each kind of inherited policy, and with an instance created for each affected object, that is reconciled and updated by the policy controller.
-2. A HTTP endpoint of the policy controller that users can consume to read the effective policy.
-3. A CLI tool that offers a command that queries the cluster and returns the effective policy – either by leveraging any of the methods above or computing the effective policy "on-the-fly" in the same fashion as the policy controller does.</p>
+<p>For other cases where any of the following situations hold, a more detailed view of the final <em>Effective Policy</em> must be provided to the user:</p>
+<ul>
+<li>If the rules of the policy cannot be inferred by the name of the policy and/or the user lacks permission to read the policy object;</li>
+<li>If the object is affected by more than one policy.</li>
+</ul>
+<p>To help visualize the effective policy for a given target object in that situation, at least one of the following options must be provided to the user:</p>
+<ol>
+<li>A read-only <code>EffectivePolicy</code> custom resource, defined for each kind of inherited policy, and with an instance created for each affected object, that is reconciled and updated by the policy controller.</li>
+<li>A HTTP endpoint of the policy controller that users can consume to read the effective policy.</li>
+<li>A CLI tool that offers a command that queries the cluster and returns the effective policy – either by leveraging any of the methods above or computing the effective policy "on-the-fly" in the same fashion as the policy controller does.</li>
+</ol>
 <h1 id="reference-level-explanation">Reference-level explanation<a class="headerlink" href="#reference-level-explanation" title="Permanent link">&para;</a></h1>
 <h2 id="applying-policies">Applying policies<a class="headerlink" href="#applying-policies" title="Permanent link">&para;</a></h2>
 <p>The following diagrams are a high level model to guide the process of applying a set of policies of a kind for a given Gateway object, where the Gateway object is considered the root of a hierarchy, and for all objects beneath, being the xRoute objects the leaves of the hierarchical tree.</p>
@@ -4358,13 +4399,15 @@ flowchart LR
 <p>See <em>Mutually exclusive API designs &gt; <a href="#design-option-strategy-field">Design option: <code>strategy</code> field</a></em>.</p>
 <h1 id="rationale-and-alternatives">Rationale and alternatives<a class="headerlink" href="#rationale-and-alternatives" title="Permanent link">&para;</a></h1>
 <h2 id="mutually-exclusive-api-designs">Mutually exclusive API designs<a class="headerlink" href="#mutually-exclusive-api-designs" title="Permanent link">&para;</a></h2>
-<p>The following alternatives were considered for the design of the API spec to support D/O:
-1. <a href="#design-option-strategy-field"><code>strategy</code> field</a> - RECOMMENDED
-2. <a href="#design-option-granularity-field"><code>granularity</code> field</a>
-3. <a href="#design-option-when-conditions-at-any-level-of-the-spec"><code>when</code> conditions (at any level of the spec)</a>
-4. <a href="#design-option-cel-functions-at-any-level-of-the-spec">CEL functions (at any level of the spec)</a>
-5. <a href="#design-option-path-keys">“path-keys”</a>
-6. <a href="#design-option-json-patch-like">JSON patch-like</a></p>
+<p>The following alternatives were considered for the design of the API spec to support D/O:</p>
+<ol>
+<li><a href="#design-option-strategy-field"><code>strategy</code> field</a> - RECOMMENDED</li>
+<li><a href="#design-option-granularity-field"><code>granularity</code> field</a></li>
+<li><a href="#design-option-when-conditions-at-any-level-of-the-spec"><code>when</code> conditions (at any level of the spec)</a></li>
+<li><a href="#design-option-cel-functions-at-any-level-of-the-spec">CEL functions (at any level of the spec)</a></li>
+<li><a href="#design-option-path-keys">“path-keys”</a></li>
+<li><a href="#design-option-json-patch-like">JSON patch-like</a></li>
+</ol>
 <p>All the examples in the RFC are based on API design <strong><code>strategy</code> field</strong>.</p>
 <h3 id="design-option-strategy-field">Design option: <code>strategy</code> field<a class="headerlink" href="#design-option-strategy-field" title="Permanent link">&para;</a></h3>
 <p>Each block of <code>defaults</code> and <code>overrides</code> specify a field <code>strategy: atomic | merge</code>, with <code>atomic</code> assumed if the field is omitted.</p>
@@ -4598,16 +4641,17 @@ flowchart LR
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">targetRef</span><span class="p">:</span>
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
 </span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">  </span><span class="nt">defaults</span><span class="p">:</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rules.authentication</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">add</span>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="s">&quot;a&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">G</span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rules.authorization.b</span>
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">    </span><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">remove</span>
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">      </span><span class="no">rules.authentication.a.</span>
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">      </span><span class="no">value</span>
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">    </span><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">le</span>
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rules.authentication</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">add</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="s">&quot;a&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">G</span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rules.authorization.b</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">    </span><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">remove</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">      </span><span class="no">rules.authentication.a.</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">      </span><span class="no">value</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">    </span><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">le</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
 </span></code></pre></div>
 <table>
   <thead>
@@ -4637,9 +4681,11 @@ flowchart LR
 
 <h1 id="prior-art">Prior art<a class="headerlink" href="#prior-art" title="Permanent link">&para;</a></h1>
 <p>Other than the primitive support only for implicit atomic defaults provided by Kuadrant for the AuthPolicy and RateLimitPolicy, other real-life implementations of D/O along the lines proposed by Gateway API are currently unknown.</p>
-<p>Some orientative examples provided in:
-- <a href="https://github.com/kubernetes-sigs/gateway-api/pull/2813">GEP-2649</a> - search for "CDNCachingPolicy" as well as "Merging into existing spec fields";
-- <a href="https://github.com/kubernetes-sigs/gateway-api/tree/v1.0.0/gwctl"><code>gwctl</code></a> effective policy calculation for inherited policies - see <a href="https://github.com/kubernetes-sigs/gateway-api/blob/v1.0.0/gwctl/pkg/policymanager/merger_test.go">policy manager's merge test cases</a>.</p>
+<p>Some orientative examples provided in:</p>
+<ul>
+<li><a href="https://github.com/kubernetes-sigs/gateway-api/pull/2813">GEP-2649</a> - search for "CDNCachingPolicy" as well as "Merging into existing spec fields";</li>
+<li><a href="https://github.com/kubernetes-sigs/gateway-api/tree/v1.0.0/gwctl"><code>gwctl</code></a> effective policy calculation for inherited policies - see <a href="https://github.com/kubernetes-sigs/gateway-api/blob/v1.0.0/gwctl/pkg/policymanager/merger_test.go">policy manager's merge test cases</a>.</li>
+</ul>
 <h1 id="out-of-scope">Out of scope<a class="headerlink" href="#out-of-scope" title="Permanent link">&para;</a></h1>
 <h2 id="policy-requirements">Policy requirements<a class="headerlink" href="#policy-requirements" title="Permanent link">&para;</a></h2>
 <p>A use case often described in association with D/O is the one for declaring <em>policy requirements</em>. These are high level policies that declare requirements to be fulfilled by more specific (lower level) policies without specifying concrete default or override values nor constraints. E.g.: "an authentication policy must be enforced, but none is provided by default."</p>
@@ -4655,13 +4701,15 @@ flowchart LR
 <p>Often policies rules include references to other Kubernetes objects, such as Secrets, typically defined in the same namespace as the policy object. When merging policies from different namespaces, these references need to be taken into account.</p>
 <p>If not carried along with the derivative resources (e.g. Authorino AuthConfig objects) that are created from a merge of policies (or from the computed effective policy), composed out of definitions from different namespaces, and that depend on those references, these references to external objects can be broken.</p>
 <p>This is not much of a problem for atomic D/O only, as the derivative objects that depend on the references could be forced to be created in the same namespace as the policy that wins against all the others – and therefore in the same namespace of the winning referents as well. However, when merging policies, we can run into a situation where final effective policies (thus also other derivative resources) contain references to objects inherited from definitions from other namespaces.</p>
-<p>Possible solutions to this problem include:
-1. Copying the referenced objects into the namespace where the derivative resources will be created.
-   - Involves maintaining (watching and reconciling) those referenced objects
-   - May raise security concerns
-2. Allowing derivative resources (e.g. Authorino AuthConfigs) to reference objects across namespaces, as well as giving permissions to the components that process those references (e.g. Authorino) to read across namespaces
-   - May raise security concerns
-   - Should probably be restricted to derivative resources created by Kuadrant and not allowed to users who create the derivative resources themselves</p>
+<p>Possible solutions to this problem include:</p>
+<ol>
+<li>Copying the referenced objects into the namespace where the derivative resources will be created.</li>
+<li>Involves maintaining (watching and reconciling) those referenced objects</li>
+<li>May raise security concerns</li>
+<li>Allowing derivative resources (e.g. Authorino AuthConfigs) to reference objects across namespaces, as well as giving permissions to the components that process those references (e.g. Authorino) to read across namespaces</li>
+<li>May raise security concerns</li>
+<li>Should probably be restricted to derivative resources created by Kuadrant and not allowed to users who create the derivative resources themselves</li>
+</ol>
 <h2 id="policy-spec-resembling-more-the-target-spec">Policy spec resembling more the target spec<a class="headerlink" href="#policy-spec-resembling-more-the-target-spec" title="Permanent link">&para;</a></h2>
 <p><strong>Should Kuadrant's inherited policy specs resemble more the specs of the objects they target?</strong></p>
 <p>The UX for one who writes a Kuadrant policy of the inherited class of policies is arguably not very different from writing any custom resource that happens to specify a <code>targetRef</code> field.
@@ -4673,12 +4721,13 @@ Other than name and kind of target object, there is nothing much in a Kuadrant p
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-route</span>
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="nt">spec</span><span class="p">:</span>
 </span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rule-1</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span><span class="nt">matches</span><span class="p">:</span>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GET</span>
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span><span class="nt">backendRef</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span>
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rule-2</span>
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">    </span><span class="nt">backendRef</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rule-1</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="nt">matches</span><span class="p">:</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GET</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span><span class="nt">backendRef</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rule-2</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">    </span><span class="nt">backendRef</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span>
 </span></code></pre></div>
 <p>An inherited policy that targets the HTTPRoute above could otherwise look like the following:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Policy</span>
@@ -4692,8 +4741,9 @@ Other than name and kind of target object, there is nothing much in a Kuadrant p
 </span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="nt">policySpecificDef</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span><span class="w"> </span><span class="c1"># augments the entire httproute object</span>
 </span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">  </span><span class="nt">overrides</span><span class="p">:</span><span class="w"> </span><span class="c1"># mirrors the spec of the httproute object</span>
 </span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="nt">rules</span><span class="p">:</span>
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rule-2</span>
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">      </span><span class="nt">policySpecificDef</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span><span class="w"> </span><span class="c1"># augments only httprouterule rule-2 of the httproute object</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rule-2</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">      </span><span class="nt">policySpecificDef</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span><span class="w"> </span><span class="c1"># augments only httprouterule rule-2 of the httproute object</span>
 </span></code></pre></div>
 <p>The above already is somewhat closer to being true for the AuthPolicy API, than it is for the RateLimitPolicy one. However, that is strictly coincidental, because the AuthPolicy's spec happens to specify a <code>rules</code> field, where the equivalent at the same level in RateLimitPolicy is called <code>limits</code>.</p>
 <p>This alternative design could make writing policies more like defining filters in an HTTPRoute, with the difference that policies are external to the target they extend (while filters are internal.) At the same time, it could be a replacement for Kuadrant route selectors, where the context of applicability of a policy rule is given by the very structure within the spec how the policy rule is declared (resembling the one of the target), thus also would shaping context for D/O.</p>
