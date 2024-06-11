@@ -4044,8 +4044,10 @@
 <ul>
 <li>Complete the <a href="https://docs.kuadrant.io/getting-started-multi-cluster-ocm/">Getting Started Guide</a> to bring up a suitable environment. </li>
 </ul>
-<p>If you are looking to change provider from the default Istio:
-* Please have the Gateway provider of your choice installed and configured (in this example we use Envoy gateway. See the following <a href="https://gateway.envoyproxy.io/v0.5.0/user/quickstart.html">docs</a>)</p>
+<p>If you are looking to change provider from the default Istio:</p>
+<ul>
+<li>Please have the Gateway provider of your choice installed and configured (in this example we use Envoy gateway. See the following <a href="https://gateway.envoyproxy.io/v0.5.0/user/quickstart.html">docs</a>)</li>
+</ul>
 <h2 id="initial-setup">Initial setup<a class="headerlink" href="#initial-setup" title="Permanent link">&para;</a></h2>
 <p>export <code>MGC_SUB_DOMAIN</code> in each terminal if you haven't already added it to your <code>.zshrc</code> or <code>.bash_profile</code>.</p>
 <p>Going through the quick start above, will ensure that a supported <code>GatewayClass</code> is registered in the hub cluster that the Kuadrant multi-cluster gateway controller will handle. </p>
@@ -4065,14 +4067,15 @@
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="s">spec:</span>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="s">  gatewayClassName: kuadrant-multi-cluster-gateway-instance-per-cluster</span>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="s">  listeners:</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="s">  - allowedRoutes:</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="s">      namespaces:</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="s">        from: All</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="s">    name: api</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="s">    hostname: $MGC_SUB_DOMAIN</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="s">    port: 443</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="s">    protocol: HTTP</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="s">EOF</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="s">  - allowedRoutes:</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="s">      namespaces:</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="s">        from: All</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="s">    name: api</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="s">    hostname: $MGC_SUB_DOMAIN</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="s">    port: 443</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="s">    protocol: HTTP</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <h3 id="placing-a-gateway">Placing a Gateway<a class="headerlink" href="#placing-a-gateway" title="Permanent link">&para;</a></h3>
 <p>To place a gateway, we will need to create a Placement resource. 
@@ -4084,9 +4087,10 @@
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="s">  namespace: multi-cluster-gateways</span>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="s">spec:</span>
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="s">  clusterSets:</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="s">  - gateway-clusters # defines which ManagedClusterSet to use.  </span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="s">  numberOfClusters: 2 # defines how many clusters to select from the chosen clusterSets</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="s">EOF</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="s">  - gateway-clusters # defines which ManagedClusterSet to use.  </span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="s">  numberOfClusters: 2 # defines how many clusters to select from the chosen clusterSets</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="s">EOF</span>
 </span></code></pre></div>
 For more information on ManagedClusterSets and placements please see the OCM official docs:</p>
 <ul>
@@ -4117,10 +4121,12 @@ For more information on ManagedClusterSets and placements please see the OCM off
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kubectl<span class="w"> </span>--context<span class="w"> </span>kind-mgc-control-plane<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span>-A
 </span></code></pre></div>
 <p>You'll see the following:</p>
-<p><div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kuadrant-multi-cluster-gateways   prod-web   istio                                         172.31.200.0                29s
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kuadrant-multi-cluster-gateways   prod-web   istio                                         172.31.200.0                29s
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>multi-cluster-gateways            prod-web   kuadrant-multi-cluster-gateway-instance-per-cluster                  True         2m42s
 </span></code></pre></div>
-3.  Execute the following to see the gateway on the workload-1 cluster:</p>
+</li>
+<li>
+<p>Execute the following to see the gateway on the workload-1 cluster:</p>
 <p><div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kubectl<span class="w"> </span>--context<span class="w"> </span>kind-mgc-workload-1<span class="w"> </span>get<span class="w"> </span>gateways<span class="w"> </span>-A
 </span></code></pre></div>
 You'll see the following
@@ -4135,7 +4141,7 @@ You'll see the following
 <ol>
 <li>
 <p>Create the following configmap. Note: In this example, 'eg' stands for the Envoy gateway, which is mentioned in the prerequisites above:</p>
-<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kubectl<span class="w"> </span>--context<span class="w"> </span>kind-mgc-control-plane<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kubectl<span class="w"> </span>--context<span class="w"> </span>kind-mgc-control-plane<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="s">apiVersion: v1</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="s">data:</span>
 </span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="s">  params: |</span>
@@ -4148,7 +4154,9 @@ You'll see the following
 </span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="s">  namespace: multi-cluster-gateways</span>
 </span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="s">EOF</span>
 </span></code></pre></div>
-2. Update the gatewayclass to include the above Configmap</p>
+</li>
+<li>
+<p>Update the gatewayclass to include the above Configmap</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>--context<span class="w"> </span>kind-mgc-control-plane<span class="w"> </span>patch<span class="w"> </span>gatewayclass<span class="w"> </span>kuadrant-multi-cluster-gateway-instance-per-cluster<span class="w"> </span>-n<span class="w"> </span>multi-cluster-gateways<span class="w"> </span>--type<span class="w"> </span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;parametersRef&quot;:{&quot;group&quot;:&quot;&quot;,&quot;kind&quot;:&quot;ConfigMap&quot;,&quot;name&quot;:&quot;gateway-params&quot;,&quot;namespace&quot;:&quot;multi-cluster-gateways&quot;}}}&#39;</span>
 </span></code></pre></div>
 </li>

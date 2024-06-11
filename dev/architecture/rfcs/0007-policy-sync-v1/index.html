@@ -3899,16 +3899,20 @@ policy controller(s).</p>
 </ul>
 <h1 id="motivation">Motivation<a class="headerlink" href="#motivation" title="Permanent link">&para;</a></h1>
 <p>Currently, Kuadrant's support for the Policy Attachment Model can be divided in
-two categories:
-* Policies targeting the Multicluster Gateway, defined in the hub cluster and
-  reconciled by the Multicluster Gateway Controller
-* Policies targeting the downstream Gateway, defined in the spoke clusters and
-  reconciled by the downstream Gateway controllers.</p>
+two categories:</p>
+<ul>
+<li>Policies targeting the Multicluster Gateway, defined in the hub cluster and
+  reconciled by the Multicluster Gateway Controller</li>
+<li>Policies targeting the downstream Gateway, defined in the spoke clusters and
+  reconciled by the downstream Gateway controllers.</li>
+</ul>
 <p>In a realistic multicluster scenario where multiple spoke clusters are present, the management of these policies can become tedious and error-prone, as policies have
 to be defined in the hub cluster, as well as replicated in the multiple spoke clusters.</p>
-<p>As Kuadrant users:
-* Gateway-admin has a set of homogeneous clusters and needs to apply per cluster rate limits across the entire set.
-* Platform-admin with a set of clusters with rate limits applied needs to change rate limit for one particular cluster. </p>
+<p>As Kuadrant users:</p>
+<ul>
+<li>Gateway-admin has a set of homogeneous clusters and needs to apply per cluster rate limits across the entire set.</li>
+<li>Platform-admin with a set of clusters with rate limits applied needs to change rate limit for one particular cluster. </li>
+</ul>
 <h1 id="guide-level-explanation">Guide-level explanation<a class="headerlink" href="#guide-level-explanation" title="Permanent link">&para;</a></h1>
 <p>The policy sync feature will allow a gateway-admin to configure, via GatewayClass
 parameters, a set of Policy GVRs to be synced by the Multicluster Gateway Controller.</p>
@@ -3922,16 +3926,22 @@ order to configure the controller to sync AuthPolicies:</p>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">]</span>
 </span></code></pre></div>
-<p>The support for resources that the controller can sync is limited by the following:
-* The controller ServiceAccount must have permission to watch, list, and get the
-  resource to be synced
-* The resource must implement the Policy schema:
-    * Have a <code>.spec.targetRef</code> field</p>
+<p>The support for resources that the controller can sync is limited by the following:</p>
+<ul>
+<li>The controller ServiceAccount must have permission to watch, list, and get the
+  resource to be synced</li>
+<li>The resource must implement the Policy schema:<ul>
+<li>Have a <code>.spec.targetRef</code> field</li>
+</ul>
+</li>
+</ul>
 <p>When a Policy is configured to be synced in a GatewayClass, the Multicluster
 Gateway Controller starts watching events on the resources, and propagates changes
-by placing the policy in the spoke clusters, with the following mutations:
-* The <code>TargetRef</code> of the policy is changed to reference the downstream Gateway
-* The <code>kuadrant.io/policy-synced</code> annotation is set</p>
+by placing the policy in the spoke clusters, with the following mutations:</p>
+<ul>
+<li>The <code>TargetRef</code> of the policy is changed to reference the downstream Gateway</li>
+<li>The <code>kuadrant.io/policy-synced</code> annotation is set</li>
+</ul>
 <p>The upstream policy is annotated with a reference to the name and namespace
 of the downstream policies:
   <div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">annotations</span><span class="p">:</span>
@@ -3943,9 +3953,11 @@ of the downstream policies:
 <p>The Multicluster Gateway Controller reconciles parameters referenced by the
 GatewayClass of a Gateway. A new field is added to the parameters that allows
 the configuration of a set of GVRs of Policies to be synced.</p>
-<p>The GatewayClass reconciler validates that:
-* The GVRs reference existing resource definitions
-* The GVRs reference resources that implement the Policy schema.</p>
+<p>The GatewayClass reconciler validates that:</p>
+<ul>
+<li>The GVRs reference existing resource definitions</li>
+<li>The GVRs reference resources that implement the Policy schema.</li>
+</ul>
 <p>Validation failures are reported as part of the status of the GatewayClass</p>
 <p>The Gateway reconciler sets up dynamic watches to react to events on the configured
 Policies, calling the PolicySyncer component with the updated Policy as well
@@ -3956,9 +3968,11 @@ apply the necessary changes and place the Policies in the spoke clusters.</p>
 <p>This component is injected in the event source and called when a change is made
 to a hub Policy that has been configured to be synced.</p>
 <p>The PolicySyncer implementation uses OCM ManifestWorks to place the policies in
-the spoke clusters. Through the ManifestWorks, OCM allows to:
-* Place the Policy in each spoke cluster
-* Report the desired status back to the hub using JSON feedback rules</p>
+the spoke clusters. Through the ManifestWorks, OCM allows to:</p>
+<ul>
+<li>Place the Policy in each spoke cluster</li>
+<li>Report the desired status back to the hub using JSON feedback rules</li>
+</ul>
 <h3 id="policy-hierarchy">Policy Hierarchy<a class="headerlink" href="#policy-hierarchy" title="Permanent link">&para;</a></h3>
 <p>In order to avoid conflict with Policies created directly in the spoke clusters,
 a hierarchy must be defined to prioritise those Policies.</p>

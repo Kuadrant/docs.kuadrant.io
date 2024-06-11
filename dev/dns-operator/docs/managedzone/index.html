@@ -4073,9 +4073,11 @@ e.g. given the zones <code>hcpapps.net</code> and <code>api.hcpapps.net</code> t
 <p>Some DNS providers offer private zones. While this is something we will want to support in the future, we currently only support public zones.</p>
 <h3 id="delegation">Delegation<a class="headerlink" href="#delegation" title="Permanent link">&para;</a></h3>
 <p>Delegation allows you to give control of a subdomain of a root domain to MGC while the root domain has it's DNS zone elsewhere.</p>
-<p>In the scenario where a root domain has a zone outside Route53, e.g. <code>external.com</code>, and a ManagedZone for <code>delegated.external.com</code> is required, the following steps can be taken:
-- Create the ManagedZone for <code>delegated.external.com</code> and wait until the status is updated with an array of nameservers (e.g. <code>ns1.hcpapps.net</code>, <code>ns2.hcpapps.net</code>). 
-- Copy these nameservers to your root zone for <code>external.com</code>, you can create a NS record for each nameserver against the <code>delegated.external.com</code> record.</p>
+<p>In the scenario where a root domain has a zone outside Route53, e.g. <code>external.com</code>, and a ManagedZone for <code>delegated.external.com</code> is required, the following steps can be taken:</p>
+<ul>
+<li>Create the ManagedZone for <code>delegated.external.com</code> and wait until the status is updated with an array of nameservers (e.g. <code>ns1.hcpapps.net</code>, <code>ns2.hcpapps.net</code>). </li>
+<li>Copy these nameservers to your root zone for <code>external.com</code>, you can create a NS record for each nameserver against the <code>delegated.external.com</code> record.</li>
+</ul>
 <p>For example:
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>delegated.external.com. 3600 IN NS ns1.hcpapps.net.
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>delegated.external.com. 3600 IN NS ns2.hcpapps.net.

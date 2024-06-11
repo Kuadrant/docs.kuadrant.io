@@ -3864,11 +3864,13 @@
 <h1 id="the-idea">The idea<a class="headerlink" href="#the-idea" title="Permanent link">&para;</a></h1>
 <p>We now will constantly reconcile DNS records. The reasoning is that other controllers may override/change records in the DNS provider so there is a need to requeue the DNS Record from time to time even when no local changes are introduced.</p>
 <h1 id="details">Details<a class="headerlink" href="#details" title="Permanent link">&para;</a></h1>
-<p>There are a few new fields on the DNS Record status:
-* QueuedAt is a time when the DNS record was received for the reconciliation
-* QueuedFor is a time when we expect a DNS record to be reconciled again
-* ValidFor indicates the duration since the last reconciliation we consider data in the record to be valid
-* WriteCounter represents a number of consecutive write attempts on the same generation of the record. It is being reset to 0 when the generation changes or there are no changes to write.</p>
+<p>There are a few new fields on the DNS Record status:</p>
+<ul>
+<li>QueuedAt is a time when the DNS record was received for the reconciliation</li>
+<li>QueuedFor is a time when we expect a DNS record to be reconciled again</li>
+<li>ValidFor indicates the duration since the last reconciliation we consider data in the record to be valid</li>
+<li>WriteCounter represents a number of consecutive write attempts on the same generation of the record. It is being reset to 0 when the generation changes or there are no changes to write.</li>
+</ul>
 <p>There is an option to override the <code>ValidFor</code> and <code>DefaultRequeueTime</code> with <code>valid-for</code> and <code>requeue-time</code> flags respectively.</p>
 <p>The <code>DefaultRequeueTime</code> is the duration between successful validation and the next reconciliation to ensure that the record is still up-to-date.</p>
 <p>The <code>ValidFor</code> is used to determine if we should do a full reconciliation when we get the record. If the record is still valid we will only update finalizers and validate the record itself. It will not perform anything that involves a DNS provider.</p>
