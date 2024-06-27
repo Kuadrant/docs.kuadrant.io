@@ -84,10 +84,11 @@ To mark this new release as stable:
           default:
             - 0.7.0
       ```
+    - Update `mkdocs.yml` to set the git-refs on the `import_url`'s to reference release branches for 0.7
     - Update `export KUADRANT_REF=v0.7.0` in `getting-started-single-cluster.md`
     - Update the `latest` alias to point to our newest stable release:
       - `mike deploy --update-aliases 0.7.0 latest`
-    - Update refs in `gh-pages` branch:
+    - Update refs in `0.7.x` branch:
       - `mike set-default 0.7.0`
     - Update changes, push deploy:
       - `mike deploy 0.7.0 -t "0.7.0" --push`
