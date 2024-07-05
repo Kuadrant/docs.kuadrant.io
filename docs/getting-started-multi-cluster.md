@@ -8,11 +8,11 @@ It can be used for adding 1 or more clusters to your local setup.
 
 ### Prerequisites
 
-- Completed the [Single-cluster Quick Start](https://docs.kuadrant.io/getting-started-single-cluster/)
+- Completed the [Single-cluster Quick Start](./getting-started-single-cluster.md)
 
 ### Environmental Variables
 
-The same environment variable requirements from the [Single-cluster Quick Start](https://docs.kuadrant.io/getting-started-single-cluster/) apply to this document,
+The same environment variable requirements from the [Single-cluster Quick Start](./getting-started-single-cluster.md) apply to this document,
 including the `KUADRANT_REF` variable.
 
 ### Set Up a kind cluster and install Kuadrant
