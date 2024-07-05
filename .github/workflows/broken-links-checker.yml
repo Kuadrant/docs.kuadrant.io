@@ -1,18 +1,11 @@
-name: Broken link check
+name: Broken Links Check
 on:
   workflow_dispatch:
-
+env:
+  WEBSITE_URL: "https://docs.kuadrant.io/"
 jobs:
-  broken_link_checker_job:
+  check:
     runs-on: ubuntu-latest
-    name: Check for broken links
     steps:
-      - name: Check for broken links
-        id: link-report
-        uses: celinekurpershoek/link-checker@v1.0.2
-        with:
-          url: "https://docs.kuadrant.io"
-          honorRobotExclusions: false
-          recursiveLinks: true
-      - name: Get the result
-        run: echo "${{steps.link-report.outputs.result}}"
+    - name: Run Broken Links Checker
+      run: npx broken-link-checker $WEBSITE_URL --ordered --recursive --exclude-external
