@@ -107,6 +107,18 @@ To mark this new release as stable:
 Generally not advised given how `mike` works, but if you need to patch an existing release (in this example, `0.7.0`):
 
 ### Via CI (recommended)
+
+For values to use for "Source Branch" and "Version" when running the `Re-deploy via mike` GitHub action, refer to this table:
+
+| Use workflow from | The version to deploy | Source Branch | Notes                  |
+|-------------------|-----------------------|---------------|------------------------|
+| main              | 0.6.1                 | 0.6           |                        |
+| main              | 0.7.0                 | 0.7.x         |                        |
+| main              | 0.8.0                 | 0.8           | Latest Stable          |
+| main              | dev                   | main          | Development - Unstable |
+
+[See also](https://github.com/Kuadrant/docs.kuadrant.io/blob/gh-pages/versions.json).
+
 To re-release docs via CI:
 
 - Go to `Actions` -> `Re-deploy via mike` -> `Run Workflow`
