@@ -1179,6 +1179,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../../dns-operator/docs/provider/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNS Providers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../../multicluster-gateway-controller/docs/how-to/multicluster-loadbalanced-dnspolicy/" class="md-nav__link">
         
   
@@ -4082,19 +4103,19 @@
 <h1 id="secure-protect-and-connect-services-with-kuadrant-on-kubernetes">Secure, protect, and connect services with Kuadrant on Kubernetes<a class="headerlink" href="#secure-protect-and-connect-services-with-kuadrant-on-kubernetes" title="Permanent link">&para;</a></h1>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
-<li>You have completed the <a href="https://docs.kuadrant.io/getting-started-single-cluster/">Single-cluster Quick Start</a> or <a href="https://docs.kuadrant.io/getting-started-multi-cluster/">Multi-cluster Quick Start</a>.</li>
+<li>You have completed the <a href="https://docs.kuadrant.io/latest/getting-started-single-cluster/">Single-cluster Quick Start</a> or <a href="https://docs.kuadrant.io/latest/getting-started-multi-cluster/">Multi-cluster Quick Start</a>.</li>
 </ul>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>In this guide, we will cover the different policies from Kuadrant and how you can use them to secure, protect and connect an Istio-controlled gateway in a single cluster, and how you can set more refined protection on the HTTPRoutes exposed by that gateway.</p>
 <p>Here are the steps we will go through:</p>
-<p>1) <a href="#-deploy-the-example-app-we-will-serve-via-our-gateway">Deploy a sample application</a></p>
-<p>2) <a href="#-define-a-new-istio-managed-gateway">Define a new Gateway</a></p>
-<p>3) <a href="#-define-the-tlspolicy">Ensure TLS-based secure connectivity to the gateway with a TLSPolicy</a></p>
-<p>4) <a href="#-define-infrastructure-rate-limiting">Define a default RateLimitPolicy to set some infrastructure limits on your gateway</a></p>
-<p>5) <a href="#-define-the-gateway-authpolicy">Define a default AuthPolicy to deny all access to the gateway</a></p>
-<p>6) <a href="#-define-the-dnspolicy">Define a DNSPolicy to bring traffic to the gateway</a></p>
-<p>7) <a href="#-override-the-gateways-deny-all-authpolicy">Override the Gateway's deny-all AuthPolicy with an endpoint-specific policy</a></p>
-<p>8) <a href="#-override-the-gateways-ratelimitpolicy">Override the Gateway rate limits with an endpoint-specific policy</a></p>
+<p>1) <a href="#deploy-the-example-app-we-will-serve-via-our-gateway">Deploy a sample application</a></p>
+<p>2) <a href="#define-a-new-istio-managed-gateway">Define a new Gateway</a></p>
+<p>3) <a href="#define-the-tlspolicy">Ensure TLS-based secure connectivity to the gateway with a TLSPolicy</a></p>
+<p>4) <a href="#define-infrastructure-rate-limiting">Define a default RateLimitPolicy to set some infrastructure limits on your gateway</a></p>
+<p>5) <a href="#define-the-gateway-authpolicy">Define a default AuthPolicy to deny all access to the gateway</a></p>
+<p>6) <a href="#define-the-dnspolicy">Define a DNSPolicy to bring traffic to the gateway</a></p>
+<p>7) <a href="#override-the-gateways-deny-all-authpolicy">Override the Gateway's deny-all AuthPolicy with an endpoint-specific policy</a></p>
+<p>8) <a href="#override-the-gateways-ratelimitpolicy">Override the Gateway rate limits with an endpoint-specific policy</a></p>
 <p>You will need to set the <code>KUBECTL_CONTEXT</code> environment variable for the kubectl context of the cluster you are targeting.
 If you have followed the single cluster setup, it should be something like below.
 Adjust the name of the cluster accordingly if you have followed the multi cluster setup.</p>
@@ -4292,7 +4313,7 @@ Adjust the name of the cluster accordingly if you have followed the multi cluste
 </span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>kubectl<span class="w"> </span>--context<span class="w"> </span><span class="nv">$KUBECTL_CONTEXT</span><span class="w"> </span><span class="nb">wait</span><span class="w"> </span>dnspolicy<span class="w"> </span>simple-dnspolicy<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--for<span class="o">=</span><span class="nv">condition</span><span class="o">=</span>enforced
 </span></code></pre></div>
 <p>If you want to see the DNSRecord created by the this policy, execute the following command:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>kubectl--context<span class="w"> </span><span class="nv">$KUBECTL_CONTEXT</span><span class="w"> </span>get<span class="w"> </span>dnsrecord.kuadrant.io<span class="w"> </span>api-gateway-api<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>-o<span class="o">=</span>yaml
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>kubectl<span class="w"> </span>--context<span class="w"> </span><span class="nv">$KUBECTL_CONTEXT</span><span class="w"> </span>get<span class="w"> </span>dnsrecord.kuadrant.io<span class="w"> </span>api-gateway-api<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>-o<span class="o">=</span>yaml
 </span></code></pre></div>
 <p>So now we have a wildcard DNS record to bring traffic to our gateway.</p>
 <p>Let's test it again. This time we expect a <code>403</code> still as the <em>deny-all</em> policy is still in effect. Notice we no longer need to set the Host header directly.</p>
@@ -4463,7 +4484,7 @@ Adjust the name of the cluster accordingly if you have followed the multi cluste
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.7.0"], "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.8.0", "latest"], "provider": "mike"}}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.bd41221c.min.js"></script>

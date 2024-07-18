@@ -1236,6 +1236,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../../dns-operator/docs/provider/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNS Providers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../../multicluster-gateway-controller/docs/how-to/multicluster-loadbalanced-dnspolicy/" class="md-nav__link">
         
   
@@ -4270,7 +4291,7 @@
 <li><a href="https://docs.openshift.com/container-platform/latest/observability/monitoring/configuring-the-monitoring-stack.html#configuring_remote_write_storage_configuring-the-monitoring-stack">OpenShift remote write configuration</a></li>
 <li><a href="https://github.com/thanos-io/kube-thanos">Kube Thanos</a></li>
 </ul>
-<p>The <a href="https://docs.kuadrant.io/kuadrant-operator/doc/observability/examples/">example dashboards and alerts</a> for observing Kuadrant functionality use low-level CPU metrics and network metrics available from the user monitoring stack in OpenShift. They also use resource state metrics from Gateway API and Kuadrant resources. </p>
+<p>The <a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/observability/examples/">example dashboards and alerts</a> for observing Kuadrant functionality use low-level CPU metrics and network metrics available from the user monitoring stack in OpenShift. They also use resource state metrics from Gateway API and Kuadrant resources. </p>
 <p>To scrape these additional metrics, you can install a <code>kube-state-metrics instance</code>, with a custom resource configuration as follows:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/Kuadrant/kuadrant-operator/main/config/observability/openshift/kube-state-metrics.yaml
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>https://github.com/Kuadrant/gateway-api-state-metrics?ref<span class="o">=</span>main
@@ -4278,7 +4299,7 @@
 <p>To enable request metrics in Istio, you must create a <code>telemetry</code> resource as follows:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/Kuadrant/kuadrant-operator/main/config/observability/openshift/telemetry.yaml
 </span></code></pre></div>
-<p>If you have Grafana installed in your cluster, you can import the <a href="https://docs.kuadrant.io/kuadrant-operator/doc/observability/examples">example dashboards and alerts</a>.</p>
+<p>If you have Grafana installed in your cluster, you can import the <a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/observability/examples">example dashboards and alerts</a>.</p>
 <p>For example installation details, see <a href="https://cloud.redhat.com/experts/o11y/ocp-grafana/">installing Grafana on OpenShift</a>. When installed, you must add your Thanos instance as a data source to Grafana. Alternatively, if you are using only the user workload monitoring stack in your OpenShift cluster, and not writing metrics to an external Thanos instance, you can <a href="https://docs.openshift.com/container-platform/4.15/observability/monitoring/accessing-third-party-monitoring-apis.html#accessing-metrics-from-outside-cluster_accessing-monitoring-apis-by-using-the-cli">set up a data source to the thanos-querier route in the OpenShift cluster</a>.</p>
 <h3 id="step-5-create-secrets-for-your-credentials">Step 5 - Create secrets for your credentials<a class="headerlink" href="#step-5-create-secrets-for-your-credentials" title="Permanent link">&para;</a></h3>
 <p>Before installing the Kuadrant Operator, you must enter the following commands to set up secrets that you will use later:</p>
@@ -4293,7 +4314,7 @@
 </span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="s">  namespace: kuadrant-system</span>
 </span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="s">spec:</span>
 </span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="s">  sourceType: grpc</span>
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="s">  image: quay.io/kuadrant/kuadrant-operator-catalog:v0.7.1</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="s">  image: quay.io/kuadrant/kuadrant-operator-catalog:v0.8.0</span>
 </span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="s">  displayName: Kuadrant Operators</span>
 </span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="s">  publisher: grpc</span>
 </span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="s">  updateStrategy:</span>
@@ -4331,7 +4352,7 @@
 </span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="s">  name: kuadrant-operator</span>
 </span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="s">  namespace: kuadrant-system</span>
 </span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="s">spec:</span>
-</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="s">  channel: preview</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="s">  channel: stable</span>
 </span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="s">  installPlanApproval: Automatic</span>
 </span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="s">  name: kuadrant-operator</span>
 </span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="s">  source: kuadrant-operator-catalog</span>
@@ -4419,7 +4440,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.7.0"], "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.8.0", "latest"], "provider": "mike"}}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.bd41221c.min.js"></script>
