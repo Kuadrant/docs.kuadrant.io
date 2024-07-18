@@ -588,6 +588,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#additionalheadersref" class="md-nav__link">
+    <span class="md-ellipsis">
+      AdditionalHeadersRef
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#loadbalancingspec" class="md-nav__link">
     <span class="md-ellipsis">
       LoadBalancingSpec
@@ -1150,27 +1159,6 @@
   
   <span class="md-ellipsis">
     DNS Health Checks
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../dns-operator/docs/provider/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    DNS Providers
   </span>
   
 
@@ -3996,6 +3984,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#additionalheadersref" class="md-nav__link">
+    <span class="md-ellipsis">
+      AdditionalHeadersRef
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#loadbalancingspec" class="md-nav__link">
     <span class="md-ellipsis">
       LoadBalancingSpec
@@ -4077,6 +4074,7 @@
 <li><a href="#DNSPolicy">DNSPolicy</a></li>
 <li><a href="#dnspolicyspec">DNSPolicySpec</a><ul>
 <li><a href="#healthcheckspec">HealthCheckSpec</a></li>
+<li><a href="#additionalheadersref">AdditionalHeadersRef</a></li>
 <li><a href="#loadbalancingspec">LoadBalancingSpec</a></li>
 <li><a href="#loadbalancingweighted">LoadBalancingWeighted</a><ul>
 <li><a href="#customweight">CustomWeight</a></li>
@@ -4085,10 +4083,7 @@
 <li><a href="#loadbalancinggeo">LoadBalancingGeo</a></li>
 </ul>
 </li>
-<li><a href="#dnspolicystatus">DNSPolicyStatus</a><ul>
-<li><a href="#healthcheckstatus">HealthCheckStatus</a></li>
-</ul>
-</li>
+<li><a href="#dnspolicystatus">DNSPolicyStatus</a></li>
 </ul>
 <h2 id="dnspolicy">DNSPolicy<a class="headerlink" href="#dnspolicy" title="Permanent link">&para;</a></h2>
 <table>
@@ -4130,7 +4125,7 @@
 <td><code>targetRef</code></td>
 <td><a href="https://gateway-api.sigs.k8s.io/geps/gep-713/?h=policytargetreference#policy-targetref-api">Gateway API PolicyTargetReference</a></td>
 <td style="text-align: center;">Yes</td>
-<td>Reference to a Kubernetes resource that the policy attaches to</td>
+<td>Reference to a Kuberentes resource that the policy attaches to</td>
 </tr>
 <tr>
 <td><code>healthCheck</code></td>
@@ -4141,14 +4136,14 @@
 <tr>
 <td><code>loadBalancing</code></td>
 <td><a href="#loadbalancingspec">LoadBalancingSpec</a></td>
-<td style="text-align: center;">Yes(loadbalanced only)</td>
-<td>LoadBalancing Spec, required when routingStrategy is "loadbalanced"</td>
+<td style="text-align: center;">No</td>
+<td>LoadBancking Spec</td>
 </tr>
 <tr>
 <td><code>routingStrategy</code></td>
 <td>String (immutable)</td>
 <td style="text-align: center;">Yes</td>
-<td><strong>Immutable!</strong> Routing Strategy to use, one of "simple" or "loadbalanced"</td>
+<td><strong>Immutable!</strong> Routing Strategy to use, one of "simple" or "loadbalacned"</td>
 </tr>
 </tbody>
 </table>
@@ -4158,7 +4153,6 @@
 <tr>
 <th><strong>Field</strong></th>
 <th><strong>Type</strong></th>
-<th style="text-align: center;"><strong>Required</strong></th>
 <th><strong>Description</strong></th>
 </tr>
 </thead>
@@ -4166,26 +4160,59 @@
 <tr>
 <td><code>endpoint</code></td>
 <td>String</td>
-<td style="text-align: center;">Yes</td>
-<td>Endpoint is the path to append to the host to reach the expected health check</td>
+<td>The endpoint to connect to (e.g. IP address or hostname of a clusters loadbalancer)</td>
 </tr>
 <tr>
 <td><code>port</code></td>
 <td>Number</td>
-<td style="text-align: center;">Yes</td>
-<td>Port to connect to the host on</td>
+<td>The port to use</td>
 </tr>
 <tr>
 <td><code>protocol</code></td>
 <td>String</td>
-<td style="text-align: center;">Yes</td>
-<td>Protocol to use when connecting to the host, valid values are "HTTP" or "HTTPS"</td>
+<td>The protocol to use for this request (e.g. Https;Https)</td>
 </tr>
 <tr>
 <td><code>failureThreshold</code></td>
 <td>Number</td>
-<td style="text-align: center;">Yes</td>
-<td>FailureThreshold is a limit of consecutive failures that must occur for a host to be considered unhealthy</td>
+<td>Failure Threshold</td>
+</tr>
+<tr>
+<td><code>additionalHeadersRef</code></td>
+<td><a href="#additionalheadersref">AdditionalHeadersRef</a></td>
+<td>Secret ref which contains k/v: headers and their values that can be specified to ensure the health check is successful</td>
+</tr>
+<tr>
+<td><code>expectedResponses</code></td>
+<td>[]Number</td>
+<td>HTTP response codes that should be considered healthy (defaults are 200 and 201)</td>
+</tr>
+<tr>
+<td><code>allowInsecureCertificates</code></td>
+<td>Boolean</td>
+<td>Allow using invalid (e.g. self-signed) certificates, default is false</td>
+</tr>
+<tr>
+<td><code>interval</code></td>
+<td><a href="https://pkg.go.dev/k8s.io/apimachinery/pkg/apis/meta/v1#Duration">Kubernetes meta/v1.Duration</a></td>
+<td>How frequently this check would ideally be executed</td>
+</tr>
+</tbody>
+</table>
+<h2 id="additionalheadersref">AdditionalHeadersRef<a class="headerlink" href="#additionalheadersref" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th><strong>Field</strong></th>
+<th><strong>Type</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>String</td>
+<td>Name of the secret containing additional header information</td>
 </tr>
 </tbody>
 </table>
@@ -4195,7 +4222,6 @@
 <tr>
 <th><strong>Field</strong></th>
 <th><strong>Type</strong></th>
-<th style="text-align: center;"><strong>Required</strong></th>
 <th><strong>Description</strong></th>
 </tr>
 </thead>
@@ -4203,13 +4229,11 @@
 <tr>
 <td><code>weighted</code></td>
 <td><a href="#loadbalancingweighted">LoadBalancingWeighted</a></td>
-<td style="text-align: center;">Yes</td>
 <td>Weighted routing spec</td>
 </tr>
 <tr>
 <td><code>geo</code></td>
 <td><a href="#loadbalancinggeo">LoadBalancingGeo</a></td>
-<td style="text-align: center;">Yes</td>
 <td>Geo routing spec</td>
 </tr>
 </tbody>
@@ -4220,7 +4244,6 @@
 <tr>
 <th><strong>Field</strong></th>
 <th><strong>Type</strong></th>
-<th style="text-align: center;"><strong>Required</strong></th>
 <th><strong>Description</strong></th>
 </tr>
 </thead>
@@ -4228,13 +4251,11 @@
 <tr>
 <td><code>defaultWeight</code></td>
 <td>Number</td>
-<td style="text-align: center;">Yes</td>
 <td>Default weight to apply to created records</td>
 </tr>
 <tr>
 <td><code>custom</code></td>
 <td>[]<a href="#customweight">CustomWeight</a></td>
-<td style="text-align: center;">No</td>
 <td>Custom weights to manipulate records weights based on label selectors</td>
 </tr>
 </tbody>
@@ -4267,7 +4288,6 @@
 <tr>
 <th><strong>Field</strong></th>
 <th><strong>Type</strong></th>
-<th style="text-align: center;"><strong>Required</strong></th>
 <th><strong>Description</strong></th>
 </tr>
 </thead>
@@ -4275,7 +4295,6 @@
 <tr>
 <td><code>defaultGeo</code></td>
 <td>String</td>
-<td style="text-align: center;">Yes</td>
 <td>Default geo to apply to records</td>
 </tr>
 </tbody>
@@ -4305,11 +4324,6 @@
 <td><a href="#healthcheckstatus">HealthCheckStatus</a></td>
 <td>HealthCheck status.</td>
 </tr>
-<tr>
-<td><code>recordConditions</code></td>
-<td>[String][]<a href="https://pkg.go.dev/k8s.io/apimachinery/pkg/apis/meta/v1#Condition">Kubernetes meta/v1.Condition</a></td>
-<td>Status of individual DNSRecords owned by this policy.</td>
-</tr>
 </tbody>
 </table>
 <h2 id="healthcheckstatus">HealthCheckStatus<a class="headerlink" href="#healthcheckstatus" title="Permanent link">&para;</a></h2>
@@ -4325,7 +4339,7 @@
 <tr>
 <td><code>conditions</code></td>
 <td>[]<a href="https://pkg.go.dev/k8s.io/apimachinery/pkg/apis/meta/v1#Condition">Kubernetes meta/v1.Condition</a></td>
-<td>List of conditions that define that status of the resource.</td>
+<td>List of conditions that define that status of the resource.<br/></td>
 </tr>
 </tbody>
 </table>
@@ -4374,7 +4388,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.8.0", "latest"], "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.7.0"], "provider": "mike"}}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.bd41221c.min.js"></script>

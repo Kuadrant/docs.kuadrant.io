@@ -1041,27 +1041,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../dns-operator/docs/provider/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    DNS Providers
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../../multicluster-gateway-controller/docs/how-to/multicluster-loadbalanced-dnspolicy/" class="md-nav__link">
         
   
@@ -2861,27 +2840,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deploy-on-local-kubernetes-cluster" class="md-nav__link">
+  <a href="#run-locally" class="md-nav__link">
     <span class="md-ellipsis">
-      Deploy on local kubernetes cluster
+      Run locally
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#run-as-a-local-process" class="md-nav__link">
+  <a href="#deploy-the-operator-in-a-deployment-object" class="md-nav__link">
     <span class="md-ellipsis">
-      Run as a local process
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deploy-on-existing-kubernetes-cluster" class="md-nav__link">
-    <span class="md-ellipsis">
-      Deploy on existing kubernetes cluster
+      Deploy the operator in a deployment object
     </span>
   </a>
   
@@ -2961,6 +2931,15 @@
   <a href="#integration-tests" class="md-nav__link">
     <span class="md-ellipsis">
       Integration tests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#all-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      All tests
     </span>
   </a>
   
@@ -4053,27 +4032,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deploy-on-local-kubernetes-cluster" class="md-nav__link">
+  <a href="#run-locally" class="md-nav__link">
     <span class="md-ellipsis">
-      Deploy on local kubernetes cluster
+      Run locally
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#run-as-a-local-process" class="md-nav__link">
+  <a href="#deploy-the-operator-in-a-deployment-object" class="md-nav__link">
     <span class="md-ellipsis">
-      Run as a local process
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deploy-on-existing-kubernetes-cluster" class="md-nav__link">
-    <span class="md-ellipsis">
-      Deploy on existing kubernetes cluster
+      Deploy the operator in a deployment object
     </span>
   </a>
   
@@ -4159,6 +4129,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#all-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      All tests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#lint-tests" class="md-nav__link">
     <span class="md-ellipsis">
       Lint tests
@@ -4207,86 +4186,45 @@
 <h1 id="development-guide">Development Guide<a class="headerlink" href="#development-guide" title="Permanent link">&para;</a></h1>
 <h2 id="technology-stack-required-for-development">Technology stack required for development<a class="headerlink" href="#technology-stack-required-for-development" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="https://github.com/operator-framework/operator-sdk">operator-sdk</a> version v1.32.0</li>
-<li><a href="https://kind.sigs.k8s.io/">kind</a> version v0.23.0</li>
+<li><a href="https://github.com/operator-framework/operator-sdk">operator-sdk</a> version v1.28.1</li>
+<li><a href="https://kind.sigs.k8s.io/">kind</a> version v0.22.0</li>
 <li><a href="https://git-scm.com/downloads">git</a></li>
 <li><a href="https://golang.org/">go</a> version 1.21+</li>
 <li><a href="https://kubernetes.io/">kubernetes</a> version v1.19+</li>
 <li><a href="https://kubernetes.io/docs/tasks/tools/#kubectl">kubectl</a> version v1.19+</li>
 </ul>
 <h2 id="build">Build<a class="headerlink" href="#build" title="Permanent link">&para;</a></h2>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>make<span class="w"> </span>build
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>make
 </span></code></pre></div>
-<h2 id="deploy-on-local-kubernetes-cluster">Deploy on local kubernetes cluster<a class="headerlink" href="#deploy-on-local-kubernetes-cluster" title="Permanent link">&para;</a></h2>
-<p>Run local Kubernetes cluster using Docker container using <a href="https://kind.sigs.k8s.io/">Kind</a> and deploy kuadrant operator (and <em>all</em> dependencies) in a single command.</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>local-setup
+<h2 id="run-locally">Run locally<a class="headerlink" href="#run-locally" title="Permanent link">&para;</a></h2>
+<p>You need an active session open to a kubernetes cluster.</p>
+<p>Optionally, run kind and deploy kuadrant deps</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>local-env-setup
 </span></code></pre></div>
-<p>The <code>make local-setup</code> target accepts the following variables:</p>
-<table>
-<thead>
-<tr>
-<th><strong>Makefile Variable</strong></th>
-<th><strong>Description</strong></th>
-<th><strong>Default value</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>GATEWAYAPI_PROVIDER</code></td>
-<td>GatewayAPI provider name. Accepted values: [<em>istio</em>]</td>
-<td><em>istio</em></td>
-</tr>
-</tbody>
-</table>
-<h2 id="run-as-a-local-process">Run as a local process<a class="headerlink" href="#run-as-a-local-process" title="Permanent link">&para;</a></h2>
-<p>Run local Kubernetes cluster using Docker container using <a href="https://kind.sigs.k8s.io/">Kind</a> and deploy <em>all</em> dependencies in a single command.</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>make<span class="w"> </span>local-env-setup
-</span></code></pre></div>
-<p>The <code>make local-env-setup</code> target accepts the following variables:</p>
-<table>
-<thead>
-<tr>
-<th><strong>Makefile Variable</strong></th>
-<th><strong>Description</strong></th>
-<th><strong>Default value</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>GATEWAYAPI_PROVIDER</code></td>
-<td>GatewayAPI provider name. Accepted values: [<em>istio</em>]</td>
-<td><em>istio</em></td>
-</tr>
-</tbody>
-</table>
 <p>Then, run the operator locally</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>make<span class="w"> </span>run
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>make<span class="w"> </span>run
 </span></code></pre></div>
-<h2 id="deploy-on-existing-kubernetes-cluster">Deploy on existing kubernetes cluster<a class="headerlink" href="#deploy-on-existing-kubernetes-cluster" title="Permanent link">&para;</a></h2>
-<p><strong>Requirements</strong>:</p>
+<h2 id="deploy-the-operator-in-a-deployment-object">Deploy the operator in a deployment object<a class="headerlink" href="#deploy-the-operator-in-a-deployment-object" title="Permanent link">&para;</a></h2>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>make<span class="w"> </span>local-setup
+</span></code></pre></div>
+<p>List of tasks done by the command above:</p>
 <ul>
-<li>Active session open to the kubernetes cluster.</li>
-<li>GatewayAPI installed</li>
-<li>GatewayAPI provider installed. Currently only Istio supported.</li>
-<li><a href="https://cert-manager.io/">Cert Manager</a> installed</li>
+<li>Create local cluster using kind</li>
+<li>Build kuadrant docker image from the current working directory</li>
+<li>Deploy Kuadrant control plane (including istio, authorino and limitador)</li>
 </ul>
-<p>Before running the kuadrant operator, some dependencies needs to be deployed.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>make install
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>make deploy-dependencies
-</span></code></pre></div>
-<p>Then, deploy the operator</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>make<span class="w"> </span>deploy
-</span></code></pre></div>
+<p>TODO: customize with custom authorino and limitador git refs.
+Make sure Makefile propagates variable to <code>deploy</code> target</p>
 <h2 id="deploy-kuadrant-operator-using-olm">Deploy kuadrant operator using OLM<a class="headerlink" href="#deploy-kuadrant-operator-using-olm" title="Permanent link">&para;</a></h2>
 <p>You can deploy kuadrant using OLM just running few commands.
 No need to build any image. Kuadrant engineering team provides <code>latest</code> and
 release version tagged images. They are available in
 the <a href="https://quay.io/organization/kuadrant">Quay.io/Kuadrant</a> image repository.</p>
 <p>Create kind cluster</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>make<span class="w"> </span>kind-create-cluster
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>make<span class="w"> </span>kind-create-cluster
 </span></code></pre></div>
 <p>Deploy OLM system</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>make<span class="w"> </span>install-olm
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>make<span class="w"> </span>install-olm
 </span></code></pre></div>
 <p>Deploy kuadrant using OLM. The <code>make deploy-catalog</code> target accepts the following variables:</p>
 <table>
@@ -4305,7 +4243,7 @@ the <a href="https://quay.io/organization/kuadrant">Quay.io/Kuadrant</a> image r
 </tr>
 </tbody>
 </table>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>make<span class="w"> </span>deploy-catalog<span class="w"> </span><span class="o">[</span><span class="nv">CATALOG_IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator-catalog:latest<span class="o">]</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>make<span class="w"> </span>deploy-catalog<span class="w"> </span><span class="o">[</span><span class="nv">CATALOG_IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator-catalog:latest<span class="o">]</span>
 </span></code></pre></div>
 <h2 id="build-custom-olm-catalog">Build custom OLM catalog<a class="headerlink" href="#build-custom-olm-catalog" title="Permanent link">&para;</a></h2>
 <p>If you want to deploy (using OLM) a custom kuadrant operator, you need to build your own catalog.
@@ -4366,12 +4304,12 @@ bundle and a custom catalog including the custom bundle.</p>
 <ul>
 <li>Build the bundle manifests</li>
 </ul>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>make<span class="w"> </span>bundle<span class="w"> </span><span class="o">[</span><span class="nv">IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator:latest<span class="o">]</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">            </span><span class="o">[</span><span class="nv">VERSION</span><span class="o">=</span><span class="m">0</span>.0.0<span class="o">]</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">            </span><span class="o">[</span><span class="nv">LIMITADOR_OPERATOR_BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/limitador-operator-bundle:latest<span class="o">]</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">            </span><span class="o">[</span><span class="nv">AUTHORINO_OPERATOR_BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/authorino-operator-bundle:latest<span class="o">]</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">            </span><span class="o">[</span><span class="nv">DNS_OPERATOR_BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/dns-operator-bundle:latest<span class="o">]</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">            </span><span class="o">[</span><span class="nv">RELATED_IMAGE_WASMSHIM</span><span class="o">=</span>oci://quay.io/kuadrant/wasm-shim:latest<span class="o">]</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>make<span class="w"> </span>bundle<span class="w"> </span><span class="o">[</span><span class="nv">IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator:latest<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">            </span><span class="o">[</span><span class="nv">VERSION</span><span class="o">=</span><span class="m">0</span>.0.0<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">            </span><span class="o">[</span><span class="nv">LIMITADOR_OPERATOR_BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/limitador-operator-bundle:latest<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">            </span><span class="o">[</span><span class="nv">AUTHORINO_OPERATOR_BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/authorino-operator-bundle:latest<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">            </span><span class="o">[</span><span class="nv">DNS_OPERATOR_BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/dns-operator-bundle:latest<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">            </span><span class="o">[</span><span class="nv">RELATED_IMAGE_WASMSHIM</span><span class="o">=</span>oci://quay.io/kuadrant/wasm-shim:latest<span class="o">]</span>
 </span></code></pre></div>
 <ul>
 <li>Build the bundle image from the manifests</li>
@@ -4392,7 +4330,7 @@ bundle and a custom catalog including the custom bundle.</p>
 </tr>
 </tbody>
 </table>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>make<span class="w"> </span>bundle-build<span class="w"> </span><span class="o">[</span><span class="nv">BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator-bundle:latest<span class="o">]</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>make<span class="w"> </span>bundle-build<span class="w"> </span><span class="o">[</span><span class="nv">BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator-bundle:latest<span class="o">]</span>
 </span></code></pre></div>
 <ul>
 <li>Push the bundle image to a registry</li>
@@ -4413,7 +4351,7 @@ bundle and a custom catalog including the custom bundle.</p>
 </tr>
 </tbody>
 </table>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>make<span class="w"> </span>bundle-push<span class="w"> </span><span class="o">[</span><span class="nv">BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator-bundle:latest<span class="o">]</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>make<span class="w"> </span>bundle-push<span class="w"> </span><span class="o">[</span><span class="nv">BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator-bundle:latest<span class="o">]</span>
 </span></code></pre></div>
 <p>Frequently, you may need to build custom kuadrant bundle with the default (<code>latest</code>) Limitador and
 Authorino bundles. These are the example commands to build the manifests, build the bundle image
@@ -4421,14 +4359,14 @@ and push to the registry.</p>
 <p>In the example, a new kuadrant operator bundle version <code>0.8.0</code> will be created that references
 the kuadrant operator image <code>quay.io/kuadrant/kuadrant-operator:v0.5.0</code> and latest Limitador and
 Authorino bundles.</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># manifests</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>make<span class="w"> </span>bundle<span class="w"> </span><span class="nv">IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator:v0.5.0<span class="w"> </span><span class="nv">VERSION</span><span class="o">=</span><span class="m">0</span>.8.0
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># bundle image</span>
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>make<span class="w"> </span>bundle-build<span class="w"> </span><span class="nv">BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator-bundle:my-bundle
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="c1"># push bundle image</span>
-</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>make<span class="w"> </span>bundle-push<span class="w"> </span><span class="nv">BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator-bundle:my-bundle
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># manifests</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>make<span class="w"> </span>bundle<span class="w"> </span><span class="nv">IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator:v0.5.0<span class="w"> </span><span class="nv">VERSION</span><span class="o">=</span><span class="m">0</span>.8.0
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># bundle image</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>make<span class="w"> </span>bundle-build<span class="w"> </span><span class="nv">BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator-bundle:my-bundle
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># push bundle image</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>make<span class="w"> </span>bundle-push<span class="w"> </span><span class="nv">BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator-bundle:my-bundle
 </span></code></pre></div>
 <h3 id="build-custom-catalog">Build custom catalog<a class="headerlink" href="#build-custom-catalog" title="Permanent link">&para;</a></h3>
 <p>The catalog's format will be <a href="https://olm.operatorframework.io/docs/reference/file-based-catalogs/">File-based Catalog</a>.</p>
@@ -4465,10 +4403,10 @@ Authorino bundles.</p>
 </tr>
 </tbody>
 </table>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>make<span class="w"> </span>catalog<span class="w"> </span><span class="o">[</span><span class="nv">BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator-bundle:latest<span class="o">]</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">            </span><span class="o">[</span><span class="nv">LIMITADOR_OPERATOR_BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/limitador-operator-bundle:latest<span class="o">]</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">            </span><span class="o">[</span><span class="nv">AUTHORINO_OPERATOR_BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/authorino-operator-bundle:latest<span class="o">]</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">            </span><span class="o">[</span><span class="nv">DNS_OPERATOR_BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/dns-operator-bundle:latest<span class="o">]</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>make<span class="w"> </span>catalog<span class="w"> </span><span class="o">[</span><span class="nv">BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator-bundle:latest<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">            </span><span class="o">[</span><span class="nv">LIMITADOR_OPERATOR_BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/limitador-operator-bundle:latest<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">            </span><span class="o">[</span><span class="nv">AUTHORINO_OPERATOR_BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/authorino-operator-bundle:latest<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">            </span><span class="o">[</span><span class="nv">DNS_OPERATOR_BUNDLE_IMG</span><span class="o">=</span>quay.io/kuadrant/dns-operator-bundle:latest<span class="o">]</span>
 </span></code></pre></div>
 <ul>
 <li>Build the catalog image from the manifests</li>
@@ -4489,73 +4427,51 @@ Authorino bundles.</p>
 </tr>
 </tbody>
 </table>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>make<span class="w"> </span>catalog-build<span class="w"> </span><span class="o">[</span><span class="nv">CATALOG_IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator-catalog:latest<span class="o">]</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>make<span class="w"> </span>catalog-build<span class="w"> </span><span class="o">[</span><span class="nv">CATALOG_IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator-catalog:latest<span class="o">]</span>
 </span></code></pre></div>
 <ul>
 <li>Push the catalog image to a registry</li>
 </ul>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>make<span class="w"> </span>catalog-push<span class="w"> </span><span class="o">[</span><span class="nv">CATALOG_IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator-bundle:latest<span class="o">]</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>make<span class="w"> </span>catalog-push<span class="w"> </span><span class="o">[</span><span class="nv">CATALOG_IMG</span><span class="o">=</span>quay.io/kuadrant/kuadrant-operator-bundle:latest<span class="o">]</span>
 </span></code></pre></div>
 <p>You can try out your custom catalog image following the steps of the
 <a href="#deploy-kuadrant-operator-using-olm">Deploy kuadrant operator using OLM</a> section.</p>
 <h2 id="cleaning-up">Cleaning up<a class="headerlink" href="#cleaning-up" title="Permanent link">&para;</a></h2>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>make<span class="w"> </span>local-cleanup
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>make<span class="w"> </span>local-cleanup
 </span></code></pre></div>
 <h2 id="run-tests">Run tests<a class="headerlink" href="#run-tests" title="Permanent link">&para;</a></h2>
 <h3 id="unittests">Unittests<a class="headerlink" href="#unittests" title="Permanent link">&para;</a></h3>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>make<span class="w"> </span>test-unit
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>make<span class="w"> </span>test-unit
 </span></code></pre></div>
 <p>Optionally, add <code>TEST_NAME</code> makefile variable to run specific test</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>make<span class="w"> </span>test-unit<span class="w"> </span><span class="nv">TEST_NAME</span><span class="o">=</span>TestLimitIndexEquals
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>make<span class="w"> </span>test-unit<span class="w"> </span><span class="nv">TEST_NAME</span><span class="o">=</span>TestLimitIndexEquals
 </span></code></pre></div>
 <p>or even subtest</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>make<span class="w"> </span>test-unit<span class="w"> </span><span class="nv">TEST_NAME</span><span class="o">=</span>TestLimitIndexEquals/empty_indexes_are_equal
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>make<span class="w"> </span>test-unit<span class="w"> </span><span class="nv">TEST_NAME</span><span class="o">=</span>TestLimitIndexEquals/empty_indexes_are_equal
 </span></code></pre></div>
 <h3 id="integration-tests">Integration tests<a class="headerlink" href="#integration-tests" title="Permanent link">&para;</a></h3>
-<p>Multiple controller integration tests are defined</p>
-<table>
-<thead>
-<tr>
-<th>Golang package</th>
-<th>Required environment</th>
-<th>Makefile env setup target</th>
-<th>Makefile test run target</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>github.com/kuadrant/kuadrant-operator/tests/bare_k8s</code></td>
-<td>no gateway provider, no GatewayAPI CRDs. Just Kuadrant API and Kuadrant dependencies.</td>
-<td><code>make local-k8s-env-setup</code></td>
-<td><code>make test-bare-k8s-integration</code></td>
-</tr>
-<tr>
-<td><code>github.com/kuadrant/kuadrant-operator/tests/gatewayapi</code></td>
-<td>no gateway provider. GatewayAPI CRDs, Kuadrant API and Kuadrant dependencies.</td>
-<td><code>make local-gatewayapi-env-setup</code></td>
-<td><code>make test-gatewayapi-env-integration</code></td>
-</tr>
-<tr>
-<td><code>github.com/kuadrant/kuadrant-operator/controllers</code></td>
-<td>at least one gatewayapi provider. It can be any: istio, envoygateway, ...</td>
-<td><code>make local-env-setup GATEWAYAPI_PROVIDER=[istio]</code> (Default <em>istio</em>)</td>
-<td><code>make test-integration</code></td>
-</tr>
-<tr>
-<td><code>github.com/kuadrant/kuadrant-operator/tests/istio</code></td>
-<td>GatewayAPI CRDs, Istio, Kuadrant API and Kuadrant dependencies.</td>
-<td><code>make local-env-setup GATEWAYAPI_PROVIDER=istio</code></td>
-<td><code>make test-istio-env-integration</code></td>
-</tr>
-</tbody>
-</table>
+<p>You need an active session open to a kubernetes cluster.</p>
+<p>Optionally, run kind and deploy kuadrant deps</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>make<span class="w"> </span>local-env-setup
+</span></code></pre></div>
+<p>Run integration tests</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>make<span class="w"> </span>test-integration
+</span></code></pre></div>
+<h3 id="all-tests">All tests<a class="headerlink" href="#all-tests" title="Permanent link">&para;</a></h3>
+<p>You need an active session open to a kubernetes cluster.</p>
+<p>Optionally, run kind and deploy kuadrant deps</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>make<span class="w"> </span>local-env-setup
+</span></code></pre></div>
+<p>Run all tests</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>make<span class="w"> </span><span class="nb">test</span>
+</span></code></pre></div>
 <h3 id="lint-tests">Lint tests<a class="headerlink" href="#lint-tests" title="Permanent link">&para;</a></h3>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>make<span class="w"> </span>run-lint
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>make<span class="w"> </span>run-lint
 </span></code></pre></div>
 <h2 id="uninstall-kuadrant-crds">(Un)Install Kuadrant CRDs<a class="headerlink" href="#uninstall-kuadrant-crds" title="Permanent link">&para;</a></h2>
 <p>You need an active session open to a kubernetes cluster.</p>
 <p>Remove CRDs</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>make<span class="w"> </span>uninstall
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>make<span class="w"> </span>uninstall
 </span></code></pre></div>
 
 
@@ -4602,7 +4518,7 @@ Authorino bundles.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.8.0", "latest"], "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.7.0"], "provider": "mike"}}</script>
     
     
       <script src="../../../assets/javascripts/bundle.bd41221c.min.js"></script>

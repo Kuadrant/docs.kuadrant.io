@@ -1041,27 +1041,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../dns-operator/docs/provider/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    DNS Providers
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../../multicluster-gateway-controller/docs/how-to/multicluster-loadbalanced-dnspolicy/" class="md-nav__link">
         
   
@@ -3378,15 +3357,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#running-multi-node-distributed-deployments" class="md-nav__link">
-    <span class="md-ellipsis">
-      Running Multi Node Distributed Deployments
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#limitadors-admin-http-endpoint" class="md-nav__link">
     <span class="md-ellipsis">
       Limitador's admin HTTP endpoint
@@ -3408,24 +3378,6 @@
   <a href="#downstream-traffic" class="md-nav__link">
     <span class="md-ellipsis">
       Downstream traffic
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#load-testing-the-grpc-ratelimitservice-directly" class="md-nav__link">
-    <span class="md-ellipsis">
-      Load Testing the GRPC RateLimitService directly
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#load-testing-via-envoy-proxy" class="md-nav__link">
-    <span class="md-ellipsis">
-      Load Testing via Envoy Proxy
     </span>
   </a>
   
@@ -4035,15 +3987,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#running-multi-node-distributed-deployments" class="md-nav__link">
-    <span class="md-ellipsis">
-      Running Multi Node Distributed Deployments
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#limitadors-admin-http-endpoint" class="md-nav__link">
     <span class="md-ellipsis">
       Limitador's admin HTTP endpoint
@@ -4065,24 +4008,6 @@
   <a href="#downstream-traffic" class="md-nav__link">
     <span class="md-ellipsis">
       Downstream traffic
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#load-testing-the-grpc-ratelimitservice-directly" class="md-nav__link">
-    <span class="md-ellipsis">
-      Load Testing the GRPC RateLimitService directly
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#load-testing-via-envoy-proxy" class="md-nav__link">
-    <span class="md-ellipsis">
-      Load Testing via Envoy Proxy
     </span>
   </a>
   
@@ -4183,120 +4108,89 @@
 <td>Uses redis to store counters, <a href="redis-otel/">instrumented with opentelemetry</a></td>
 </tr>
 <tr>
+<td>Infinispan</td>
+<td><code>make deploy-infinispan</code></td>
+<td>Uses Infinispan to store counters</td>
+</tr>
+<tr>
 <td>Disk</td>
 <td><code>make deploy-disk</code></td>
 <td>Uses disk to store counters</td>
 </tr>
-<tr>
-<td>Distributed</td>
-<td><code>make deploy-distributed</code></td>
-<td>Counters are held in Limitador (ephemeral) but replicated to other Limitador servers.</td>
-</tr>
 </tbody>
 </table>
-<p>| Distributed 3 Node | <code>make deploy-distributed-3-node</code> | Counters are held in Limitador (ephemeral) but replicated to 3 other Limitador servers. |</p>
-<h3 id="running-multi-node-distributed-deployments">Running Multi Node Distributed Deployments<a class="headerlink" href="#running-multi-node-distributed-deployments" title="Permanent link">&para;</a></h3>
-<p>The <code>make deploy-distributed</code> target can be connected to other Limitador servers but requires you to set the <code>PEER_ID</code> and <code>PEER_URLS</code> environment variables when you run the target.</p>
-<p>If you have 3 servers you want to replicate between, you would run the following commands:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># on server where: hostname=server1</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">PEER_ID</span><span class="o">=</span><span class="sb">`</span>hostname<span class="sb">`</span><span class="w"> </span><span class="nv">PEER_URLS</span><span class="o">=</span><span class="s2">&quot;http://server2:15001 http://server3:15001&quot;</span><span class="w"> </span>make<span class="w"> </span>deploy-distributed
-</span></code></pre></div>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># on server where: hostname=server2</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nv">PEER_ID</span><span class="o">=</span><span class="sb">`</span>hostname<span class="sb">`</span><span class="w"> </span><span class="nv">PEER_URLS</span><span class="o">=</span><span class="s2">&quot;http://server1:15001 http://server3:15001&quot;</span><span class="w"> </span>make<span class="w"> </span>deploy-distributed
-</span></code></pre></div>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># on server where: hostname=server3</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nv">PEER_ID</span><span class="o">=</span><span class="sb">`</span>hostname<span class="sb">`</span><span class="w"> </span><span class="nv">PEER_URLS</span><span class="o">=</span><span class="s2">&quot;http://server1:15001 http://server2:15001&quot;</span><span class="w"> </span>make<span class="w"> </span>deploy-distributed
-</span></code></pre></div>
-<p>The <code>PEER_ID</code> just need to be unique between the servers, and the <code>PEER_URLS</code> should be a space-separated list of the other servers' URLs.</p>
 <h3 id="limitadors-admin-http-endpoint">Limitador's admin HTTP endpoint<a class="headerlink" href="#limitadors-admin-http-endpoint" title="Permanent link">&para;</a></h3>
 <p>Limits</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>http://127.0.0.1:18080/limits/test_namespace
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>http://127.0.0.1:18080/limits/test_namespace
 </span></code></pre></div>
 <p>Counters</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>http://127.0.0.1:18080/counters/test_namespace
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>http://127.0.0.1:18080/counters/test_namespace
 </span></code></pre></div>
 <p>Metrics</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>http://127.0.0.1:18080/metrics
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>http://127.0.0.1:18080/metrics
 </span></code></pre></div>
 <h3 id="limitadors-grpc-ratelimitservice-endpoint">Limitador's GRPC RateLimitService endpoint<a class="headerlink" href="#limitadors-grpc-ratelimitservice-endpoint" title="Permanent link">&para;</a></h3>
 <p>Get <code>grpcurl</code>. You need <a href="https://golang.org/doc/install">Go SDK</a> installed.</p>
 <p>Golang version &gt;= 1.18 (from <a href="https://github.com/fullstorydev/grpcurl/blob/v1.8.9/go.mod#L3">fullstorydev/grpcurl</a>)</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>make<span class="w"> </span>grpcurl
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>make<span class="w"> </span>grpcurl
 </span></code></pre></div>
 <p>Inspect <code>RateLimitService</code> GRPC service</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>bin/grpcurl<span class="w"> </span>-plaintext<span class="w"> </span><span class="m">127</span>.0.0.1:18081<span class="w"> </span>describe<span class="w"> </span>envoy.service.ratelimit.v3.RateLimitService
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>bin/grpcurl<span class="w"> </span>-plaintext<span class="w"> </span><span class="m">127</span>.0.0.1:18081<span class="w"> </span>describe<span class="w"> </span>envoy.service.ratelimit.v3.RateLimitService
 </span></code></pre></div>
 <p>Make a custom request</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>bin/grpcurl<span class="w"> </span>-plaintext<span class="w"> </span>-d<span class="w"> </span>@<span class="w"> </span><span class="m">127</span>.0.0.1:18081<span class="w"> </span>envoy.service.ratelimit.v3.RateLimitService.ShouldRateLimit<span class="w"> </span><span class="s">&lt;&lt;EOM</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="s">{</span>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="s">    &quot;domain&quot;: &quot;test_namespace&quot;,</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="s">    &quot;hits_addend&quot;: 1,</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="s">    &quot;descriptors&quot;: [</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="s">        {</span>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="s">            &quot;entries&quot;: [</span>
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="s">                {</span>
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="s">                    &quot;key&quot;: &quot;req.method&quot;,</span>
-</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="s">                    &quot;value&quot;: &quot;POST&quot;</span>
-</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="s">                },</span>
-</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="s">                {</span>
-</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="s">                    &quot;key&quot;: &quot;req.path&quot;,</span>
-</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="s">                    &quot;value&quot;: &quot;/&quot;</span>
-</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="s">                }</span>
-</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="s">            ]</span>
-</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="s">        }</span>
-</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="s">    ]</span>
-</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="s">}</span>
-</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="s">EOM</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>bin/grpcurl<span class="w"> </span>-plaintext<span class="w"> </span>-d<span class="w"> </span>@<span class="w"> </span><span class="m">127</span>.0.0.1:18081<span class="w"> </span>envoy.service.ratelimit.v3.RateLimitService.ShouldRateLimit<span class="w"> </span><span class="s">&lt;&lt;EOM</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="s">{</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="s">    &quot;domain&quot;: &quot;test_namespace&quot;,</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="s">    &quot;hits_addend&quot;: 1,</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="s">    &quot;descriptors&quot;: [</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="s">        {</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="s">            &quot;entries&quot;: [</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="s">                {</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="s">                    &quot;key&quot;: &quot;req.method&quot;,</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="s">                    &quot;value&quot;: &quot;POST&quot;</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="s">                }</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="s">            ]</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="s">        }</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="s">    ]</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="s">}</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="s">EOM</span>
 </span></code></pre></div>
 <p>Do repeated requests. As the limit is set to max 5 request for 60 seconds,
 you should see <code>OVER_LIMIT</code> response after 5 requests.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">while</span><span class="w"> </span>:<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>bin/grpcurl<span class="w"> </span>-plaintext<span class="w"> </span>-d<span class="w"> </span>@<span class="w"> </span><span class="m">127</span>.0.0.1:18081<span class="w"> </span>envoy.service.ratelimit.v3.RateLimitService.ShouldRateLimit<span class="w"> </span><span class="s">&lt;&lt;EOM; sleep 1; done</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="s">{</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="s">    &quot;domain&quot;: &quot;test_namespace&quot;,</span>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="s">    &quot;hits_addend&quot;: 1,</span>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="s">    &quot;descriptors&quot;: [</span>
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="s">        {</span>
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="s">            &quot;entries&quot;: [</span>
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="s">                {</span>
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="s">                    &quot;key&quot;: &quot;req.method&quot;,</span>
-</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="s">                    &quot;value&quot;: &quot;POST&quot;</span>
-</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="s">                },</span>
-</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="s">                {</span>
-</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="s">                    &quot;key&quot;: &quot;req.path&quot;,</span>
-</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="s">                    &quot;value&quot;: &quot;/&quot;</span>
-</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="s">                }</span>
-</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="s">            ]</span>
-</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="s">        }</span>
-</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="s">    ]</span>
-</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="s">}</span>
-</span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="s">EOM</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">while</span><span class="w"> </span>:<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>bin/grpcurl<span class="w"> </span>-plaintext<span class="w"> </span>-d<span class="w"> </span>@<span class="w"> </span><span class="m">127</span>.0.0.1:18081<span class="w"> </span>envoy.service.ratelimit.v3.RateLimitService.ShouldRateLimit<span class="w"> </span><span class="s">&lt;&lt;EOM; sleep 1; done</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="s">{</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="s">    &quot;domain&quot;: &quot;test_namespace&quot;,</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="s">    &quot;hits_addend&quot;: 1,</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="s">    &quot;descriptors&quot;: [</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="s">        {</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="s">            &quot;entries&quot;: [</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="s">                {</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="s">                    &quot;key&quot;: &quot;req.method&quot;,</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="s">                    &quot;value&quot;: &quot;POST&quot;</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="s">                }</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="s">            ]</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="s">        }</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="s">    ]</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="s">}</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="s">EOM</span>
 </span></code></pre></div>
 <h3 id="downstream-traffic">Downstream traffic<a class="headerlink" href="#downstream-traffic" title="Permanent link">&para;</a></h3>
 <p><strong>Upstream</strong> service implemented by <a href="https://httpbin.org/">httpbin.org</a></p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: example.com&quot;</span><span class="w"> </span>http://127.0.0.1:18000/get
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: example.com&quot;</span><span class="w"> </span>http://127.0.0.1:18000/get
 </span></code></pre></div>
-<h3 id="load-testing-the-grpc-ratelimitservice-directly">Load Testing the GRPC RateLimitService directly<a class="headerlink" href="#load-testing-the-grpc-ratelimitservice-directly" title="Permanent link">&para;</a></h3>
-<p>This load test will use <code>grpcurl</code>. You need <a href="https://golang.org/doc/install">Go SDK</a> installed.</p>
-<p>Run a load test a 5000 requests per second (RPS) for 10 seconds:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nv">RPS</span><span class="o">=</span><span class="m">5000</span><span class="w"> </span>make<span class="w"> </span>load-test
-</span></code></pre></div>
-<h3 id="load-testing-via-envoy-proxy">Load Testing via Envoy Proxy<a class="headerlink" href="#load-testing-via-envoy-proxy" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cargo<span class="w"> </span>run<span class="w"> </span>--manifest-path<span class="w"> </span>loadtest/Cargo.toml<span class="w">  </span>--package<span class="w"> </span>loadtest<span class="w"> </span>--release<span class="w"> </span>--<span class="w"> </span>--report-file<span class="o">=</span>report.htm
-</span></code></pre></div>
-<p>The report will be saved in <code>report.htm</code> file.</p>
 <h3 id="limitador-image">Limitador Image<a class="headerlink" href="#limitador-image" title="Permanent link">&para;</a></h3>
 <p>By default, the sandbox will run Limitador's <code>limitador-testing:latest</code> image.</p>
 <p><strong>Building <code>limitador-testing:latest</code> image</strong></p>
 <p>You can easily build the limitador's image from the current workspace code base with:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>make<span class="w"> </span>build
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>make<span class="w"> </span>build
 </span></code></pre></div>
 <p>The image will be tagged with <code>limitador-testing:latest</code></p>
 <p><strong>Using custom Limitador's image</strong></p>
 <p>The <code>LIMITADOR_IMAGE</code> environment variable overrides the default image. For example:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>make<span class="w"> </span>deploy-in-memory<span class="w"> </span><span class="nv">LIMITADOR_IMAGE</span><span class="o">=</span>quay.io/kuadrant/limitador:latest
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>make<span class="w"> </span>deploy-in-memory<span class="w"> </span><span class="nv">LIMITADOR_IMAGE</span><span class="o">=</span>quay.io/kuadrant/limitador:latest
 </span></code></pre></div>
 <h3 id="clean-env">Clean env<a class="headerlink" href="#clean-env" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>make<span class="w"> </span>clean
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>make<span class="w"> </span>clean
 </span></code></pre></div>
 
 
@@ -4343,7 +4237,7 @@ you should see <code>OVER_LIMIT</code> response after 5 requests.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.8.0", "latest"], "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.7.0"], "provider": "mike"}}</script>
     
     
       <script src="../../../assets/javascripts/bundle.bd41221c.min.js"></script>

@@ -1,48 +1,4 @@
 {
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "dashlist",
-      "name": "Dashboard list",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "9.5.3"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "state-timeline",
-      "name": "State timeline",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "text",
-      "name": "Text",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -68,7 +24,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": null,
+  "id": 3,
+  "iteration": 1713210122715,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -96,7 +53,7 @@
           "kuadrant"
         ]
       },
-      "pluginVersion": "9.5.3",
+      "pluginVersion": "8.5.5",
       "title": "Kuadrant Dashboards",
       "type": "dashlist"
     },
@@ -114,15 +71,10 @@
       },
       "id": 150,
       "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
-        },
         "content": "#### Business Overview of APIs\n\nThe panels below are grouped by APIs, realized by a [Gateway API HTTPRoute](https://gateway-api.sigs.k8s.io/concepts/api-overview/#httproute). Each panel provides a comprehensive overview of request and error metrics associated with each API. Additionally, these panels include a heatmap that visualizes requests per second, offering real-time insights into the traffic patterns and operational status of your services.\n\n*Important: HTTPRoutes must include a \"service\" and \"deployment\" label with a value that matches the name of the service & deployment being routed to. eg. \"service=myapp, deployment=myapp\"*\n",
         "mode": "markdown"
       },
-      "pluginVersion": "9.5.3",
+      "pluginVersion": "8.5.5",
       "title": "Business User Dashboard",
       "type": "text"
     },
@@ -153,8 +105,6 @@
             "mode": "fixed"
           },
           "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisSoftMin": 0,
@@ -211,9 +161,8 @@
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
+          "displayMode": "hidden",
+          "placement": "bottom"
         },
         "tooltip": {
           "mode": "multi",
@@ -227,7 +176,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(rate(istio_requests_total{}[5m])) by (destination_service_name) * on(destination_service_name) group_right() (group without(cluster_id, instance, app_kubernetes_io_instance) (label_replace(gatewayapi_httproute_labels{name=~\"${route_name}\",exported_namespace=~\"${api_namespace}\"}, \"destination_service_name\", \"$1\",\"service\", \"(.+)\")))",
+          "expr": "sum(rate(istio_requests_total{}[5m])) by (destination_service_name) * on(destination_service_name) group_right label_replace(gatewayapi_httproute_labels{name=~\"${route_name}\",exported_namespace=~\"${api_namespace}\"}, \"destination_service_name\", \"$1\",\"service\", \"(.+)\")",
           "legendFormat": "API: {{name}}",
           "range": true,
           "refId": "A"
@@ -245,7 +194,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "continuous-blues"
+            "mode": "continuous-GrYlRd"
           },
           "custom": {
             "fillOpacity": 70,
@@ -276,8 +225,7 @@
         "alignValue": "center",
         "legend": {
           "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
+          "placement": "bottom"
         },
         "mergeValues": false,
         "rowHeight": 0.9,
@@ -295,7 +243,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(rate(istio_requests_total{}[5m])) by (destination_service_name) * on(destination_service_name) group_right() (group without(cluster_id, instance, app_kubernetes_io_instance) (label_replace(gatewayapi_httproute_labels{name=~\"${route_name}\",exported_namespace=~\"${api_namespace}\"}, \"destination_service_name\", \"$1\",\"service\", \"(.+)\")))",
+          "expr": "sum(rate(istio_requests_total{}[5m])) by (destination_service_name) * on(destination_service_name) group_right label_replace(gatewayapi_httproute_labels{name=~\"${route_name}\",exported_namespace=~\"${api_namespace}\"}, \"destination_service_name\", \"$1\",\"service\", \"(.+)\")",
           "format": "time_series",
           "instant": false,
           "legendFormat": "most recent",
@@ -308,7 +256,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(rate(istio_requests_total{}[5m] offset $__range)) by (destination_service_name) * on(destination_service_name) group_right() (group without(cluster_id, instance, app_kubernetes_io_instance) (label_replace(gatewayapi_httproute_labels{name=~\"${route_name}\",exported_namespace=~\"${api_namespace}\"}, \"destination_service_name\", \"$1\",\"service\", \"(.+)\")))",
+          "expr": "sum(rate(istio_requests_total{}[5m] offset $__range)) by (destination_service_name) * on(destination_service_name) group_right label_replace(gatewayapi_httproute_labels{name=~\"${route_name}\",exported_namespace=~\"${api_namespace}\"}, \"destination_service_name\", \"$1\",\"service\", \"(.+)\")",
           "format": "time_series",
           "hide": false,
           "legendFormat": "previous",
@@ -331,8 +279,6 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisSoftMin": 0,
@@ -390,8 +336,7 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
+          "placement": "bottom"
         },
         "tooltip": {
           "mode": "multi",
@@ -405,7 +350,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(rate(istio_requests_total{}[5m])) by (destination_service_name, request_url_path) * on(destination_service_name) group_left() (group without(cluster_id, instance, app_kubernetes_io_instance) (label_replace(gatewayapi_httproute_labels{name=~\"${route_name}\",exported_namespace=~\"${api_namespace}\"}, \"destination_service_name\", \"$1\",\"service\", \"(.+)\")))",
+          "expr": "sum(rate(istio_requests_total{}[5m])) by (destination_service_name, request_url_path) * on(destination_service_name) group_left label_replace(gatewayapi_httproute_labels{name=~\"${route_name}\",exported_namespace=~\"${api_namespace}\"}, \"destination_service_name\", \"$1\",\"service\", \"(.+)\")",
           "legendFormat": "{{request_url_path}}",
           "range": true,
           "refId": "A"
@@ -426,9 +371,7 @@
           },
           "custom": {
             "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
+            "displayMode": "auto",
             "inspect": false
           },
           "mappings": [],
@@ -456,9 +399,7 @@
       },
       "id": 155,
       "options": {
-        "cellHeight": "sm",
         "footer": {
-          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -467,7 +408,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "9.5.3",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "datasource": {
@@ -476,7 +417,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by(request_url_path) (increase(istio_requests_total{}[$__range]) * on(destination_service_name) group_left() (group without(cluster_id, instance, app_kubernetes_io_instance) (label_replace(gatewayapi_httproute_labels{name=~\"$route_name\",exported_namespace=~\"$api_namespace\"}, \"destination_service_name\", \"$1\",\"service\", \"(.+)\"))))",
+          "expr": "sum by(request_url_path) (increase(istio_requests_total{}[$__range]) * on(destination_service_name) group_left label_replace(gatewayapi_httproute_labels{name=~\"$route_name\",exported_namespace=~\"$api_namespace\"}, \"destination_service_name\", \"$1\",\"service\", \"(.+)\"))",
           "format": "table",
           "instant": true,
           "range": false,
@@ -489,7 +430,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by(request_url_path) (increase(istio_requests_total{}[$__range] offset $__range) * on(destination_service_name) group_left() (group without(cluster_id, instance, app_kubernetes_io_instance) (label_replace(gatewayapi_httproute_labels{name=~\"$route_name\",exported_namespace=~\"$api_namespace\"}, \"destination_service_name\", \"$1\",\"service\", \"(.+)\"))))",
+          "expr": "sum by(request_url_path) (increase(istio_requests_total{}[$__range] offset $__range) * on(destination_service_name) group_left label_replace(gatewayapi_httproute_labels{name=~\"$route_name\",exported_namespace=~\"$api_namespace\"}, \"destination_service_name\", \"$1\",\"service\", \"(.+)\"))",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -503,7 +444,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by(request_url_path) (increase(istio_requests_total{}[$__range]) * on(destination_service_name) group_left() (group without(cluster_id, instance, app_kubernetes_io_instance) (label_replace(gatewayapi_httproute_labels{name=~\"$route_name\",exported_namespace=~\"$api_namespace\"}, \"destination_service_name\", \"$1\",\"service\", \"(.+)\")))) - sum by(request_url_path) (increase(istio_requests_total{}[$__range] offset $__range) * on(destination_service_name) group_left() (group without(cluster_id, instance, app_kubernetes_io_instance) (label_replace(gatewayapi_httproute_labels{name=~\"$route_name\",exported_namespace=~\"$api_namespace\"}, \"destination_service_name\", \"$1\",\"service\", \"(.+)\"))))",
+          "expr": "sum by(request_url_path) (increase(istio_requests_total{}[$__range]) * on(destination_service_name) group_left label_replace(gatewayapi_httproute_labels{name=~\"$route_name\",exported_namespace=~\"$api_namespace\"}, \"destination_service_name\", \"$1\",\"service\", \"(.+)\")) - sum by(request_url_path) (increase(istio_requests_total{}[$__range] offset $__range) * on(destination_service_name) group_left label_replace(gatewayapi_httproute_labels{name=~\"$route_name\",exported_namespace=~\"$api_namespace\"}, \"destination_service_name\", \"$1\",\"service\", \"(.+)\"))",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -659,7 +600,7 @@
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 38,
+  "schemaVersion": 36,
   "style": "dark",
   "tags": [
     "kuadrant"
@@ -669,8 +610,8 @@
       {
         "current": {
           "selected": false,
-          "text": "Kuadrant-Thanos-Hub",
-          "value": "Kuadrant-Thanos-Hub"
+          "text": "prometheus",
+          "value": "prometheus"
         },
         "hide": 0,
         "includeAll": false,
@@ -685,7 +626,15 @@
         "type": "datasource"
       },
       {
-        "current": {},
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -709,7 +658,15 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"

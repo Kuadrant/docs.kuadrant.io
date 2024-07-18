@@ -3,10 +3,8 @@ version: '3.8'
 services:
   limitador:
     image: ${LIMITADOR_IMAGE:-limitador-testing}
-    build:
-      context: ../..
-      dockerfile: Dockerfile
     depends_on:
+      - envoy
       - redis
     command:
       - limitador-server
@@ -22,14 +20,14 @@ services:
       - --grpc-reflection-service
       - /opt/kuadrant/limits/limits.yaml
       - redis_cached
-      - --batch-size
-      - "100"
+      - --ttl
+      - "3"
+      - --ratio
+      - "11"
       - --flush-period
-      - "1000"
+      - "2"
       - --max-cached
-      - "10000"
-      - --response-timeout
-      - "350"
+      - "5000"
       - redis://redis:6379
     expose:
       - "8080"
