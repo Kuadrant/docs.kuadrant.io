@@ -3887,15 +3887,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#azure-provider" class="md-nav__link">
-    <span class="md-ellipsis">
-      AZURE Provider
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -4018,36 +4009,29 @@ More details about the AWS provider can be found <a href="docs/provider/#aws-rou
 <p><div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>local-setup-gcp-mz-clean<span class="w"> </span>local-setup-gcp-mz-generate<span class="w"> </span><span class="nv">GCP_ZONE_NAME</span><span class="o">=</span>&lt;My<span class="w"> </span>GCP<span class="w"> </span>ZONE<span class="w"> </span>Name&gt;<span class="w"> </span><span class="nv">GCP_ZONE_DNS_NAME</span><span class="o">=</span>&lt;My<span class="w"> </span>Zone<span class="w"> </span>DNS<span class="w"> </span>Name&gt;<span class="w"> </span><span class="nv">GCP_GOOGLE_CREDENTIALS</span><span class="o">=</span><span class="s1">&#39;&lt;My GCP Credentials.json&gt;&#39;</span><span class="w"> </span><span class="nv">GCP_PROJECT_ID</span><span class="o">=</span>&lt;My<span class="w"> </span>GCP<span class="w"> </span>PROJECT<span class="w"> </span>ID&gt;
 </span></code></pre></div>
 More details about the GCP provider can be found <a href="docs/provider/#google-cloud-dns-provider">here</a></p>
-<h5 id="azure-provider">AZURE Provider<a class="headerlink" href="#azure-provider" title="Permanent link">&para;</a></h5>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>make<span class="w"> </span>local-setup-azure-mz-clean<span class="w"> </span>local-setup-azure-mz-generate<span class="w"> </span><span class="nv">KUADRANT_AZURE_CREDENTIALS</span><span class="o">=</span><span class="s1">&#39;&lt;My Azure Credentials.json&gt;&#39;</span><span class="w"> </span><span class="nv">KUADRANT_AZURE_DNS_ZONE_ID</span><span class="o">=</span>&lt;My<span class="w"> </span>Azure<span class="w"> </span>Zone<span class="w"> </span>ID&gt;<span class="w"> </span><span class="nv">KUADRANT_AZURE_ZONE_ROOT_DOMAIN</span><span class="o">=</span><span class="s1">&#39;&lt;My Azure Domain Name&gt;&#39;</span>
-</span></code></pre></div>
-<p>Info on generating service principal credentials <a href="https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/azure.md">here</a></p>
-<p>Getting the zone ID can be achieved using the below command:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>az<span class="w"> </span>network<span class="w"> </span>dns<span class="w"> </span>zone<span class="w"> </span>show<span class="w"> </span>--name<span class="w"> </span>&lt;my<span class="w"> </span>domain<span class="w"> </span>name&gt;<span class="w"> </span>--resource-group<span class="w"> </span>&lt;my<span class="w"> </span>resource<span class="w"> </span>group&gt;<span class="w"> </span>--query<span class="w"> </span><span class="s2">&quot;{id:id,domain:name}&quot;</span>
-</span></code></pre></div></p>
 <h3 id="running-controller-locally-default">Running controller locally (default)<a class="headerlink" href="#running-controller-locally-default" title="Permanent link">&para;</a></h3>
 <ol>
 <li>
 <p>Create local environment(creates kind cluster)
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>make<span class="w"> </span>local-setup
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>make<span class="w"> </span>local-setup
 </span></code></pre></div></p>
 </li>
 <li>
 <p>Run your controller (this will run in the foreground, so switch to a new terminal if you want to leave it running):</p>
 </li>
 </ol>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>make<span class="w"> </span>run
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>make<span class="w"> </span>run
 </span></code></pre></div>
 <h3 id="running-controller-on-the-cluster">Running controller on the cluster<a class="headerlink" href="#running-controller-on-the-cluster" title="Permanent link">&para;</a></h3>
 <ol>
 <li>
 <p>Create local environment(creates kind cluster)
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>make<span class="w"> </span>local-setup<span class="w"> </span><span class="nv">DEPLOY</span><span class="o">=</span><span class="nb">true</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>make<span class="w"> </span>local-setup<span class="w"> </span><span class="nv">DEPLOY</span><span class="o">=</span><span class="nb">true</span>
 </span></code></pre></div></p>
 </li>
 <li>
 <p>Verify controller deployment
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>deployments/dns-operator-controller-manager<span class="w"> </span>-n<span class="w"> </span>dns-operator-system
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>deployments/dns-operator-controller-manager<span class="w"> </span>-n<span class="w"> </span>dns-operator-system
 </span></code></pre></div></p>
 </li>
 </ol>
@@ -4057,19 +4041,19 @@ More details about the GCP provider can be found <a href="docs/provider/#google-
 <ol>
 <li>
 <p>Apply Operator manifests
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kustomize<span class="w"> </span>build<span class="w"> </span>config/default<span class="w"> </span><span class="p">|</span><span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kustomize<span class="w"> </span>build<span class="w"> </span>config/default<span class="w"> </span><span class="p">|</span><span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-
 </span></code></pre></div></p>
 </li>
 <li>
 <p>Verify controller deployment
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>deployments/dns-operator-controller-manager<span class="w"> </span>-n<span class="w"> </span>dns-operator-system
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>deployments/dns-operator-controller-manager<span class="w"> </span>-n<span class="w"> </span>dns-operator-system
 </span></code></pre></div></p>
 </li>
 </ol>
 <h2 id="development">Development<a class="headerlink" href="#development" title="Permanent link">&para;</a></h2>
 <h3 id="e2e-test-suite">E2E Test Suite<a class="headerlink" href="#e2e-test-suite" title="Permanent link">&para;</a></h3>
 <p>The e2e test suite can be executed against any cluster running the DNS Operator with configuration added for any supported provider.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>make test-e2e TEST_DNS_MANAGED_ZONE_NAME=&lt;My managed zone name&gt; TEST_DNS_ZONE_DOMAIN_NAME=&lt;My domain name&gt; TEST_DNS_NAMESPACE=&lt;My test namesapace&gt; TEST_DNS_PROVIDER=&lt;aws|gcp&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>make test-e2e TEST_DNS_MANAGED_ZONE_NAME=&lt;My managed zone name&gt; TEST_DNS_ZONE_DOMAIN_NAME=&lt;My domain name&gt; TEST_DNS_NAMESPACE=&lt;My test namesapace&gt; TEST_DNS_PROVIDER=&lt;aws|gcp&gt;
 </span></code></pre></div>
 <table>
 <thead>
@@ -4099,7 +4083,7 @@ More details about the GCP provider can be found <a href="docs/provider/#google-
 </table>
 <h3 id="modifying-the-api-definitions">Modifying the API definitions<a class="headerlink" href="#modifying-the-api-definitions" title="Permanent link">&para;</a></h3>
 <p>If you are editing the API definitions, generate the manifests such as CRs or CRDs using:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>make<span class="w"> </span>manifests
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>make<span class="w"> </span>manifests
 </span></code></pre></div>
 <p><strong>NOTE:</strong> Run <code>make --help</code> for more information on all potential <code>make</code> targets</p>
 <p>More information can be found via the <a href="https://book.kubebuilder.io/introduction.html">Kubebuilder Documentation</a></p>
