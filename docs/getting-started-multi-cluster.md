@@ -13,7 +13,13 @@ It can be used for adding 1 or more clusters to your local setup.
 ### Environmental Variables
 
 The same environment variable requirements from the [Single-cluster Quick Start](./getting-started-single-cluster.md) apply to this document,
-including the `KUADRANT_REF` variable.
+including the `KUADRANT_REF` variable. Read below for additional environmental variables that can be used with multicluster setup. 
+
+### Quiet Mode (additional)
+
+| Env Var | Example Value | Description |
+|---------|---------------|-------------|
+| `MULTICLUSTER` | `true` | Runs quickstart uninterrupted in multicluster mode with DNS provider if `DNS_PROVIDER` and `KUADRANT_QUIET` are set; otherwise, runs without DNS provider if only `KUADRANT_QUIET` is set. Refer to [single cluster](getting-started-single-cluster.md) for information on these environmental variables . |
 
 ### Set Up a kind cluster and install Kuadrant
 
