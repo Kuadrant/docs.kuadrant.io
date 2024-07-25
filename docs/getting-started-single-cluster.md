@@ -31,7 +31,8 @@ Quiet mode is useful for when you wish to run the script uninterrupted. Below ou
 |---------|---------------|-------------|
 | `KUADRANT_QUIET` | `true` | Runs uninterrupted quickstart in single cluster mode with no DNS provider if set on its own .|
 | `DNS_PROVIDER` | `true` | Runs uninterrupted quickstart in single cluster mode with DNS provider if set alongside `KUADRANT_QUIET` . |
-| `MULTICLUSTER` | `true` | Runs quickstart uninterrupted in multicluster mode with DNS provider if `DNS_PROVIDER` and `KUADRANT_QUIET` are set; otherwise, runs without DNS provider if only `KUADRANT_QUIET` is set. |
+
+Additional env vars for quiet mode are available in [multicluster setup](getting-started-multi-cluster.md). 
 
 If you want to make use of the Kuadrant `DNSPolicy` you should setup the following environmental variables depending on your DNS Provider:
 
