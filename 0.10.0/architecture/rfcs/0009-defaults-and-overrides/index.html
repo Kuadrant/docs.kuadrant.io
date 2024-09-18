@@ -1,0 +1,4823 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://docs.kuadrant.io/0.10.0/architecture/rfcs/0009-defaults-and-overrides/">
+      
+      
+        <link rel="prev" href="../0008-kuadrant-release-process/">
+      
+      
+        <link rel="next" href="../../../multicluster-gateway-controller/docs/proposals/multiple-dns-provider-support/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.14">
+    
+    
+      
+        <title>RFC 0009: Defaults & Overrides - Kuadrant Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.10ba22f1.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#defaults-overrides" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  These docs are unstable, from our development branches (main).
+  <a href="../../../.."> 
+    <strong>Click here to go to latest, stable docs.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Kuadrant Documentation" class="md-header__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+      
+  <img src="../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kuadrant Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              RFC 0009: Defaults & Overrides
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kuadrant/docs.kuadrant.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Kuadrant Documentation" class="md-nav__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+      
+  <img src="../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Kuadrant Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kuadrant/docs.kuadrant.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started-single-cluster/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Single-Cluster
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started-multi-cluster/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Multi-Cluster
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docs/design/architectural-overview-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/install/install-openshift/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenShift
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Concepts and APIs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Concepts and APIs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DNSPolicy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            DNSPolicy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/reference/dnspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/gateway-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway DNS for Cluster Operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    ManagedZone
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            ManagedZone
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dns-operator/docs/managedzone.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dns-operator/docs/reference/managedzone.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TLSPolicy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            TLSPolicy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/reference/tlspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    AuthPolicy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            AuthPolicy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/auth/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/reference/authpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    RateLimitPolicy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            RateLimitPolicy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/reference/ratelimitpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    How-to Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            How-to Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/secure-protect-connect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Secure, connect and protect - Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/secure-protect-connect-single-multi-cluster/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Secure, connect and protect - OpenShift
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DNS configuration and load balancing
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            DNS configuration and load balancing
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/dnshealthchecks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNS Health Checks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multicluster-gateway-controller/docs/how-to/multicluster-loadbalanced-dnspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Advanced DNS based LoadBalancing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TLS configuration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            TLS configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/gateway-tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway TLS for Cluster Operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Authentication & Authorization
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            Authentication & Authorization
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/auth-for-app-devs-and-platform-engineers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AuthPolicy for Application Developers and Platform Engineers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/kubernetes-tokenreview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication with Kubernetes tokens (TokenReview API)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/api-key-authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication with API keys
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/mtls-authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication with X.509 certificates and mTLS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/oidc-jwt-authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenID Connect Discovery and authentication with JWTs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/oauth2-token-introspection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0 token introspection (RFC 7662)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/passing-credentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Passing credentials (`Authorization` header, cookie headers and others)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/http-basic-authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP "Basic" Authentication (RFC 7235)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/anonymous-access/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Anonymous access
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/token-normalization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token normalization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/edge-authentication-architecture-festival-wristbands/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Edge Authentication Architecture (EAA)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/external-metadata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fetching auth metadata from external sources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/oidc-user-info/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenID Connect UserInfo
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/resource-level-authorization-uma/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Resource-level authorization with User-Managed Access (UMA) resource registry
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/json-pattern-matching-authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Simple pattern-matching authorization policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/oidc-rbac/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenID Connect (OIDC) and Role-Based Access Control (RBAC) with Keycloak
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/opa-authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Open Policy Agent (OPA) Rego policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/kubernetes-subjectaccessreview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes RBAC for service authorization (SubjectAccessReview API)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/keycloak-authorization-services/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorization with Keycloak Authorization Services
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/authzed/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Integration with Authzed/SpiceDB
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/injecting-data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Injecting data in the request
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/authenticated-rate-limiting-envoy-dynamic-metadata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Emitting Envoy Dynamic Metadata
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/deny-with-redirect-to-login/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redirecting to a login page
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/envoy-jwt-authn-and-authorino/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reusing Envoy built-in authentication filter result
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/validating-webhook/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Setting up Kuadrant authorization service as a Validating Webhook
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_6" id="__nav_6_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Rate Limiting
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_6">
+            <span class="md-nav__icon md-icon"></span>
+            Rate Limiting
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multicluster-gateway-controller/docs/how-to/simple-ratelimitpolicy-for-app-developers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RateLimitPolicy for Application Developers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/gateway-rl-for-cluster-operators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RateLimitPolicy for Platform Engineers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/authenticated-rl-for-app-developers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limiting for Application Developers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/authenticated-rl-with-jwt-and-k8s-authnz/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limiting with JWTs and Kubernetes RBAC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_7" id="__nav_6_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Observability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_7">
+            <span class="md-nav__icon md-icon"></span>
+            Observability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/observability/metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Metrics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/observability/examples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dashboards and Alerts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/observability/tracing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tracing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication and Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_8" id="__nav_6_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Multicluster Gateways with OCM
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_8">
+            <span class="md-nav__icon md-icon"></span>
+            Multicluster Gateways with OCM
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started-multi-cluster-ocm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started with OCM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multicluster-gateway-controller/docs/gateways/define-and-place-a-gateway/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Distributing Gateways with OCM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multicluster-gateway-controller/docs/gateways/gateway-deletion/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway Deletion
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multicluster-gateway-controller/docs/how-to/multicluster-gateways-walkthrough/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Multicluster Walkthrough
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multicluster-gateway-controller/docs/installation/control-plane-installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Control Plane installation with Existing OCM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multicluster-gateway-controller/docs/installation/service-protection-installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Service Protection installation with Existing OCM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Experimental
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Experimental
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-quickstart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Quickstart
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Proposals
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Proposals
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8_1" id="__nav_8_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Request For Comments (RFC)
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8_1">
+            <span class="md-nav__icon md-icon"></span>
+            Request For Comments (RFC)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0001-rlp-v2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0001: RateLimitPolicy API "v2"
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0002-well-known-attributes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0002: Well-known Attributes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0003-dns-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0003: DNSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0004-policy-status/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0004: Policy Status
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0005-single-cluster-dnspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0005: Single Cluster DNSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0006-kuadrant_sub_components_configurations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0006: Configuration of Kuadrant Sub Components
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0007-policy-sync-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0007: Policy Sync
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0008-kuadrant-release-process/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0008: Kuadrant Release Process
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0009: Defaults & Overrides
+  </span>
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_2" id="__nav_8_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Multicluster Gateway Controller
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_2">
+            <span class="md-nav__icon md-icon"></span>
+            Multicluster Gateway Controller
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_2_1" id="__nav_8_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Multiple DNS Provider Support
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            Multiple DNS Provider Support
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multicluster-gateway-controller/docs/proposals/multiple-dns-provider-support/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multicluster-gateway-controller/docs/proposals/assets/multiple-dns-provider-support/google/google/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Google DNS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multicluster-gateway-controller/docs/proposals/assets/multiple-dns-provider-support/aws/aws/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS DNS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multicluster-gateway-controller/docs/proposals/assets/multiple-dns-provider-support/azure/azure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure DNS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multicluster-gateway-controller/docs/proposals/status-aggregation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Aggregation of Status Conditions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Components
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Components
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_1" id="__nav_9_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Kuadrant Operator
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_1">
+            <span class="md-nav__icon md-icon"></span>
+            Kuadrant Operator
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/development/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/logging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Logging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_2" id="__nav_9_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Authorino
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_2">
+            <span class="md-nav__icon md-icon"></span>
+            Authorino
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino-operator/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorino Operator
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/hello-world/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hello World
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_2_7" id="__nav_9_2_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Advanced features
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced features
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/host-override/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Host override via context extension
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/user-guides/sharding/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reducing the operational space: sharding, noise and multi-tenancy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../authorino/docs/contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_3" id="__nav_9_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Limitador
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3">
+            <span class="md-nav__icon md-icon"></span>
+            Limitador
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../limitador/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../limitador/doc/how-it-works/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How it works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../limitador/doc/topologies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topologies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_3_4" id="__nav_9_3_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Server
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Server
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../limitador/limitador-server/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../limitador/limitador-server/kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../limitador/limitador-server/sandbox/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sandbox
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../limitador/limitador/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Crate
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_3_6" id="__nav_9_3_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Limitador Operator
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Limitador Operator
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../limitador-operator/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../limitador-operator/doc/storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../limitador-operator/doc/rate-limit-headers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rate limit headers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../limitador-operator/doc/development/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../limitador-operator/doc/logging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Logging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_4" id="__nav_9_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Multicluster Gateway Controller
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_4">
+            <span class="md-nav__icon md-icon"></span>
+            Multicluster Gateway Controller
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multicluster-gateway-controller/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_4_2" id="__nav_9_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Contribution
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Contribution
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multicluster-gateway-controller/docs/contribution/vscode-debugging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Debugging with VSCode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_5" id="__nav_9_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    kuadrantctl
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_5">
+            <span class="md-nav__icon md-icon"></span>
+            kuadrantctl
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrantctl/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrantctl/doc/generate-gateway-api-httproute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generating Gateway API HTTPRoutes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrantctl/doc/generate-kuadrant-auth-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generating Kuadrant AuthPolicies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrantctl/doc/generate-kuadrant-rate-limit-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generating Kuadrant RateLimitPolicies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrantctl/doc/kuadrantctl-ci-cd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CI/CD with kuadrantctl & Tekton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrantctl/doc/openapi-apicurio/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Apicurio Studio with Kuadrant OAS extensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrantctl/doc/openapi-openshift-dev-spaces/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using OpenShift Dev Spaces with Kuadrant OAS extensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/kuadrant/architecture/blob/main/rfcs/0009-defaults-and-overrides.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="defaults-overrides">Defaults &amp; Overrides<a class="headerlink" href="#defaults-overrides" title="Permanent link">&para;</a></h1>
+<ul>
+<li>Feature Name: <code>defaults-and-overrides</code></li>
+<li>Start Date: 2024-02-15</li>
+<li>RFC PR: <a href="https://github.com/Kuadrant/architecture/pull/58">Kuadrant/architecture#58</a></li>
+<li>Issue tracking: <a href="https://github.com/Kuadrant/kuadrant-operator/issues/431">Kuadrant/kuadrant-operator#431</a></li>
+</ul>
+<h1 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h1>
+<p>This is a proposal for extending the Kuadrant Policy APIs to fully support use cases of <strong>Defaults &amp; Overrides (D/O)</strong> for <a href="https://gateway-api.sigs.k8s.io/geps/gep-713/#inherited-policy-attachment-its-all-about-the-defaults-and-overrides">Inherited Policies</a>, including the base use cases of <em>full default</em> and <em>full override</em>, and more specific nuances that involve merging individual policy rules (as defaults or overrides), declaring constraints and unsetting defaults.</p>
+<h1 id="motivation">Motivation<a class="headerlink" href="#motivation" title="Permanent link">&para;</a></h1>
+<p>As of Kuadrant Operator <a href="https://github.com/Kuadrant/kuadrant-operator/releases/tag/v0.6.0">v0.6.0</a>, Kuadrant policy resources that have hierarchical effect across the tree of network objects (Gateway, HTTPRoute), or what is known as <a href="https://gateway-api.sigs.k8s.io/geps/gep-713/#inherited-policy-attachment-its-all-about-the-defaults-and-overrides">Inherited Policies</a>, provide only <em>limited support for setting defaults</em> and <em>no support for overrides</em> at all.</p>
+<p>The above is notably the case of the AuthPolicy and the RateLimitPolicy v1beta2 APIs, shipped with the aforementioned version of Kuadrant. These kinds of policies can be attached to Gateways or to HTTPRoutes, with cascading effects through the hierarchy that result in one <em>effective policy</em> per gateway-route combination. This effective policy is either the policy attached to the Gateway or, if present, the one attached to the HTTRoute, thus conforming with a strict case of <em>implicit defaults set at the level of the gateway</em>.</p>
+<p>Enhancing the Kuadrant Inherited Policy CRDs, so the corresponding policy instances can declare <code>defaults</code> and <code>overrides</code> stanzas, is imperative:</p>
+<ol>
+<li>to provide full support for D/O along the lines proposed by <a href="https://gateway-api.sigs.k8s.io/geps/gep-713">GEP-713</a> (to be superseded by <a href="https://github.com/kubernetes-sigs/gateway-api/pull/2813">GEP-2649</a><sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>) of the Kubernetes Gateway API special group (base use cases);</li>
+<li>to extend D/O support to other derivative cases, learnt to be just as important for platform engineers and app developers who require more granular policy interaction on top of the base cases;</li>
+<li>to support more sophisticated hierarchies with other kinds of network objects and/or multiples policies targetting at the same level of the hierarchy (possibly, in the future.)</li>
+</ol>
+<h1 id="guide-level-explanation">Guide-level explanation<a class="headerlink" href="#guide-level-explanation" title="Permanent link">&para;</a></h1>
+<h2 id="conceptualization-and-user-story">Conceptualization and User story<a class="headerlink" href="#conceptualization-and-user-story" title="Permanent link">&para;</a></h2>
+<p>The base use cases for Defaults &amp; Overrides (D/O) are:</p>
+<ul>
+<li><strong>Defaults (D):</strong> policies declared lower in the hierarchy supersede ones set (as "defaults") at a higher level, or <em>"more specific beats less specific"</em></li>
+<li><strong>Overrides (O):</strong> policies declared higher in the hierarchy (as "overrides") supersede ones set at the lower levels, or <em>"less specific beats more specific"</em></li>
+</ul>
+<p>The base cases are expanded with the following additional derivative cases and concepts:</p>
+<ul>
+<li><strong>Merged defaults (DR):</strong> "higher" default policy rules that are merged into more specific "lower" policies (as opposed to an atomic less specific set of rules that is activated only when another more specific one is absent)</li>
+<li><strong>Merged overrides (OR):</strong> "higher" override policy rules that are merged into more specific "lower" policies (as opposed to an atomic less specific set of rules that is activated fully replacing another more specific one that is present)</li>
+<li><strong>Constraints (C):</strong> specialization of an override that, rather than declaring concrete values, specify higher level constraints (e.g., min value, max value, enums) for lower level values, with the semantics of "clipping" lower level values so they are enforced, in an override fashion, to be the boundaries dictated by the constraints; typically employed for constraining numeric values and regular patterns (e.g. limited sets)</li>
+<li><strong>Unsetting (U):</strong> specialization that completes a merge default use case by allowing lower level policies to disable ("unset") individual defaults set a higher level (as opposed to superseding those defaults with actual, more specific, policy rules with proper meaning)</li>
+</ul>
+<p>Together, these concepts relate to solve the following user stories:</p>
+<table>
+<thead>
+<tr>
+<th>User story</th>
+<th style="text-align: center;">Group</th>
+<th>Unique ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>As a Platform Engineer, when configuring a Gateway, I want to set a default policy for all routes linked to my Gateway, that can be fully replaced with more specific ones(*).</td>
+<td style="text-align: center;">D</td>
+<td><strong>gateway-default-policy</strong></td>
+</tr>
+<tr>
+<td>As a Platform Engineer, when configuring a Gateway, I want to set default policy rules (parts of a policy) for all routes linked to my Gateway, that can be individually replaced and/or expanded by more specific rules(*).</td>
+<td style="text-align: center;">DR</td>
+<td><strong>gateway-default-policy-rule</strong></td>
+</tr>
+<tr>
+<td>As a Platform Engineer, when defining a policy that configures a Gateway, I want to set constraints (e.g. minimum/maximum value, enumerated options, etc) for more specific policy rules that are declared(*) with the purpose of replacing the defaults I set for the routes linked to my Gateway.</td>
+<td style="text-align: center;">C</td>
+<td><strong>policy-constraints</strong></td>
+</tr>
+<tr>
+<td>As a Platform Engineer, when configuring a Gateway, I want to set a policy for all routes linked to my Gateway, that cannot be replaced nor expanded by more specific ones(*).</td>
+<td style="text-align: center;">O</td>
+<td><strong>gateway-override-policy</strong></td>
+</tr>
+<tr>
+<td>As a Platform Engineer, when configuring a Gateway, I want to set policy rules (parts of a policy) for all routes linked to my Gateway, that cannot be individually replaced by more specific ones(*), but only expanded with additional more specific rules(*).</td>
+<td style="text-align: center;">OR</td>
+<td><strong>gateway-override-policy-rule</strong></td>
+</tr>
+<tr>
+<td>As an Application Developer, when managing an application, I want to set a policy for my application, that fully replaces any default policy that may exist for the application at the level of the Gateway, without having to know about the existence of the default policy.</td>
+<td style="text-align: center;">D</td>
+<td><strong>route-replace-policy</strong></td>
+</tr>
+<tr>
+<td>As an Application Developer, when managing an application, I want to expand a default set of policy rules set for my application at the level of the gateway, without having to refer to those existing rules by name.</td>
+<td style="text-align: center;">D/O</td>
+<td><strong>route-add-policy-rule</strong></td>
+</tr>
+<tr>
+<td>As an Application Developer, when managing an application, I want to unset an individual default rule set for my application at the level of the gateway.</td>
+<td style="text-align: center;">U</td>
+<td><strong>route-unset-policy-rule</strong></td>
+</tr>
+</tbody>
+</table>
+<p><sup>(*) declared in the past or in the future, by myself or any other authorized user.</sup></p>
+<p>The interactive nature of setting policies at levels in the hierarchy and by different personas, make that the following additional user stories arise. These are stories here grouped under the <strong>Observability (Ob)</strong> aspect of D/O, but referred to as well in relation to the <a href="https://gateway-api.sigs.k8s.io/geps/gep-713/#status-and-the-discoverability-problem">"Discoverability Problem"</a> described by Gateway API.</p>
+<table>
+<thead>
+<tr>
+<th>User story</th>
+<th style="text-align: center;">Group</th>
+<th>Unique ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>As one who has read access to Kuadrant policies, I want to view the effective policy enforced at the traffic routed to an application, considering all active defaults and overrides at different policies(*).</td>
+<td style="text-align: center;">Ob</td>
+<td><strong>view-effective-policy</strong></td>
+</tr>
+<tr>
+<td>As a Platform Engineer, I want to view all default policy rules that may have been replaced by more specific ones(*).</td>
+<td style="text-align: center;">Ob</td>
+<td><strong>view-policy-rule-status</strong></td>
+</tr>
+<tr>
+<td>As a Policy Manager, I want to view all gateways and/or routes whose traffic is subject to enforcement of a particular policy rule referred by name.</td>
+<td style="text-align: center;">Ob</td>
+<td><strong>view-policy-rule-reach</strong></td>
+</tr>
+</tbody>
+</table>
+<p><sup>(*) declared in the past or in the future, by myself or any other authorized user.</sup></p>
+<h2 id="writing-do-enabled-kuadrant-policies">Writing D/O-enabled Kuadrant Policies<a class="headerlink" href="#writing-do-enabled-kuadrant-policies" title="Permanent link">&para;</a></h2>
+<p>Writing a Kuadrant policy enabled for Defaults &amp; Overrides (D/O), to be attached to a network object, involves declaring the following fields at the first level of the spec:</p>
+<ul>
+<li><code>targetRef</code> (required): the reference to a hierarchical network object targeted by the policy, typed as a Gateway API <a href="https://pkg.go.dev/sigs.k8s.io/gateway-api/apis/v1alpha2#PolicyTargetReference"><code>PolicyTargetReference</code></a> or <a href="https://pkg.go.dev/sigs.k8s.io/gateway-api/apis/v1alpha2#PolicyTargetReferenceWithSectionName"><code>PolicyTargetReferenceWithSectionName</code></a> type</li>
+<li><code>defaults</code>: a block of <em>default</em> policy rules with further specification of a strategy (<em>atomic</em> set of rules or individual rules to be <em>merged</em> into lower policies), and optional conditions for applying the defaults down through the hierarchy</li>
+<li><code>overrides</code>: a block of <em>override</em> policy rules with further specification of a strategy (<em>atomic</em> set of rules or individual rules to be <em>merged</em> into lower policies), and optional conditions for applying the overrides down through the hierarchy</li>
+<li>the bare policy rules block without further qualification as a default or override set of rules – e.g. the <code>rules</code> field in a Kuadrant AuthPolicy, the <code>limits</code> field in a RateLimitPolicy.</li>
+</ul>
+<p>Between the following mutually exclusive options, either one or the other shall be used in a policy:</p>
+<ol>
+<li><code>defaults</code> and/or <code>overrides</code> blocks; or</li>
+<li>the bare set of policy rules (without further qualification as neither defaults nor overrides.)</li>
+</ol>
+<p>In case the bare set of policy rules is used, it is treated implicitly as a block of defaults.</p>
+<p>Supporting specifying the bare set of policy rules at the first level of the spec, alternatively to the <code>defaults</code> and <code>overrides</code> blocks, is a strategy that aims to provide:</p>
+<ol>
+<li>more natural usability, especially for those who write policies attached to the lowest level of the hierarchy supported; as well as</li>
+<li>backward compatibility for policies that did not support explicit D/O and later on have moved to doing so.</li>
+</ol>
+<h3 id="inherited-policies-that-declare-an-intent">Inherited Policies that <em>declare an intent</em><a class="headerlink" href="#inherited-policies-that-declare-an-intent" title="Permanent link">&para;</a></h3>
+<p>A policy that does not specify D/O fields (<code>defaults</code>, <code>overrides</code>) is a policy that <em>declares an intent</em>.</p>
+<p>One who writes a policy without specifying <code>defaults</code> or <code>overrides</code>, but only the bare set of policy rules, may feel like declaring a <a href="https://gateway-api.sigs.k8s.io/geps/gep-713/#direct-policy-attachment"><em>Direct Policy</em></a>.
+Depending on the state of other policies indirectly affecting the same object or not, the final outcome can be the same as writing a direct policy.
+This is especially true when the policy that declares the intent targets an object whose kind is the lowest kind accepted by Kuadrant in the hierarchy of network resources, and there are no other policies with lower precedence.</p>
+<p>Nevertheless, because other policies can affect the final behavior of the target (e.g. by injecting defaults, by overriding rules, by adding more definitions beneath), policies that simply declare an intent, conceptually, are still Inherited Policies.</p>
+<p>Compared to the inherited policy that misses D/O blocks, these other policies affecting the behavior may be declared:</p>
+<ul>
+<li>at higher levels in the hierarchy,</li>
+<li>at lower levels in hierarchy, or even</li>
+<li>at the same level in the hierarchy but happening to have lower precedence (if such case is allowed by the kind of policy.)</li>
+</ul>
+<p>At any time, any one of these policies can be created and therefore the final behavior of a target should never be assumed to be equivalent to the intent declared by any individual policy in particular, but always collectively determined by the combination of all intents, defaults and overrides from all inherited policies affecting the target.</p>
+<p>From <a href="https://github.com/kubernetes-sigs/gateway-api/pull/2813">GEP-2649</a>:</p>
+<blockquote>
+<p>If a Policy can be used as an Inherited Policy, it MUST be treated as an Inherited Policy, regardless of whether a specific instance of the Policy is only affecting a single object.</p>
+</blockquote>
+<p>An inherited policy that simply declares an intent (i.e. without specifying D/O) will be treated as a policy that implicitly declares an atomic set of <em>defaults</em>, whether the policy targets higher levels in the hierarchy or lower ones.
+In the absence of any other conflicting policy affecting the same target, the <em>behavior</em> equals the <em>defaults</em> which equal the <em>intent</em>.</p>
+<h3 id="inherited-policies-that-modify-an-intent">Inherited Policies that <em>modify an intent</em><a class="headerlink" href="#inherited-policies-that-modify-an-intent" title="Permanent link">&para;</a></h3>
+<p>A policy that specifies D/O fields (<code>defaults</code>, <code>overrides</code>) is a policy explicitly declared to <em>modify an intent</em>.</p>
+<p>Without any other policy with lower precedence, there is no special meaning in choosing whether <em>defaults</em> or <em>overrides</em> in a inherited policy that targets an object whose kind is the lowest kind accepted by Kuadrant in the hierarchy of network resources.
+The sets of rules specified in these policies affect indistinctively the targeted objects, regardless of how they are qualified.</p>
+<p>However, because other policies may ocasionally be declared with lower precedence (i.e. targeting lower levels in the hierarchy or due to ordering, see <a href="https://gateway-api.sigs.k8s.io/geps/gep-713/#conflict-resolution">Conflict Resolution</a>), one who declares a policy to modify an intent must carefuly choose between <code>defaults</code> and/or <code>overrides</code> blocks to organize the policy rules, regardless if the targeted object is of a kind that is the lowest kind in the hierarchy of network resources accepted by Kuadrant.</p>
+<p>Even in the cases where no more than one policy of a kind is allowed to target a same object (1:1 relationship) and thus there should never exist two policies affecting a target from a same level of the hierarchy simultaneaously (or equivalently a policy with lower precedence than another, both at the lowest level of the hierarchy), users must assume that this constraint may change (i.e. N:1 relationship between policies of a kind and target become allowed.)</p>
+<p>In all cases, <em>defaults</em> and <em>overrides</em> must be used with the semantics of declaring rules that modify an intent.</p>
+<ul>
+<li>When an intent does not specify a rule for which there is a higher default declared, the default modifies the intent by setting the value specified by the default.</li>
+<li>For an intent that whether specifies or omits a rule for which there is a higher override declared, the override modifies the intent by setting the value specified by the override.</li>
+</ul>
+<h3 id="identifying-inherited-policy-kinds">Identifying inherited policy kinds<a class="headerlink" href="#identifying-inherited-policy-kinds" title="Permanent link">&para;</a></h3>
+<p>All Custom Resource Definitions (CRDs) that define a Kuadrant inherited policy must be labeled <code>gateway.networking.k8s.io/policy: inherited</code>.</p>
+<p>Users can rely on the presence of that label to identify policy kinds whose instances are treated as inhertied policies.</p>
+<p>In some exceptional cases, there may be kinds of Kuadrant policies that do not specify <code>defaults</code> and <code>overrides</code> blocks, but that are still labeled as inherited policy kinds.
+Instances of these kinds of policies implicitly declare an atomic sets of <em>defaults</em>, similarly to described in <a href="#inherited-policies-that-declare-an-intent">Inherited Policies that declare an intent</a>.</p>
+<h3 id="examples-of-do-enabled-kuadrant-policy">Examples of D/O-enabled Kuadrant policy<a class="headerlink" href="#examples-of-do-enabled-kuadrant-policy" title="Permanent link">&para;</a></h3>
+<p><strong>Example 1.</strong> Atomic defaults</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AuthPolicy</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gw-policy</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">targetRef</span><span class="p">:</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">defaults</span><span class="p">:</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="nt">authentication</span><span class="p">:</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="s">&quot;a&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">      </span><span class="nt">authorization</span><span class="p">:</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">        </span><span class="s">&quot;b&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="nt">strategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">atomic</span>
+</span></code></pre></div>
+<p>The above is a proper Inherited Policy that sets a <strong><em>default</em> atomic set of auth rules</strong> that will be set at lower objects in case those lower object do not have policies attached of their own at all.</p>
+<p>The following is a sligthly different example that defines <strong>auth rules</strong> that will be <strong>individually merged</strong> into lower objects, evaluated one by one if already defined at the "lower" (more specific) level and therefore should take precedence, or if otherwise is missing at the lower level and therefore the default should be activated.</p>
+<p><strong>Example 2.</strong> Merged defaults</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AuthPolicy</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gw-policy</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">targetRef</span><span class="p">:</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">defaults</span><span class="p">:</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">      </span><span class="nt">authentication</span><span class="p">:</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">        </span><span class="s">&quot;a&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">      </span><span class="nt">authorization</span><span class="p">:</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">        </span><span class="s">&quot;b&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="nt">strategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">merge</span>
+</span></code></pre></div>
+<p>Similarly, a set of <code>overrides</code> policy rules could be specified, instead or alongside with the <code>defaults</code> set of policy rules.</p>
+<h3 id="atomic-vs-individually-merged-policy-rules">Atomic vs. individually merged policy rules<a class="headerlink" href="#atomic-vs-individually-merged-policy-rules" title="Permanent link">&para;</a></h3>
+<p>There are 2 supported strategies for applying proper Inherited Policies down to the lower levels of the herarchy:</p>
+<ul>
+<li><strong>Atomic policy rules:</strong> the bare set of policy rules in a <code>defaults</code> or <code>overrides</code> block is applied as an atomic piece; i.e., a lower object than the target of the policy, that is evaluated to be potentially affected by the policy, also has an atomic set of rules if another policy is attached to this object, therefore either the <em>entire</em> set of rules declared by the higher (less specific) policy is taken or the <em>entire</em> set of rules declared by the lower (more specific) policy is taken (depending if it's <code>defaults</code> or <code>overrides</code>), but the two sets are never merged into one.</li>
+<li><strong>Merged policy rules:</strong> each <em>individual</em> policy rule within a <code>defaults</code> or <code>overrides</code> block is compared one to one against lower level policy rules and, when they conflict (i.e. have the same key with different values), either one or the other (more specific or less specific) is taken (depending if it's <code>defaults</code> or <code>overrides</code>), in a way that the final effective policy is a merge between the two policies.</li>
+</ul>
+<p>Each block of <code>defaults</code> and <code>overrides</code> must specify a <code>strategy</code> field whose value is set to either <code>atomic</code> or <code>merge</code>. If omitted, <code>atomic</code> is assumed.</p>
+<h4 id="level-of-granularity-of-compared-policy-rules">Level of granularity of compared policy rules<a class="headerlink" href="#level-of-granularity-of-compared-policy-rules" title="Permanent link">&para;</a></h4>
+<p>Atomic versus merge strategies, as a specification of the <code>defaults</code> and <code>overrides</code> blocks, imply that there are only two levels of granularity for comparing policies <em>vis-a-vis</em>.</p>
+<ul>
+<li>
+<p><code>atomic</code> means that the level of granularity is the entire set of policy rules within the <code>defaults</code> or <code>overrides</code> block. I.e., the policy is atomic, or, equivalently, the final effective policy will be either one indivisible ("atomic") set of rules ("policy") or the other.</p>
+</li>
+<li>
+<p>For the <code>merge</code> strategy, on the other hand, the granularity is of each <em>named policy rule</em>, where the name of the policy rule is the key and the value is an atomic object that specifies that policy rule. The final effective policy will be a merge of two policies.</p>
+</li>
+</ul>
+<h4 id="matrix-of-do-strategies-and-effective-policy">Matrix of D/O strategies and Effective Policy<a class="headerlink" href="#matrix-of-do-strategies-and-effective-policy" title="Permanent link">&para;</a></h4>
+<p>When two policies are compared to compute a so-called <em>Effective Policy</em> out of their sets of policy rules and given default or override semantics, plus specified <code>atomic</code> or <code>merge</code> strategies, the following matrix applies:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Atomic (entire sets of rules)</th>
+<th>Merge (individual policy rules at a given granularity)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Defaults</strong></td>
+<td>More specific <em>entire</em> set of rules beats less specific <em>entire</em> set of rules → takes all the rules from the <em>lower</em> policy</td>
+<td>More specific <em>individual</em> policy rules beat less specific <em>individual</em> set of rules → compare one by one each pair of policy rules and take the <em>lower</em> one if they conflict</td>
+</tr>
+<tr>
+<td><strong>Overrides</strong></td>
+<td>Less specific <em>entire</em> set of rules beats more specific <em>entire</em> set of rules → takes all the rules from the <em>higher</em> policy</td>
+<td>Less specific <em>individual</em> policy rules beat more specific <em>individual</em> set of rules → compare one by one each pair of policy rules and take the <em>higher</em> one if they conflict</td>
+</tr>
+</tbody>
+</table>
+<p>The order of the policies, from less specific (or "higher") to more specific (or "lower), is determined according to the <a href="https://gateway-api.sigs.k8s.io/geps/gep-713/#hierarchy">Gateway API hierarchy of network resources</a>, based on the kind of the object targeted by the policy. The policy that sets higher in the hierarchy dictates the strategy to be applied.</p>
+<p>For a more detailed reference, including how to resolve conflicts in case of policies targeting objects at the same level, see GEP-713's section <a href="https://gateway-api.sigs.k8s.io/geps/gep-713/#hierarchy">Hierarchy</a> and <a href="https://gateway-api.sigs.k8s.io/geps/gep-713/#conflict-resolution">Conflict Resolution</a>.</p>
+<h3 id="unsetting-inherited-defaults">Unsetting inherited defaults<a class="headerlink" href="#unsetting-inherited-defaults" title="Permanent link">&para;</a></h3>
+<p>In some cases, it may be desirable to be able to unset, at a lower policy, a merged default that is inherited from a higher one. In fact, some inherited defaults could be harmful to an application, at the same time as they are unfeasible to remove from scope for all applications altogether, and therefore require an exception.</p>
+<p>Unsetting defaults via specification at lower level policies provides users who own policy rules at different levels of the hirarchy the option of not having to coordinate those exceptions "offline", nor having to accept the addition of special cases (conditions) <em>at the higher level</em> to exempt only specific lower policies from being affected by a particular default, which otherwise would configure a violation of the inheritance pattern, as well as an imposition of additional cognitive complexity for one who reads a higher policy with too many conditions.</p>
+<p>Instead, users should continue to be able to declare their intents through policies, and redeem an entitlement to unset unapplicable defaults, without any leakage of lower level details upwards at the higher policies.</p>
+<p>The option of unsetting inherited defaults is presented as part of the volition implied by the inheritance of policy rules, which are tipically specified for the more general case (e.g. at the level of a gateway, for all routes), though not necessarily applicable for all special cases beneath. If enabled, this feature helps disambiguate the concept of "default", which should not be understood strictly as the option to set values that protect the system in case of lack of specialisation. Rather, by its property of volition and changeability. I.e., by definition, <strong>every default policy rule is opt-out and specifies a value that is modifiable</strong>.</p>
+<p>In constrast, a policy rule that is neither opt-out nor modifiable better fits the definition of an <em>override</em>. While a policy rule that is not opt-out, nor it sets a concrete default value to be enforced in the lack of specialisation, defines a <a href="#policy-requirements"><em>requirement</em></a>.</p>
+<p>Finally, for the use case where users want to set defaults that cannot be unset (though still modifable), the very feature of unsetting defaults itself should be configurable, at least at the level of the system. This can be achieved with feature switches and policy validation, including backed by the cluster's RBAC if needed.</p>
+<p>The capability of unsetting inherited defaults from an effective policy can be identified by the presence of the <code>spec.unset</code> field in a policy. The value is a list of default named policy rules to be unset.</p>
+<h3 id="conditionally-applying-do">Conditionally applying D/O<a class="headerlink" href="#conditionally-applying-do" title="Permanent link">&para;</a></h3>
+<p>Users should be able to specify conditions for applying their blocks of <code>defaults</code> and <code>overrides</code>. These conditions aim to support exceptional cases where the blocks cannot be simply applied downwards, but rather depend on specifics found in the lower policies, while still defined in generic terms – as opposed to conditions that leak details of individual lower policies upwards.</p>
+<p>Between a higher and a lower set of policy rules, the higher level dictates the conditions for its rules to be applied (either as defaults or as overrides) over the lower level, and never the other way around.</p>
+<p>D/O conditions are identfied by the presence of the <code>spec.defaults.when</code> or <code>spec.overrides.when</code> fields in a policy. Those should be defined using <a href="https://github.com/google/cel-spec">Common Expression Language (CEL)</a>, evaluated in the control plane against the lower level specification that the higher level is being applied to. I.e. <code>self</code> in the CEL expression is the lower policy.</p>
+<p>A concrete useful application for conditionally enforcing a block of D/O is for specifying <em>constraints</em> for lower values. E.g. if a lower policy tries to set a value on a numeric field that is greater (or lower) than a given threshold, apply an override that sets that field value to equal to the threshold; otherwise, use the value declared by the lower policy.</p>
+<p>In contrast, an example of trivially redundant application of D/O conditions would be specifying a default block of rules that is only applied when the lower level does not declare a more specific replacement. Since this is natural semantics of a default, one does not have to use conditions for that.</p>
+<h2 id="examples-of-do-cases">Examples of D/O cases<a class="headerlink" href="#examples-of-do-cases" title="Permanent link">&para;</a></h2>
+<p>The following sets of examples generalize D/O applications for the presented <a href="#conceptualization-and-user-story">user stories</a>, regardless of details about specific personas and kinds of targeted resources. They illustrate the expected behavior for different cases involving defaults, overrides, constraints and unsetting.</p>
+<table>
+<thead>
+<tr>
+<th>Examples</th>
+<th>Highlighted user stories</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#examples-a---default-policy-entirely-replaced-by-another-at-lower-level">A. Default policy entirely replaced by another at lower level</a></td>
+<td>gateway-default-policy, route-replace-policy</td>
+</tr>
+<tr>
+<td><a href="#examples-b---default-policy-rules-merged-into-policies-at-lower-level">B. Default policy rules merged into policies at lower level</a></td>
+<td>gateway-default-policy-rule, route-add-policy-rule</td>
+</tr>
+<tr>
+<td><a href="#examples-c---override-policy-entirely-replacing-other-at-lower-level">C. Override policy entirely replacing other at lower level</a></td>
+<td>gateway-override-policy</td>
+</tr>
+<tr>
+<td><a href="#examples-d---override-policy-rules-merged-into-other-at-lower-level">D. Override policy rules merged into other at lower level</a></td>
+<td>gateway-override-policy-rule</td>
+</tr>
+<tr>
+<td><a href="#examples-e---override-policy-rules-setting-constraints-to-other-at-lower-level">E. Override policy rules setting constraints to other at lower level</a></td>
+<td>policy-constraints</td>
+</tr>
+<tr>
+<td><a href="#examples-f---policy-rule-that-unsets-a-default-from-higher-level">F. Policy rule that unsets a default from higher level</a></td>
+<td>route-unset-policy-rule</td>
+</tr>
+</tbody>
+</table>
+<p>In all the examples, a Gateway and a HTTPRoute objects are targeted by two policies, and an effective policy is presented highlighting the expected outcome. This poses no harm to generalizations involving same or different kinds of targeted resources, multiples policies targeting a same object, etc.</p>
+<p>The leftmost YAML is always the "higher" (less specific) policy; the one in the middle, separated from the leftmost one by a "+" sign, is the "lower" (more specific) policy; and the rightmost YAML is the expected <em>Effective Policy</em>.</p>
+<p>For a complete reference of the order of hierarchy, from least specific to most specific kinds of resources, as well as how to resolve conflicts of hierarchy in case of policies targeting objects at the same level, see Gateway API's <a href="https://gateway-api.sigs.k8s.io/geps/gep-713/#hierarchy">Hierarchy</a> definition for Policy Attachment and <a href="https://gateway-api.sigs.k8s.io/geps/gep-713/#conflict-resolution">Conflict Resolution</a>.</p>
+<h3 id="examples-a-default-policy-entirely-replaced-by-another-at-lower-level">Examples A - Default policy entirely replaced by another at lower level<a class="headerlink" href="#examples-a-default-policy-entirely-replaced-by-another-at-lower-level" title="Permanent link">&para;</a></h3>
+<p><strong>Example A1.</strong> A <em>default</em> policy that is <em>replaced entirely</em> if another one is set at a lower level</p>
+<p><img alt="A default policy that is replaced entirely if another one is set at a lower level" src="../0009-defaults-and-overrides-assets/example-a1.png" /></p>
+<h3 id="examples-b-default-policy-rules-merged-into-policies-at-lower-level">Examples B - Default policy rules merged into policies at lower level<a class="headerlink" href="#examples-b-default-policy-rules-merged-into-policies-at-lower-level" title="Permanent link">&para;</a></h3>
+<p><strong>Example B1.</strong> A <em>default</em> policy whose rules are <em>merged into other policies</em> at a lower level, where individual default policy rules can be overridden or unset - <em>without conflict</em></p>
+<p><img alt="A default policy whose rules are merged into other policies at a lower level, where individual default policy rules can be overridden or unset - without conflict" src="../0009-defaults-and-overrides-assets/example-b1.png" /></p>
+<p><strong>Example B2.</strong> A <em>default</em> policy whose rules are <em>merged into other policies</em> at a lower level, where individual default policy rules can be overridden or unset - <em>with conflict</em></p>
+<p><img alt="A default policy whose rules are merged into other policies at a lower level, where individual default policy rules can be overridden or unset - with conflict" src="../0009-defaults-and-overrides-assets/example-b2.png" /></p>
+<h3 id="examples-c-override-policy-entirely-replacing-other-at-lower-level">Examples C - Override policy entirely replacing other at lower level<a class="headerlink" href="#examples-c-override-policy-entirely-replacing-other-at-lower-level" title="Permanent link">&para;</a></h3>
+<p><strong>Example C1.</strong> An <em>override</em> policy that <em>replaces any other</em> that is set at a lower level <em>entirely</em></p>
+<p><img alt="An override policy that replaces any other that is set at a lower level entirely" src="../0009-defaults-and-overrides-assets/example-c1.png" /></p>
+<h3 id="examples-d-override-policy-rules-merged-into-other-at-lower-level">Examples D - Override policy rules merged into other at lower level<a class="headerlink" href="#examples-d-override-policy-rules-merged-into-other-at-lower-level" title="Permanent link">&para;</a></h3>
+<p><strong>Example D1.</strong> An <em>override</em> policy whose rules are <em>merged into other policies</em> at a lower level, overriding individual policy rules with same identification - <em>without conflict</em></p>
+<p><img alt="An override policy whose rules are merged into other policies at a lower level, overriding individual policy rules with same identification - without conflict" src="../0009-defaults-and-overrides-assets/example-d1.png" /></p>
+<p><strong>Example D2.</strong> An <em>override</em> policy whose rules are <em>merged into other policies</em> at a lower level, overriding individual policy rules with same identification - <em>with conflict</em></p>
+<p><img alt="An override policy whose rules are merged into other policies at a lower level, overriding individual policy rules with same identification - with conflict" src="../0009-defaults-and-overrides-assets/example-d2.png" /></p>
+<h3 id="examples-e-override-policy-rules-setting-constraints-to-other-at-lower-level">Examples E - Override policy rules setting constraints to other at lower level<a class="headerlink" href="#examples-e-override-policy-rules-setting-constraints-to-other-at-lower-level" title="Permanent link">&para;</a></h3>
+<p>The examples in this section introduce the proposal for a new <code>when</code> field for the <code>defaults</code> and <code>overrides</code> blocks. This field dictates the conditions to be found in a lower policy that would make a higher policy or policy rule to apply, according to the corresponding <code>defaults</code> or <code>overrides</code> semantics and <code>atomic</code> or <code>merge</code> strategy.</p>
+<p>Combined with a simple case of override policy (see <a href="#examples-c---override-policy-entirely-replacing-other-at-lower-level">Examples C</a>), the <code>when</code> condition field allows modeling for use cases of setting constraints for lower-level policies.</p>
+<p>As here proposed, the value of the <code>when</code> condition field must be a valid <a href="https://github.com/google/cel-spec">Common Expression Language (CEL)</a> expression.</p>
+<p><strong>Example E1.</strong> An <em>override</em> policy whose rules <em>set constraints</em> to field values of other policies at a lower level, overriding individual policy values of rules with same identification if those values violate the constraints - <em>lower policy is compliant with the constraint</em></p>
+<p><img alt="An override policy whose rules set constraints to field values of other policies at a lower level, overriding individual policy values of rules with same identification if those values violate the constraints - compliant" src="../0009-defaults-and-overrides-assets/example-e1.png" /></p>
+<p><strong>Example E2.</strong> An <em>override</em> policy whose rules <em>set constraints</em> to field values of other policies at a lower level, overriding individual policy values of rules with same identification if those values violate the constraints - <em>lower level violates the constraint</em></p>
+<p><img alt="An override policy whose rules set constraints to field values of other policies at a lower level, overriding individual policy values of rules with same identification if those values violate the constraints - violated" src="../0009-defaults-and-overrides-assets/example-e2.png" /></p>
+<p><strong>Example E3.</strong> An <em>override</em> policy whose rules <em>set constraints</em> to field values of other policies at a lower level, overriding individual policy values of rules with same identification if those values violate the constraints - <em>merge granularity problem</em></p>
+<p>The following example illustrates the possibly unintended consequences of enforcing D/O at <a href="#level-of-granularity-of-compared-policy-rules">strict levels of granularity</a>, and the flip side of the <code>strategy</code> field offering a closed set of options (<code>atomic</code>, <code>merge</code>).</p>
+<p>On one hand, the API is simple and straightforward, and there are no deeper side effects to be concerned about, other than at the two levels provided (atomic sets or merged individual policy rules.) On the other hand, this design may require more offline interaction between the actors who manage conflicting policies.</p>
+<p><img alt="An override policy whose rules set constraints to field values of other policies at a lower level, overriding individual policy values of rules with same identification if those values violate the constraints - merge granularity problem" src="../0009-defaults-and-overrides-assets/example-e3.png" /></p>
+<h3 id="examples-f-policy-rule-that-unsets-a-default-from-higher-level">Examples F - Policy rule that unsets a default from higher level<a class="headerlink" href="#examples-f-policy-rule-that-unsets-a-default-from-higher-level" title="Permanent link">&para;</a></h3>
+<p>The examples in this section introduce a new field <code>unset: []string</code> at the same level as the bare set of policy rules. The value of this field, provided as a list, dictates the default policy rules declared at a higher level to be removed ("unset") from the effective policy, specified by name of the policy rules.</p>
+<p><strong>Example F1.</strong> A policy that <em>unsets</em> a <em>default</em> policy rule set at a higher level</p>
+<p><img alt="A policy that unsets a default policy rule set at a higher level" src="../0009-defaults-and-overrides-assets/example-f1.png" /></p>
+<p><strong>Example F2.</strong> A policy that tries to <em>unset</em> an <em>override</em> policy rule set a higher level</p>
+<p><img alt="A policy that tries to unset an override policy rule set a higher level" src="../0009-defaults-and-overrides-assets/example-f2.png" /></p>
+<h2 id="status-reporting-and-policy-discoverability">Status reporting and Policy discoverability<a class="headerlink" href="#status-reporting-and-policy-discoverability" title="Permanent link">&para;</a></h2>
+<h3 id="possible-statuses-of-an-inherited-policy">Possible statuses of an inherited policy<a class="headerlink" href="#possible-statuses-of-an-inherited-policy" title="Permanent link">&para;</a></h3>
+<p>An inherited policy can be at any of the following conditions (<a href="https://docs.kuadrant.io/architecture/rfcs/0004-policy-status/">RFC 0004</a>):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Type</th>
+<th style="text-align: center;">Status</th>
+<th>Reason</th>
+<th>Message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Accepted</td>
+<td style="text-align: center;">True</td>
+<td>"Accepted"</td>
+<td>"Policy has been accepted"</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">False</td>
+<td>"Conflicted"</td>
+<td>"Policy is conflicted by &lt;policy-ns/policy-name&gt;"</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">False</td>
+<td>"Invalid"</td>
+<td>"Policy is invalid"</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">False</td>
+<td>"TargetNotFound"</td>
+<td>"Policy target &lt;resource-name&gt; was not found"</td>
+</tr>
+<tr>
+<td style="text-align: center;">Enforced</td>
+<td style="text-align: center;">True</td>
+<td>"Enforced"</td>
+<td>"Policy has been successfuly enforced[. The following defaults have been added by <policy-ns/policy-name>: x, y]"</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">True</td>
+<td>"PartiallyEnforced"</td>
+<td>"Policy has been successfuly enforced. The following rules have been overridden by <policy-ns/policy-name>: a, b[; the following defaults have been added by <policy-ns/policy-name>: x, y]"</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">False</td>
+<td>"Overridden"</td>
+<td>"Policy has been overridden by &lt;policy-ns/policy-name&gt;"</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">False</td>
+<td>"Unknown"</td>
+<td>"Policy has encountered some issues"</td>
+</tr>
+</tbody>
+</table>
+<h3 id="policy-discoverability-and-effective-policy">Policy discoverability and Effective policy<a class="headerlink" href="#policy-discoverability-and-effective-policy" title="Permanent link">&para;</a></h3>
+<p>A special condition must be added to every object that is targeted by a Kuadrant inherited policy if the policy's <code>Enforced</code> status condition is <code>True</code>.</p>
+<p>This special condition to be added to the target object is <code>kuadrant.io/xPolicyAffected</code>, where "xPolicy" is the kind of the inherited policy (e.g. AuthPolicy, RateLimitPolicy.)</p>
+<p>The possible statuses of an object regarding its sensitivity to one or more inherited policies are:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Type</th>
+<th style="text-align: center;">Status</th>
+<th>Reason</th>
+<th>Message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">xPolicyAffected</td>
+<td style="text-align: center;">False</td>
+<td>"Unaffected"</td>
+<td>"The object is not affected by any xPolicy"</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">True</td>
+<td>"Affected"</td>
+<td>"The object is affected by xPolicy &lt;policy-ns/policy-name&gt;"</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">True</td>
+<td>"PartiallyAffected"</td>
+<td>"The following sections of the object are affected by xPolicy &lt;policy-ns/policy-name&gt;: rules.0, rules.2"</td>
+</tr>
+</tbody>
+</table>
+<p>The presence of the <code>PolicyAffected</code> status condition helps identify that an object is sensitive to one of more policies of a kind, and gives some specifics about the scope of that effect (entire object or selected sections.)
+In many cases, this should be enough for inferring the actual policy rules being enforced for that object.</p>
+<p>For other cases where any of the following situations hold, a more detailed view of the final <em>Effective Policy</em> must be provided to the user:</p>
+<ul>
+<li>If the rules of the policy cannot be inferred by the name of the policy and/or the user lacks permission to read the policy object;</li>
+<li>If the object is affected by more than one policy.</li>
+</ul>
+<p>To help visualize the effective policy for a given target object in that situation, at least one of the following options must be provided to the user:</p>
+<ol>
+<li>A read-only <code>EffectivePolicy</code> custom resource, defined for each kind of inherited policy, and with an instance created for each affected object, that is reconciled and updated by the policy controller.</li>
+<li>A HTTP endpoint of the policy controller that users can consume to read the effective policy.</li>
+<li>A CLI tool that offers a command that queries the cluster and returns the effective policy – either by leveraging any of the methods above or computing the effective policy "on-the-fly" in the same fashion as the policy controller does.</li>
+</ol>
+<h1 id="reference-level-explanation">Reference-level explanation<a class="headerlink" href="#reference-level-explanation" title="Permanent link">&para;</a></h1>
+<h2 id="applying-policies">Applying policies<a class="headerlink" href="#applying-policies" title="Permanent link">&para;</a></h2>
+<p>The following diagrams are a high level model to guide the process of applying a set of policies of a kind for a given Gateway object, where the Gateway object is considered the root of a hierarchy, and for all objects beneath, being the xRoute objects the leaves of the hierarchical tree.</p>
+<p>As presented, policies can target either Gateways of route objects (HTTPRoutes, GRPCRoutes), with no restriction regarding the number of policies of a kind that target a same particular object. I.e. N:1 relationship allowed. Without any loss of generality, 1:1 relationship between policies of a kind and targeted objects can be imposed if preferred as a measure to initially reduce the blast of information for the user and corresponding cognitive load.</p>
+<h3 id="apply-policies-to-a-gateway-root-object-and-all-objects-beneath">Apply policies to a Gateway (root object) and all objects beneath<a class="headerlink" href="#apply-policies-to-a-gateway-root-object-and-all-objects-beneath" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>%%{ init: { "theme": "neutral" } }%%
+flowchart LR
+    start([For a Gateway &lt;i&gt;g&lt;/i&gt;&lt;br&gt;and policy kind &lt;i&gt;pk&lt;/i&gt;]) --&gt;
+    list-routes[List all routes&lt;br&gt;accepted by &lt;i&gt;g&lt;/i&gt; as &lt;i&gt;R&lt;/i&gt;] --&gt;
+    apply-policies-for-r
+    subgraph for-each-route[For each &lt;i&gt;r in R&lt;/i&gt;]
+        apply-policies-for-r[[Apply policies&lt;br&gt;of kind &lt;i&gt;pk&lt;/i&gt;&lt;br&gt;scoped for &lt;i&gt;r&lt;/i&gt;]] --&gt;
+        apply-policies-for-r
+    end
+    for-each-route --&gt;
+    build-virtual-route[Build a virtual route &lt;i&gt;vr&lt;/i&gt;&lt;br&gt;with all route rules not&lt;br&gt;target by any policy] --&gt;
+    apply-policies-for-vr[[Apply policies&lt;br&gt;of kind &lt;i&gt;pk&lt;/i&gt;&lt;br&gt;scoped for &lt;i&gt;vr&lt;/i&gt;]] --&gt;
+    finish(((END)))</code></pre>
+<h3 id="apply-policies-of-a-kind-for-an-object">Apply policies of a kind for an object<a class="headerlink" href="#apply-policies-of-a-kind-for-an-object" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>%%{ init: { "theme": "neutral" } }%%
+flowchart LR
+    apply-policies-for-o-start([Apply policies of kind &lt;i&gt;pk&lt;/i&gt;&lt;br&gt;scoped for an object &lt;i&gt;o&lt;/i&gt;]) --&gt;
+    list-policies[Make &lt;i&gt;P&lt;/i&gt; ← all policies &lt;br&gt;of kind &lt;i&gt;pk&lt;/i&gt; that&lt;br&gt;affect &lt;i&gt;o&lt;/i&gt;] --&gt;
+    sort-policies[Sort &lt;i&gt;P&lt;/i&gt; from&lt;br&gt;lowest to highest] --&gt;
+    build-effective-policy[Build an effective&lt;br&gt;policy &lt;i&gt;ep&lt;/i&gt; without&lt;br&gt;any policy rules] --&gt;
+    merge-p-into-ep
+    subgraph for-each-policy[For each policy &lt;i&gt;p in P&lt;/i&gt;]
+        merge-p-into-ep[[Merge &lt;i&gt;p into &lt;i&gt;ep&lt;/i&gt;]] --&gt;
+        merge-p-into-ep
+    end
+    for-each-policy --&gt;
+    reconcile-ep[Reconcile resources&lt;br&gt;for &lt;i&gt;ep&lt;/i&gt;] --&gt;
+    apply-policies-for-o-finish(((END)))</code></pre>
+<h3 id="merging-two-policies-together">Merging two policies together<a class="headerlink" href="#merging-two-policies-together" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>%%{ init: { "theme": "neutral" } }%%
+flowchart LR
+    merge-p1-into-p2-start([Merge policy &lt;i&gt;p1&lt;/i&gt;&lt;br&gt;into policy &lt;i&gt;p2&lt;/i&gt;]) --&gt;
+    p1-format{Explicit&lt;br&gt;&lt;i&gt;defaults&lt;/i&gt; or &lt;i&gt;overrides&lt;/i&gt;&lt;br&gt;declared in &lt;i&gt;p1&lt;/i&gt;?}
+    p1-format -- Yes --&gt; merge-defaults-for-r[["Merge &lt;b&gt;defaults&lt;/b&gt; block&lt;br&gt;of policy rules&lt;br&gt;of &lt;i&gt;p1&lt;/i&gt; into &lt;i&gt;p2&lt;/i&gt;"]] --&gt; merge-overrides-for-r[["Merge &lt;b&gt;overrides&lt;/b&gt; block&lt;br&gt;of policy rules&lt;br&gt;of &lt;i&gt;p1&lt;/i&gt; into &lt;i&gt;p2&lt;/i&gt;"]] --&gt; merge-p1-into-p2-finish(((Return &lt;i&gt;p2&lt;/i&gt;)))
+    p1-format -- No --&gt; merge-bare-rules-for-r[["Merge ungrouped&lt;br&gt;block of policy rules&lt;br&gt;of &lt;i&gt;p1&lt;/i&gt; into &lt;i&gt;p2&lt;/i&gt;&lt;br&gt;(as &lt;b&gt;defaults&lt;/b&gt;)"]] --&gt; merge-p1-into-p2-finish</code></pre>
+<h3 id="merging-a-generic-block-of-policy-rules-defaults-or-overrides-into-a-policy-with-conditions">Merging a generic block of policy rules (defaults or overrides) into a policy with conditions<a class="headerlink" href="#merging-a-generic-block-of-policy-rules-defaults-or-overrides-into-a-policy-with-conditions" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>%%{ init: { "theme": "neutral" } }%%
+flowchart LR
+    merge-block-of-rules-into-p-start([Merge block of&lt;br&gt;policy rules &lt;i&gt;B&lt;/i&gt;&lt;br&gt;into policy &lt;i&gt;p&lt;/i&gt;]) --&gt;
+    r-conditions-match{"&lt;i&gt;B.when(p)&lt;/i&gt;"}
+    r-conditions-match -- "Conditions do not match" --&gt; merge-block-of-rules-into-p-finish(((Return &lt;i&gt;p&lt;/i&gt;)))
+    r-conditions-match -- "Conditions match" --&gt; block-semantics{Merge &lt;i&gt;B&lt;/i&gt; as}
+    block-semantics -- "Defaults" --&gt; merge-default-block-into-p[[Merge default block&lt;br&gt;of policy rules &lt;i&gt;B&lt;/i&gt;&lt;br&gt;into policy &lt;i&gt;p&lt;/i&gt;]] --&gt; merge-block-of-rules-into-p-finish
+    block-semantics -- "Overrides" --&gt; merge-override-block-into-p[[Merge override block&lt;br&gt;of policy rules &lt;i&gt;B&lt;/i&gt;&lt;br&gt;into policy &lt;i&gt;p&lt;/i&gt;]] --&gt; merge-block-of-rules-into-p-finish</code></pre>
+<h3 id="merge-a-defaults-block-of-policy-rules-into-a-policy">Merge a <code>defaults</code> block of policy rules into a policy<a class="headerlink" href="#merge-a-defaults-block-of-policy-rules-into-a-policy" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>%%{ init: { "theme": "neutral" } }%%
+flowchart LR
+    merge-default-block-into-p-start([Merge default block&lt;br&gt;of policy rules &lt;i&gt;B&lt;/i&gt;&lt;br&gt;into policy &lt;i&gt;p&lt;/i&gt;]) --&gt;
+    unset-unwanted-policy-rules[Remove from &lt;i&gt;B&lt;/i&gt;&lt;br&gt;all policy rules&lt;br&gt;listed in &lt;i&gt;p.unset&lt;/i&gt;] --&gt;
+    p-empty{&lt;i&gt;p.empty?&lt;/i&gt;}
+    p-empty -- "Yes" --&gt; full-replace-p-with-defaut-block[&lt;i&gt;p.rules ← B&lt;/i&gt;] --&gt; merge-default-block-into-p-finish(((Return &lt;i&gt;p&lt;/i&gt;)))
+    p-empty -- "No" --&gt; default-block-strategy{&lt;i&gt;B.strategy&lt;/i&gt;}
+    default-block-strategy -- "Atomic" --&gt; merge-default-block-into-p-finish
+    default-block-strategy -- "Merge" --&gt; default-p-r-exists
+    subgraph for-each-default-policy-rule["For each &lt;i&gt;r in B&lt;i&gt;"]
+        default-p-r-exists{"&lt;i&gt;p[r.id].exists?&lt;/i&gt;"}
+        default-p-r-exists -- "Yes" --&gt; default-p-r-exists
+        default-p-r-exists -- "No" --&gt; default-replace-pr["&lt;i&gt;p[r.id] ← r&lt;/i&gt;"] --&gt; default-p-r-exists
+    end
+    for-each-default-policy-rule --&gt;
+    merge-default-block-into-p-finish</code></pre>
+<h3 id="merge-an-overrides-block-of-policy-rules-into-a-policy">Merge an <code>overrides</code> block of policy rules into a policy<a class="headerlink" href="#merge-an-overrides-block-of-policy-rules-into-a-policy" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>%%{ init: { "theme": "neutral" } }%%
+flowchart LR
+    merge-override-block-into-p-start([Merge override block&lt;br&gt;of policy rules &lt;i&gt;B&lt;/i&gt;&lt;br&gt;into policy &lt;i&gt;p&lt;/i&gt;]) --&gt;
+    override-block-strategy{&lt;i&gt;B.strategy&lt;/i&gt;}
+    override-block-strategy -- "Atomic" --&gt; full-replace-p-with-override-block[&lt;i&gt;p.rules ← B&lt;/i&gt;] --&gt; merge-override-block-into-p-finish(((Return &lt;i&gt;p&lt;/i&gt;)))
+    override-block-strategy -- "Merge" --&gt; override-replace-pr
+    subgraph for-each-override-policy-rule["For each &lt;i&gt;r in B&lt;i&gt;"]
+        override-replace-pr["&lt;i&gt;p[r.id] ← r&lt;/i&gt;"] --&gt; override-replace-pr
+    end
+    for-each-override-policy-rule --&gt;
+    merge-override-block-into-p-finish</code></pre>
+<h2 id="implementation-tiers">Implementation tiers<a class="headerlink" href="#implementation-tiers" title="Permanent link">&para;</a></h2>
+<p>This section proposes a possible path for the implementation of this RFC for Kuadrant's existing kinds of policies that are affected by D/O – notably AuthPolicy and RateLimitPolicy.</p>
+<p>The path is divided in 3 tiers that could be delivered in steps, additionaly to a series of enhancements &amp; refactoring.</p>
+<h3 id="tier-1">Tier 1<a class="headerlink" href="#tier-1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Atomic defaults (currently supported; missing addition of the <code>defaults</code> field to the APIs)</li>
+<li>Atomic overrides</li>
+<li>Policy status and Policy discoverability (i.e. PolicyAffected status on target objects)</li>
+<li>CRD labels <code>gateway.networking.k8s.io/policy: inherited | direct</code></li>
+</ul>
+<h3 id="tier-2">Tier 2<a class="headerlink" href="#tier-2" title="Permanent link">&para;</a></h3>
+<ul>
+<li>D/O <code>when</code> conditions (and support for "constraints")</li>
+<li>Merge strategy</li>
+<li>Reporting of effective policy</li>
+</ul>
+<h3 id="tier-3">Tier 3<a class="headerlink" href="#tier-3" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Unsetting (<code>unset</code>)</li>
+<li>Metrics for D/O policies (control plane)</li>
+<li>Docs: possible approaches for <a href="#policy-requirements">"requirements"</a></li>
+</ul>
+<h3 id="enhancements-and-refactoring">Enhancements and refactoring<a class="headerlink" href="#enhancements-and-refactoring" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Extract generic part of D/O implementation to <a href="https://github.com/Kuadrant/gateway-api-machinery">Kuadrant/gateway-api-machinery</a>.</li>
+</ul>
+<h1 id="drawbacks">Drawbacks<a class="headerlink" href="#drawbacks" title="Permanent link">&para;</a></h1>
+<p>See <em>Mutually exclusive API designs &gt; <a href="#design-option-strategy-field">Design option: <code>strategy</code> field</a></em>.</p>
+<h1 id="rationale-and-alternatives">Rationale and alternatives<a class="headerlink" href="#rationale-and-alternatives" title="Permanent link">&para;</a></h1>
+<h2 id="mutually-exclusive-api-designs">Mutually exclusive API designs<a class="headerlink" href="#mutually-exclusive-api-designs" title="Permanent link">&para;</a></h2>
+<p>The following alternatives were considered for the design of the API spec to support D/O:</p>
+<ol>
+<li><a href="#design-option-strategy-field"><code>strategy</code> field</a> - RECOMMENDED</li>
+<li><a href="#design-option-granularity-field"><code>granularity</code> field</a></li>
+<li><a href="#design-option-when-conditions-at-any-level-of-the-spec"><code>when</code> conditions (at any level of the spec)</a></li>
+<li><a href="#design-option-cel-functions-at-any-level-of-the-spec">CEL functions (at any level of the spec)</a></li>
+<li><a href="#design-option-path-keys">“path-keys”</a></li>
+<li><a href="#design-option-json-patch-like">JSON patch-like</a></li>
+</ol>
+<p>All the examples in the RFC are based on API design <strong><code>strategy</code> field</strong>.</p>
+<h3 id="design-option-strategy-field">Design option: <code>strategy</code> field<a class="headerlink" href="#design-option-strategy-field" title="Permanent link">&para;</a></h3>
+<p>Each block of <code>defaults</code> and <code>overrides</code> specify a field <code>strategy: atomic | merge</code>, with <code>atomic</code> assumed if the field is omitted.</p>
+<p>All the examples in the RFC are based on this design for the API spec.</p>
+<p>Some of the implications of the design are explained in the section <a href="#atomic-vs-individually-merged-policy-rules">Atomic vs. individually merged policy rules</a>, with highlights to the support for specifying the level of atomicity of the rules in the policy based on only 2 granularities – entire set of policy rules (<code>atomic</code>) or to the level of each named policy rule (<code>merge</code>.)</p>
+<table>
+  <thead>
+    <tr>
+      <th>✅ Pros</th>
+      <th>❌ Cons</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <ul>
+          <li>Same schema as a normal policy without D/O</li>
+          <li>Declarative</li>
+          <li>Safe against "unmergeable objects" (e.g. two rules declaring different one-of options)</li>
+          <li>Strong types</li>
+          <li>Extensible (by adding more fields, e.g.: to support unsetting defaults)</li>
+          <li>Easy to learn</li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li>2 levels of granularity only – either all (‘atomic’) or policy rule (‘merge’)</li>
+          <li>1 granularity declaration per D/O block → declaring both ‘atomic’ and ‘merge’ simultaneously requires 2 separate policies targeting the same object</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The design option based on the <code>strategy</code> field is the RECOMMENDED design for the implementation of Kuadrant Policies enabled for D/O. This is due to the pros above, plus the fact that this design can evolve to other, more versatile forms, such as <a href="#design-option-granularity-field"><strong><code>granularity</code> field</strong></a>, <a href="#design-option-when-conditions-at-any-level-of-the-spec"><strong><code>when</code> conditions</strong></a> or <a href="#design-option-cel-functions-at-any-level-of-the-spec"><strong>CEL functions</strong></a>, in the future, while the opposite would be harder to achieve.</p>
+<h3 id="design-option-granularity-field">Design option: <code>granularity</code> field<a class="headerlink" href="#design-option-granularity-field" title="Permanent link">&para;</a></h3>
+<p>Each block of <code>defaults</code> and <code>overrides</code> would specify a <code>granularity</code> field, set to a numeric integer value that describes which level of the policy spec, from the root of the set of policy rules until that number of levels down, to treat as the key, and the rest as the atomic value.</p>
+<p>Example:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AuthPolicy</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gw-policy</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">targetRef</span><span class="p">:</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="nt">defaults</span><span class="p">:</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">      </span><span class="nt">authentication</span><span class="p">:</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">        </span><span class="s">&quot;a&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">      </span><span class="nt">authorization</span><span class="p">:</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">        </span><span class="s">&quot;b&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="nt">granularity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w"> </span><span class="c1"># the entire spec (&quot;rules&quot;) is an atomic value</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">  </span><span class="nt">overrides</span><span class="p">:</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">      </span><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">        </span><span class="s">&quot;c&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">      </span><span class="nt">response</span><span class="p">:</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">        </span><span class="s">&quot;d&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">    </span><span class="nt">granularity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"> </span><span class="c1"># each policy rule (&quot;c&quot;, &quot;d&quot;) is an atomic value</span>
+</span></code></pre></div>
+<table>
+  <thead>
+    <tr>
+      <th>✅ Pros</th>
+      <th>❌ Cons</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <ul>
+          <li>Same as design option <a href="#design-option-strategy-field"><b><code>strategy</code> field</b></a></li>
+          <li>Unlimited levels of granularity (values can be pointed as atomic at any level)</li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li>1 granularity declaration per D/O block → <i>N</i> levels simultaneously require <i>N</i> policies</li>
+          <li>Granularity specified as a number - user needs to count the levels</li>
+          <li>Setting a deep level of granularity can cause merging "unmergeable objects"</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="design-option-when-conditions-at-any-level-of-the-spec">Design option: <code>when</code> conditions (at any level of the spec)<a class="headerlink" href="#design-option-when-conditions-at-any-level-of-the-spec" title="Permanent link">&para;</a></h3>
+<p>Inspired by the extension of the API for D/O with an additional <code>when</code> field (see <a href="#examples-e---override-policy-rules-setting-constraints-to-other-at-lower-level">Examples E</a>), this design alternative would use the presence of this field to signal the granularity of the atomic operation of default or override.</p>
+<p>Example:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AuthPolicy</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gw-policy</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">targetRef</span><span class="p">:</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="nt">defaults</span><span class="p">:</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">      </span><span class="nt">authentication</span><span class="p">:</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">        </span><span class="s">&quot;a&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">        </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CEL</span><span class="w"> </span><span class="c1"># level 1 - entire &quot;authentication&quot; block</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">      </span><span class="nt">authorization</span><span class="p">:</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">        </span><span class="s">&quot;b&quot;</span><span class="p p-Indicator">:</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">          </span><span class="s">&quot;prop-1&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">          </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CEL</span><span class="w"> </span><span class="c1"># level 2 - &quot;b&quot; authorization policy rule</span>
+</span></code></pre></div>
+<table>
+  <thead>
+    <tr>
+      <th>✅ Pros</th>
+      <th>❌ Cons</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <ul>
+          <li>Same as <a href="#design-option-granularity-field"><b><code>granularity</code> field</b></a></li>
+          <li>As many granularity declarations per D/O block as complex objects in the policy</li>
+          <li>Granularity specified “in-place”</li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li>Setting a deep level of granularity can cause merging "unmergeable objects"</li>
+          <li>Implementation nightmare - hard to define the API from existing types</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="design-option-cel-functions-at-any-level-of-the-spec">Design option: CEL functions (at any level of the spec)<a class="headerlink" href="#design-option-cel-functions-at-any-level-of-the-spec" title="Permanent link">&para;</a></h3>
+<p>This design option leans on the power of <a href="https://github.com/google/cel-spec">Common Expression Language (CEL)</a>, extrapolating the design alternative with <a href="#design-option-when-conditions-at-any-level-of-the-spec"><strong><code>when</code> conditions</strong></a> beyond declaring a CEL expression just to determine if a statically declared value should apply. Rather, it proposes the use of <a href="https://github.com/google/cel-spec/blob/master/doc/langdef.md#functions">CEL functions</a> that outputs the value to default to or to ovrride with, taking the conflicting "lower" value as input, with or without a condition as part of the CEL expression. The value of a key set to a CEL function indicates the level of granularity of the D/O operation.</p>
+<p>Example:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AuthPolicy</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gw-policy</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">targetRef</span><span class="p">:</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nt">defaults</span><span class="p">:</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">      </span><span class="nt">authentication</span><span class="p">:</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">        </span><span class="s">&quot;a&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span><span class="w"> </span><span class="c1"># static value</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">        </span><span class="s">&quot;b&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;cel:self.value</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">3</span><span class="nv"> </span><span class="s">?</span><span class="nv"> </span><span class="s">AuthenticationRule{value:</span><span class="nv"> </span><span class="s">3}</span><span class="nv"> </span><span class="s">:</span><span class="nv"> </span><span class="s">self&quot;</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">      </span><span class="nt">authorization</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">        </span><span class="no">cel:Authorization{</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">          </span><span class="no">c: AuthorizationRule{prop1: &quot;x&quot;}</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">        </span><span class="no">}</span>
+</span></code></pre></div>
+<table>
+  <thead>
+    <tr>
+      <th>✅ Pros</th>
+      <th>❌ Cons</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <ul>
+          <li>Unlimited levels of granularity</li>
+          <li>Granularity specified “in-place”</li>
+          <li>Extremely powerful</li>
+          <li>Elegant and simple implementation-wise</li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li>Weakly typed</li>
+          <li>Implementation completely new – cannot reuse current API types</li>
+          <li>Requires all types to be defined as protobufs</li>
+          <li>Without strong guardrails, users can easily shoot themselves in the foot</li>
+          <li>Validation likely requires complex functions for parsing the CEL expressions</li>
+          <li>Non-declarative</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="design-option-path-keys">Design option: “path-keys”<a class="headerlink" href="#design-option-path-keys" title="Permanent link">&para;</a></h3>
+<p>A more radical alternative considered consisted of defining <code>defaults</code> and <code>overrides</code> blocks whose schemas would not match the ones of a normal policy without D/O. Instead, these blocks would consist of simple key-value pairs, where the keys specify the paths in an affected policy where to apply the value atomically.</p>
+<p>Example:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AuthPolicy</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gw-policy</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="nt">targetRef</span><span class="p">:</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="nt">defaults</span><span class="p">:</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="s">&quot;rules.authentication&quot;</span><span class="p p-Indicator">:</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">      </span><span class="s">&quot;a&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">G</span><span class="p p-Indicator">}</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span><span class="s">&quot;rules.authorization.b&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">G</span><span class="p p-Indicator">}</span>
+</span></code></pre></div>
+<table>
+  <thead>
+    <tr>
+      <th>✅ Pros</th>
+      <th>❌ Cons</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <ul>
+          <li>D/O as simple key-value sets (keys: where to apply, values: what to apply)</li>
+          <li>Declarative</li>
+          <li>Unlimited levels of granularity (values can be pointed as atomic at any level)</li>
+          <li>Unlimited merge declarations per D/O block</li>
+          <li>Intuitive, easy-to-learn</li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li>Not same schema as the normal policy (without D/O) - not very GWAPI-like</li>
+          <li>Weakly typed (i.e. <code>map[string]any)</code></li>
+          <li>Not extensible (e.g., cannot add other fields to the API)</code></li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="design-option-json-patch-like">Design option: JSON patch-like<a class="headerlink" href="#design-option-json-patch-like" title="Permanent link">&para;</a></h3>
+<p>Similar to the <a href="#design-option-path-keys"><strong>path-keys</strong></a> design option, inspired by <a href="https://jsonpatch.com/">JSON patch</a> operations, to provide more kinds of operations and extensibility.</p>
+<p>Example:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AuthPolicy</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gw-policy</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">targetRef</span><span class="p">:</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">  </span><span class="nt">defaults</span><span class="p">:</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rules.authentication</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">add</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="s">&quot;a&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">G</span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rules.authorization.b</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">    </span><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">remove</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">      </span><span class="no">rules.authentication.a.</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">      </span><span class="no">value</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">    </span><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">le</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
+</span></code></pre></div>
+<table>
+  <thead>
+    <tr>
+      <th>✅ Pros</th>
+      <th>❌ Cons</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <ul>
+          <li>Same as <a href="#design-option-path-keys"><b>"path-keys" field</b></a></li>
+          <li>Extensible, all kinds of operations supported (add, remove, constraint)</li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li>Not same schema as the normal policy (without D/O) - not very GWAPI-like</li>
+          <li>Less declarative</li>
+          <li>Weakly typed (i.e. <code>value: any)</code></li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="prior-art">Prior art<a class="headerlink" href="#prior-art" title="Permanent link">&para;</a></h1>
+<p>Other than the primitive support only for implicit atomic defaults provided by Kuadrant for the AuthPolicy and RateLimitPolicy, other real-life implementations of D/O along the lines proposed by Gateway API are currently unknown.</p>
+<p>Some orientative examples provided in:</p>
+<ul>
+<li><a href="https://github.com/kubernetes-sigs/gateway-api/pull/2813">GEP-2649</a> - search for "CDNCachingPolicy" as well as "Merging into existing spec fields";</li>
+<li><a href="https://github.com/kubernetes-sigs/gateway-api/tree/v1.0.0/gwctl"><code>gwctl</code></a> effective policy calculation for inherited policies - see <a href="https://github.com/kubernetes-sigs/gateway-api/blob/v1.0.0/gwctl/pkg/policymanager/merger_test.go">policy manager's merge test cases</a>.</li>
+</ul>
+<h1 id="out-of-scope">Out of scope<a class="headerlink" href="#out-of-scope" title="Permanent link">&para;</a></h1>
+<h2 id="policy-requirements">Policy requirements<a class="headerlink" href="#policy-requirements" title="Permanent link">&para;</a></h2>
+<p>A use case often described in association with D/O is the one for declaring <em>policy requirements</em>. These are high level policies that declare requirements to be fulfilled by more specific (lower level) policies without specifying concrete default or override values nor constraints. E.g.: "an authentication policy must be enforced, but none is provided by default."</p>
+<p>A typical generic policy requirement user story is:</p>
+<blockquote>
+<p><em>As a Platform Engineer, when configuring a Gateway, I want to set policy requirements to be fulfilled by one who manages an application/route linked to my Gateway, so all interested parties, including myself, can be aware of applications deployed to the cluster that lack a particular policy protection being enforced.</em></p>
+</blockquote>
+<p>Policy requirements as here described are out of scope of this RFC.</p>
+<p>We believe policy requirement use cases can be stated and solved as an observability problem, by defining metrics and alerts that cover for missing policies or policy rules, without necessarily having to write a policy of the same kind to express such requirement to be fulfilled.</p>
+<h1 id="unresolved-questions">Unresolved questions<a class="headerlink" href="#unresolved-questions" title="Permanent link">&para;</a></h1>
+<h2 id="merging-policies-with-references-to-external-objects">Merging policies with references to external objects<a class="headerlink" href="#merging-policies-with-references-to-external-objects" title="Permanent link">&para;</a></h2>
+<p><strong>How to handle merges of policies from different namespaces that contain references to other objects (e.g. Secrets)?</strong></p>
+<p>Often policies rules include references to other Kubernetes objects, such as Secrets, typically defined in the same namespace as the policy object. When merging policies from different namespaces, these references need to be taken into account.</p>
+<p>If not carried along with the derivative resources (e.g. Authorino AuthConfig objects) that are created from a merge of policies (or from the computed effective policy), composed out of definitions from different namespaces, and that depend on those references, these references to external objects can be broken.</p>
+<p>This is not much of a problem for atomic D/O only, as the derivative objects that depend on the references could be forced to be created in the same namespace as the policy that wins against all the others – and therefore in the same namespace of the winning referents as well. However, when merging policies, we can run into a situation where final effective policies (thus also other derivative resources) contain references to objects inherited from definitions from other namespaces.</p>
+<p>Possible solutions to this problem include:</p>
+<ol>
+<li>Copying the referenced objects into the namespace where the derivative resources will be created.</li>
+<li>Involves maintaining (watching and reconciling) those referenced objects</li>
+<li>May raise security concerns</li>
+<li>Allowing derivative resources (e.g. Authorino AuthConfigs) to reference objects across namespaces, as well as giving permissions to the components that process those references (e.g. Authorino) to read across namespaces</li>
+<li>May raise security concerns</li>
+<li>Should probably be restricted to derivative resources created by Kuadrant and not allowed to users who create the derivative resources themselves</li>
+</ol>
+<h2 id="policy-spec-resembling-more-the-target-spec">Policy spec resembling more the target spec<a class="headerlink" href="#policy-spec-resembling-more-the-target-spec" title="Permanent link">&para;</a></h2>
+<p><strong>Should Kuadrant's inherited policy specs resemble more the specs of the objects they target?</strong></p>
+<p>The UX for one who writes a Kuadrant policy of the inherited class of policies is arguably not very different from writing any custom resource that happens to specify a <code>targetRef</code> field.
+Other than name and kind of target object, there is nothing much in a Kuadrant policy custom resource that provides the user with an experience almost close to be "adding fields" in the target object.</p>
+<p>With the exception of a few types reused for the <a href="https://docs.kuadrant.io/kuadrant-operator/doc/reference/route-selectors/">route selectors</a>, the spec of a Kuadrant policy is very different from the spec of the object that ultimately the policy augments, i.e. the spec of the route object. This remains basically unchanged after this RFC. However, another way to think on the design of those APIs is one where, in contrast, the specs of the policies partially mirror the spec of the route, so users can write policies in a more intuitive fashion, as if the definitions of the policy would look like extensions of the routes they target (directly or by targeting gateways the routes are attached to.)</p>
+<p>E.g.:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPRoute</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-route</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rule-1</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="nt">matches</span><span class="p">:</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GET</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span><span class="nt">backendRef</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rule-2</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">    </span><span class="nt">backendRef</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span></code></pre></div>
+<p>An inherited policy that targets the HTTPRoute above could otherwise look like the following:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Policy</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-policy</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span><span class="nt">targetRef</span><span class="p">:</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPRoute</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-route</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">  </span><span class="nt">defaults</span><span class="p">:</span><span class="w"> </span><span class="c1"># mirrors the spec of the httproute object</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="nt">policySpecificDef</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span><span class="w"> </span><span class="c1"># augments the entire httproute object</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">  </span><span class="nt">overrides</span><span class="p">:</span><span class="w"> </span><span class="c1"># mirrors the spec of the httproute object</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rule-2</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">      </span><span class="nt">policySpecificDef</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">}</span><span class="w"> </span><span class="c1"># augments only httprouterule rule-2 of the httproute object</span>
+</span></code></pre></div>
+<p>The above already is somewhat closer to being true for the AuthPolicy API, than it is for the RateLimitPolicy one. However, that is strictly coincidental, because the AuthPolicy's spec happens to specify a <code>rules</code> field, where the equivalent at the same level in RateLimitPolicy is called <code>limits</code>.</p>
+<p>This alternative design could make writing policies more like defining filters in an HTTPRoute, with the difference that policies are external to the target they extend (while filters are internal.) At the same time, it could be a replacement for Kuadrant route selectors, where the context of applicability of a policy rule is given by the very structure within the spec how the policy rule is declared (resembling the one of the target), thus also would shaping context for D/O.</p>
+<p>One caveat of this design though is that each policy specific definition (i.e. the rule specification that extends the object at a given point defined by the very structure of the spec) is exclusive of that given point in the structure of the object. I.e., one cannot specify a single policy rule that augments N &gt; 1 specific rules of a target HTTPRoute.</p>
+<p>Due to its relevance to the design of the API that enables D/O, this was left as an unresolved question. To be nonetheless noticed that, as a pattern, this alternative API design extends beyond inherited policies, impacting as well the direct policy kinds DNSPolicy and TLSPolicy.</p>
+<h1 id="future-possibilities">Future possibilities<a class="headerlink" href="#future-possibilities" title="Permanent link">&para;</a></h1>
+<h2 id="n1-policy-target-relationship">N:1 policy-target relationship<a class="headerlink" href="#n1-policy-target-relationship" title="Permanent link">&para;</a></h2>
+<p>Although this proposal was thought to keep options open for multiple policies of a kind targeting a same network resource, this is currently not the state of things for Kuadrant. Instead, Kuadrant enforces 1:1 relationship between policies of a kind and target resources.</p>
+<p>Supporting N:1 relationships could enable use cases such as of App Developers defining D/O for each other at the same level of a shared xRoute, as well as Platform Engineers setting different policy rules on the same Gateway.</p>
+<p>This could provide an alternative to achieving separation of concerns for complex policy kinds such as the AuthPolicy, where different users could be responsible for authentication and authorization, without necessarily depending on defining new kinds of policies.</p>
+<h2 id="route-rule-name-and-targetrefsectionname">Route rule <code>name</code> and <code>targetRef.sectionName</code><a class="headerlink" href="#route-rule-name-and-targetrefsectionname" title="Permanent link">&para;</a></h2>
+<p>If Gateway API's <a href="https://github.com/kubernetes-sigs/gateway-api/issues/995">GEP-995</a> is accepted (i.e. <a href="https://github.com/kubernetes-sigs/gateway-api/pull/2593">kubernetes-sigs/gateway-api#2593</a> gets merged) and the <code>name</code> field for route rules implemented in the APIs (HTTPRoute and GRPCRoute), this could impact how Kuadrant delivers D/O. Although the semantics could remain the same, the users specify the scope for a given set of policy rules could simplify significantly.</p>
+<p>As of today, Kuadrant's AuthPolicy and RateLimitPolicy APIs allow users to target sections of a HTTPRoute based on <a href="https://docs.kuadrant.io/kuadrant-operator/doc/reference/route-selectors/">route selectors</a>, and thus all the conflict resolution involved in handling D/O must take that logics into account.</p>
+<p>With named route rules supported by Gateway API, either route selectors could be redefined in a simpler form where each selector consists of a list of names of rules and/or entire policies could be scoped for a section of a resource, by defining the <code>targetRef</code> field based on the <a href="https://pkg.go.dev/sigs.k8s.io/gateway-api/apis/v1alpha2#PolicyTargetReferenceWithSectionName"><code>PolicyTargetReferenceWithSectionName</code></a> type.</p>
+<p>To be noted <a href="https://github.com/kubernetes-sigs/gateway-api/pull/2813">GEP-2649</a>'s recommendation of not defining inherited policies that allow for <code>sectionName</code> in the <code>targetRef</code>. Nonetheless, this is a general rule from the spec <a href="https://github.com/kubernetes-sigs/gateway-api/pull/2813#discussion_r1511950231">said to be acceptable to be broken</a> in the spirit of offering better functionality to users, provided it can deal with the associated discoverability and complexity problems of this feature.</p>
+<h2 id="use-listmaptype-instead-of-maps-of-policy-rules">Use listMapType instead of maps of policy rules<a class="headerlink" href="#use-listmaptype-instead-of-maps-of-policy-rules" title="Permanent link">&para;</a></h2>
+<p>Despite having recently modified the AuthPolicy and RateLimitPolicy APIs to use maps for declaring policy rules instead of lists (<a href="https://docs.kuadrant.io/architecture/rfcs/0001-rlp-v2/">RFC 0001</a>), reverting this design in future versions of these APIs, plus treating those lists as <code>listMapType</code>, could let us leverage the API server's strategic merge type to handle merges between policy objects.</p>
+<p>In the Policy CRDs, the policy rule types must specify a <code>name</code> field (required). The list of rules type (i.e. <code>[]Rule</code>) must then speficy the following <a href="https://book.kubebuilder.io/reference/markers/crd-processing.html?highlight=listType#crd-processing">Kubebuilder CRD processing annotations</a>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>// +listType=map
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>// +listMapKey=name
+</span></code></pre></div>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>As the time of writing, <a href="https://gateway-api.sigs.k8s.io/geps/gep-713">GEP-713</a> (Kubernetes Gateway API, SIG-NETWORK) is <a href="https://github.com/kubernetes-sigs/gateway-api/pull/2813">under revision</a>, expected to be split into two separate GEPs, one for Direct Policies (GEP-2648) and one for Inherited Policies (GEP-2649.) Once these new GEPs supersede GEP-713, all references to the previous GEP in this document must be updated to GEP-2649.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer id="footer" class="footer">
+  <div class="copyright">
+    © Copyright 2024 <strong><span>Kuadrant contributors</span></strong>. All Rights Reserved.
+  </div>
+
+  <div class="sponsored-by">
+    <p>
+      Sponsored by: <a href="https://www.redhat.com"><img src="/assets/images/redhat.png" class="logo" alt="Red Hat logo"></a>
+    </p>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.10.0"], "provider": "mike"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.bd41221c.min.js"></script>
+      
+    
+  </body>
+</html>
