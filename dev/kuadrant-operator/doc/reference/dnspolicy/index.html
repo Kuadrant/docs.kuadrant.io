@@ -636,33 +636,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#loadbalancingweighted" class="md-nav__link">
-    <span class="md-ellipsis">
-      LoadBalancingWeighted
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#customweight" class="md-nav__link">
-    <span class="md-ellipsis">
-      CustomWeight
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#loadbalancinggeo" class="md-nav__link">
-    <span class="md-ellipsis">
-      LoadBalancingGeo
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#dnspolicystatus" class="md-nav__link">
     <span class="md-ellipsis">
       DNSPolicyStatus
@@ -2357,6 +2330,48 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/rfcs/0010-gateway-api-metrics-exporter/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0010: Gateway API Metrics Exporter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/rfcs/0011-policy-machinery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0011: Policy Machinery for reconciliation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3447,33 +3462,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#loadbalancingweighted" class="md-nav__link">
-    <span class="md-ellipsis">
-      LoadBalancingWeighted
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#customweight" class="md-nav__link">
-    <span class="md-ellipsis">
-      CustomWeight
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#loadbalancinggeo" class="md-nav__link">
-    <span class="md-ellipsis">
-      LoadBalancingGeo
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#dnspolicystatus" class="md-nav__link">
     <span class="md-ellipsis">
       DNSPolicyStatus
@@ -3584,14 +3572,8 @@
 <tr>
 <td><code>loadBalancing</code></td>
 <td><a href="#loadbalancingspec">LoadBalancingSpec</a></td>
-<td style="text-align: center;">Yes(loadbalanced only)</td>
-<td>LoadBalancing Spec, required when routingStrategy is "loadbalanced"</td>
-</tr>
-<tr>
-<td><code>routingStrategy</code></td>
-<td>String (immutable)</td>
-<td style="text-align: center;">Yes</td>
-<td><strong>Immutable!</strong> Routing Strategy to use, one of "simple" or "loadbalanced"</td>
+<td style="text-align: center;">No</td>
+<td>LoadBalancing Spec</td>
 </tr>
 <tr>
 <td><code>providerRefs</code></td>
@@ -3688,82 +3670,22 @@
 </thead>
 <tbody>
 <tr>
-<td><code>weighted</code></td>
-<td><a href="#loadbalancingweighted">LoadBalancingWeighted</a></td>
+<td><code>defaultGeo</code></td>
+<td>Boolean</td>
 <td style="text-align: center;">Yes</td>
-<td>Weighted routing spec</td>
+<td>Specifies if this is the default geo</td>
 </tr>
 <tr>
 <td><code>geo</code></td>
-<td><a href="#loadbalancinggeo">LoadBalancingGeo</a></td>
+<td>String</td>
 <td style="text-align: center;">Yes</td>
-<td>Geo routing spec</td>
-</tr>
-</tbody>
-</table>
-<h2 id="loadbalancingweighted">LoadBalancingWeighted<a class="headerlink" href="#loadbalancingweighted" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th><strong>Field</strong></th>
-<th><strong>Type</strong></th>
-<th style="text-align: center;"><strong>Required</strong></th>
-<th><strong>Description</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>defaultWeight</code></td>
-<td>Number</td>
-<td style="text-align: center;">Yes</td>
-<td>Default weight to apply to created records</td>
-</tr>
-<tr>
-<td><code>custom</code></td>
-<td>[]<a href="#customweight">CustomWeight</a></td>
-<td style="text-align: center;">No</td>
-<td>Custom weights to manipulate records weights based on label selectors</td>
-</tr>
-</tbody>
-</table>
-<h2 id="customweight">CustomWeight<a class="headerlink" href="#customweight" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th><strong>Field</strong></th>
-<th><strong>Type</strong></th>
-<th><strong>Description</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>selector</code></td>
-<td>metav1.LabelSelector</td>
-<td>Label Selector to specify resources that should have this weight applied</td>
+<td>Geo value to apply to geo endpoints</td>
 </tr>
 <tr>
 <td><code>weight</code></td>
 <td>Number</td>
-<td>Weight value to apply for matching resources</td>
-</tr>
-</tbody>
-</table>
-<h2 id="loadbalancinggeo">LoadBalancingGeo<a class="headerlink" href="#loadbalancinggeo" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th><strong>Field</strong></th>
-<th><strong>Type</strong></th>
-<th style="text-align: center;"><strong>Required</strong></th>
-<th><strong>Description</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>defaultGeo</code></td>
-<td>String</td>
-<td style="text-align: center;">Yes</td>
-<td>Default geo to apply to records</td>
+<td style="text-align: center;">No</td>
+<td>Weight value to apply to weighted endpoints default: 120</td>
 </tr>
 </tbody>
 </table>

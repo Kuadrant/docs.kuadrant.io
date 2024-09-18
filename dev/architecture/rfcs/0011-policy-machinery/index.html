@@ -8,21 +8,25 @@
       
       
       
-        <link rel="canonical" href="https://docs.kuadrant.io/dev/limitador/limitador-server/sandbox/redis-otel/">
+        <link rel="canonical" href="https://docs.kuadrant.io/dev/architecture/rfcs/0011-policy-machinery/">
       
       
+        <link rel="prev" href="../0010-gateway-api-metrics-exporter/">
       
       
-      <link rel="icon" href="../../../../assets/images/favicon.png">
+        <link rel="next" href="../../../kuadrant-operator/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.14">
     
     
       
-        <title>Limitador instrumentation sandbox - Kuadrant Documentation</title>
+        <title>RFC 0011: Policy Machinery for reconciliation - Kuadrant Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.10ba22f1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.10ba22f1.min.css">
       
       
 
@@ -41,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -62,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#limitador-instrumentation-sandbox" class="md-skip">
+        <a href="#policy-machinery-for-reconciliation" class="md-skip">
           Skip to content
         </a>
       
@@ -77,7 +81,7 @@
             <div class="md-banner__inner md-grid md-typeset">
               
   These docs are unstable, from our development branches (main).
-  <a href="../../../../.."> 
+  <a href="../../../.."> 
     <strong>Click here to go to latest, stable docs.</strong>
   </a>
 
@@ -94,9 +98,9 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../.." title="Kuadrant Documentation" class="md-header__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+    <a href="../../.." title="Kuadrant Documentation" class="md-header__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
       
-  <img src="../../../../assets/images/logo.png" alt="logo">
+  <img src="../../../assets/images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -113,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Limitador instrumentation sandbox
+              RFC 0011: Policy Machinery for reconciliation
             
           </span>
         </div>
@@ -200,9 +204,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../.." title="Kuadrant Documentation" class="md-nav__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+    <a href="../../.." title="Kuadrant Documentation" class="md-nav__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
       
-  <img src="../../../../assets/images/logo.png" alt="logo">
+  <img src="../../../assets/images/logo.png" alt="logo">
 
     </a>
     Kuadrant Documentation
@@ -229,7 +233,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -284,7 +288,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting-started-single-cluster/" class="md-nav__link">
+      <a href="../../../getting-started-single-cluster/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -305,7 +309,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting-started-multi-cluster/" class="md-nav__link">
+      <a href="../../../getting-started-multi-cluster/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -333,7 +337,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../architecture/docs/design/architectural-overview-v1/" class="md-nav__link">
+      <a href="../../docs/design/architectural-overview-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -388,7 +392,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/install/install-kubernetes/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/install/install-kubernetes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -409,7 +413,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/install/install-openshift/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/install/install-openshift/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -507,7 +511,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/dns/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/dns/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -528,7 +532,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/reference/dnspolicy/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/reference/dnspolicy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -549,7 +553,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/user-guides/gateway-dns/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/user-guides/gateway-dns/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -613,7 +617,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/tls/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/tls/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -634,7 +638,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/reference/tlspolicy/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/reference/tlspolicy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -698,7 +702,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/auth/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/auth/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -719,7 +723,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/reference/authpolicy/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/reference/authpolicy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -783,7 +787,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/rate-limiting/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/rate-limiting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -804,7 +808,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/reference/ratelimitpolicy/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/reference/ratelimitpolicy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -875,7 +879,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/user-guides/secure-protect-connect/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/user-guides/secure-protect-connect/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -896,7 +900,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/user-guides/secure-protect-connect-single-multi-cluster/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/user-guides/secure-protect-connect-single-multi-cluster/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -952,7 +956,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/dnshealthchecks/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/dnshealthchecks/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -973,7 +977,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../dns-operator/docs/provider/" class="md-nav__link">
+      <a href="../../../dns-operator/docs/provider/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1037,7 +1041,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/user-guides/gateway-tls/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/user-guides/gateway-tls/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1101,7 +1105,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/user-guides/auth-for-app-devs-and-platform-engineers/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/user-guides/auth-for-app-devs-and-platform-engineers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1122,7 +1126,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/kubernetes-tokenreview/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/kubernetes-tokenreview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1143,7 +1147,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/api-key-authentication/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/api-key-authentication/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1164,7 +1168,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/mtls-authentication/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/mtls-authentication/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1185,7 +1189,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/oidc-jwt-authentication/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/oidc-jwt-authentication/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1206,7 +1210,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/oauth2-token-introspection/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/oauth2-token-introspection/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1227,7 +1231,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/passing-credentials/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/passing-credentials/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1248,7 +1252,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/http-basic-authentication/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/http-basic-authentication/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1269,7 +1273,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/anonymous-access/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/anonymous-access/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1290,7 +1294,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/token-normalization/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/token-normalization/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1311,7 +1315,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/edge-authentication-architecture-festival-wristbands/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/edge-authentication-architecture-festival-wristbands/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1332,7 +1336,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/external-metadata/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/external-metadata/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1353,7 +1357,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/oidc-user-info/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/oidc-user-info/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1374,7 +1378,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/resource-level-authorization-uma/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/resource-level-authorization-uma/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1395,7 +1399,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/json-pattern-matching-authorization/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/json-pattern-matching-authorization/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1416,7 +1420,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/oidc-rbac/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/oidc-rbac/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1437,7 +1441,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/opa-authorization/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/opa-authorization/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1458,7 +1462,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/kubernetes-subjectaccessreview/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/kubernetes-subjectaccessreview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1479,7 +1483,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/keycloak-authorization-services/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/keycloak-authorization-services/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1500,7 +1504,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/authzed/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/authzed/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1521,7 +1525,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/injecting-data/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/injecting-data/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1542,7 +1546,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/authenticated-rate-limiting-envoy-dynamic-metadata/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/authenticated-rate-limiting-envoy-dynamic-metadata/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1563,7 +1567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/deny-with-redirect-to-login/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/deny-with-redirect-to-login/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1584,7 +1588,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/envoy-jwt-authn-and-authorino/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/envoy-jwt-authn-and-authorino/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1605,7 +1609,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/validating-webhook/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/validating-webhook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1626,7 +1630,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/caching/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/caching/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1690,7 +1694,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/user-guides/gateway-rl-for-cluster-operators/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/user-guides/gateway-rl-for-cluster-operators/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1711,7 +1715,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/user-guides/authenticated-rl-for-app-developers/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/user-guides/authenticated-rl-for-app-developers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1732,7 +1736,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/user-guides/authenticated-rl-with-jwt-and-k8s-authnz/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/user-guides/authenticated-rl-with-jwt-and-k8s-authnz/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1796,7 +1800,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/observability/metrics/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/observability/metrics/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1817,7 +1821,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/observability/examples/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/observability/examples/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1838,7 +1842,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/observability/tracing/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/observability/tracing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1859,7 +1863,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/observability/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/observability/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1930,7 +1934,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../api-quickstart/" class="md-nav__link">
+      <a href="../../../api-quickstart/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1955,17 +1959,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
         
           
           <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
@@ -1979,7 +1985,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             Proposals
@@ -1990,17 +1996,19 @@
                 
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1" checked>
         
           
           <label class="md-nav__link" for="__nav_8_1" id="__nav_8_1_label" tabindex="0">
@@ -2014,7 +2022,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_8_1">
             <span class="md-nav__icon md-icon"></span>
             Request For Comments (RFC)
@@ -2028,7 +2036,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../architecture/rfcs/0001-rlp-v2/" class="md-nav__link">
+      <a href="../0001-rlp-v2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2049,7 +2057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../architecture/rfcs/0002-well-known-attributes/" class="md-nav__link">
+      <a href="../0002-well-known-attributes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2070,7 +2078,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../architecture/rfcs/0003-dns-policy/" class="md-nav__link">
+      <a href="../0003-dns-policy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2091,7 +2099,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../architecture/rfcs/0004-policy-status/" class="md-nav__link">
+      <a href="../0004-policy-status/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2112,7 +2120,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../architecture/rfcs/0005-single-cluster-dnspolicy/" class="md-nav__link">
+      <a href="../0005-single-cluster-dnspolicy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2133,7 +2141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../architecture/rfcs/0006-kuadrant_sub_components_configurations/" class="md-nav__link">
+      <a href="../0006-kuadrant_sub_components_configurations/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2154,7 +2162,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../architecture/rfcs/0007-policy-sync-v1/" class="md-nav__link">
+      <a href="../0007-policy-sync-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2175,7 +2183,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../architecture/rfcs/0008-kuadrant-release-process/" class="md-nav__link">
+      <a href="../0008-kuadrant-release-process/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2196,7 +2204,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../architecture/rfcs/0009-defaults-and-overrides/" class="md-nav__link">
+      <a href="../0009-defaults-and-overrides/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2217,7 +2225,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../architecture/rfcs/0010-gateway-api-metrics-exporter/" class="md-nav__link">
+      <a href="../0010-gateway-api-metrics-exporter/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2235,10 +2243,19 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../../architecture/rfcs/0011-policy-machinery/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -2247,6 +2264,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -2344,7 +2362,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2365,7 +2383,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/development/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/development/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2386,7 +2404,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrant-operator/doc/logging/" class="md-nav__link">
+      <a href="../../../kuadrant-operator/doc/logging/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2450,7 +2468,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/" class="md-nav__link">
+      <a href="../../../authorino/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2471,7 +2489,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino-operator/" class="md-nav__link">
+      <a href="../../../authorino-operator/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2492,7 +2510,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/getting-started/" class="md-nav__link">
+      <a href="../../../authorino/docs/getting-started/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2513,7 +2531,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/hello-world/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/hello-world/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2534,7 +2552,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/architecture/" class="md-nav__link">
+      <a href="../../../authorino/docs/architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2555,7 +2573,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/features/" class="md-nav__link">
+      <a href="../../../authorino/docs/features/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2611,7 +2629,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/host-override/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/host-override/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2632,7 +2650,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/user-guides/sharding/" class="md-nav__link">
+      <a href="../../../authorino/docs/user-guides/sharding/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2661,7 +2679,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../authorino/docs/contributing/" class="md-nav__link">
+      <a href="../../../authorino/docs/contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2725,7 +2743,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../" class="md-nav__link">
+      <a href="../../../limitador/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2746,7 +2764,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../doc/how-it-works/" class="md-nav__link">
+      <a href="../../../limitador/doc/how-it-works/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2767,7 +2785,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../doc/topologies/" class="md-nav__link">
+      <a href="../../../limitador/doc/topologies/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2823,7 +2841,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../" class="md-nav__link">
+      <a href="../../../limitador/limitador-server/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2844,7 +2862,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../kubernetes/" class="md-nav__link">
+      <a href="../../../limitador/limitador-server/kubernetes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2865,7 +2883,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../../limitador/limitador-server/sandbox/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2894,7 +2912,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../limitador/" class="md-nav__link">
+      <a href="../../../limitador/limitador/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2950,7 +2968,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../limitador-operator/" class="md-nav__link">
+      <a href="../../../limitador-operator/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2971,7 +2989,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../limitador-operator/doc/storage/" class="md-nav__link">
+      <a href="../../../limitador-operator/doc/storage/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2992,7 +3010,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../limitador-operator/doc/rate-limit-headers/" class="md-nav__link">
+      <a href="../../../limitador-operator/doc/rate-limit-headers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3013,7 +3031,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../limitador-operator/doc/development/" class="md-nav__link">
+      <a href="../../../limitador-operator/doc/development/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3034,7 +3052,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../limitador-operator/doc/logging/" class="md-nav__link">
+      <a href="../../../limitador-operator/doc/logging/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3106,7 +3124,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrantctl/" class="md-nav__link">
+      <a href="../../../kuadrantctl/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3127,7 +3145,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrantctl/doc/generate-gateway-api-httproute/" class="md-nav__link">
+      <a href="../../../kuadrantctl/doc/generate-gateway-api-httproute/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3148,7 +3166,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrantctl/doc/generate-kuadrant-auth-policy/" class="md-nav__link">
+      <a href="../../../kuadrantctl/doc/generate-kuadrant-auth-policy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3169,7 +3187,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrantctl/doc/generate-kuadrant-rate-limit-policy/" class="md-nav__link">
+      <a href="../../../kuadrantctl/doc/generate-kuadrant-rate-limit-policy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3190,7 +3208,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrantctl/doc/kuadrantctl-ci-cd/" class="md-nav__link">
+      <a href="../../../kuadrantctl/doc/kuadrantctl-ci-cd/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3211,7 +3229,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrantctl/doc/openapi-apicurio/" class="md-nav__link">
+      <a href="../../../kuadrantctl/doc/openapi-apicurio/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3232,7 +3250,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../kuadrantctl/doc/openapi-openshift-dev-spaces/" class="md-nav__link">
+      <a href="../../../kuadrantctl/doc/openapi-openshift-dev-spaces/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3281,50 +3299,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#run-sandbox" class="md-nav__link">
-    <span class="md-ellipsis">
-      Run sandbox
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#run-some-traffic" class="md-nav__link">
-    <span class="md-ellipsis">
-      Run some traffic
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#see-the-trace-in-ui" class="md-nav__link">
-    <span class="md-ellipsis">
-      See the trace in UI
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tear-down-sandbox" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tear down sandbox
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -3338,7 +3312,7 @@
                   
 
   
-    <a href="https://github.com/kuadrant/limitador/blob/main/limitador-server/sandbox/redis-otel/README.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/kuadrant/architecture/blob/main/rfcs/0011-policy-machinery.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
     </a>
@@ -3346,42 +3320,186 @@
   
 
 
-<h1 id="limitador-instrumentation-sandbox">Limitador instrumentation sandbox<a class="headerlink" href="#limitador-instrumentation-sandbox" title="Permanent link">&para;</a></h1>
-<p>Limitador is configured to push traces to an <a href="https://opentelemetry.io/docs/collector/">opentelemetry collector</a>.</p>
-<h3 id="run-sandbox">Run sandbox<a class="headerlink" href="#run-sandbox" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>make<span class="w"> </span>build
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>make<span class="w"> </span>deploy-redis-otel
-</span></code></pre></div>
-<h3 id="run-some-traffic">Run some traffic<a class="headerlink" href="#run-some-traffic" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>grpcurl
-</span></code></pre></div>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>bin/grpcurl<span class="w"> </span>-plaintext<span class="w"> </span>-d<span class="w"> </span>@<span class="w"> </span><span class="m">127</span>.0.0.1:18081<span class="w"> </span>envoy.service.ratelimit.v3.RateLimitService.ShouldRateLimit<span class="w"> </span><span class="s">&lt;&lt;EOM</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="s">{</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="s">    &quot;domain&quot;: &quot;test_namespace&quot;,</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="s">    &quot;hits_addend&quot;: 1,</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="s">    &quot;descriptors&quot;: [</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="s">        {</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="s">            &quot;entries&quot;: [</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="s">                {</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="s">                    &quot;key&quot;: &quot;req.method&quot;,</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="s">                    &quot;value&quot;: &quot;POST&quot;</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="s">                }</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="s">            ]</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="s">        }</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="s">    ]</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="s">}</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="s">EOM</span>
-</span></code></pre></div>
-<h3 id="see-the-trace-in-ui">See the trace in UI<a class="headerlink" href="#see-the-trace-in-ui" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>firefox -private-window &quot;localhost:16686&quot;
-</span></code></pre></div>
-<p><img alt="Screenshot 2024-03-21 at 17-08-35 Jaeger UI" src="https://github.com/Kuadrant/limitador/assets/881529/585bb3bf-15e2-49ee-9ed8-423d33fe4df6" /></p>
+<h1 id="policy-machinery-for-reconciliation">Policy Machinery for reconciliation<a class="headerlink" href="#policy-machinery-for-reconciliation" title="Permanent link">&para;</a></h1>
+<ul>
+<li>Feature Name: <code>policy_machinery</code></li>
+<li>Start Date: 2024-07-03</li>
+<li>RFC PR: <a href="https://github.com/Kuadrant/architecture/pull/95">Kuadrant/architecture#95</a></li>
+<li>Issue tracking: <a href="https://github.com/Kuadrant/architecture/issues/29">Kuadrant/architecture#29</a></li>
+</ul>
+<h1 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h1>
+<p>Explain how Kuadrant's <a href="https://github.com/Kuadrant/policy-machinery">Policy Machinery</a> can be used for reconciliation.</p>
+<h1 id="motivation">Motivation<a class="headerlink" href="#motivation" title="Permanent link">&para;</a></h1>
+<p>The <em>Policy Machinery</em> project (<a href="https://github.com/Kuadrant/policy-machinery">repo</a>, <a href="https://pkg.go.dev/github.com/kuadrant/policy-machinery">pkg.go</a>) offers a set of types and functions for implementing Gateway API policies – i.e.</p>
+<ul>
+<li>highly flexible representation of topologies of targetable resources;</li>
+<li>calculating effective policies based on custom or default merge strategies;</li>
+<li>tooling to watch and reconcile resources based on cluster events.</li>
+</ul>
+<p>These can be used for tailoring implemention of Kuadrant policies and Kuadrant instances. See <a href="https://github.com/Kuadrant/policy-machinery/tree/main/examples/kuadrant">example</a> provided.</p>
+<p>Leveraging the Policy Machinery can be key to:</p>
+<ol>
+<li>Improve flow control of concurrent reconciliation events</li>
+<li>Simplification of the calculation of effective policies respectively to the topological routing path of the requests</li>
+<li>Correct implementation of Defaults &amp; Overrides' <code>merge</code> strategy (<a href="https://docs.kuadrant.io/0.8.0/architecture/rfcs/0009-defaults-and-overrides/">RFC 0009</a>)</li>
+<li>Supporting multiple policies targeting a same resource</li>
+<li>Supporting targeting sections of a resource (e.g. Gateway listeners, HTTPRouteRules)</li>
+<li>Supporting multiple targetRefs in a policy</li>
+<li>Extending policies to target other kinds of resources (e.g. GatewayClass, Service, Namespace) -– future</li>
+</ol>
+<h1 id="guide-level-explanation">Guide-level explanation<a class="headerlink" href="#guide-level-explanation" title="Permanent link">&para;</a></h1>
+<p>Although essentially an implementation detail of the Kuadrant Operator, levering the Policy Machinery may introduce the following user-perceived features:</p>
+<ul>
+<li>Acknowledgement of the topological routing path of the request respectively to applicable <em>effective policies</em></li>
+<li>New form of targeting sections of a resource with a policy</li>
+<li>Elevated meaning of uniquely identifiable concepts across policy resources (e.g. named policy rules)</li>
+<li>Possibility of multiple policies of a kind targeting a same resource</li>
+<li>(Window of opportunity for) introducing plural targetRefs</li>
+</ul>
+<h3 id="user-acknowledgeable-reference-of-the-topological-routing-path-of-the-request">User-acknowledgeable reference of the topological routing path of the request<a class="headerlink" href="#user-acknowledgeable-reference-of-the-topological-routing-path-of-the-request" title="Permanent link">&para;</a></h3>
+<p>One who specifies Kuadrant policies targeting resources at any levels of the hierarchy <em>Gateway → Listener → HTTPRoute → HTTPRouteRule</em><sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> shall expect the effect of such policies to be reported always respectively to the lowest level of the hierarchy that the kind of policy allows targeting. E.g.:</p>
+<ul>
+<li>A DNSPolicy that allows targeting a Gateway hypothetically with or without specifying a <code>sectionName</code> actually targets gateway listeners; the user wants to reason about the state of DNSPolicies regarding their effect on each listeners specified in the Gateway. In a context with 2+ DNSPolicies, simultaneously targeting both a Gateway and specific listeners, DNS records for some listener hostnames may have been reconciled according to the specification from one policy or another, occasionally no policy at all.</li>
+<li>A RateLimitPolicy that allows targeting a Gateway, a HTTPRoute or specific HTTPRouteRule actually targets (directly or indirectly) HTTPRouteRule objects; the user wants to reason about the state of all RateLimitPolicies with respect to each HTTPRouteRule, where some HTTPRouteRules may be protected by one RateLimitPolicy, a combination of multiple RateLimitPolicies, or occasionally no RateLimitPolicy at all.</li>
+</ul>
+<p>In the specific case of policy kinds that allow targeting HTTPRouteRules, due to complex network topologies supported by Gateway API, including in particular HTTPRoutes with multiple Gateway parents, a same HTTPRouteRule may or may not be affected by a policy, depending on which routing path in the network topology a request flows. Therefore, ultimately <em>users will reason about policies and effective policies in terms of the paths between at least gateways and the lowest levels targeted by the policies that a request can flow.</em> Possibly, in terms of all possible paths between Gateways and Services.</p>
+<p>Kuadrant shall provide users with such visibility. Leveraging Policy Machinery is an implementation detail that nonetheless makes achieving this goal easier.</p>
+<h3 id="user-facing-changes-to-the-policy-apis">User-facing changes to the policy APIs<a class="headerlink" href="#user-facing-changes-to-the-policy-apis" title="Permanent link">&para;</a></h3>
+<h4 id="targeting-sections-of-network-resource">Targeting sections of network resource<a class="headerlink" href="#targeting-sections-of-network-resource" title="Permanent link">&para;</a></h4>
+<p>Leveraging Policy Machinery may also motivate some user-facing changes. In particular, replacing AuthPolicy's and RateLimitPolicy's <code>routeSelectors</code> for a <code>targetRef</code> with optional <code>sectionName</code> (made possible since <a href="https://github.com/kubernetes-sigs/gateway-api/pull/2985">kubernetes-sigs/gateway-api#2895</a>.)</p>
+<p>This change would cause a policy of AuthPolicy or RateLimitPolicy kind to always be attached to its targets <em>entirely</em>, i.e. without having rules that attach to some sections and other rules to other sections or no section at all. This differs from current situation where a policy of those kinds can be attached to a HTTPRoute and some of the policy's rules more specifically attached to individual HTTPRouteRules only, including with multiple policy rules attached to different HTTPRouteRules of the same targeted HTTPRoute. Instead, attaching a policy must be a cohesive, unambiguous operation, that occasionally requires users to specify more fine-grained policy objects to be attached only to sections of a resource.</p>
+<h4 id="identity-of-concepts-across-multiple-policy-objects">Identity of concepts across multiple policy objects<a class="headerlink" href="#identity-of-concepts-across-multiple-policy-objects" title="Permanent link">&para;</a></h4>
+<p>In some cases, splitting policy objects for the purpose of targeting sections of a network resource, without breaking the semantics of having a single set of policy objects cohesively defined, also implies that definitions about a same entity or concept within a policy (e.g. a limit definition), repeated at multiple policy objects, may have a way to represent to refer to the same thing (e.g. same set of counters).</p>
+<p>This is the case, for example, of limit definitions in a RateLimitPolicy as well as cache configs in an AuthPolicy. To avoid creating multiple rate-limit counter namespaces (analogously, multiple authorization rule cache entries) for definitions that are effectively about the same entity, despite specified at multiple policy objects, the APIs must provide a way for users to convey one of the other intent: definitions refer to the same thing versus definitions refer to different things.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></p>
+<h4 id="other-user-facing-changes">Other user-facing changes<a class="headerlink" href="#other-user-facing-changes" title="Permanent link">&para;</a></h4>
+<p>The following possible (non-required) other user-facing changes can be enabled leveraging Policy Machinery, without marginal implementation cost:</p>
+<ol>
+<li>Plural <code>targetRefs</code>.</li>
+<li>Multiple policies of a kind targeting a same network resource/resource section ("horizontal Defaults &amp; Overrides.")</li>
+<li>Aesthetical difference between <a href="https://gateway-api.sigs.k8s.io/geps/gep-2648/">Direct</a> versus <a href="https://gateway-api.sigs.k8s.io/geps/gep-2649/">Inherited</a> policies, implied by the merge strategies implemented by each kind of policy, rather than a necessary distinction.</li>
+</ol>
+<h1 id="reference-level-explanation">Reference-level explanation<a class="headerlink" href="#reference-level-explanation" title="Permanent link">&para;</a></h1>
+<p>Usage of the <a href="https://github.com/Kuadrant/policy-machinery">Policy Machinery</a> consists of importing two packages:</p>
+<ul>
+<li><a href="https://github.com/Kuadrant/policy-machinery/tree/main/machinery"><code>machinery</code></a>: provides the types and abstractions to build Gateway API topologies of targetable network resources, policies and adjacent objects;</li>
+<li><a href="https://github.com/Kuadrant/policy-machinery/tree/main/controller"><code>controller</code></a>: offers tools for implementing topology-based custom controllers of reconciliation logic.</li>
+</ul>
+<p>From that on, the following steps drive leveraging the Policy Machinery in the Kuadrant Operator:</p>
+<ol>
+<li>
+<p>Implement the <a href="https://github.com/Kuadrant/policy-machinery/blob/e963418c9566a5e61acdd766c6109d3f0c147222/machinery/types.go#L47"><code>machinery.Policy</code></a> interface for all kinds of policies.</p>
 <blockquote>
-<p>Recommended to start looking at <code>check_and_update</code> operation.</p>
+<p><a href="https://github.com/Kuadrant/policy-machinery/tree/main/examples/kuadrant/apis">Example provided</a> for the DNSPolicy, TLSPolicy, AuthPolicy and RateLimitPolicy kinds.</p>
 </blockquote>
-<h3 id="tear-down-sandbox">Tear down sandbox<a class="headerlink" href="#tear-down-sandbox" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>make<span class="w"> </span>clean
-</span></code></pre></div>
+</li>
+<li>
+<p>Define wrappers that implement the <a href="https://github.com/Kuadrant/policy-machinery/blob/e963418c9566a5e61acdd766c6109d3f0c147222/machinery/types.go#L13"><code>machinery.Object</code></a> interface for any kind of adjacent object whose unique identifier as a node in the topology graph cannot be based on the default <a href="https://github.com/Kuadrant/policy-machinery/blob/e963418c9566a5e61acdd766c6109d3f0c147222/controller/object.go#L17"><code>controller.RuntimeObject</code></a> type provided (if any.)</p>
+</li>
+<li>
+<p>Implement the linking functions for all kinds of adjacent objects and corresponding parents and children in the topology graph, including types such as <code>Kuadrant</code>, Istio's <code>WasmPlugin</code>, <code>ConfigMap</code>, etc.</p>
+<blockquote>
+<p>The <code>Kuadrant</code> custom resources shall be the roots of a directed acyclic graph (DAG) from which an entired topology of targetable network resources, adjacent objects and policies are connected.</p>
+</blockquote>
+</li>
+<li>
+<p>Start a <a href="https://github.com/Kuadrant/policy-machinery/blob/e963418c9566a5e61acdd766c6109d3f0c147222/controller/controller.go#L130"><code>controller.Controller</code></a> that:</p>
+<ol>
+<li>Watches for all kinds of objects to be represented in the topology.</li>
+<li>Triggers a <a href="https://github.com/Kuadrant/policy-machinery/blob/e963418c9566a5e61acdd766c6109d3f0c147222/controller/workflow.go#L12"><code>controller.Workflow</code></a> on events related to any of the watched resources.</li>
+</ol>
+</li>
+<li>
+<p>At every reconciliation event<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup>:</p>
+<ol>
+<li>
+<p>Reconcile the internal objects for setting up the environment for a Kuadrant instance (deployments, gateway controller configs, etc).</p>
+</li>
+<li>
+<p>For each kind of policy and applicable path in the topology graph relevant for the policy kind:</p>
+</li>
+<li>
+<p>Compute an effective policy and give it a unique identifier.</p>
+</li>
+<li>Perform (or delegate) the policy-specific configuration (DNS, TLS, Auth, RL) of the effective policy with the policy decision/enforcement point<sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup>.</li>
+<li>For policy kinds enforced at request time (data-plane policies), configure the gateway to call the policy decision point (PDP) on requests that match the attributes of the path<sup id="fnref:5"><a class="footnote-ref" href="#fn:5">5</a></sup>, passing in the payload to the PDP the identifier of the effective policy.</li>
+<li>
+<p>Update the status stanzas of all targetables in the topology whose paths were configured for an effective policy (or lack of such), with a map that allows users to inspect, for a given path, what effective policy (if any) will be enforced.
+       &gt; <strong>Note:</strong> If unsuitable for the status stanza of the object, the details of the effective policies may require additional tooling to be inspected by the users and the mapping must be to the unique identifier of the effective policy.</p>
+</li>
+<li>
+<p>Store a DOT representation of the topology graph in a ConfigMap.</p>
+</li>
+</ol>
+</li>
+</ol>
+<h1 id="drawbacks">Drawbacks<a class="headerlink" href="#drawbacks" title="Permanent link">&para;</a></h1>
+<p>Part of the work consists on refactoring, without value perceived by the user.</p>
+<h1 id="rationale-and-alternatives">Rationale and alternatives<a class="headerlink" href="#rationale-and-alternatives" title="Permanent link">&para;</a></h1>
+<h4 id="annotations">Annotations<a class="headerlink" href="#annotations" title="Permanent link">&para;</a></h4>
+<p>Use of annnotations to track back references from targeted objects to policies. This approach has been slowly deprecated to favour the use of an in-memory directed acyclic graph (DAG) representing the relationship between network objects and policies<sup id="fnref:6"><a class="footnote-ref" href="#fn:6">6</a></sup>.</p>
+<h4 id="bottom-up-reconciliation">Bottom-up reconciliation<a class="headerlink" href="#bottom-up-reconciliation" title="Permanent link">&para;</a></h4>
+<p>Bottom-up reconciliation by default, focusing on the policy resources first. This approach has been slowly refactored to using mappers (<a href="https://pkg.go.dev/sigs.k8s.io/controller-runtime/pkg/handler">event handlers</a>) that often multiply a lower-level event into multiple top-down ones, occasionally with the occurrence of repetitive events.</p>
+<h4 id="dag-10">DAG 1.0<a class="headerlink" href="#dag-10" title="Permanent link">&para;</a></h4>
+<p>Preliminary version of the topology DAG<sup id="fnref2:6"><a class="footnote-ref" href="#fn:6">6</a></sup> that:</p>
+<ol>
+<li>is bootstrapped at every reconciliation event (though leveraging <a href="https://pkg.go.dev/k8s.io/apimachinery">k8s.io/apimachinery</a>'s and <a href="https://pkg.go.dev/sigs.k8s.io/controller-runtime">sigs.k8s.io/controller-runtime</a>'s caches);</li>
+<li>does not include all kinds of targetables – missing object sections in particular;</li>
+<li>does not include internal configuration objects;</li>
+<li>was designed for one single kind of policy in each instance of the topology.</li>
+</ol>
+<h4 id="effective-policy-less-reconciliation">Effective policy-less reconciliation<a class="headerlink" href="#effective-policy-less-reconciliation" title="Permanent link">&para;</a></h4>
+<p>Configuration of internal resources for implementing effective policy behavior:</p>
+<ol>
+<li>tailored for each specific kind of policy, without leveraging generic and resusable merge strategy functions;</li>
+<li>not organically integrated with the topology DAG;</li>
+<li>decoupled from the rather user-acknowledgeable reference of the topological routing path of the request.</li>
+</ol>
+<h1 id="prior-art">Prior art<a class="headerlink" href="#prior-art" title="Permanent link">&para;</a></h1>
+<h4 id="envoy-gateway-state-of-the-world-reconciliation">Envoy Gateway state-of-the-world reconciliation<a class="headerlink" href="#envoy-gateway-state-of-the-world-reconciliation" title="Permanent link">&para;</a></h4>
+<p>Envoy Gateway has implemented a custom controller for Gateway API and provider-specific resources with the following characteristics similar to the Policy Machinery <code>controller</code> package's approach:</p>
+<ol>
+<li>Based on <a href="https://pkg.go.dev/sigs.k8s.io/controller-runtime">controller-runtime</a></li>
+<li>Single <code>Reconcile</code> function that:<ol>
+<li>lists all watched resources from the cluster at every reconciliation event;</li>
+<li>rebuilds and updates a long-living <a href="https://github.com/telepresenceio/watchable">watchable</a> map of all the resources;</li>
+<li>trigger reconciliation logic subscribed to changes to the map – <code>goroutines</code> decoupled from controller-runtime.</li>
+</ol>
+</li>
+</ol>
+<h1 id="unresolved-questions">Unresolved questions<a class="headerlink" href="#unresolved-questions" title="Permanent link">&para;</a></h1>
+<ul>
+<li>The <a href="https://gateway-api.sigs.k8s.io/geps/gep-713/#fanout-status-update-problems">fanout problem</a>, especially of status reconciliation.</li>
+<li>~~How to avoid changes performed by the reconciliation function to loop back in the form of multiple other (no-op) reconciliation events.~~ ⇨ issue state-modifying actions against the API server directly and safe-guard against create/update/delete events for states already reflected in the topology</li>
+<li>~~How to compact multiple equifinal reconciliation events waiting in the queue into a single one, thus avoiding unnecessary loops.~~ ⇨ rely on controller-runtime event coalescing</li>
+<li>~~What to do in case of reconciliation failures without retry~~ ⇨ always move the system to a final state, with proper status updating, and wait until state-of-the-world reconciliation kicks in again on the next event</li>
+</ul>
+<h1 id="future-possibilities">Future possibilities<a class="headerlink" href="#future-possibilities" title="Permanent link">&para;</a></h1>
+<ul>
+<li>Extending policies to target other kinds of resources (e.g. GatewayClass, Service, Namespace.)</li>
+</ul>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Gateway listeners and HTTPRouteRules can be targeted by specifying in a policy their main Gateway and HTTPRoute objects as targets, in combination with either a <code>sectionName</code> (supported in the <code>targetRef</code> field of the policy) or via <code>routeSelectors</code> (in the policy spec proper), respectively. Not all kinds of policies support targeting all 4 kinds of targetables of the <em>Gateway → Listener → HTTPRoute → HTTPRouteRule</em> hierarchy; some kinds of policies may support targeting only a few of those.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>In the context of rate-limit, this problem is also referred to as the problem of the <em>identity of a limit</em>.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>Specific steps can be filtered by type of event.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:4">
+<p>While the DNS operator as well as the configuration performed by the Kuadrant Operator for a TLSPolicy are closer to the <em>enforcement</em> of the specifications in the DNS and TLS policy objects, Authorino and Limitador are policy <em>decision</em> points (PDP) rather. Indistinctively, control-plane operations that configure a service based on the specification of a policy, as well as the data-plane protection services that perform at request-time along with the gateways are all part of the policy enforcement.&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:5">
+<p>The attributes of a path in the topology from a Gateway to a HTTPRouteRule object typically include a hostname and the set of HTTPRouteMatches specified in the HTTPRouteRule.&#160;<a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:6">
+<p>See <a href="https://github.com/Kuadrant/kuadrant-operator/issues/530">kuadrant-operator#530</a>.&#160;<a class="footnote-backref" href="#fnref:6" title="Jump back to footnote 6 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:6" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
@@ -3413,7 +3531,7 @@
 
   <div class="sponsored-by">
     <p>
-      <a href="https://www.cncf.io/sandbox-projects/"><img src="../../../../assets/images/cncf-color.png" class="logo" alt="CNCF logo"></a>
+      <a href="https://www.cncf.io/sandbox-projects/"><img src="../../../assets/images/cncf-color.png" class="logo" alt="CNCF logo"></a>
     </p>
     <p>
       We are a Cloud Native Computing Foundation sandbox project.
@@ -3427,10 +3545,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.8.0", "latest"], "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.8.0", "latest"], "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.bd41221c.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.bd41221c.min.js"></script>
       
     
   </body>
