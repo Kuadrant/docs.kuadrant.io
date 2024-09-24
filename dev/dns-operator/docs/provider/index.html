@@ -1079,6 +1079,24 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#azure-cloud-dns-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure Cloud DNS Provider
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azure-cloud-dns-access-permissions-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure Cloud DNS Access permissions required
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3451,6 +3469,24 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#azure-cloud-dns-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure Cloud DNS Provider
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azure-cloud-dns-access-permissions-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure Cloud DNS Access permissions required
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3530,13 +3566,58 @@
 <h4 id="aws-iam-permissions-required">AWS IAM Permissions Required<a class="headerlink" href="#aws-iam-permissions-required" title="Permanent link">&para;</a></h4>
 <p>We have tested using the available policy <code>AmazonRoute53FullAccess</code> however it should also be possible to restrict the credential down to a particular zone. More info can be found in the AWS docs:</p>
 <p><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/access-control-managing-permissions.html">https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/access-control-managing-permissions.html</a></p>
+<p>By default, Kuadrant will list the available zones and find the matching zone based on the listener host in the gateway listener. If it finds more than one matching zone for a given listener host, it will not update any of those zones. 
+When providing a credential you should limit that credential down to just have write access to the zones you want Kuadrant to manage. Below is an example of a an AWS policy for doing this type of thing:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>{
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    &quot;Version&quot;: &quot;2012-10-17&quot;,
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    &quot;Statement&quot;: [
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>        {
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>            &quot;Sid&quot;: &quot;VisualEditor0&quot;,
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>            &quot;Effect&quot;: &quot;Allow&quot;,
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>            &quot;Action&quot;: [
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>                &quot;route53:ListTagsForResources&quot;,
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>                &quot;route53:GetHealthCheckLastFailureReason&quot;,
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>                &quot;route53:GetHealthCheckStatus&quot;,
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>                &quot;route53:GetChange&quot;,
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>                &quot;route53:GetHostedZone&quot;,
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>                &quot;route53:ChangeResourceRecordSets&quot;,
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>                &quot;route53:ListResourceRecordSets&quot;,
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>                &quot;route53:GetHealthCheck&quot;,
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>                &quot;route53:UpdateHostedZoneComment&quot;,
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>                &quot;route53:UpdateHealthCheck&quot;,
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>                &quot;route53:CreateHealthCheck&quot;,
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>                &quot;route53:DeleteHealthCheck&quot;,
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>                &quot;route53:ListTagsForResource&quot;,
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>                &quot;route53:ListHealthChecks&quot;,
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>                &quot;route53:GetGeoLocation&quot;,
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>                &quot;route53:ListGeoLocations&quot;,
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>                &quot;route53:ListHostedZonesByName&quot;,
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>                &quot;route53:GetHealthCheckCount&quot;
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>            ],
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>            &quot;Resource&quot;: [
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>                &quot;arn:aws:route53:::hostedzone/Z08187901Y93585DDGM6K&quot;,
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>                &quot;arn:aws:route53:::healthcheck/*&quot;,
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>                &quot;arn:aws:route53:::change/*&quot;
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>            ]
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>        },
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>        {
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>            &quot;Sid&quot;: &quot;VisualEditor1&quot;,
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>            &quot;Effect&quot;: &quot;Allow&quot;,
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>            &quot;Action&quot;: [
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>                &quot;route53:ListHostedZones&quot;
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>            ],
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>            &quot;Resource&quot;: &quot;*&quot;
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>        }
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>    ]
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>}
+</span></code></pre></div>
 <h3 id="google-cloud-dns-provider">Google Cloud DNS Provider<a class="headerlink" href="#google-cloud-dns-provider" title="Permanent link">&para;</a></h3>
 <p>Kuadant expects a secret with a credential. Below is an example for Google DNS. It is important to set the secret type to <code>gcp</code>:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-test-gcp-credentials<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>--namespace<span class="o">=</span>kuadrant-dns-system<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span>--type<span class="o">=</span>kuadrant.io/gcp<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">PROJECT_ID</span><span class="o">=</span>xxx<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span>--from-file<span class="o">=</span><span class="nv">GOOGLE</span><span class="o">=</span><span class="nv">$HOME</span>/.config/gcloud/application_default_credentials.json
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-test-gcp-credentials<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>--namespace<span class="o">=</span>kuadrant-dns-system<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>--type<span class="o">=</span>kuadrant.io/gcp<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">PROJECT_ID</span><span class="o">=</span>xxx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span>--from-file<span class="o">=</span><span class="nv">GOOGLE</span><span class="o">=</span><span class="nv">$HOME</span>/.config/gcloud/application_default_credentials.json
 </span></code></pre></div>
 <table>
 <thead>
@@ -3560,8 +3641,50 @@
 </tbody>
 </table>
 <h4 id="google-cloud-dns-access-permissions-required">Google Cloud DNS Access permissions required<a class="headerlink" href="#google-cloud-dns-access-permissions-required" title="Permanent link">&para;</a></h4>
-<p>See: </p>
+<p>We have tested with the <code>dns.admin</code> role. See for more details:</p>
 <p><a href="https://cloud.google.com/dns/docs/access-control#dns.admin">https://cloud.google.com/dns/docs/access-control#dns.admin</a></p>
+<h4 id="azure-cloud-dns-provider">Azure Cloud DNS Provider<a class="headerlink" href="#azure-cloud-dns-provider" title="Permanent link">&para;</a></h4>
+<p>Kuadrant expects a <code>Secret</code> with a credential. Below is an example for Azure. It is important to set the secret type to <code>azure</code>:</p>
+<p>We recommend creating a new service principal for managing DNS. <a href="https://learn.microsoft.com/en-us/entra/identity-platform/app-objects-and-service-principals?tabs=browser#service-principal-object">Azure Service Principal Docs</a></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a># Create the service principal
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>$ DNS_NEW_SP_NAME=kuadrantDnsPrincipal
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>$ DNS_SP=$(az ad sp create-for-rbac --name $DNS_NEW_SP_NAME)
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>$ DNS_SP_APP_ID=$(echo $DNS_SP | jq -r &#39;.appId&#39;)
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>$ DNS_SP_PASSWORD=$(echo $DNS_SP | jq -r &#39;.password&#39;)
+</span></code></pre></div>
+<h4 id="azure-cloud-dns-access-permissions-required">Azure Cloud DNS Access permissions required<a class="headerlink" href="#azure-cloud-dns-access-permissions-required" title="Permanent link">&para;</a></h4>
+<p>You will need to grant read and contributor access to the zone(s) you want managed for the service principal you are using.</p>
+<p>1)  fetch DNS id used to grant access to the service principal</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>DNS_ID=$(az network dns zone show --name example.com \
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a> --resource-group ExampleDNSResourceGroup --query &quot;id&quot; --output tsv)
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a># get yor resource group id
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>RESOURCE_GROUP_ID=az group show --resource-group ExampleDNSResourceGroup | jq &quot;.id&quot; -r
+</span></code></pre></div>
+<h1 id="provide-reader-access-to-the-resource-group">provide reader access to the resource group<a class="headerlink" href="#provide-reader-access-to-the-resource-group" title="Permanent link">&para;</a></h1>
+<p>$ az role assignment create --role "Reader" --assignee $DNS_SP_APP_ID --scope $DNS_ID</p>
+<h1 id="provide-contributor-access-to-dns-zone-itself">provide contributor access to DNS Zone itself<a class="headerlink" href="#provide-contributor-access-to-dns-zone-itself" title="Permanent link">&para;</a></h1>
+<p>$ az role assignment create --role "Contributor" --assignee $DNS_SP_APP_ID --scope $DNS_ID</p>
+<p>As we are setting up advanced traffic rules for GEO and Weighted responses you will also need to grant traffic manager access:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>az role assignment create --role &quot;Traffic Manager Contributor&quot; --assignee $DNS_SP_APP_ID --scope $RESOURCE_GROUP_ID
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cat &lt;&lt;-EOF &gt; /local/path/to/azure.json
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>{
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  &quot;tenantId&quot;: &quot;$(az account show --query tenantId -o tsv)&quot;,
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  &quot;subscriptionId&quot;: &quot;$(az account show --query id -o tsv)&quot;,
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  &quot;resourceGroup&quot;: &quot;ExampleDNSResourceGroup&quot;,
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  &quot;aadClientId&quot;: &quot;$DNS_SP_APP_ID&quot;,
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  &quot;aadClientSecret&quot;: &quot;$DNS_SP_PASSWORD&quot;
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>}
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>EOF
+</span></code></pre></div>
+<p>Finally setup the secret with the credential azure.json file</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-test-azure-credentials<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span>--namespace<span class="o">=</span>kuadrant-dns-system<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span>--type<span class="o">=</span>kuadrant.io/azure<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span>--from-file<span class="o">=</span>azure.json<span class="o">=</span>/local/path/to/azure.json
+</span></code></pre></div>
 
 
 
@@ -3607,7 +3730,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.8.0", "latest"], "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.10.0", "latest"], "provider": "mike"}}</script>
     
     
       <script src="../../../assets/javascripts/bundle.bd41221c.min.js"></script>

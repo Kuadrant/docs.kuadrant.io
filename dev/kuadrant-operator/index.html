@@ -3733,8 +3733,10 @@ instead it will opt to connect with what’s there and what’s being developed 
 <li>From no rate-limiting to rate-limiting for global service protection on to rate-limiting by users/plans</li>
 </ul>
 <h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
-<p>Kuadrant relies on <a href="https://istio.io/">Istio</a> and the <a href="https://gateway-api.sigs.k8s.io/">Gateway API</a>
-to operate the cluster (Istio's) ingress gateway to provide API management with <strong>authentication</strong> (authN),
+<p>Kuadrant relies on the <a href="https://gateway-api.sigs.k8s.io/">Gateway API</a> and one Gateway API provider
+being installed on the cluster. Currently only <a href="https://istio.io/">Istio</a> and
+<a href="https://gateway.envoyproxy.io/">EnvoyGateway</a> are supported
+to operate the cluster ingress gateway to provide API management with <strong>authentication</strong> (authN),
 <strong>authorization</strong> (authZ) and <strong>rate limiting</strong> capabilities.</p>
 <h3 id="kuadrant-components">Kuadrant components<a class="headerlink" href="#kuadrant-components" title="Permanent link">&para;</a></h3>
 <table>
@@ -3843,11 +3845,11 @@ to operate the cluster (Istio's) ingress gateway to provide API management with 
 <h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
 <h3 id="pre-requisites">Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Istio is installed in the cluster. Otherwise, refer to the
-  <a href="https://istio.io/latest/docs/setup/getting-started/">Istio getting started guide</a>.</li>
-<li>Kubernetes Gateway API is installed in the cluster. Otherwise,
-  <a href="https://istio.io/latest/docs/tasks/traffic-management/ingress/gateway-api/">configure Istio to expose a service using the Kubernetes Gateway API</a>.</li>
-<li>cert-manager is installed in the cluster. Otherwise, refer to the 
+<li>Istio or Envoy Gateway is installed in the cluster. Otherwise, refer to the
+  <a href="https://istio.io/latest/docs/setup/getting-started/">Istio getting started guide</a>
+  or <a href="https://gateway.envoyproxy.io/docs/">EnvoyGateway getting started guide</a>.</li>
+<li>Kubernetes Gateway API is installed in the cluster.</li>
+<li>cert-manager is installed in the cluster. Otherwise, refer to the
   <a href="https://cert-manager.io/docs/installation/">cert-manager installation guide</a>.</li>
 </ul>
 <h3 id="installing-kuadrant">Installing Kuadrant<a class="headerlink" href="#installing-kuadrant" title="Permanent link">&para;</a></h3>
@@ -3896,7 +3898,7 @@ Just follow installation steps choosing the "Kuadrant Operator" from the catalog
 </ul>
 <h4 id="if-you-are-a-cluster-operator">If you are a <em>Cluster Operator</em><a class="headerlink" href="#if-you-are-a-cluster-operator" title="Permanent link">&para;</a></h4>
 <ul>
-<li>(Optionally) deploy istio ingress gateway using the
+<li>(Optionally) deploy ingress gateway using the
   <a href="https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.Gateway">Gateway</a> resource.</li>
 <li>Write and apply the Kuadrant's <a href="doc/rate-limiting/">RateLimitPolicy</a> and/or
   <a href="doc/auth/">AuthPolicy</a> custom resources targeting the Gateway resource
@@ -3967,7 +3969,7 @@ for live discussions about the roadmap and more.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.code.copy"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.8.0", "latest"], "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.code.copy"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.10.0", "latest"], "provider": "mike"}}</script>
     
     
       <script src="../assets/javascripts/bundle.bd41221c.min.js"></script>

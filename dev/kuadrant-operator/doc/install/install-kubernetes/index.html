@@ -477,9 +477,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#install-istio-as-a-gateway-api-provider" class="md-nav__link">
+  <a href="#optional-install-istio-as-a-gateway-api-provider" class="md-nav__link">
     <span class="md-ellipsis">
-      Install Istio as a Gateway API provider
+      (Optional) Install Istio as a Gateway API provider
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-install-envoy-gateway-as-a-gateway-api-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      (Optional) Install Envoy Gateway as a Gateway API provider
     </span>
   </a>
   
@@ -3467,9 +3476,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#install-istio-as-a-gateway-api-provider" class="md-nav__link">
+  <a href="#optional-install-istio-as-a-gateway-api-provider" class="md-nav__link">
     <span class="md-ellipsis">
-      Install Istio as a Gateway API provider
+      (Optional) Install Istio as a Gateway API provider
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-install-envoy-gateway-as-a-gateway-api-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      (Optional) Install Envoy Gateway as a Gateway API provider
     </span>
   </a>
   
@@ -3571,7 +3589,11 @@
 </div>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>-sL<span class="w"> </span>https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.28.0/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash<span class="w"> </span>-s<span class="w"> </span>v0.28.0
 </span></code></pre></div>
-<h3 id="install-istio-as-a-gateway-api-provider">Install Istio as a Gateway API provider<a class="headerlink" href="#install-istio-as-a-gateway-api-provider" title="Permanent link">&para;</a></h3>
+<h3 id="optional-install-istio-as-a-gateway-api-provider">(Optional) Install Istio as a Gateway API provider<a class="headerlink" href="#optional-install-istio-as-a-gateway-api-provider" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Skip this step if planing to use <a href="https://gateway.envoyproxy.io/">Envoy Gateway</a> as Gateway API provider</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>There are several ways to install Istio (via <code>istioctl</code>, Helm chart or Operator) - this is just an example for starting from a bare Kubernetes cluster.</p>
@@ -3581,35 +3603,56 @@
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>./istio-1.21.4/bin/istioctl<span class="w"> </span>operator<span class="w"> </span>init
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/Kuadrant/kuadrant-operator/main/config/dependencies/istio/istio-operator.yaml
 </span></code></pre></div>
+<h3 id="optional-install-envoy-gateway-as-a-gateway-api-provider">(Optional) Install Envoy Gateway as a Gateway API provider<a class="headerlink" href="#optional-install-envoy-gateway-as-a-gateway-api-provider" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Skip this step if planing to use <a href="https://istio.io/">Istio</a> as Gateway API provider</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are several ways to install Envoy Gateway (via <code>egctl</code>, Helm chart or Kubernetes yaml) - this is just an example for starting from a bare Kubernetes cluster.</p>
+</div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>helm<span class="w"> </span>install<span class="w"> </span>eg<span class="w"> </span>oci://docker.io/envoyproxy/gateway-helm<span class="w"> </span>--version<span class="w"> </span>v1.1.0<span class="w"> </span>-n<span class="w"> </span>envoy-gateway-system<span class="w"> </span>--create-namespace
+</span></code></pre></div>
+<p>Kuadrant relies on the Envoy Gateway patch policy feature to function correctly - enable the <em>EnvoyPatchPolicy</em> feature like so:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nv">TMP</span><span class="o">=</span><span class="k">$(</span>mktemp<span class="w"> </span>-d<span class="k">)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>configmap<span class="w"> </span>-n<span class="w"> </span>envoy-gateway-system<span class="w"> </span>envoy-gateway-config<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.envoy-gateway\.yaml}&#39;</span><span class="w"> </span>&gt;<span class="w"> </span><span class="si">${</span><span class="nv">TMP</span><span class="si">}</span>/envoy-gateway.yaml
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>yq<span class="w"> </span>e<span class="w"> </span><span class="s1">&#39;.extensionApis.enableEnvoyPatchPolicy = true&#39;</span><span class="w"> </span>-i<span class="w"> </span><span class="si">${</span><span class="nv">TMP</span><span class="si">}</span>/envoy-gateway.yaml
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>kubectl<span class="w"> </span>create<span class="w"> </span>configmap<span class="w"> </span>-n<span class="w"> </span>envoy-gateway-system<span class="w"> </span>envoy-gateway-config<span class="w"> </span>--from-file<span class="o">=</span>envoy-gateway.yaml<span class="o">=</span><span class="si">${</span><span class="nv">TMP</span><span class="si">}</span>/envoy-gateway.yaml<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span>--dry-run<span class="o">=</span>client<span class="w"> </span><span class="p">|</span><span class="w"> </span>kubectl<span class="w"> </span>replace<span class="w"> </span>-f<span class="w"> </span>-
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span>restart<span class="w"> </span>deployment<span class="w"> </span>envoy-gateway<span class="w"> </span>-n<span class="w"> </span>envoy-gateway-system
+</span></code></pre></div>
+<p>Wait for Envoy Gateway to become available:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>--timeout<span class="o">=</span>5m<span class="w"> </span>-n<span class="w"> </span>envoy-gateway-system<span class="w"> </span>deployment/envoy-gateway<span class="w"> </span>--for<span class="o">=</span><span class="nv">condition</span><span class="o">=</span>Available
+</span></code></pre></div>
 <h3 id="install-kuadrant">Install Kuadrant<a class="headerlink" href="#install-kuadrant" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>https://operatorhub.io/install/kuadrant-operator.yaml
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>crd<span class="w"> </span>--watch<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-m<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="s2">&quot;kuadrants.kuadrant.io&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>https://operatorhub.io/install/kuadrant-operator.yaml
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>crd<span class="w"> </span>--watch<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-m<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="s2">&quot;kuadrants.kuadrant.io&quot;</span>
 </span></code></pre></div>
 <h3 id="request-a-kuadrant-instance">Request a Kuadrant instance<a class="headerlink" href="#request-a-kuadrant-instance" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span>kuadrant-system
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="s">apiVersion: kuadrant.io/v1beta1</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="s">kind: Kuadrant</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="s">metadata:</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="s">  name: kuadrant</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="s">spec: {}</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="s">EOF</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span>kuadrant-system
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="s">apiVersion: kuadrant.io/v1beta1</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="s">kind: Kuadrant</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="s">metadata:</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="s">  name: kuadrant</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="s">spec: {}</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <p>Kuadrant should now install. You can check the operator's install status with:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>--for<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.state}&#39;</span><span class="o">=</span>AtLatestKnown<span class="w"> </span>subscription/my-kuadrant-operator<span class="w"> </span>-n<span class="w"> </span>operators<span class="w"> </span>--timeout<span class="o">=</span>600s
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>--for<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.state}&#39;</span><span class="o">=</span>AtLatestKnown<span class="w"> </span>subscription/my-kuadrant-operator<span class="w"> </span>-n<span class="w"> </span>operators<span class="w"> </span>--timeout<span class="o">=</span>600s
 </span></code></pre></div>
 <p>Kuadrant is now ready to use.</p>
 <h3 id="optional-dnspolicy-setup">(Optional) <code>DNSPolicy</code> setup<a class="headerlink" href="#optional-dnspolicy-setup" title="Permanent link">&para;</a></h3>
 <p>If you plan to use <code>DNSPolicy</code>, you will need an AWS Account with access to Route 53 (more providers coming soon), and a hosted zone.</p>
 <p>Export the following environment variables for setup:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>xxxxxxx<span class="w"> </span><span class="c1"># Key ID from AWS with Route 53 access</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>xxxxxxx<span class="w"> </span><span class="c1"># Access key from AWS with Route 53 access</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>xxxxxxx<span class="w"> </span><span class="c1"># Key ID from AWS with Route 53 access</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>xxxxxxx<span class="w"> </span><span class="c1"># Access key from AWS with Route 53 access</span>
 </span></code></pre></div>
 <p>Create an AWS credentials secret:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>aws-credentials<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span>--type<span class="o">=</span>kuadrant.io/aws<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span><span class="nv">$AWS_ACCESS_KEY_ID</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span><span class="nv">$AWS_SECRET_ACCESS_KEY</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>aws-credentials<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span>--type<span class="o">=</span>kuadrant.io/aws<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span><span class="nv">$AWS_ACCESS_KEY_ID</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span><span class="nv">$AWS_SECRET_ACCESS_KEY</span>
 </span></code></pre></div>
 <h3 id="optional-multi-cluster-ratelimitpolicy">(Optional) Multi-cluster <code>RateLimitPolicy</code><a class="headerlink" href="#optional-multi-cluster-ratelimitpolicy" title="Permanent link">&para;</a></h3>
 <p>To enable <code>RateLimitPolicy</code> to use shared, multi-cluster counters for Kuadrant's Limitador component, you need to configure Kuadrant with a Redis cluster URL. Redis URIs can be either <code>redis://</code> for standard connections or <code>rediss://</code> for secure connections.</p>
@@ -3620,29 +3663,29 @@
 </li>
 <li>
 <p>Execute the following commands:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Replace this with an accessible Redis cluster URL</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">REDIS_URL</span><span class="o">=</span>redis://user:xxxxxx@some-redis.com:6379
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>redis-config<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">URL</span><span class="o">=</span><span class="nv">$REDIS_URL</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Replace this with an accessible Redis cluster URL</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">REDIS_URL</span><span class="o">=</span>redis://user:xxxxxx@some-redis.com:6379
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>redis-config<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">URL</span><span class="o">=</span><span class="nv">$REDIS_URL</span>
 </span></code></pre></div>
 </li>
 </ol>
 <p>This will create a secret named <code>redis-config</code> in the <code>kuadrant-system</code> namespace containing your Redis cluster URL, which Kuadrant will use for multi-cluster rate limiting.</p>
 <p>You'll also need to update your earlier created <code>Kuadrant</code> instance to reconfigure Kuadrant to use Redis:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="s">apiVersion: kuadrant.io/v1beta1</span>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="s">kind: Kuadrant</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="s">metadata:</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="s">  name: kuadrant</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="s">  namespace: kuadrant-system</span>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="s">spec:</span>
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="s">  limitador:</span>
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="s">    storage:</span>
-</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="s">      redis-cached:</span>
-</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="s">        configSecretRef:</span>
-</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="s">          name: redis-config </span>
-</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="s">EOF</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="s">apiVersion: kuadrant.io/v1beta1</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="s">kind: Kuadrant</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="s">metadata:</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="s">  name: kuadrant</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="s">  namespace: kuadrant-system</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="s">spec:</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="s">  limitador:</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="s">    storage:</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="s">      redis-cached:</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="s">        configSecretRef:</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="s">          name: redis-config</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3693,7 +3736,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.8.0", "latest"], "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.10.0", "latest"], "provider": "mike"}}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.bd41221c.min.js"></script>
