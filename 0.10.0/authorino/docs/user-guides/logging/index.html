@@ -1,0 +1,4142 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://docs.kuadrant.io/0.10.0/authorino/docs/user-guides/logging/">
+      
+      
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.14">
+    
+    
+      
+        <title>Logging - Kuadrant Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.10ba22f1.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#logging" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  These docs are unstable, from our development branches (main).
+  <a href="../../../../.."> 
+    <strong>Click here to go to latest, stable docs.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="Kuadrant Documentation" class="md-header__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+      
+  <img src="../../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kuadrant Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Logging
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kuadrant/docs.kuadrant.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="Kuadrant Documentation" class="md-nav__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+      
+  <img src="../../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Kuadrant Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kuadrant/docs.kuadrant.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started-single-cluster/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Single-Cluster
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started-multi-cluster/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Multi-Cluster
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/docs/design/architectural-overview-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/install/install-kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/install/install-openshift/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenShift
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Concepts and APIs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Concepts and APIs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DNSPolicy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            DNSPolicy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/reference/dnspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/gateway-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway DNS for Cluster Operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TLSPolicy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            TLSPolicy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/reference/tlspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    AuthPolicy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            AuthPolicy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/auth/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/reference/authpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    RateLimitPolicy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            RateLimitPolicy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/reference/ratelimitpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    How-to Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            How-to Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/secure-protect-connect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Secure, connect and protect - Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/secure-protect-connect-single-multi-cluster/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Secure, connect and protect - OpenShift
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DNS configuration and load balancing
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            DNS configuration and load balancing
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/dnshealthchecks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNS Health Checks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../dns-operator/docs/provider/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNS Providers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TLS configuration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            TLS configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/gateway-tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway TLS for Cluster Operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Authentication & Authorization
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            Authentication & Authorization
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/auth-for-app-devs-and-platform-engineers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AuthPolicy for Application Developers and Platform Engineers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kubernetes-tokenreview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication with Kubernetes tokens (TokenReview API)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-key-authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication with API keys
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mtls-authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication with X.509 certificates and mTLS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oidc-jwt-authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenID Connect Discovery and authentication with JWTs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oauth2-token-introspection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0 token introspection (RFC 7662)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../passing-credentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Passing credentials (`Authorization` header, cookie headers and others)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../http-basic-authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP "Basic" Authentication (RFC 7235)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../anonymous-access/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Anonymous access
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../token-normalization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token normalization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../edge-authentication-architecture-festival-wristbands/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Edge Authentication Architecture (EAA)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../external-metadata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fetching auth metadata from external sources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oidc-user-info/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenID Connect UserInfo
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resource-level-authorization-uma/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Resource-level authorization with User-Managed Access (UMA) resource registry
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../json-pattern-matching-authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Simple pattern-matching authorization policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oidc-rbac/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenID Connect (OIDC) and Role-Based Access Control (RBAC) with Keycloak
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../opa-authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Open Policy Agent (OPA) Rego policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kubernetes-subjectaccessreview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes RBAC for service authorization (SubjectAccessReview API)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../keycloak-authorization-services/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorization with Keycloak Authorization Services
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authzed.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Integration with Authzed/SpiceDB
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../injecting-data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Injecting data in the request
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authenticated-rate-limiting-envoy-dynamic-metadata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Emitting Envoy Dynamic Metadata
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deny-with-redirect-to-login/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redirecting to a login page
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../envoy-jwt-authn-and-authorino/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reusing Envoy built-in authentication filter result
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../validating-webhook/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Setting up Kuadrant authorization service as a Validating Webhook
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_6" id="__nav_6_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Rate Limiting
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_6">
+            <span class="md-nav__icon md-icon"></span>
+            Rate Limiting
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/gateway-rl-for-cluster-operators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RateLimitPolicy for Platform Engineers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/authenticated-rl-for-app-developers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limiting for Application Developers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/authenticated-rl-with-jwt-and-k8s-authnz/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limiting with JWTs and Kubernetes RBAC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_7" id="__nav_6_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Observability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_7">
+            <span class="md-nav__icon md-icon"></span>
+            Observability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/observability/metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Metrics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/observability/examples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dashboards and Alerts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/observability/tracing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tracing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication and Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Experimental
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Experimental
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../api-quickstart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Quickstart
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Proposals
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Proposals
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_1" id="__nav_8_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Request For Comments (RFC)
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_1">
+            <span class="md-nav__icon md-icon"></span>
+            Request For Comments (RFC)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/rfcs/0001-rlp-v2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0001: RateLimitPolicy API "v2"
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/rfcs/0002-well-known-attributes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0002: Well-known Attributes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/rfcs/0003-dns-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0003: DNSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/rfcs/0004-policy-status/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0004: Policy Status
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/rfcs/0005-single-cluster-dnspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0005: Single Cluster DNSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/rfcs/0006-kuadrant_sub_components_configurations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0006: Configuration of Kuadrant Sub Components
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/rfcs/0007-policy-sync-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0007: Policy Sync
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/rfcs/0008-kuadrant-release-process/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0008: Kuadrant Release Process
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/rfcs/0009-defaults-and-overrides/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0009: Defaults & Overrides
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/rfcs/0010-gateway-api-metrics-exporter/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0010: Gateway API Metrics Exporter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/rfcs/0011-policy-machinery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 0011: Policy Machinery for reconciliation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Components
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Components
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_1" id="__nav_9_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Kuadrant Operator
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_1">
+            <span class="md-nav__icon md-icon"></span>
+            Kuadrant Operator
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/development/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/logging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Logging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_2" id="__nav_9_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Authorino
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_2">
+            <span class="md-nav__icon md-icon"></span>
+            Authorino
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../authorino-operator/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorino Operator
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hello-world/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hello World
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_2_7" id="__nav_9_2_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Advanced features
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced features
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../host-override/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Host override via context extension
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sharding/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reducing the operational space: sharding, noise and multi-tenancy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_3" id="__nav_9_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Limitador
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3">
+            <span class="md-nav__icon md-icon"></span>
+            Limitador
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../limitador/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../limitador/doc/how-it-works/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How it works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../limitador/doc/topologies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topologies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_3_4" id="__nav_9_3_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Server
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Server
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../limitador/limitador-server/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../limitador/limitador-server/kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../limitador/limitador-server/sandbox/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sandbox
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../limitador/limitador/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Crate
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_3_6" id="__nav_9_3_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Limitador Operator
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Limitador Operator
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../limitador-operator/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../limitador-operator/doc/storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../limitador-operator/doc/rate-limit-headers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rate limit headers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../limitador-operator/doc/development/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../limitador-operator/doc/logging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Logging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_4" id="__nav_9_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    kuadrantctl
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_4">
+            <span class="md-nav__icon md-icon"></span>
+            kuadrantctl
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrantctl/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrantctl/doc/generate-gateway-api-httproute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generating Gateway API HTTPRoutes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrantctl/doc/generate-kuadrant-auth-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generating Kuadrant AuthPolicies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrantctl/doc/generate-kuadrant-rate-limit-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generating Kuadrant RateLimitPolicies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrantctl/doc/kuadrantctl-ci-cd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CI/CD with kuadrantctl & Tekton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrantctl/doc/openapi-apicurio/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Apicurio Studio with Kuadrant OAS extensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrantctl/doc/openapi-openshift-dev-spaces/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using OpenShift Dev Spaces with Kuadrant OAS extensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-log-levels-and-log-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Log levels and log modes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-sensitive-data-output-to-the-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Sensitive data output to the logs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-tracing-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Tracing ID
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-typical-log-messages-table-and-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Typical log messages - table and examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Typical log messages - table and examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#booting-up-the-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Booting up the service:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reconciling-an-authconfig-and-2-related-api-key-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reconciling an AuthConfig and 2 related API key Secrets:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enforcing-authconfig-while-authenticating-with-kubernetes-authentication-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enforcing AuthConfig while authenticating with Kubernetes authentication token:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enforcing-authconfig-while-authenticating-with-api-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enforcing AuthConfig while authenticating with API key:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enforcing-authconfig-while-authenticating-with-invalid-api-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enforcing AuthConfig while authenticating with invalid API key:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deleting-authconfig-and-related-api-key-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deleting AuthConfig and related API key Secrets:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shutting-down-the-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shutting down the service:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/kuadrant/authorino/blob/main/docs/user-guides/logging.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h1>
+<p>Master Authorino log messages and learn how to trace authorization requests.</p>
+<h2 id="1-log-levels-and-log-modes">1. Log levels and log modes<a class="headerlink" href="#1-log-levels-and-log-modes" title="Permanent link">&para;</a></h2>
+<p>Authorino outputs 3 levels of log messages: (from lowest to highest level)</p>
+<ol>
+<li><code>debug</code></li>
+<li><code>info</code> (default)</li>
+<li><code>error</code></li>
+</ol>
+<p><code>info</code> logging is restricted to high-level information of the gRPC and HTTP authorization services, limiting messages to incomming request and respective outgoing response logs, with reduced details about the corresponding objects (request payload and authorization result), and without any further detailed logs of the steps in between, except for errors.</p>
+<p>Only <code>debug</code> logging will include processing details of each <a href="../../architecture/#the-auth-pipeline-aka-enforcing-protection-in-request-time">Auth Pipeline</a>, such as intermediary requests to validate identities with external auth servers, requests to external sources of auth metadata or authorization policies.</p>
+<p>To configure the desired log level, set the field <code>spec.logLevel</code> of the <a href="https://github.com/Kuadrant/authorino-operator/blob/main/config/crd/bases/operator.authorino.kuadrant.io_authorinos.yaml"><code>Authorino</code></a> CRD (<code>LOG_LEVEL</code> environment variable in the Authorino deployment), to one of the supported values listed above. Default log level is <code>info</code>.</p>
+<p>Apart from log level, Authorino can output messages to the logs in 2 different formats:</p>
+<ul>
+<li><code>production</code> (default): each line is a parseable JSON object with properties <code>{"level":string, "ts":int, "msg":string, "logger":string, extra values...}</code></li>
+<li><code>development</code>: more human-readable outputs, extra stack traces and logging info, plus extra values output as JSON, in the format: <code>&lt;timestamp-iso-8601&gt;\t&lt;log-level&gt;\t&lt;logger&gt;\t&lt;message&gt;\t{extra-values-as-json}</code></li>
+</ul>
+<p>To configure the desired log mode, set the field <code>spec.logMode</code> of the <a href="https://github.com/Kuadrant/authorino-operator/blob/main/config/crd/bases/operator.authorino.kuadrant.io_authorinos.yaml"><code>Authorino</code></a> CRD (<code>LOG_MODE</code> environment variable in the Authorino deployment), to one of the supported values listed above. Default log level is <code>production</code>.</p>
+<p>Example of <code>Authorino</code> CR with log level <code>debug</code> and log mode <code>production</code>:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">operator.authorino.kuadrant.io/v1beta1</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Authorino</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">authorino</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">logMode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">production</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="nt">listener</span><span class="p">:</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nt">tls</span><span class="p">:</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nt">oidcServer</span><span class="p">:</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="nt">tls</span><span class="p">:</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</span></code></pre></div>
+<h2 id="2-sensitive-data-output-to-the-logs">2. Sensitive data output to the logs<a class="headerlink" href="#2-sensitive-data-output-to-the-logs" title="Permanent link">&para;</a></h2>
+<p>Authorino will never output HTTP headers and query string parameters to <code>info</code> log messages, as such values usually include sensitive data (e.g. access tokens, API keys and Authorino Festival Wristbands). However, <code>debug</code> log messages may include such sensitive information and those are not redacted.</p>
+<p>Therefore, <strong>DO NOT USE <code>debug</code> LOG LEVEL IN PRODUCTION</strong>! Instead use either <code>info</code> or <code>error</code>.</p>
+<h2 id="3-tracing-id">3. Tracing ID<a class="headerlink" href="#3-tracing-id" title="Permanent link">&para;</a></h2>
+<p>Most log messages associated with an auth request include a <code>request id</code> extra value. The value represents the ID of the external authorization request received and processed by Authorino. This value is particularly useful to link incomming request and outgoing response log messages, as well as the more fine-grained log details available only in <code>debug</code> level.</p>
+<h2 id="4-typical-log-messages-table-and-examples">4. Typical log messages - table and examples<a class="headerlink" href="#4-typical-log-messages-table-and-examples" title="Permanent link">&para;</a></h2>
+<p>Some typical log messages output by the Authorino service are listed in the table below:</p>
+<table>
+<thead>
+<tr>
+<th>logger</th>
+<th>level</th>
+<th>message</th>
+<th>extra values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>authorino</code></td>
+<td><code>info</code></td>
+<td>"setting instance base logger"</td>
+<td><code>min level=info\|debug</code>, <code>mode=production\|development</code></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>info</code></td>
+<td>"botting up authorino"</td>
+<td><code>version</code></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>debug</code></td>
+<td>"setting up with options"</td>
+<td><code>WATCH_NAMESPACE</code>, <code>AUTH_CONFIG_LABEL_SELECTOR</code>, <code>SECRET_LABEL_SELECTOR</code>, <code>LOG_LEVEL</code>, <code>LOG_MODE</code>, <code>TIMEOUT</code>, <code>EXT_AUTH_GRPC_PORT</code>, <code>EXT_AUTH_HTTP_PORT</code>, <code>TLS_CERT</code>, <code>TLS_CERT_KEY</code>, <code>OIDC_HTTP_PORT</code>, <code>OIDC_TLS_CERT</code>, <code>OIDC_TLS_CERT_KEY</code>, <code>EVALUATOR_CACHE_SIZE</code>, <code>DEEP_METRICS_ENABLED</code>, <code>metrics-addr</code>, <code>enable-leader-election</code></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>info</code></td>
+<td>"attempting to acquire leader lease authorino/cb88a58a.authorino.kuadrant.io...\n"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>info</code></td>
+<td>"successfully acquired lease authorino/cb88a58a.authorino.kuadrant.io\n"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>info</code></td>
+<td>"disabling grpc auth service"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>info</code></td>
+<td>"starting grpc auth service"</td>
+<td><code>port</code>, <code>tls</code></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>error</code></td>
+<td>"failed to obtain port for the grpc auth service"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>error</code></td>
+<td>"failed to load tls cert for the grpc auth"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>error</code></td>
+<td>"failed to start grpc auth service"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>info</code></td>
+<td>"disabling http auth service"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>info</code></td>
+<td>"starting http auth service"</td>
+<td><code>port</code>, <code>tls</code></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>error</code></td>
+<td>"failed to obtain port for the http auth service"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>error</code></td>
+<td>"failed to start http auth service"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>info</code></td>
+<td>"disabling http oidc service"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>info</code></td>
+<td>"starting http oidc service"</td>
+<td><code>port</code>, <code>tls</code></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>error</code></td>
+<td>"failed to obtain port for the http oidc service"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>error</code></td>
+<td>"failed to start http oidc service"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>info</code></td>
+<td>"starting manager"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>error</code></td>
+<td>"unable to start manager"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>error</code></td>
+<td>"unable to create controller"</td>
+<td><code>controller=authconfig\|secret\|authconfigstatusupdate</code></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>error</code></td>
+<td>"problem running manager"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>info</code></td>
+<td>"starting status update manager"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>error</code></td>
+<td>"unable to start status update manager"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino</code></td>
+<td><code>error</code></td>
+<td>"problem running status update manager"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino.controller-runtime.metrics</code></td>
+<td><code>info</code></td>
+<td>"metrics server is starting to listen"</td>
+<td><code>addr</code></td>
+</tr>
+<tr>
+<td><code>authorino.controller-runtime.manager</code></td>
+<td><code>info</code></td>
+<td>"starting metrics server"</td>
+<td><code>path</code></td>
+</tr>
+<tr>
+<td><code>authorino.controller-runtime.manager.events</code></td>
+<td><code>debug</code></td>
+<td>"Normal"</td>
+<td><code>object={kind=ConfigMap, apiVersion=v1}</code>, <code>reauthorino.ason=LeaderElection</code>, <code>message="authorino-controller-manager-* became leader"</code></td>
+</tr>
+<tr>
+<td><code>authorino.controller-runtime.manager.events</code></td>
+<td><code>debug</code></td>
+<td>"Normal"</td>
+<td><code>object={kind=Lease, apiVersion=coordination.k8s.io/v1}</code>, <code>reauthorino.ason=LeaderElection</code>, <code>message="authorino-controller-manager-* became leader"</code></td>
+</tr>
+<tr>
+<td><code>authorino.controller-runtime.manager.controller.authconfig</code></td>
+<td><code>info</code></td>
+<td>"resource reconciled"</td>
+<td><code>authconfig</code></td>
+</tr>
+<tr>
+<td><code>authorino.controller-runtime.manager.controller.authconfig</code></td>
+<td><code>info</code></td>
+<td>"host already taken"</td>
+<td><code>authconfig</code>, <code>host</code></td>
+</tr>
+<tr>
+<td><code>authorino.controller-runtime.manager.controller.authconfig.statusupdater</code></td>
+<td><code>debug</code></td>
+<td>"resource status did not change"</td>
+<td><code>authconfig</code></td>
+</tr>
+<tr>
+<td><code>authorino.controller-runtime.manager.controller.authconfig.statusupdater</code></td>
+<td><code>debug</code></td>
+<td>"resource status changed"</td>
+<td><code>authconfig</code>, <code>authconfig/status</code></td>
+</tr>
+<tr>
+<td><code>authorino.controller-runtime.manager.controller.authconfig.statusupdater</code></td>
+<td><code>error</code></td>
+<td>"failed to update the resource"</td>
+<td><code>authconfig</code></td>
+</tr>
+<tr>
+<td><code>authorino.controller-runtime.manager.controller.authconfig.statusupdater</code></td>
+<td><code>info</code></td>
+<td>"resource status updated"</td>
+<td><code>authconfig</code></td>
+</tr>
+<tr>
+<td><code>authorino.controller-runtime.manager.controller.secret</code></td>
+<td><code>info</code></td>
+<td>"resource reconciled"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino.controller-runtime.manager.controller.secret</code></td>
+<td><code>info</code></td>
+<td>"could not reconcile authconfigs using api key autauthorino.hentication"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino.service.oidc</code></td>
+<td><code>info</code></td>
+<td>"request received"</td>
+<td><code>request id</code>, <code>url</code>, <code>realm</code>, <code>config</code>, <code>path</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.oidc</code></td>
+<td><code>info</code></td>
+<td>"response sent"</td>
+<td><code>request id</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.oidc</code></td>
+<td><code>error</code></td>
+<td>"failed to serve oidc request"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth</code></td>
+<td><code>info</code></td>
+<td>"incoming authorization request"</td>
+<td><code>request id</code>, <code>object</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth</code></td>
+<td><code>debug</code></td>
+<td>"incoming authorization request"</td>
+<td><code>request id</code>, <code>object</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth</code></td>
+<td><code>info</code></td>
+<td>"outgoing authorization response"</td>
+<td><code>request id</code>, <code>authorized</code>, <code>response</code>, <code>object</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth</code></td>
+<td><code>debug</code></td>
+<td>"outgoing authorization response"</td>
+<td><code>request id</code>, <code>authorized</code>, <code>response</code>, <code>object</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth</code></td>
+<td><code>error</code></td>
+<td>"failed to create dynamic metadata"</td>
+<td><code>request id</code>, <code>object</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline</code></td>
+<td><code>debug</code></td>
+<td>"skipping config"</td>
+<td><code>request id</code>, <code>config</code>, <code>reason</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.identity</code></td>
+<td><code>debug</code></td>
+<td>"identity validated"</td>
+<td><code>request id</code>, <code>config</code>, <code>object</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.identity</code></td>
+<td><code>debug</code></td>
+<td>"cannot validate identity"</td>
+<td><code>request id</code>, <code>config</code>, <code>reason</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.identity</code></td>
+<td><code>error</code></td>
+<td>"failed to extend identity object"</td>
+<td><code>request id</code>, <code>config</code>, <code>object</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.identity.oidc</code></td>
+<td><code>error</code></td>
+<td>"failed to discovery openid connect configuration"</td>
+<td><code>endpoint</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.identity.oidc</code></td>
+<td><code>debug</code></td>
+<td>"auto-refresh of openid connect configuration disabled"</td>
+<td><code>endpoint</code>, <code>reason</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.identity.oidc</code></td>
+<td><code>debug</code></td>
+<td>"openid connect configuration updated"</td>
+<td><code>endpoint</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.identity.oauth2</code></td>
+<td><code>debug</code></td>
+<td>"sending token introspection request"</td>
+<td><code>request id</code>, <code>url</code>, <code>data</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.identity.kubernetesauth</code></td>
+<td><code>debug</code></td>
+<td>"calling kubernetes token review api"</td>
+<td><code>request id</code>, <code>tokenreview</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.identity.apikey</code></td>
+<td><code>error</code></td>
+<td>"Something went wrong fetching the authorized credentials"</td>
+<td></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.metadata</code></td>
+<td><code>debug</code></td>
+<td>"fetched auth metadata"</td>
+<td><code>request id</code>, <code>config</code>, <code>object</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.metadata</code></td>
+<td><code>debug</code></td>
+<td>"cannot fetch metadata"</td>
+<td><code>request id</code>, <code>config</code>, <code>reason</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.metadata.http</code></td>
+<td><code>debug</code></td>
+<td>"sending request"</td>
+<td><code>request id</code>, <code>method</code>, <code>url</code>, <code>headers</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.metadata.userinfo</code></td>
+<td><code>debug</code></td>
+<td>"fetching user info"</td>
+<td><code>request id</code>, <code>endpoint</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.metadata.uma</code></td>
+<td><code>debug</code></td>
+<td>"requesting pat"</td>
+<td><code>request id</code>, <code>url</code>, <code>data</code>, <code>headers</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.metadata.uma</code></td>
+<td><code>debug</code></td>
+<td>"querying resources by uri"</td>
+<td><code>request id</code>, <code>url</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.metadata.uma</code></td>
+<td><code>debug</code></td>
+<td>"getting resource data"</td>
+<td><code>request id</code>, <code>url</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.authorization</code></td>
+<td><code>debug</code></td>
+<td>"evaluating for input"</td>
+<td><code>request id</code>, <code>input</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.authorization</code></td>
+<td><code>debug</code></td>
+<td>"access granted"</td>
+<td><code>request id</code>, <code>config</code>, <code>object</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.authorization</code></td>
+<td><code>debug</code></td>
+<td>"access denied"</td>
+<td><code>request id</code>, <code>config</code>, <code>reason</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.authorization.opa</code></td>
+<td><code>error</code></td>
+<td>"invalid response from policy evaluation"</td>
+<td><code>policy</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.authorization.opa</code></td>
+<td><code>error</code></td>
+<td>"failed to precompile policy"</td>
+<td><code>policy</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.authorization.opa</code></td>
+<td><code>error</code></td>
+<td>"failed to download policy from external registry"</td>
+<td><code>policy</code>, <code>endpoint</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.authorization.opa</code></td>
+<td><code>error</code></td>
+<td>"failed to refresh policy from external registry"</td>
+<td><code>policy</code>, <code>endpoint</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.authorization.opa</code></td>
+<td><code>debug</code></td>
+<td>"external policy unchanged"</td>
+<td><code>policy</code>, <code>endpoint</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.authorization.opa</code></td>
+<td><code>debug</code></td>
+<td>"auto-refresh  of external policy disabled"</td>
+<td><code>policy</code>, <code>endpoint</code>, <code>reason</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.authorization.opa</code></td>
+<td><code>info</code></td>
+<td>"policy updated from external registry"</td>
+<td><code>policy</code>, <code>endpoint</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.authorization.kubernetesauthz</code></td>
+<td><code>debug</code></td>
+<td>"calling kubernetes subject access review api"</td>
+<td><code>request id</code>, <code>subjectaccessreview</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.response</code></td>
+<td><code>debug</code></td>
+<td>"dynamic response built"</td>
+<td><code>request id</code>, <code>config</code>, <code>object</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.authpipeline.response</code></td>
+<td><code>debug</code></td>
+<td>"cannot build dynamic response"</td>
+<td><code>request id</code>, <code>config</code>, <code>reason</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.http</code></td>
+<td><code>debug</code></td>
+<td>"bad request"</td>
+<td><code>request id</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.http</code></td>
+<td><code>debug</code></td>
+<td>"not found"</td>
+<td><code>request id</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.http</code></td>
+<td><code>debug</code></td>
+<td>"request body too large"</td>
+<td><code>request id</code></td>
+</tr>
+<tr>
+<td><code>authorino.service.auth.http</code></td>
+<td><code>debug</code></td>
+<td>"service unavailable"</td>
+<td><code>request id</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h3>
+<p>The examples below are all with <code>LOG_LEVEL=debug</code> and <code>LOG_MODE=production</code>.</p>
+<h4 id="booting-up-the-service">Booting up the service:<a class="headerlink" href="#booting-up-the-service" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674939.7563884,&quot;logger&quot;:&quot;authorino&quot;,&quot;msg&quot;:&quot;setting instance base logger&quot;,&quot;min level&quot;:&quot;debug&quot;,&quot;mode&quot;:&quot;production&quot;}
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634674939.7567484,&quot;logger&quot;:&quot;authorino&quot;,&quot;msg&quot;:&quot;setting up with options&quot;,&quot;WATCH_NAMESPACE&quot;:&quot;&quot;,&quot;AUTH_CONFIG_LABEL_SELECTOR&quot;:&quot;&quot;,&quot;SECRET_LABEL_SELECTOR&quot;:&quot;authorino.kuadrant.io/managed-by=authorino&quot;,&quot;LOG_LEVEL&quot;:&quot;debug&quot;,&quot;LOG_MODE&quot;:&quot;production&quot;,&quot;TIMEOUT&quot;:0,&quot;EXT_AUTH_GRPC_PORT&quot;:&quot;50051&quot;,&quot;EXT_AUTH_HTTP_PORT&quot;:&quot;5001&quot;,&quot;TLS_CERT&quot;:&quot;/etc/ssl/certs/tls.crt&quot;,&quot;TLS_CERT_KEY&quot;:&quot;/etc/ssl/private/tls.key&quot;,&quot;OIDC_HTTP_PORT&quot;:&quot;8083&quot;,&quot;OIDC_TLS_CERT&quot;:&quot;/etc/ssl/certs/oidc.crt&quot;,&quot;OIDC_TLS_CERT_KEY&quot;:&quot;/etc/ssl/private/oidc.key&quot;,&quot;EVALUATOR_CACHE_SIZE&quot;:&quot;1&quot;,&quot;DEEP_METRICS_ENABLED&quot;: &quot;false&quot;,&quot;metrics-addr&quot;:&quot;127.0.0.1:8080&quot;,&quot;enable-leader-election&quot;:true}
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674941.0670755,&quot;logger&quot;:&quot;authorino.controller-runtime.metrics&quot;,&quot;msg&quot;:&quot;metrics server is starting to listen&quot;,&quot;addr&quot;:&quot;127.0.0.1:8080&quot;}
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674941.0946925,&quot;logger&quot;:&quot;authorino&quot;,&quot;msg&quot;:&quot;starting grpc service&quot;,&quot;port&quot;:&quot;50051&quot;,&quot;tls&quot;:true}
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674941.103486,&quot;logger&quot;:&quot;authorino&quot;,&quot;msg&quot;:&quot;starting oidc service&quot;,&quot;port&quot;:&quot;8083&quot;,&quot;tls&quot;:true}
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674941.1678321,&quot;logger&quot;:&quot;authorino&quot;,&quot;msg&quot;:&quot;starting manager&quot;}
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674941.1765432,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.authconfig&quot;,&quot;msg&quot;:&quot;Starting EventSource&quot;,&quot;reconciler group&quot;:&quot;authorino.kuadrant.io&quot;,&quot;reconciler kind&quot;:&quot;AuthConfig&quot;,&quot;source&quot;:&quot;kind source: /, Kind=&quot;}
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674941.182127,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.authconfig&quot;,&quot;msg&quot;:&quot;Starting Controller&quot;,&quot;reconciler group&quot;:&quot;authorino.kuadrant.io&quot;,&quot;reconciler kind&quot;:&quot;AuthConfig&quot;}
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674941.1928735,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.secret&quot;,&quot;msg&quot;:&quot;Starting EventSource&quot;,&quot;reconciler group&quot;:&quot;&quot;,&quot;reconciler kind&quot;:&quot;Secret&quot;,&quot;source&quot;:&quot;kind source: /, Kind=&quot;}
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674941.1951146,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.secret&quot;,&quot;msg&quot;:&quot;Starting Controller&quot;,&quot;reconciler group&quot;:&quot;&quot;,&quot;reconciler kind&quot;:&quot;Secret&quot;}
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674941.203209,&quot;logger&quot;:&quot;authorino.controller-runtime.manager&quot;,&quot;msg&quot;:&quot;starting metrics server&quot;,&quot;path&quot;:&quot;/metrics&quot;}
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674942.256725,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.secret&quot;,&quot;msg&quot;:&quot;Starting workers&quot;,&quot;reconciler group&quot;:&quot;&quot;,&quot;reconciler kind&quot;:&quot;Secret&quot;,&quot;worker count&quot;:1}
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674942.2595103,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.authconfig&quot;,&quot;msg&quot;:&quot;Starting workers&quot;,&quot;reconciler group&quot;:&quot;authorino.kuadrant.io&quot;,&quot;reconciler kind&quot;:&quot;AuthConfig&quot;,&quot;worker count&quot;:1}
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674942.5573237,&quot;logger&quot;:&quot;authorino&quot;,&quot;msg&quot;:&quot;starting status update manager&quot;}
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674942.5718815,&quot;logger&quot;:&quot;authorino&quot;,&quot;msg&quot;:&quot;attempting to acquire leader lease authorino/cb88a58a.authorino.kuadrant.io...\n&quot;}
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674959.4286165,&quot;logger&quot;:&quot;authorino&quot;,&quot;msg&quot;:&quot;successfully acquired lease authorino/cb88a58a.authorino.kuadrant.io\n&quot;}
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674959.4316218,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.authconfig&quot;,&quot;msg&quot;:&quot;Starting EventSource&quot;,&quot;reconciler group&quot;:&quot;authorino.kuadrant.io&quot;,&quot;reconciler kind&quot;:&quot;AuthConfig&quot;,&quot;source&quot;:&quot;kind source: /, Kind=&quot;}
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674959.4348314,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.authconfig&quot;,&quot;msg&quot;:&quot;Starting Controller&quot;,&quot;reconciler group&quot;:&quot;authorino.kuadrant.io&quot;,&quot;reconciler kind&quot;:&quot;AuthConfig&quot;}
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634674959.4354987,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.events&quot;,&quot;msg&quot;:&quot;Normal&quot;,&quot;object&quot;:{&quot;kind&quot;:&quot;ConfigMap&quot;,&quot;namespace&quot;:&quot;authorino&quot;,&quot;name&quot;:&quot;cb88a58a.authorino.kuadrant.io&quot;,&quot;uid&quot;:&quot;fcefe0d5-87f6-4a01-8e80-7cf290bc269b&quot;,&quot;apiVersion&quot;:&quot;v1&quot;,&quot;resourceVersion&quot;:&quot;55791&quot;},&quot;reason&quot;:&quot;LeaderElection&quot;,&quot;message&quot;:&quot;authorino-controller-manager-5d86dbb56f-th8mf_c416d2c6-fe44-421b-a025-344a60b70614 became leader&quot;}
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634674959.5168512,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.events&quot;,&quot;msg&quot;:&quot;Normal&quot;,&quot;object&quot;:{&quot;kind&quot;:&quot;Lease&quot;,&quot;namespace&quot;:&quot;authorino&quot;,&quot;name&quot;:&quot;cb88a58a.authorino.kuadrant.io&quot;,&quot;uid&quot;:&quot;2753012c-4a06-4cb3-93c9-857d092bf289&quot;,&quot;apiVersion&quot;:&quot;coordination.k8s.io/v1&quot;,&quot;resourceVersion&quot;:&quot;55792&quot;},&quot;reason&quot;:&quot;LeaderElection&quot;,&quot;message&quot;:&quot;authorino-controller-manager-5d86dbb56f-th8mf_c416d2c6-fe44-421b-a025-344a60b70614 became leader&quot;}
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634674959.5356445,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.authconfig&quot;,&quot;msg&quot;:&quot;Starting workers&quot;,&quot;reconciler group&quot;:&quot;authorino.kuadrant.io&quot;,&quot;reconciler kind&quot;:&quot;AuthConfig&quot;,&quot;worker count&quot;:1}
+</span></code></pre></div>
+<h4 id="reconciling-an-authconfig-and-2-related-api-key-secrets">Reconciling an <code>AuthConfig</code> and 2 related API key <code>Secret</code>s:<a class="headerlink" href="#reconciling-an-authconfig-and-2-related-api-key-secrets" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634675069.1662104,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.authconfig.statusupdater&quot;,&quot;msg&quot;:&quot;resource status updated&quot;,&quot;authconfig/status&quot;:&quot;authorino/talker-api-protection&quot;}
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634675069.2253225,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.authconfig.statusupdater&quot;,&quot;msg&quot;:&quot;resource status updated&quot;,&quot;authconfig/status&quot;:&quot;authorino/talker-api-protection&quot;}
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634675069.3370266,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.secret&quot;,&quot;msg&quot;:&quot;resource reconciled&quot;,&quot;secret&quot;:&quot;authorino/api-key-1&quot;}
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634675069.3740098,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.secret&quot;,&quot;msg&quot;:&quot;resource reconciled&quot;,&quot;secret&quot;:&quot;authorino/api-key-2&quot;}
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634675069.9157252,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.authconfig&quot;,&quot;msg&quot;:&quot;resource reconciled&quot;,&quot;authconfig&quot;:&quot;authorino/talker-api-protection&quot;}
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634675069.9188104,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.authconfig&quot;,&quot;msg&quot;:&quot;resource reconciled&quot;,&quot;authconfig&quot;:&quot;authorino/talker-api-protection&quot;}
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634675069.9242647,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.authconfig&quot;,&quot;msg&quot;:&quot;resource reconciled&quot;,&quot;authconfig&quot;:&quot;authorino/talker-api-protection&quot;}
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634675070.1129518,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.authconfig&quot;,&quot;msg&quot;:&quot;resource reconciled&quot;,&quot;authconfig&quot;:&quot;authorino/talker-api-protection&quot;}
+</span></code></pre></div>
+<h4 id="enforcing-authconfig-while-authenticating-with-kubernetes-authentication-token">Enforcing <code>AuthConfig</code> while authenticating with Kubernetes authentication token:<a class="headerlink" href="#enforcing-authconfig-while-authenticating-with-kubernetes-authentication-token" title="Permanent link">&para;</a></h4>
+<details>
+  <summary><code>AuhConfig</code> composed of:</summary>
+
+
+  - identity: k8s-auth, oidc, oauth2, apikey
+  - metadata: http, oidc userinfo
+  - authorization: opa, k8s-authz
+  - response: wristband
+</details>
+
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634830460.1486168,&quot;logger&quot;:&quot;authorino.service.auth&quot;,&quot;msg&quot;:&quot;incoming authorization request&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;object&quot;:{&quot;source&quot;:{&quot;address&quot;:{&quot;Address&quot;:{&quot;SocketAddress&quot;:{&quot;address&quot;:&quot;127.0.0.1&quot;,&quot;PortSpecifier&quot;:{&quot;PortValue&quot;:53144}}}}},&quot;destination&quot;:{&quot;address&quot;:{&quot;Address&quot;:{&quot;SocketAddress&quot;:{&quot;address&quot;:&quot;127.0.0.1&quot;,&quot;PortSpecifier&quot;:{&quot;PortValue&quot;:8000}}}}},&quot;request&quot;:{&quot;http&quot;:{&quot;id&quot;:&quot;8157480586935853928&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;path&quot;:&quot;/hello&quot;,&quot;host&quot;:&quot;talker-api&quot;,&quot;scheme&quot;:&quot;http&quot;}}}}
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.1491194,&quot;logger&quot;:&quot;authorino.service.auth&quot;,&quot;msg&quot;:&quot;incoming authorization request&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;object&quot;:{&quot;source&quot;:{&quot;address&quot;:{&quot;Address&quot;:{&quot;SocketAddress&quot;:{&quot;address&quot;:&quot;127.0.0.1&quot;,&quot;PortSpecifier&quot;:{&quot;PortValue&quot;:53144}}}}},&quot;destination&quot;:{&quot;address&quot;:{&quot;Address&quot;:{&quot;SocketAddress&quot;:{&quot;address&quot;:&quot;127.0.0.1&quot;,&quot;PortSpecifier&quot;:{&quot;PortValue&quot;:8000}}}}},&quot;request&quot;:{&quot;time&quot;:{&quot;seconds&quot;:1634830460,&quot;nanos&quot;:147259000},&quot;http&quot;:{&quot;id&quot;:&quot;8157480586935853928&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;headers&quot;:{&quot;:authority&quot;:&quot;talker-api&quot;,&quot;:method&quot;:&quot;GET&quot;,&quot;:path&quot;:&quot;/hello&quot;,&quot;:scheme&quot;:&quot;http&quot;,&quot;accept&quot;:&quot;*/*&quot;,&quot;authorization&quot;:&quot;Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkRsVWJZMENyVy1sZ0tFMVRMd19pcTFUWGtTYUl6T0hyWks0VHhKYnpEZUUifQ.eyJhdWQiOlsidGFsa2VyLWFwaSJdLCJleHAiOjE2MzQ4MzEwNTEsImlhdCI6MTYzNDgzMDQ1MSwiaXNzIjoiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiLCJrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6ImF1dGhvcmlubyIsInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJhcGktY29uc3VtZXItMSIsInVpZCI6ImI0MGY1MzFjLWVjYWItNGYzMS1hNDk2LTJlYmM3MmFkZDEyMSJ9fSwibmJmIjoxNjM0ODMwNDUxLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6YXV0aG9yaW5vOmFwaS1jb25zdW1lci0xIn0.PaP0vqdl5DPfErr84KfVhPdlsGAPgsw0NkDaA9rne1zXjzcO7KPPbXhFwZC-oIjSGG1HfRMSoQeCXbQz24PSATmX8l1T52a9IFeXgP7sQmXZIDbiPfTm3X09kIIlfPKHhK_f-jQwRIpMRqNgLntlZ-xXX3P1fOBBUYR8obTPAQ6NDDaLHxw2SAmHFTQWjM_DInPDemXX0mEm7nCPKifsNxHaQH4wx4CD3LCLGbCI9FHNf2Crid8mmGJXf4wzcH1VuKkpUlsmnlUgTG2bfT2lbhSF2lBmrrhTJyYk6_aA09DwL4Bf4kvG-JtCq0Bkd_XynViIsOtOnAhgmdSPkfr-oA&quot;,&quot;user-agent&quot;:&quot;curl/7.65.3&quot;,&quot;x-envoy-internal&quot;:&quot;true&quot;,&quot;x-forwarded-for&quot;:&quot;10.244.0.11&quot;,&quot;x-forwarded-proto&quot;:&quot;http&quot;,&quot;x-request-id&quot;:&quot;4c5d5c97-e15b-46a3-877a-d8188e09e08f&quot;},&quot;path&quot;:&quot;/hello&quot;,&quot;host&quot;:&quot;talker-api&quot;,&quot;scheme&quot;:&quot;http&quot;,&quot;protocol&quot;:&quot;HTTP/1.1&quot;}},&quot;context_extensions&quot;:{&quot;virtual_host&quot;:&quot;local_service&quot;},&quot;metadata_context&quot;:{}}}
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.150506,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.identity.kubernetesauth&quot;,&quot;msg&quot;:&quot;calling kubernetes token review api&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;tokenreview&quot;:{&quot;metadata&quot;:{&quot;creationTimestamp&quot;:null},&quot;spec&quot;:{&quot;token&quot;:&quot;eyJhbGciOiJSUzI1NiIsImtpZCI6IkRsVWJZMENyVy1sZ0tFMVRMd19pcTFUWGtTYUl6T0hyWks0VHhKYnpEZUUifQ.eyJhdWQiOlsidGFsa2VyLWFwaSJdLCJleHAiOjE2MzQ4MzEwNTEsImlhdCI6MTYzNDgzMDQ1MSwiaXNzIjoiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiLCJrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6ImF1dGhvcmlubyIsInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJhcGktY29uc3VtZXItMSIsInVpZCI6ImI0MGY1MzFjLWVjYWItNGYzMS1hNDk2LTJlYmM3MmFkZDEyMSJ9fSwibmJmIjoxNjM0ODMwNDUxLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6YXV0aG9yaW5vOmFwaS1jb25zdW1lci0xIn0.PaP0vqdl5DPfErr84KfVhPdlsGAPgsw0NkDaA9rne1zXjzcO7KPPbXhFwZC-oIjSGG1HfRMSoQeCXbQz24PSATmX8l1T52a9IFeXgP7sQmXZIDbiPfTm3X09kIIlfPKHhK_f-jQwRIpMRqNgLntlZ-xXX3P1fOBBUYR8obTPAQ6NDDaLHxw2SAmHFTQWjM_DInPDemXX0mEm7nCPKifsNxHaQH4wx4CD3LCLGbCI9FHNf2Crid8mmGJXf4wzcH1VuKkpUlsmnlUgTG2bfT2lbhSF2lBmrrhTJyYk6_aA09DwL4Bf4kvG-JtCq0Bkd_XynViIsOtOnAhgmdSPkfr-oA&quot;,&quot;audiences&quot;:[&quot;talker-api&quot;]},&quot;status&quot;:{&quot;user&quot;:{}}}}
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.1509938,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.identity&quot;,&quot;msg&quot;:&quot;cannot validate identity&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;api-keys&quot;,&quot;ExtendedProperties&quot;:[{&quot;Name&quot;:&quot;sub&quot;,&quot;Value&quot;:{&quot;Static&quot;:null,&quot;Pattern&quot;:&quot;auth.identity.metadata.annotations.userid&quot;}}],&quot;OAuth2&quot;:null,&quot;OIDC&quot;:null,&quot;MTLS&quot;:null,&quot;HMAC&quot;:null,&quot;APIKey&quot;:{&quot;AuthCredentials&quot;:{&quot;KeySelector&quot;:&quot;APIKEY&quot;,&quot;In&quot;:&quot;authorization_header&quot;},&quot;Name&quot;:&quot;api-keys&quot;,&quot;LabelSelectors&quot;:{&quot;audience&quot;:&quot;talker-api&quot;,&quot;authorino.kuadrant.io/managed-by&quot;:&quot;authorino&quot;}},&quot;KubernetesAuth&quot;:null},&quot;reason&quot;:&quot;credential not found&quot;}
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.1517606,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.identity.oauth2&quot;,&quot;msg&quot;:&quot;sending token introspection request&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;url&quot;:&quot;http://talker-api:523b92b6-625d-4e1e-a313-77e7a8ae4e88@keycloak:8080/auth/realms/kuadrant/protocol/openid-connect/token/introspect&quot;,&quot;data&quot;:&quot;token=eyJhbGciOiJSUzI1NiIsImtpZCI6IkRsVWJZMENyVy1sZ0tFMVRMd19pcTFUWGtTYUl6T0hyWks0VHhKYnpEZUUifQ.eyJhdWQiOlsidGFsa2VyLWFwaSJdLCJleHAiOjE2MzQ4MzEwNTEsImlhdCI6MTYzNDgzMDQ1MSwiaXNzIjoiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiLCJrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6ImF1dGhvcmlubyIsInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJhcGktY29uc3VtZXItMSIsInVpZCI6ImI0MGY1MzFjLWVjYWItNGYzMS1hNDk2LTJlYmM3MmFkZDEyMSJ9fSwibmJmIjoxNjM0ODMwNDUxLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6YXV0aG9yaW5vOmFwaS1jb25zdW1lci0xIn0.PaP0vqdl5DPfErr84KfVhPdlsGAPgsw0NkDaA9rne1zXjzcO7KPPbXhFwZC-oIjSGG1HfRMSoQeCXbQz24PSATmX8l1T52a9IFeXgP7sQmXZIDbiPfTm3X09kIIlfPKHhK_f-jQwRIpMRqNgLntlZ-xXX3P1fOBBUYR8obTPAQ6NDDaLHxw2SAmHFTQWjM_DInPDemXX0mEm7nCPKifsNxHaQH4wx4CD3LCLGbCI9FHNf2Crid8mmGJXf4wzcH1VuKkpUlsmnlUgTG2bfT2lbhSF2lBmrrhTJyYk6_aA09DwL4Bf4kvG-JtCq0Bkd_XynViIsOtOnAhgmdSPkfr-oA&amp;token_type_hint=requesting_party_token&quot;}
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.1620777,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.identity&quot;,&quot;msg&quot;:&quot;identity validated&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;k8s-service-accounts&quot;,&quot;ExtendedProperties&quot;:[],&quot;OAuth2&quot;:null,&quot;OIDC&quot;:null,&quot;MTLS&quot;:null,&quot;HMAC&quot;:null,&quot;APIKey&quot;:null,&quot;KubernetesAuth&quot;:{&quot;AuthCredentials&quot;:{&quot;KeySelector&quot;:&quot;Bearer&quot;,&quot;In&quot;:&quot;authorization_header&quot;}}},&quot;object&quot;:{&quot;aud&quot;:[&quot;talker-api&quot;],&quot;exp&quot;:1634831051,&quot;iat&quot;:1634830451,&quot;iss&quot;:&quot;https://kubernetes.default.svc.cluster.local&quot;,&quot;kubernetes.io&quot;:{&quot;namespace&quot;:&quot;authorino&quot;,&quot;serviceaccount&quot;:{&quot;name&quot;:&quot;api-consumer-1&quot;,&quot;uid&quot;:&quot;b40f531c-ecab-4f31-a496-2ebc72add121&quot;}},&quot;nbf&quot;:1634830451,&quot;sub&quot;:&quot;system:serviceaccount:authorino:api-consumer-1&quot;}}
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.1622565,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.metadata.uma&quot;,&quot;msg&quot;:&quot;requesting pat&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;url&quot;:&quot;http://talker-api:523b92b6-625d-4e1e-a313-77e7a8ae4e88@keycloak:8080/auth/realms/kuadrant/protocol/openid-connect/token&quot;,&quot;data&quot;:&quot;grant_type=client_credentials&quot;,&quot;headers&quot;:{&quot;Content-Type&quot;:[&quot;application/x-www-form-urlencoded&quot;]}}
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.1670353,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.metadata.http&quot;,&quot;msg&quot;:&quot;sending request&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;url&quot;:&quot;http://talker-api.default.svc.cluster.local:3000/metadata?encoding=text/plain&amp;original_path=/hello&quot;,&quot;headers&quot;:{&quot;Content-Type&quot;:[&quot;text/plain&quot;]}}
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.169326,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.metadata&quot;,&quot;msg&quot;:&quot;cannot fetch metadata&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;oidc-userinfo&quot;,&quot;UserInfo&quot;:{&quot;OIDC&quot;:{&quot;AuthCredentials&quot;:{&quot;KeySelector&quot;:&quot;Bearer&quot;,&quot;In&quot;:&quot;authorization_header&quot;},&quot;Endpoint&quot;:&quot;http://keycloak:8080/auth/realms/kuadrant&quot;}},&quot;UMA&quot;:null,&quot;GenericHTTP&quot;:null},&quot;reason&quot;:&quot;Missing identity for OIDC issuer http://keycloak:8080/auth/realms/kuadrant. Skipping related UserInfo metadata.&quot;}
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.1753876,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.metadata&quot;,&quot;msg&quot;:&quot;fetched auth metadata&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;http-metadata&quot;,&quot;UserInfo&quot;:null,&quot;UMA&quot;:null,&quot;GenericHTTP&quot;:{&quot;Endpoint&quot;:&quot;http://talker-api.default.svc.cluster.local:3000/metadata?encoding=text/plain&amp;original_path={context.request.http.path}&quot;,&quot;Method&quot;:&quot;GET&quot;,&quot;Parameters&quot;:[],&quot;ContentType&quot;:&quot;application/x-www-form-urlencoded&quot;,&quot;SharedSecret&quot;:&quot;&quot;,&quot;AuthCredentials&quot;:{&quot;KeySelector&quot;:&quot;Bearer&quot;,&quot;In&quot;:&quot;authorization_header&quot;}}},&quot;object&quot;:{&quot;body&quot;:&quot;&quot;,&quot;headers&quot;:{&quot;Accept-Encoding&quot;:&quot;gzip&quot;,&quot;Content-Type&quot;:&quot;text/plain&quot;,&quot;Host&quot;:&quot;talker-api.default.svc.cluster.local:3000&quot;,&quot;User-Agent&quot;:&quot;Go-http-client/1.1&quot;,&quot;Version&quot;:&quot;HTTP/1.1&quot;},&quot;method&quot;:&quot;GET&quot;,&quot;path&quot;:&quot;/metadata&quot;,&quot;query_string&quot;:&quot;encoding=text/plain&amp;original_path=/hello&quot;,&quot;uuid&quot;:&quot;1aa6ac66-3179-4351-b1a7-7f6a761d5b61&quot;}}
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.2331996,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.metadata.uma&quot;,&quot;msg&quot;:&quot;querying resources by uri&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;url&quot;:&quot;http://keycloak:8080/auth/realms/kuadrant/authz/protection/resource_set?uri=/hello&quot;}
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.2495668,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.metadata.uma&quot;,&quot;msg&quot;:&quot;getting resource data&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;url&quot;:&quot;http://keycloak:8080/auth/realms/kuadrant/authz/protection/resource_set/e20d194c-274c-4845-8c02-0ca413c9bf18&quot;}
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.2927864,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.metadata&quot;,&quot;msg&quot;:&quot;fetched auth metadata&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;uma-resource-registry&quot;,&quot;UserInfo&quot;:null,&quot;UMA&quot;:{&quot;Endpoint&quot;:&quot;http://keycloak:8080/auth/realms/kuadrant&quot;,&quot;ClientID&quot;:&quot;talker-api&quot;,&quot;ClientSecret&quot;:&quot;523b92b6-625d-4e1e-a313-77e7a8ae4e88&quot;},&quot;GenericHTTP&quot;:null},&quot;object&quot;:[{&quot;_id&quot;:&quot;e20d194c-274c-4845-8c02-0ca413c9bf18&quot;,&quot;attributes&quot;:{},&quot;displayName&quot;:&quot;hello&quot;,&quot;name&quot;:&quot;hello&quot;,&quot;owner&quot;:{&quot;id&quot;:&quot;57a645a5-fb67-438b-8be5-dfb971666dbc&quot;},&quot;ownerManagedAccess&quot;:false,&quot;resource_scopes&quot;:[],&quot;uris&quot;:[&quot;/hi&quot;,&quot;/hello&quot;]}]}
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.2930083,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.authorization&quot;,&quot;msg&quot;:&quot;evaluating for input&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;input&quot;:{&quot;context&quot;:{&quot;source&quot;:{&quot;address&quot;:{&quot;Address&quot;:{&quot;SocketAddress&quot;:{&quot;address&quot;:&quot;127.0.0.1&quot;,&quot;PortSpecifier&quot;:{&quot;PortValue&quot;:53144}}}}},&quot;destination&quot;:{&quot;address&quot;:{&quot;Address&quot;:{&quot;SocketAddress&quot;:{&quot;address&quot;:&quot;127.0.0.1&quot;,&quot;PortSpecifier&quot;:{&quot;PortValue&quot;:8000}}}}},&quot;request&quot;:{&quot;time&quot;:{&quot;seconds&quot;:1634830460,&quot;nanos&quot;:147259000},&quot;http&quot;:{&quot;id&quot;:&quot;8157480586935853928&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;headers&quot;:{&quot;:authority&quot;:&quot;talker-api&quot;,&quot;:method&quot;:&quot;GET&quot;,&quot;:path&quot;:&quot;/hello&quot;,&quot;:scheme&quot;:&quot;http&quot;,&quot;accept&quot;:&quot;*/*&quot;,&quot;authorization&quot;:&quot;Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkRsVWJZMENyVy1sZ0tFMVRMd19pcTFUWGtTYUl6T0hyWks0VHhKYnpEZUUifQ.eyJhdWQiOlsidGFsa2VyLWFwaSJdLCJleHAiOjE2MzQ4MzEwNTEsImlhdCI6MTYzNDgzMDQ1MSwiaXNzIjoiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiLCJrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6ImF1dGhvcmlubyIsInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJhcGktY29uc3VtZXItMSIsInVpZCI6ImI0MGY1MzFjLWVjYWItNGYzMS1hNDk2LTJlYmM3MmFkZDEyMSJ9fSwibmJmIjoxNjM0ODMwNDUxLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6YXV0aG9yaW5vOmFwaS1jb25zdW1lci0xIn0.PaP0vqdl5DPfErr84KfVhPdlsGAPgsw0NkDaA9rne1zXjzcO7KPPbXhFwZC-oIjSGG1HfRMSoQeCXbQz24PSATmX8l1T52a9IFeXgP7sQmXZIDbiPfTm3X09kIIlfPKHhK_f-jQwRIpMRqNgLntlZ-xXX3P1fOBBUYR8obTPAQ6NDDaLHxw2SAmHFTQWjM_DInPDemXX0mEm7nCPKifsNxHaQH4wx4CD3LCLGbCI9FHNf2Crid8mmGJXf4wzcH1VuKkpUlsmnlUgTG2bfT2lbhSF2lBmrrhTJyYk6_aA09DwL4Bf4kvG-JtCq0Bkd_XynViIsOtOnAhgmdSPkfr-oA&quot;,&quot;user-agent&quot;:&quot;curl/7.65.3&quot;,&quot;x-envoy-internal&quot;:&quot;true&quot;,&quot;x-forwarded-for&quot;:&quot;10.244.0.11&quot;,&quot;x-forwarded-proto&quot;:&quot;http&quot;,&quot;x-request-id&quot;:&quot;4c5d5c97-e15b-46a3-877a-d8188e09e08f&quot;},&quot;path&quot;:&quot;/hello&quot;,&quot;host&quot;:&quot;talker-api&quot;,&quot;scheme&quot;:&quot;http&quot;,&quot;protocol&quot;:&quot;HTTP/1.1&quot;}},&quot;context_extensions&quot;:{&quot;virtual_host&quot;:&quot;local_service&quot;},&quot;metadata_context&quot;:{}},&quot;auth&quot;:{&quot;identity&quot;:{&quot;aud&quot;:[&quot;talker-api&quot;],&quot;exp&quot;:1634831051,&quot;iat&quot;:1634830451,&quot;iss&quot;:&quot;https://kubernetes.default.svc.cluster.local&quot;,&quot;kubernetes.io&quot;:{&quot;namespace&quot;:&quot;authorino&quot;,&quot;serviceaccount&quot;:{&quot;name&quot;:&quot;api-consumer-1&quot;,&quot;uid&quot;:&quot;b40f531c-ecab-4f31-a496-2ebc72add121&quot;}},&quot;nbf&quot;:1634830451,&quot;sub&quot;:&quot;system:serviceaccount:authorino:api-consumer-1&quot;},&quot;metadata&quot;:{&quot;http-metadata&quot;:{&quot;body&quot;:&quot;&quot;,&quot;headers&quot;:{&quot;Accept-Encoding&quot;:&quot;gzip&quot;,&quot;Content-Type&quot;:&quot;text/plain&quot;,&quot;Host&quot;:&quot;talker-api.default.svc.cluster.local:3000&quot;,&quot;User-Agent&quot;:&quot;Go-http-client/1.1&quot;,&quot;Version&quot;:&quot;HTTP/1.1&quot;},&quot;method&quot;:&quot;GET&quot;,&quot;path&quot;:&quot;/metadata&quot;,&quot;query_string&quot;:&quot;encoding=text/plain&amp;original_path=/hello&quot;,&quot;uuid&quot;:&quot;1aa6ac66-3179-4351-b1a7-7f6a761d5b61&quot;},&quot;uma-resource-registry&quot;:[{&quot;_id&quot;:&quot;e20d194c-274c-4845-8c02-0ca413c9bf18&quot;,&quot;attributes&quot;:{},&quot;displayName&quot;:&quot;hello&quot;,&quot;name&quot;:&quot;hello&quot;,&quot;owner&quot;:{&quot;id&quot;:&quot;57a645a5-fb67-438b-8be5-dfb971666dbc&quot;},&quot;ownerManagedAccess&quot;:false,&quot;resource_scopes&quot;:[],&quot;uris&quot;:[&quot;/hi&quot;,&quot;/hello&quot;]}]}}}}
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.2955465,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.authorization.kubernetesauthz&quot;,&quot;msg&quot;:&quot;calling kubernetes subject access review api&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;subjectaccessreview&quot;:{&quot;metadata&quot;:{&quot;creationTimestamp&quot;:null},&quot;spec&quot;:{&quot;nonResourceAttributes&quot;:{&quot;path&quot;:&quot;/hello&quot;,&quot;verb&quot;:&quot;get&quot;},&quot;user&quot;:&quot;system:serviceaccount:authorino:api-consumer-1&quot;},&quot;status&quot;:{&quot;allowed&quot;:false}}}
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.2986183,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.authorization&quot;,&quot;msg&quot;:&quot;access granted&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;my-policy&quot;,&quot;OPA&quot;:{&quot;Rego&quot;:&quot;fail := input.context.request.http.headers[\&quot;x-ext-auth-mock\&quot;] == \&quot;FAIL\&quot;\nallow { not fail }\n&quot;,&quot;OPAExternalSource&quot;:{&quot;Endpoint&quot;:&quot;&quot;,&quot;SharedSecret&quot;:&quot;&quot;,&quot;AuthCredentials&quot;:{&quot;KeySelector&quot;:&quot;Bearer&quot;,&quot;In&quot;:&quot;authorization_header&quot;}}},&quot;JSON&quot;:null,&quot;KubernetesAuthz&quot;:null},&quot;object&quot;:true}
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.3044975,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.authorization&quot;,&quot;msg&quot;:&quot;access granted&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;kubernetes-rbac&quot;,&quot;OPA&quot;:null,&quot;JSON&quot;:null,&quot;KubernetesAuthz&quot;:{&quot;Conditions&quot;:[],&quot;User&quot;:{&quot;Static&quot;:&quot;&quot;,&quot;Pattern&quot;:&quot;auth.identity.sub&quot;},&quot;Groups&quot;:null,&quot;ResourceAttributes&quot;:null}},&quot;object&quot;:true}
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.3052874,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.response&quot;,&quot;msg&quot;:&quot;dynamic response built&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;wristband&quot;,&quot;Wrapper&quot;:&quot;httpHeader&quot;,&quot;WrapperKey&quot;:&quot;x-ext-auth-wristband&quot;,&quot;Wristband&quot;:{&quot;Issuer&quot;:&quot;https://authorino-oidc.default.svc:8083/default/talker-api-protection/wristband&quot;,&quot;CustomClaims&quot;:[],&quot;TokenDuration&quot;:300,&quot;SigningKeys&quot;:[{&quot;use&quot;:&quot;sig&quot;,&quot;kty&quot;:&quot;EC&quot;,&quot;kid&quot;:&quot;wristband-signing-key&quot;,&quot;crv&quot;:&quot;P-256&quot;,&quot;alg&quot;:&quot;ES256&quot;,&quot;x&quot;:&quot;TJf5NLVKplSYp95TOfhVPqvxvEibRyjrUZwwtpDuQZw&quot;,&quot;y&quot;:&quot;SSg8rKBsJ3J1LxyLtt0oFvhHvZcUpmRoTuHk3UHisTA&quot;,&quot;d&quot;:&quot;Me-5_zWBWVYajSGZcZMCcD8dXEa4fy85zv_yN7BxW-o&quot;}]},&quot;DynamicJSON&quot;:null},&quot;object&quot;:&quot;eyJhbGciOiJFUzI1NiIsImtpZCI6IndyaXN0YmFuZC1zaWduaW5nLWtleSIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzQ4MzA3NjAsImlhdCI6MTYzNDgzMDQ2MCwiaXNzIjoiaHR0cHM6Ly9hdXRob3Jpbm8tb2lkYy5hdXRob3Jpbm8uc3ZjOjgwODMvYXV0aG9yaW5vL3RhbGtlci1hcGktcHJvdGVjdGlvbi93cmlzdGJhbmQiLCJzdWIiOiI4NDliMDk0ZDA4MzU0ZjM0MjA4ZGI3MjBmYWZmODlmNmM3NmYyOGY3MTcxOWI4NTQ3ZDk5NWNlNzAwMjU2ZGY4In0.Jn-VB5Q_0EX1ed1ji4KvhO4DlMqZeIl5H0qlukbTyYkp-Pgb4SnPGSbYWp5_uvG8xllsFAA5nuyBIXeba-dbkw&quot;}
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634830460.3054585,&quot;logger&quot;:&quot;authorino.service.auth&quot;,&quot;msg&quot;:&quot;outgoing authorization response&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;authorized&quot;:true,&quot;response&quot;:&quot;OK&quot;}
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830460.305476,&quot;logger&quot;:&quot;authorino.service.auth&quot;,&quot;msg&quot;:&quot;outgoing authorization response&quot;,&quot;request id&quot;:&quot;8157480586935853928&quot;,&quot;authorized&quot;:true,&quot;response&quot;:&quot;OK&quot;}
+</span></code></pre></div>
+<h4 id="enforcing-authconfig-while-authenticating-with-api-key">Enforcing <code>AuthConfig</code> while authenticating with API key:<a class="headerlink" href="#enforcing-authconfig-while-authenticating-with-api-key" title="Permanent link">&para;</a></h4>
+<details>
+  <summary><code>AuhConfig</code> composed of:</summary>
+
+
+  - identity: k8s-auth, oidc, oauth2, apikey
+  - metadata: http, oidc userinfo
+  - authorization: opa, k8s-authz
+  - response: wristband
+</details>
+
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634830413.2425854,&quot;logger&quot;:&quot;authorino.service.auth&quot;,&quot;msg&quot;:&quot;incoming authorization request&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;object&quot;:{&quot;source&quot;:{&quot;address&quot;:{&quot;Address&quot;:{&quot;SocketAddress&quot;:{&quot;address&quot;:&quot;127.0.0.1&quot;,&quot;PortSpecifier&quot;:{&quot;PortValue&quot;:52702}}}}},&quot;destination&quot;:{&quot;address&quot;:{&quot;Address&quot;:{&quot;SocketAddress&quot;:{&quot;address&quot;:&quot;127.0.0.1&quot;,&quot;PortSpecifier&quot;:{&quot;PortValue&quot;:8000}}}}},&quot;request&quot;:{&quot;http&quot;:{&quot;id&quot;:&quot;7199257136822741594&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;path&quot;:&quot;/hello&quot;,&quot;host&quot;:&quot;talker-api&quot;,&quot;scheme&quot;:&quot;http&quot;}}}}
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830413.2426975,&quot;logger&quot;:&quot;authorino.service.auth&quot;,&quot;msg&quot;:&quot;incoming authorization request&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;object&quot;:{&quot;source&quot;:{&quot;address&quot;:{&quot;Address&quot;:{&quot;SocketAddress&quot;:{&quot;address&quot;:&quot;127.0.0.1&quot;,&quot;PortSpecifier&quot;:{&quot;PortValue&quot;:52702}}}}},&quot;destination&quot;:{&quot;address&quot;:{&quot;Address&quot;:{&quot;SocketAddress&quot;:{&quot;address&quot;:&quot;127.0.0.1&quot;,&quot;PortSpecifier&quot;:{&quot;PortValue&quot;:8000}}}}},&quot;request&quot;:{&quot;time&quot;:{&quot;seconds&quot;:1634830413,&quot;nanos&quot;:240094000},&quot;http&quot;:{&quot;id&quot;:&quot;7199257136822741594&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;headers&quot;:{&quot;:authority&quot;:&quot;talker-api&quot;,&quot;:method&quot;:&quot;GET&quot;,&quot;:path&quot;:&quot;/hello&quot;,&quot;:scheme&quot;:&quot;http&quot;,&quot;accept&quot;:&quot;*/*&quot;,&quot;authorization&quot;:&quot;APIKEY ndyBzreUzF4zqDQsqSPMHkRhriEOtcRx&quot;,&quot;user-agent&quot;:&quot;curl/7.65.3&quot;,&quot;x-envoy-internal&quot;:&quot;true&quot;,&quot;x-forwarded-for&quot;:&quot;10.244.0.11&quot;,&quot;x-forwarded-proto&quot;:&quot;http&quot;,&quot;x-request-id&quot;:&quot;d38f5e66-bd72-4733-95d1-3179315cdd60&quot;},&quot;path&quot;:&quot;/hello&quot;,&quot;host&quot;:&quot;talker-api&quot;,&quot;scheme&quot;:&quot;http&quot;,&quot;protocol&quot;:&quot;HTTP/1.1&quot;}},&quot;context_extensions&quot;:{&quot;virtual_host&quot;:&quot;local_service&quot;},&quot;metadata_context&quot;:{}}}
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830413.2428744,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.identity&quot;,&quot;msg&quot;:&quot;cannot validate identity&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;k8s-service-accounts&quot;,&quot;ExtendedProperties&quot;:[],&quot;OAuth2&quot;:null,&quot;OIDC&quot;:null,&quot;MTLS&quot;:null,&quot;HMAC&quot;:null,&quot;APIKey&quot;:null,&quot;KubernetesAuth&quot;:{&quot;AuthCredentials&quot;:{&quot;KeySelector&quot;:&quot;Bearer&quot;,&quot;In&quot;:&quot;authorization_header&quot;}}},&quot;reason&quot;:&quot;credential not found&quot;}
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830413.2434332,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline&quot;,&quot;msg&quot;:&quot;skipping config&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;keycloak-jwts&quot;,&quot;ExtendedProperties&quot;:[],&quot;OAuth2&quot;:null,&quot;OIDC&quot;:{&quot;AuthCredentials&quot;:{&quot;KeySelector&quot;:&quot;Bearer&quot;,&quot;In&quot;:&quot;authorization_header&quot;},&quot;Endpoint&quot;:&quot;http://keycloak:8080/auth/realms/kuadrant&quot;},&quot;MTLS&quot;:null,&quot;HMAC&quot;:null,&quot;APIKey&quot;:null,&quot;KubernetesAuth&quot;:null},&quot;reason&quot;:&quot;context canceled&quot;}
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830413.2479305,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.identity&quot;,&quot;msg&quot;:&quot;identity validated&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;api-keys&quot;,&quot;ExtendedProperties&quot;:[{&quot;Name&quot;:&quot;sub&quot;,&quot;Value&quot;:{&quot;Static&quot;:null,&quot;Pattern&quot;:&quot;auth.identity.metadata.annotations.userid&quot;}}],&quot;OAuth2&quot;:null,&quot;OIDC&quot;:null,&quot;MTLS&quot;:null,&quot;HMAC&quot;:null,&quot;APIKey&quot;:{&quot;AuthCredentials&quot;:{&quot;KeySelector&quot;:&quot;APIKEY&quot;,&quot;In&quot;:&quot;authorization_header&quot;},&quot;Name&quot;:&quot;api-keys&quot;,&quot;LabelSelectors&quot;:{&quot;audience&quot;:&quot;talker-api&quot;,&quot;authorino.kuadrant.io/managed-by&quot;:&quot;authorino&quot;}},&quot;KubernetesAuth&quot;:null},&quot;object&quot;:{&quot;apiVersion&quot;:&quot;v1&quot;,&quot;data&quot;:{&quot;api_key&quot;:&quot;bmR5QnpyZVV6RjR6cURRc3FTUE1Ia1JocmlFT3RjUng=&quot;},&quot;kind&quot;:&quot;Secret&quot;,&quot;metadata&quot;:{&quot;annotations&quot;:{&quot;kubectl.kubernetes.io/last-applied-configuration&quot;:&quot;{\&quot;apiVersion\&quot;:\&quot;v1\&quot;,\&quot;kind\&quot;:\&quot;Secret\&quot;,\&quot;metadata\&quot;:{\&quot;annotations\&quot;:{\&quot;userid\&quot;:\&quot;john\&quot;},\&quot;labels\&quot;:{\&quot;audience\&quot;:\&quot;talker-api\&quot;,\&quot;authorino.kuadrant.io/managed-by\&quot;:\&quot;authorino\&quot;},\&quot;name\&quot;:\&quot;api-key-1\&quot;,\&quot;namespace\&quot;:\&quot;authorino\&quot;},\&quot;stringData\&quot;:{\&quot;api_key\&quot;:\&quot;ndyBzreUzF4zqDQsqSPMHkRhriEOtcRx\&quot;},\&quot;type\&quot;:\&quot;Opaque\&quot;}\n&quot;,&quot;userid&quot;:&quot;john&quot;},&quot;creationTimestamp&quot;:&quot;2021-10-21T14:45:54Z&quot;,&quot;labels&quot;:{&quot;audience&quot;:&quot;talker-api&quot;,&quot;authorino.kuadrant.io/managed-by&quot;:&quot;authorino&quot;},&quot;managedFields&quot;:[{&quot;apiVersion&quot;:&quot;v1&quot;,&quot;fieldsType&quot;:&quot;FieldsV1&quot;,&quot;fieldsV1&quot;:{&quot;f:data&quot;:{&quot;.&quot;:{},&quot;f:api_key&quot;:{}},&quot;f:metadata&quot;:{&quot;f:annotations&quot;:{&quot;.&quot;:{},&quot;f:kubectl.kubernetes.io/last-applied-configuration&quot;:{},&quot;f:userid&quot;:{}},&quot;f:labels&quot;:{&quot;.&quot;:{},&quot;f:audience&quot;:{},&quot;f:authorino.kuadrant.io/managed-by&quot;:{}}},&quot;f:type&quot;:{}},&quot;manager&quot;:&quot;kubectl-client-side-apply&quot;,&quot;operation&quot;:&quot;Update&quot;,&quot;time&quot;:&quot;2021-10-21T14:45:54Z&quot;}],&quot;name&quot;:&quot;api-key-1&quot;,&quot;namespace&quot;:&quot;authorino&quot;,&quot;resourceVersion&quot;:&quot;8979&quot;,&quot;uid&quot;:&quot;c369852a-7e1a-43bd-94ca-e2b3f617052e&quot;},&quot;sub&quot;:&quot;john&quot;,&quot;type&quot;:&quot;Opaque&quot;}}
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830413.248768,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.metadata.http&quot;,&quot;msg&quot;:&quot;sending request&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;url&quot;:&quot;http://talker-api.default.svc.cluster.local:3000/metadata?encoding=text/plain&amp;original_path=/hello&quot;,&quot;headers&quot;:{&quot;Content-Type&quot;:[&quot;text/plain&quot;]}}
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830413.2496722,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.metadata&quot;,&quot;msg&quot;:&quot;cannot fetch metadata&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;oidc-userinfo&quot;,&quot;UserInfo&quot;:{&quot;OIDC&quot;:{&quot;AuthCredentials&quot;:{&quot;KeySelector&quot;:&quot;Bearer&quot;,&quot;In&quot;:&quot;authorization_header&quot;},&quot;Endpoint&quot;:&quot;http://keycloak:8080/auth/realms/kuadrant&quot;}},&quot;UMA&quot;:null,&quot;GenericHTTP&quot;:null},&quot;reason&quot;:&quot;Missing identity for OIDC issuer http://keycloak:8080/auth/realms/kuadrant. Skipping related UserInfo metadata.&quot;}
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830413.2497928,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.metadata.uma&quot;,&quot;msg&quot;:&quot;requesting pat&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;url&quot;:&quot;http://talker-api:523b92b6-625d-4e1e-a313-77e7a8ae4e88@keycloak:8080/auth/realms/kuadrant/protocol/openid-connect/token&quot;,&quot;data&quot;:&quot;grant_type=client_credentials&quot;,&quot;headers&quot;:{&quot;Content-Type&quot;:[&quot;application/x-www-form-urlencoded&quot;]}}
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830413.258932,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.metadata&quot;,&quot;msg&quot;:&quot;fetched auth metadata&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;http-metadata&quot;,&quot;UserInfo&quot;:null,&quot;UMA&quot;:null,&quot;GenericHTTP&quot;:{&quot;Endpoint&quot;:&quot;http://talker-api.default.svc.cluster.local:3000/metadata?encoding=text/plain&amp;original_path={context.request.http.path}&quot;,&quot;Method&quot;:&quot;GET&quot;,&quot;Parameters&quot;:[],&quot;ContentType&quot;:&quot;application/x-www-form-urlencoded&quot;,&quot;SharedSecret&quot;:&quot;&quot;,&quot;AuthCredentials&quot;:{&quot;KeySelector&quot;:&quot;Bearer&quot;,&quot;In&quot;:&quot;authorization_header&quot;}}},&quot;object&quot;:{&quot;body&quot;:&quot;&quot;,&quot;headers&quot;:{&quot;Accept-Encoding&quot;:&quot;gzip&quot;,&quot;Content-Type&quot;:&quot;text/plain&quot;,&quot;Host&quot;:&quot;talker-api.default.svc.cluster.local:3000&quot;,&quot;User-Agent&quot;:&quot;Go-http-client/1.1&quot;,&quot;Version&quot;:&quot;HTTP/1.1&quot;},&quot;method&quot;:&quot;GET&quot;,&quot;path&quot;:&quot;/metadata&quot;,&quot;query_string&quot;:&quot;encoding=text/plain&amp;original_path=/hello&quot;,&quot;uuid&quot;:&quot;97529f8c-587b-4121-a4db-cd90c63871fd&quot;}}
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830413.2945344,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.metadata.uma&quot;,&quot;msg&quot;:&quot;querying resources by uri&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;url&quot;:&quot;http://keycloak:8080/auth/realms/kuadrant/authz/protection/resource_set?uri=/hello&quot;}
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830413.3123596,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.metadata.uma&quot;,&quot;msg&quot;:&quot;getting resource data&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;url&quot;:&quot;http://keycloak:8080/auth/realms/kuadrant/authz/protection/resource_set/e20d194c-274c-4845-8c02-0ca413c9bf18&quot;}
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830413.3340268,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.metadata&quot;,&quot;msg&quot;:&quot;fetched auth metadata&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;uma-resource-registry&quot;,&quot;UserInfo&quot;:null,&quot;UMA&quot;:{&quot;Endpoint&quot;:&quot;http://keycloak:8080/auth/realms/kuadrant&quot;,&quot;ClientID&quot;:&quot;talker-api&quot;,&quot;ClientSecret&quot;:&quot;523b92b6-625d-4e1e-a313-77e7a8ae4e88&quot;},&quot;GenericHTTP&quot;:null},&quot;object&quot;:[{&quot;_id&quot;:&quot;e20d194c-274c-4845-8c02-0ca413c9bf18&quot;,&quot;attributes&quot;:{},&quot;displayName&quot;:&quot;hello&quot;,&quot;name&quot;:&quot;hello&quot;,&quot;owner&quot;:{&quot;id&quot;:&quot;57a645a5-fb67-438b-8be5-dfb971666dbc&quot;},&quot;ownerManagedAccess&quot;:false,&quot;resource_scopes&quot;:[],&quot;uris&quot;:[&quot;/hi&quot;,&quot;/hello&quot;]}]}
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830413.3367748,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.authorization&quot;,&quot;msg&quot;:&quot;evaluating for input&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;input&quot;:{&quot;context&quot;:{&quot;source&quot;:{&quot;address&quot;:{&quot;Address&quot;:{&quot;SocketAddress&quot;:{&quot;address&quot;:&quot;127.0.0.1&quot;,&quot;PortSpecifier&quot;:{&quot;PortValue&quot;:52702}}}}},&quot;destination&quot;:{&quot;address&quot;:{&quot;Address&quot;:{&quot;SocketAddress&quot;:{&quot;address&quot;:&quot;127.0.0.1&quot;,&quot;PortSpecifier&quot;:{&quot;PortValue&quot;:8000}}}}},&quot;request&quot;:{&quot;time&quot;:{&quot;seconds&quot;:1634830413,&quot;nanos&quot;:240094000},&quot;http&quot;:{&quot;id&quot;:&quot;7199257136822741594&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;headers&quot;:{&quot;:authority&quot;:&quot;talker-api&quot;,&quot;:method&quot;:&quot;GET&quot;,&quot;:path&quot;:&quot;/hello&quot;,&quot;:scheme&quot;:&quot;http&quot;,&quot;accept&quot;:&quot;*/*&quot;,&quot;authorization&quot;:&quot;APIKEY ndyBzreUzF4zqDQsqSPMHkRhriEOtcRx&quot;,&quot;user-agent&quot;:&quot;curl/7.65.3&quot;,&quot;x-envoy-internal&quot;:&quot;true&quot;,&quot;x-forwarded-for&quot;:&quot;10.244.0.11&quot;,&quot;x-forwarded-proto&quot;:&quot;http&quot;,&quot;x-request-id&quot;:&quot;d38f5e66-bd72-4733-95d1-3179315cdd60&quot;},&quot;path&quot;:&quot;/hello&quot;,&quot;host&quot;:&quot;talker-api&quot;,&quot;scheme&quot;:&quot;http&quot;,&quot;protocol&quot;:&quot;HTTP/1.1&quot;}},&quot;context_extensions&quot;:{&quot;virtual_host&quot;:&quot;local_service&quot;},&quot;metadata_context&quot;:{}},&quot;auth&quot;:{&quot;identity&quot;:{&quot;apiVersion&quot;:&quot;v1&quot;,&quot;data&quot;:{&quot;api_key&quot;:&quot;bmR5QnpyZVV6RjR6cURRc3FTUE1Ia1JocmlFT3RjUng=&quot;},&quot;kind&quot;:&quot;Secret&quot;,&quot;metadata&quot;:{&quot;annotations&quot;:{&quot;kubectl.kubernetes.io/last-applied-configuration&quot;:&quot;{\&quot;apiVersion\&quot;:\&quot;v1\&quot;,\&quot;kind\&quot;:\&quot;Secret\&quot;,\&quot;metadata\&quot;:{\&quot;annotations\&quot;:{\&quot;userid\&quot;:\&quot;john\&quot;},\&quot;labels\&quot;:{\&quot;audience\&quot;:\&quot;talker-api\&quot;,\&quot;authorino.kuadrant.io/managed-by\&quot;:\&quot;authorino\&quot;},\&quot;name\&quot;:\&quot;api-key-1\&quot;,\&quot;namespace\&quot;:\&quot;authorino\&quot;},\&quot;stringData\&quot;:{\&quot;api_key\&quot;:\&quot;ndyBzreUzF4zqDQsqSPMHkRhriEOtcRx\&quot;},\&quot;type\&quot;:\&quot;Opaque\&quot;}\n&quot;,&quot;userid&quot;:&quot;john&quot;},&quot;creationTimestamp&quot;:&quot;2021-10-21T14:45:54Z&quot;,&quot;labels&quot;:{&quot;audience&quot;:&quot;talker-api&quot;,&quot;authorino.kuadrant.io/managed-by&quot;:&quot;authorino&quot;},&quot;managedFields&quot;:[{&quot;apiVersion&quot;:&quot;v1&quot;,&quot;fieldsType&quot;:&quot;FieldsV1&quot;,&quot;fieldsV1&quot;:{&quot;f:data&quot;:{&quot;.&quot;:{},&quot;f:api_key&quot;:{}},&quot;f:metadata&quot;:{&quot;f:annotations&quot;:{&quot;.&quot;:{},&quot;f:kubectl.kubernetes.io/last-applied-configuration&quot;:{},&quot;f:userid&quot;:{}},&quot;f:labels&quot;:{&quot;.&quot;:{},&quot;f:audience&quot;:{},&quot;f:authorino.kuadrant.io/managed-by&quot;:{}}},&quot;f:type&quot;:{}},&quot;manager&quot;:&quot;kubectl-client-side-apply&quot;,&quot;operation&quot;:&quot;Update&quot;,&quot;time&quot;:&quot;2021-10-21T14:45:54Z&quot;}],&quot;name&quot;:&quot;api-key-1&quot;,&quot;namespace&quot;:&quot;authorino&quot;,&quot;resourceVersion&quot;:&quot;8979&quot;,&quot;uid&quot;:&quot;c369852a-7e1a-43bd-94ca-e2b3f617052e&quot;},&quot;sub&quot;:&quot;john&quot;,&quot;type&quot;:&quot;Opaque&quot;},&quot;metadata&quot;:{&quot;http-metadata&quot;:{&quot;body&quot;:&quot;&quot;,&quot;headers&quot;:{&quot;Accept-Encoding&quot;:&quot;gzip&quot;,&quot;Content-Type&quot;:&quot;text/plain&quot;,&quot;Host&quot;:&quot;talker-api.default.svc.cluster.local:3000&quot;,&quot;User-Agent&quot;:&quot;Go-http-client/1.1&quot;,&quot;Version&quot;:&quot;HTTP/1.1&quot;},&quot;method&quot;:&quot;GET&quot;,&quot;path&quot;:&quot;/metadata&quot;,&quot;query_string&quot;:&quot;encoding=text/plain&amp;original_path=/hello&quot;,&quot;uuid&quot;:&quot;97529f8c-587b-4121-a4db-cd90c63871fd&quot;},&quot;uma-resource-registry&quot;:[{&quot;_id&quot;:&quot;e20d194c-274c-4845-8c02-0ca413c9bf18&quot;,&quot;attributes&quot;:{},&quot;displayName&quot;:&quot;hello&quot;,&quot;name&quot;:&quot;hello&quot;,&quot;owner&quot;:{&quot;id&quot;:&quot;57a645a5-fb67-438b-8be5-dfb971666dbc&quot;},&quot;ownerManagedAccess&quot;:false,&quot;resource_scopes&quot;:[],&quot;uris&quot;:[&quot;/hi&quot;,&quot;/hello&quot;]}]}}}}
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830413.339894,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.authorization&quot;,&quot;msg&quot;:&quot;access granted&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;my-policy&quot;,&quot;OPA&quot;:{&quot;Rego&quot;:&quot;fail := input.context.request.http.headers[\&quot;x-ext-auth-mock\&quot;] == \&quot;FAIL\&quot;\nallow { not fail }\n&quot;,&quot;OPAExternalSource&quot;:{&quot;Endpoint&quot;:&quot;&quot;,&quot;SharedSecret&quot;:&quot;&quot;,&quot;AuthCredentials&quot;:{&quot;KeySelector&quot;:&quot;Bearer&quot;,&quot;In&quot;:&quot;authorization_header&quot;}}},&quot;JSON&quot;:null,&quot;KubernetesAuthz&quot;:null},&quot;object&quot;:true}
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830413.3444238,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.authorization.kubernetesauthz&quot;,&quot;msg&quot;:&quot;calling kubernetes subject access review api&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;subjectaccessreview&quot;:{&quot;metadata&quot;:{&quot;creationTimestamp&quot;:null},&quot;spec&quot;:{&quot;nonResourceAttributes&quot;:{&quot;path&quot;:&quot;/hello&quot;,&quot;verb&quot;:&quot;get&quot;},&quot;user&quot;:&quot;john&quot;},&quot;status&quot;:{&quot;allowed&quot;:false}}}
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830413.3547812,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.authorization&quot;,&quot;msg&quot;:&quot;access granted&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;kubernetes-rbac&quot;,&quot;OPA&quot;:null,&quot;JSON&quot;:null,&quot;KubernetesAuthz&quot;:{&quot;Conditions&quot;:[],&quot;User&quot;:{&quot;Static&quot;:&quot;&quot;,&quot;Pattern&quot;:&quot;auth.identity.sub&quot;},&quot;Groups&quot;:null,&quot;ResourceAttributes&quot;:null}},&quot;object&quot;:true}
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830413.3558292,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.response&quot;,&quot;msg&quot;:&quot;dynamic response built&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;wristband&quot;,&quot;Wrapper&quot;:&quot;httpHeader&quot;,&quot;WrapperKey&quot;:&quot;x-ext-auth-wristband&quot;,&quot;Wristband&quot;:{&quot;Issuer&quot;:&quot;https://authorino-oidc.default.svc:8083/default/talker-api-protection/wristband&quot;,&quot;CustomClaims&quot;:[],&quot;TokenDuration&quot;:300,&quot;SigningKeys&quot;:[{&quot;use&quot;:&quot;sig&quot;,&quot;kty&quot;:&quot;EC&quot;,&quot;kid&quot;:&quot;wristband-signing-key&quot;,&quot;crv&quot;:&quot;P-256&quot;,&quot;alg&quot;:&quot;ES256&quot;,&quot;x&quot;:&quot;TJf5NLVKplSYp95TOfhVPqvxvEibRyjrUZwwtpDuQZw&quot;,&quot;y&quot;:&quot;SSg8rKBsJ3J1LxyLtt0oFvhHvZcUpmRoTuHk3UHisTA&quot;,&quot;d&quot;:&quot;Me-5_zWBWVYajSGZcZMCcD8dXEa4fy85zv_yN7BxW-o&quot;}]},&quot;DynamicJSON&quot;:null},&quot;object&quot;:&quot;eyJhbGciOiJFUzI1NiIsImtpZCI6IndyaXN0YmFuZC1zaWduaW5nLWtleSIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzQ4MzA3MTMsImlhdCI6MTYzNDgzMDQxMywiaXNzIjoiaHR0cHM6Ly9hdXRob3Jpbm8tb2lkYy5hdXRob3Jpbm8uc3ZjOjgwODMvYXV0aG9yaW5vL3RhbGtlci1hcGktcHJvdGVjdGlvbi93cmlzdGJhbmQiLCJzdWIiOiI5NjhiZjViZjk3MDM3NWRiNjE0ZDFhMDgzZTg2NTBhYTVhMGVhMzAyOTdiYmJjMTBlNWVlMWZmYTkxYTYwZmY4In0.7G440sWgi2TIaxrGJf5KWR9UOFpNTjwVYeaJXFLzsLhVNICoMLbYzBAEo4M3ym1jipxxTVeE7anm4qDDc7cnVQ&quot;}
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634830413.3569078,&quot;logger&quot;:&quot;authorino.service.auth&quot;,&quot;msg&quot;:&quot;outgoing authorization response&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;authorized&quot;:true,&quot;response&quot;:&quot;OK&quot;}
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830413.3569596,&quot;logger&quot;:&quot;authorino.service.auth&quot;,&quot;msg&quot;:&quot;outgoing authorization response&quot;,&quot;request id&quot;:&quot;7199257136822741594&quot;,&quot;authorized&quot;:true,&quot;response&quot;:&quot;OK&quot;}
+</span></code></pre></div>
+<h4 id="enforcing-authconfig-while-authenticating-with-invalid-api-key">Enforcing <code>AuthConfig</code> while authenticating with invalid API key:<a class="headerlink" href="#enforcing-authconfig-while-authenticating-with-invalid-api-key" title="Permanent link">&para;</a></h4>
+<details>
+  <summary><code>AuhConfig</code> composed of:</summary>
+
+
+  - identity: k8s-auth, oidc, oauth2, apikey
+  - metadata: http, oidc userinfo
+  - authorization: opa, k8s-authz
+  - response: wristband
+</details>
+
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634830373.2066543,&quot;logger&quot;:&quot;authorino.service.auth&quot;,&quot;msg&quot;:&quot;incoming authorization request&quot;,&quot;request id&quot;:&quot;12947265773116138711&quot;,&quot;object&quot;:{&quot;source&quot;:{&quot;address&quot;:{&quot;Address&quot;:{&quot;SocketAddress&quot;:{&quot;address&quot;:&quot;127.0.0.1&quot;,&quot;PortSpecifier&quot;:{&quot;PortValue&quot;:52288}}}}},&quot;destination&quot;:{&quot;address&quot;:{&quot;Address&quot;:{&quot;SocketAddress&quot;:{&quot;address&quot;:&quot;127.0.0.1&quot;,&quot;PortSpecifier&quot;:{&quot;PortValue&quot;:8000}}}}},&quot;request&quot;:{&quot;http&quot;:{&quot;id&quot;:&quot;12947265773116138711&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;path&quot;:&quot;/hello&quot;,&quot;host&quot;:&quot;talker-api&quot;,&quot;scheme&quot;:&quot;http&quot;}}}}
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830373.2068064,&quot;logger&quot;:&quot;authorino.service.auth&quot;,&quot;msg&quot;:&quot;incoming authorization request&quot;,&quot;request id&quot;:&quot;12947265773116138711&quot;,&quot;object&quot;:{&quot;source&quot;:{&quot;address&quot;:{&quot;Address&quot;:{&quot;SocketAddress&quot;:{&quot;address&quot;:&quot;127.0.0.1&quot;,&quot;PortSpecifier&quot;:{&quot;PortValue&quot;:52288}}}}},&quot;destination&quot;:{&quot;address&quot;:{&quot;Address&quot;:{&quot;SocketAddress&quot;:{&quot;address&quot;:&quot;127.0.0.1&quot;,&quot;PortSpecifier&quot;:{&quot;PortValue&quot;:8000}}}}},&quot;request&quot;:{&quot;time&quot;:{&quot;seconds&quot;:1634830373,&quot;nanos&quot;:198329000},&quot;http&quot;:{&quot;id&quot;:&quot;12947265773116138711&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;headers&quot;:{&quot;:authority&quot;:&quot;talker-api&quot;,&quot;:method&quot;:&quot;GET&quot;,&quot;:path&quot;:&quot;/hello&quot;,&quot;:scheme&quot;:&quot;http&quot;,&quot;accept&quot;:&quot;*/*&quot;,&quot;authorization&quot;:&quot;APIKEY invalid&quot;,&quot;user-agent&quot;:&quot;curl/7.65.3&quot;,&quot;x-envoy-internal&quot;:&quot;true&quot;,&quot;x-forwarded-for&quot;:&quot;10.244.0.11&quot;,&quot;x-forwarded-proto&quot;:&quot;http&quot;,&quot;x-request-id&quot;:&quot;9e391846-afe4-489a-8716-23a2e1c1aa77&quot;},&quot;path&quot;:&quot;/hello&quot;,&quot;host&quot;:&quot;talker-api&quot;,&quot;scheme&quot;:&quot;http&quot;,&quot;protocol&quot;:&quot;HTTP/1.1&quot;}},&quot;context_extensions&quot;:{&quot;virtual_host&quot;:&quot;local_service&quot;},&quot;metadata_context&quot;:{}}}
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830373.2070816,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.identity&quot;,&quot;msg&quot;:&quot;cannot validate identity&quot;,&quot;request id&quot;:&quot;12947265773116138711&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;keycloak-opaque&quot;,&quot;ExtendedProperties&quot;:[],&quot;OAuth2&quot;:{&quot;AuthCredentials&quot;:{&quot;KeySelector&quot;:&quot;Bearer&quot;,&quot;In&quot;:&quot;authorization_header&quot;},&quot;TokenIntrospectionUrl&quot;:&quot;http://keycloak:8080/auth/realms/kuadrant/protocol/openid-connect/token/introspect&quot;,&quot;TokenTypeHint&quot;:&quot;requesting_party_token&quot;,&quot;ClientID&quot;:&quot;talker-api&quot;,&quot;ClientSecret&quot;:&quot;523b92b6-625d-4e1e-a313-77e7a8ae4e88&quot;},&quot;OIDC&quot;:null,&quot;MTLS&quot;:null,&quot;HMAC&quot;:null,&quot;APIKey&quot;:null,&quot;KubernetesAuth&quot;:null},&quot;reason&quot;:&quot;credential not found&quot;}
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830373.207225,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.identity&quot;,&quot;msg&quot;:&quot;cannot validate identity&quot;,&quot;request id&quot;:&quot;12947265773116138711&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;api-keys&quot;,&quot;ExtendedProperties&quot;:[{&quot;Name&quot;:&quot;sub&quot;,&quot;Value&quot;:{&quot;Static&quot;:null,&quot;Pattern&quot;:&quot;auth.identity.metadata.annotations.userid&quot;}}],&quot;OAuth2&quot;:null,&quot;OIDC&quot;:null,&quot;MTLS&quot;:null,&quot;HMAC&quot;:null,&quot;APIKey&quot;:{&quot;AuthCredentials&quot;:{&quot;KeySelector&quot;:&quot;APIKEY&quot;,&quot;In&quot;:&quot;authorization_header&quot;},&quot;Name&quot;:&quot;api-keys&quot;,&quot;LabelSelectors&quot;:{&quot;audience&quot;:&quot;talker-api&quot;,&quot;authorino.kuadrant.io/managed-by&quot;:&quot;authorino&quot;}},&quot;KubernetesAuth&quot;:null},&quot;reason&quot;:&quot;the API Key provided is invalid&quot;}
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830373.2072473,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.identity&quot;,&quot;msg&quot;:&quot;cannot validate identity&quot;,&quot;request id&quot;:&quot;12947265773116138711&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;k8s-service-accounts&quot;,&quot;ExtendedProperties&quot;:[],&quot;OAuth2&quot;:null,&quot;OIDC&quot;:null,&quot;MTLS&quot;:null,&quot;HMAC&quot;:null,&quot;APIKey&quot;:null,&quot;KubernetesAuth&quot;:{&quot;AuthCredentials&quot;:{&quot;KeySelector&quot;:&quot;Bearer&quot;,&quot;In&quot;:&quot;authorization_header&quot;}}},&quot;reason&quot;:&quot;credential not found&quot;}
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830373.2072592,&quot;logger&quot;:&quot;authorino.service.auth.authpipeline.identity&quot;,&quot;msg&quot;:&quot;cannot validate identity&quot;,&quot;request id&quot;:&quot;12947265773116138711&quot;,&quot;config&quot;:{&quot;Name&quot;:&quot;keycloak-jwts&quot;,&quot;ExtendedProperties&quot;:[],&quot;OAuth2&quot;:null,&quot;OIDC&quot;:{&quot;AuthCredentials&quot;:{&quot;KeySelector&quot;:&quot;Bearer&quot;,&quot;In&quot;:&quot;authorization_header&quot;},&quot;Endpoint&quot;:&quot;http://keycloak:8080/auth/realms/kuadrant&quot;},&quot;MTLS&quot;:null,&quot;HMAC&quot;:null,&quot;APIKey&quot;:null,&quot;KubernetesAuth&quot;:null},&quot;reason&quot;:&quot;credential not found&quot;}
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634830373.2073083,&quot;logger&quot;:&quot;authorino.service.auth&quot;,&quot;msg&quot;:&quot;outgoing authorization response&quot;,&quot;request id&quot;:&quot;12947265773116138711&quot;,&quot;authorized&quot;:false,&quot;response&quot;:&quot;UNAUTHENTICATED&quot;,&quot;object&quot;:{&quot;code&quot;:16,&quot;status&quot;:302,&quot;message&quot;:&quot;Redirecting to login&quot;}}
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>{&quot;level&quot;:&quot;debug&quot;,&quot;ts&quot;:1634830373.2073889,&quot;logger&quot;:&quot;authorino.service.auth&quot;,&quot;msg&quot;:&quot;outgoing authorization response&quot;,&quot;request id&quot;:&quot;12947265773116138711&quot;,&quot;authorized&quot;:false,&quot;response&quot;:&quot;UNAUTHENTICATED&quot;,&quot;object&quot;:{&quot;code&quot;:16,&quot;status&quot;:302,&quot;message&quot;:&quot;Redirecting to login&quot;,&quot;headers&quot;:[{&quot;Location&quot;:&quot;https://my-app.io/login&quot;}]}}
+</span></code></pre></div>
+<h4 id="deleting-authconfig-and-related-api-key-secrets">Deleting <code>AuthConfig</code> and related API key <code>Secret</code>s:<a class="headerlink" href="#deleting-authconfig-and-related-api-key-secrets" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634675366.8794427,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.authconfig&quot;,&quot;msg&quot;:&quot;resource reconciled&quot;,&quot;authconfig&quot;:&quot;authorino/talker-api-protection&quot;}
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634675366.9552257,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.secret&quot;,&quot;msg&quot;:&quot;resource reconciled&quot;,&quot;secret&quot;:&quot;authorino/api-key-1&quot;}
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634675366.9749846,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.secret&quot;,&quot;msg&quot;:&quot;resource reconciled&quot;,&quot;secret&quot;:&quot;authorino/api-key-2&quot;}
+</span></code></pre></div>
+<h4 id="shutting-down-the-service">Shutting down the service:<a class="headerlink" href="#shutting-down-the-service" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634675390.0908618,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.authconfig&quot;,&quot;msg&quot;:&quot;Shutdown signal received, waiting for all workers to finish&quot;,&quot;reconciler group&quot;:&quot;authorino.kuadrant.io&quot;,&quot;reconciler kind&quot;:&quot;AuthConfig&quot;}
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634675390.0909622,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.secret&quot;,&quot;msg&quot;:&quot;Shutdown signal received, waiting for all workers to finish&quot;,&quot;reconciler group&quot;:&quot;&quot;,&quot;reconciler kind&quot;:&quot;Secret&quot;}
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634675390.0968425,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.authconfig&quot;,&quot;msg&quot;:&quot;Shutdown signal received, waiting for all workers to finish&quot;,&quot;reconciler group&quot;:&quot;authorino.kuadrant.io&quot;,&quot;reconciler kind&quot;:&quot;AuthConfig&quot;}
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634675390.101609,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.secret&quot;,&quot;msg&quot;:&quot;All workers finished&quot;,&quot;reconciler group&quot;:&quot;&quot;,&quot;reconciler kind&quot;:&quot;Secret&quot;}
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634675390.10166,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.authconfig&quot;,&quot;msg&quot;:&quot;All workers finished&quot;,&quot;reconciler group&quot;:&quot;authorino.kuadrant.io&quot;,&quot;reconciler kind&quot;:&quot;AuthConfig&quot;}
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1634675390.1017516,&quot;logger&quot;:&quot;authorino.controller-runtime.manager.controller.authconfig&quot;,&quot;msg&quot;:&quot;All workers finished&quot;,&quot;reconciler group&quot;:&quot;authorino.kuadrant.io&quot;,&quot;reconciler kind&quot;:&quot;AuthConfig&quot;}
+</span></code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer id="footer" class="footer">
+  <div class="copyright">
+    <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+    <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks.</p> 
+    <p>For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+  </div>
+
+  <div class="sponsored-by">
+    <p>
+      <a href="https://www.cncf.io/sandbox-projects/"><img src="../../../../assets/images/cncf-color.png" class="logo" alt="CNCF logo"></a>
+    </p>
+    <p>
+      We are a Cloud Native Computing Foundation sandbox project.
+    </p>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["0.10.0", "latest"], "provider": "mike"}}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.bd41221c.min.js"></script>
+      
+    
+  </body>
+</html>
