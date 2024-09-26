@@ -112,9 +112,8 @@ For values to use for "Source Branch" and "Version" when running the `Re-deploy 
 
 | Use workflow from | The version to deploy | Source Branch | Notes                  |
 |-------------------|-----------------------|---------------|------------------------|
-| main              | 0.6.1                 | 0.6           |                        |
-| main              | 0.7.0                 | 0.7.x         |                        |
-| main              | 0.8.0                 | 0.8           | Latest Stable          |
+| main              | 0.10.0                | 0.10.0        | Latest Stable          |
+| main              | 0.8.0                 | 0.8           |                        |
 | main              | dev                   | main          | Development - Unstable |
 
 [See also](https://github.com/Kuadrant/docs.kuadrant.io/blob/gh-pages/versions.json).
