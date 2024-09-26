@@ -1504,7 +1504,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../authzed.md" class="md-nav__link">
+      <a href="../authzed/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1863,7 +1863,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../observability.md" class="md-nav__link">
+      <a href="../observability/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3397,13 +3397,25 @@
 
 
 <h1 id="host-override-via-context-extension">Host override via context extension<a class="headerlink" href="#host-override-via-context-extension" title="Permanent link">&para;</a></h1>
-<p>By default, Authorino uses the host information of the HTTP request (<a href="https://www.envoyproxy.io/docs/envoy/latest/api-v3/service/auth/v3/attribute_context.proto#service-auth-v3-attributecontext-httprequest"><code>Attributes.Http.Host</code></a>) to lookup for an indexed AuthConfig to be enforced. The host info be overridden by supplying a <code>host</code> entry as a (per-route) context entension (<a href="https://www.envoyproxy.io/docs/envoy/latest/api-v3/service/auth/v3/attribute_context.proto#envoy-v3-api-field-service-auth-v3-attributecontext-context-extensions"><code>Attributes.ContextExtensions</code></a>), which takes precedence whenever present.</p>
+<p>By default, Authorino uses the host information of the HTTP request (<a href="https://www.envoyproxy.io/docs/envoy/latest/api-v3/service/auth/v3/attribute_context.proto#service-auth-v3-attributecontext-httprequest"><code>Attributes.Http.Host</code></a>) to lookup for an indexed AuthConfig to be enforced<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>. The host info be overridden by supplying a <code>host</code> entry as a (per-route) context extension (<a href="https://www.envoyproxy.io/docs/envoy/latest/api-v3/service/auth/v3/attribute_context.proto#envoy-v3-api-field-service-auth-v3-attributecontext-context-extensions"><code>Attributes.ContextExtensions</code></a>), which takes precedence whenever present.</p>
 <p>Overriding the host attribute of the HTTP request can be useful to support use cases such as of <strong>path prefix-based lookup</strong> and <strong>wildcard subdomains lookup</strong>.</p>
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <b>⚠️ <i>Important:</i></b>
+        This feature may not be available to users of Authorino via <a href="https://kuadrant.io">Kuadrant</a>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br/></p>
+<p>In this guide:</p>
 <ul>
 <li><a href="#example-of-host-override-for-path-prefix-based-lookup">Example of host override for path prefix-based lookup</a></li>
 <li><a href="#example-of-host-override-for-wildcard-subdomain-lookup">Example of host override for wildcard subdomain lookup</a></li>
 </ul>
-<p>For further details about Authorino lookup of AuthConfig, check out <a href="../../architecture/#host-lookup">Host lookup</a>.</p>
 <h2 id="example-of-host-override-for-path-prefix-based-lookup">Example of host override for path prefix-based lookup<a class="headerlink" href="#example-of-host-override-for-path-prefix-based-lookup" title="Permanent link">&para;</a></h2>
 <p>In this use case, 2 different APIs (i.e. <strong>Dogs API</strong> and <strong>Cats API</strong>) are served under the same base domain, and differentiated by the path prefix:</p>
 <ul>
@@ -3438,7 +3450,7 @@
 </span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">            </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cats.pets.com</span>
 </span></code></pre></div>
 <p>Create the AuthConfig for the <strong>Pets API</strong>:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">authorino.kuadrant.io/v1beta1</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">authorino.kuadrant.io/v1beta2</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AuthConfig</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dogs-api-protection</span>
@@ -3447,10 +3459,10 @@
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dogs.pets.com</span>
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="nt">identity</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="nt">authentication</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span>
 </span></code></pre></div>
 <p>Create the AuthConfig for the <strong>Cats API</strong>:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">authorino.kuadrant.io/v1beta1</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">authorino.kuadrant.io/v1beta2</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AuthConfig</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">metadata</span><span class="p">:</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cats-api-protection</span>
@@ -3459,7 +3471,7 @@
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cats.pets.com</span>
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="nt">identity</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="nt">authentication</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span>
 </span></code></pre></div>
 <p>Notice that the host subdomains <code>dogs.pets.com</code> and <code>cats.pets.com</code> are not really requested by the API consumers. Rather, users send requests to <code>pets.com/dogs</code> and <code>pets.com/cats</code>. When routing those requests, Envoy makes sure to inject the corresponding context extensions that will induce the right lookup in Authorino.</p>
 <h2 id="example-of-host-override-for-wildcard-subdomain-lookup">Example of host override for wildcard subdomain lookup<a class="headerlink" href="#example-of-host-override-for-wildcard-subdomain-lookup" title="Permanent link">&para;</a></h2>
@@ -3487,7 +3499,7 @@
 </span></code></pre></div>
 <p>The <code>host</code> context extension used above is any key that matches one of the hosts listed in the targeted AuthConfig.</p>
 <p>Create the AuthConfig for the <strong>Pets API</strong>:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">authorino.kuadrant.io/v1beta1</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">authorino.kuadrant.io/v1beta2</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AuthConfig</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nt">metadata</span><span class="p">:</span>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pets-api-protection</span>
@@ -3496,9 +3508,17 @@
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pets.com</span>
 </span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">  </span><span class="nt">identity</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">  </span><span class="nt">authentication</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span>
 </span></code></pre></div>
 <p>Notice that requests to <code>dogs.pets.com</code> and to <code>cats.pets.com</code> are all routed by Envoy to the same API, with same external authorization configuration. in all the cases, Authorino will lookup for the indexed AuthConfig associated with <code>pets.com</code>. The same is valid for a request sent, e.g., to <code>birds.pets.com</code>.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>For further details about Authorino lookup of AuthConfig, check out <a href="../../architecture/#host-lookup">Host lookup</a>.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
