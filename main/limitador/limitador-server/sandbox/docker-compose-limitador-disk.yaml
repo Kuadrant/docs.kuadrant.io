@@ -1,0 +1,31 @@
+---
+version: '3.8'
+services:
+  limitador:
+    image: ${LIMITADOR_IMAGE:-limitador-testing}
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    command:
+      - limitador-server
+      - --rls-ip
+      - 0.0.0.0
+      - --rls-port
+      - "8081"
+      - --http-ip
+      - 0.0.0.0
+      - --http-port
+      - "8080"
+      - -vvv
+      - --grpc-reflection-service
+      - /opt/kuadrant/limits/limits.yaml
+      - disk
+      - "/tmp/data"
+    expose:
+      - "8080"
+      - "8081"
+    ports:
+      - "18080:8080"
+      - "18081:8081"
+    volumes:
+      - ./limits.yaml:/opt/kuadrant/limits/limits.yaml
