@@ -530,6 +530,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#metal-lb-local-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metal LB (local setup)
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3593,6 +3602,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#metal-lb-local-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metal LB (local setup)
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3668,9 +3686,9 @@ Removal of any labels with the prefix may cause unexpected behaviour and degrada
 <p class="admonition-title">Note</p>
 <p>There are several ways to install Istio (via <code>istioctl</code>, Helm chart or Operator) - this is just an example for starting from a bare Kubernetes cluster.</p>
 </div>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-L<span class="w"> </span>https://istio.io/downloadIstio<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nv">ISTIO_VERSION</span><span class="o">=</span><span class="m">1</span>.21.4<span class="w"> </span>sh<span class="w"> </span>-
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>./istio-1.21.4/bin/istioctl<span class="w"> </span>install<span class="w"> </span>--set<span class="w"> </span><span class="nv">profile</span><span class="o">=</span>minimal
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>./istio-1.21.4/bin/istioctl<span class="w"> </span>operator<span class="w"> </span>init
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-L<span class="w"> </span>https://istio.io/downloadIstio<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nv">ISTIO_VERSION</span><span class="o">=</span><span class="m">1</span>.22.5<span class="w"> </span>sh<span class="w"> </span>-
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>./istio-1.22.5/bin/istioctl<span class="w"> </span>install<span class="w"> </span>--set<span class="w"> </span><span class="nv">profile</span><span class="o">=</span>minimal
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>./istio-1.22.5/bin/istioctl<span class="w"> </span>operator<span class="w"> </span>init
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/Kuadrant/kuadrant-operator/main/config/dependencies/istio/istio-operator.yaml
 </span></code></pre></div>
 <h3 id="optional-install-envoy-gateway-as-a-gateway-api-provider">(Optional) Install Envoy Gateway as a Gateway API provider<a class="headerlink" href="#optional-install-envoy-gateway-as-a-gateway-api-provider" title="Permanent link">&para;</a></h3>
@@ -3713,7 +3731,8 @@ Removal of any labels with the prefix may cause unexpected behaviour and degrada
 </span></code></pre></div>
 <p>Kuadrant is now ready to use.</p>
 <h3 id="optional-dnspolicy-setup">(Optional) <code>DNSPolicy</code> setup<a class="headerlink" href="#optional-dnspolicy-setup" title="Permanent link">&para;</a></h3>
-<p>If you plan to use <code>DNSPolicy</code>, you will need an AWS Account with access to Route 53 (more providers coming soon), and a hosted zone.</p>
+<p>If you plan to use <code>DNSPolicy</code>, this doc uses an AWS Account with access to Route 53. There are other providers that you can also use for DNS integration: </p>
+<p><a href="https://docs.kuadrant.io/latest/dns-operator/docs/provider/">DNS Providers</a></p>
 <p>Export the following environment variables for setup:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>xxxxxxx<span class="w"> </span><span class="c1"># Key ID from AWS with Route 53 access</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>xxxxxxx<span class="w"> </span><span class="c1"># Access key from AWS with Route 53 access</span>
@@ -3735,28 +3754,29 @@ Removal of any labels with the prefix may cause unexpected behaviour and degrada
 <p>Execute the following commands:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Replace this with an accessible Redis cluster URL</span>
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">REDIS_URL</span><span class="o">=</span>redis://user:xxxxxx@some-redis.com:6379
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>redis-config<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">URL</span><span class="o">=</span><span class="nv">$REDIS_URL</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Create the secret:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>redis-config<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">URL</span><span class="o">=</span><span class="nv">$REDIS_URL</span>
 </span></code></pre></div>
 </li>
 </ol>
 <p>This will create a secret named <code>redis-config</code> in the <code>kuadrant-system</code> namespace containing your Redis cluster URL, which Kuadrant will use for multi-cluster rate limiting.</p>
-<p>You'll also need to update your earlier created <code>Kuadrant</code> instance to reconfigure Kuadrant to use Redis:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="s">apiVersion: kuadrant.io/v1beta1</span>
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="s">kind: Kuadrant</span>
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="s">metadata:</span>
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="s">  name: kuadrant</span>
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="s">  namespace: kuadrant-system</span>
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="s">spec:</span>
-</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="s">  limitador:</span>
-</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="s">    storage:</span>
-</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="s">      redis-cached:</span>
-</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="s">        configSecretRef:</span>
-</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="s">          name: redis-config</span>
-</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="s">EOF</span>
+<p>You'll also need to update the <code>Limitador</code> instance (the component that handles rate limiting) to reconfigure Kuadrant to use Redis:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>limitador<span class="w"> </span>limitador<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="s1">spec:</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="s1">  storage:</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="s1">    redis:</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="s1">      configSecretRef:</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="s1">        name: redis-config</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="s1">&#39;</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>limitador/limitador<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--for<span class="o">=</span><span class="s2">&quot;condition=Ready=true&quot;</span>
 </span></code></pre></div>
+<h3 id="metal-lb-local-setup">Metal LB (local setup)<a class="headerlink" href="#metal-lb-local-setup" title="Permanent link">&para;</a></h3>
+<p>If you are using a local kind cluster, we recommend using <a href="https://metallb.universe.tf/">metallb</a> to allow the service type loadbalancer to be used with your gateways and an IP to be assigned to your gateway address rather than an internal service name.</p>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../../user-guides/secure-protect-connect/">Secure, protect, and connect APIs with Kuadrant on Kubernetes</a></li>
