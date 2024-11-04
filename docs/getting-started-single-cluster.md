@@ -10,6 +10,7 @@ In this quick start, we will cover:
 - [Docker](https://docs.docker.com/engine/install/)
 - [Kind](https://kind.sigs.k8s.io/)
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/)
+- [Helm](https://helm.sh/)
 - OpenSSL >= 3
 - AWS account with Route 53 enabled or GCP with Cloud DNS enabled
 - [Docker Mac Net Connect](https://github.com/chipmk/docker-mac-net-connect) (macOS users only)
@@ -18,9 +19,10 @@ In this quick start, we will cover:
 ### Environmental Variables
 
 ### General
-| Env Var                      | Example Value               | Description                                                                                                 |
-|------------------------------|-----------------------------|-------------------------------------------------------------------------------------------------------------|
-| `ISTIO_INSTALL_SAIL`       | `true`       | Whether to install istio through project sail, default `false`                                                                                |
+| Env Var              | Example Value | Description                                                                                                  |
+|----------------------|---------------|--------------------------------------------------------------------------------------------------------------|
+| `ISTIO_INSTALL_SAIL` | `false`       | Whether to install istio through project sail, default `true`                                                |
+| `SAIL_VERSION`       | `0.1.0`       | Version of the [sail-operator](https://github.com/istio-ecosystem/sail-operator) to install, default `0.1.0` |
 
 If you want to make use of the Kuadrant `DNSPolicy` you should setup the following environmental variables depending on your DNS Provider:
 
@@ -50,7 +52,6 @@ If you want to make use of the Kuadrant `DNSPolicy` you should setup the followi
 
 ```bash
 export KUADRANT_REF=main
-export ISTIO_INSTALL_SAIL=true
 ```
 
 ### Set Up a kind cluster and install Kuadrant
