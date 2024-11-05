@@ -573,9 +573,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-6-optional-configure-observability-and-metrics" class="md-nav__link">
+  <a href="#step-6-optional-configure-observability-and-metrics-istio-only" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 6 - Optional: Configure observability and metrics
+      Step 6 - Optional: Configure observability and metrics (Istio only)
     </span>
   </a>
   
@@ -3744,9 +3744,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-6-optional-configure-observability-and-metrics" class="md-nav__link">
+  <a href="#step-6-optional-configure-observability-and-metrics-istio-only" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 6 - Optional: Configure observability and metrics
+      Step 6 - Optional: Configure observability and metrics (Istio only)
     </span>
   </a>
   
@@ -4012,95 +4012,112 @@ by using the web console.</p>
 <p>Wait for Envoy Gateway to become available::</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>--timeout<span class="o">=</span>5m<span class="w"> </span>-n<span class="w"> </span>envoy-gateway-system<span class="w"> </span>deployment/envoy-gateway<span class="w"> </span>--for<span class="o">=</span><span class="nv">condition</span><span class="o">=</span>Available
 </span></code></pre></div>
-<h3 id="step-6-optional-configure-observability-and-metrics">Step 6 - Optional: Configure observability and metrics<a class="headerlink" href="#step-6-optional-configure-observability-and-metrics" title="Permanent link">&para;</a></h3>
-<p>Kuadrant provides a set of example dashboards that use known metrics exported by Kuadrant and Gateway components to provide insight into different components of your APIs and Gateways. While not essential, it is best to set up an OpenShift monitoring stack. This section provides links to OpenShift and Thanos documentation on configuring monitoring and metrics storage.</p>
-<p>You can set up user-facing monitoring by following the steps in the OpenShift documentation on <a href="https://docs.openshift.com/container-platform/latest/observability/monitoring/configuring-the-monitoring-stack.html">configuring the monitoring stack</a>.</p>
-<p>If you have user workload monitoring enabled, it is best to configure remote writes to a central storage system such as Thanos:</p>
-<ul>
-<li><a href="https://docs.openshift.com/container-platform/latest/observability/monitoring/configuring-the-monitoring-stack.html#configuring_remote_write_storage_configuring-the-monitoring-stack">OpenShift remote write configuration</a></li>
-<li><a href="https://github.com/thanos-io/kube-thanos">Kube Thanos</a></li>
-</ul>
-<p>The <a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/observability/examples/">example dashboards and alerts</a> for observing Kuadrant functionality use low-level CPU metrics and network metrics available from the user monitoring stack in OpenShift. They also use resource state metrics from Gateway API and Kuadrant resources.</p>
-<p>To scrape these additional metrics, you can install a <code>kube-state-metrics instance</code>, with a custom resource configuration as follows:</p>
+<h3 id="step-6-optional-configure-observability-and-metrics-istio-only">Step 6 - Optional: Configure observability and metrics (Istio only)<a class="headerlink" href="#step-6-optional-configure-observability-and-metrics-istio-only" title="Permanent link">&para;</a></h3>
+<p>Kuadrant provides a set of example dashboards that use known metrics exported by Kuadrant and Gateway components to provide insight into different components of your APIs and Gateways. While not essential, it is recommended to set these up.
+First, enable <a href="https://docs.openshift.com/container-platform/4.17/observability/monitoring/enabling-monitoring-for-user-defined-projects.html#enabling-monitoring-for-user-defined-projects_enabling-monitoring-for-user-defined-projects">monitoring for user-defined projects</a>.
+This will allow the scraping of metrics from the gateway and Kuadrant components.
+The <a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/observability/examples/">example dashboards and alerts</a> for observing Kuadrant functionality use low-level CPU metrics and network metrics available from the user monitoring stack in OpenShift. They also use resource state metrics from Gateway API and Kuadrant resources.</p>
+<p>To scrape these additional metrics, you can install a <code>kube-state-metrics</code> instance, with a custom resource configuration as follows:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/Kuadrant/kuadrant-operator/main/config/observability/openshift/kube-state-metrics.yaml
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>https://github.com/Kuadrant/gateway-api-state-metrics?ref<span class="o">=</span>main
 </span></code></pre></div>
-<p>To enable request metrics in Istio, you must create a <code>telemetry</code> resource as follows:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/Kuadrant/kuadrant-operator/main/config/observability/openshift/telemetry.yaml
+<p>To enable request metrics in Istio and scrape them, create the following resource:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/Kuadrant/kuadrant-operator/refs/heads/main/config/observability/prometheus/monitors/istio/service-monitor-istiod.yaml
 </span></code></pre></div>
-<p>If you have Grafana installed in your cluster, you can import the <a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/observability/examples">example dashboards and alerts</a>.</p>
-<p>For example installation details, see <a href="https://cloud.redhat.com/experts/o11y/ocp-grafana/">installing Grafana on OpenShift</a>. When installed, you must add your Thanos instance as a data source to Grafana. Alternatively, if you are using only the user workload monitoring stack in your OpenShift cluster, and not writing metrics to an external Thanos instance, you can <a href="https://docs.openshift.com/container-platform/4.15/observability/monitoring/accessing-third-party-monitoring-apis.html#accessing-metrics-from-outside-cluster_accessing-monitoring-apis-by-using-the-cli">set up a data source to the thanos-querier route in the OpenShift cluster</a>.</p>
+<p>Some example dashboards show aggregations based on the path of requests.
+By default, Istio metrics don't include labels for request paths.
+However, you can enable them with the below Telemetry resource.
+Note that this may lead to a <a href="https://www.robustperception.io/cardinality-is-key/">high cardinality</a> label where multiple time-series are generated,
+which can have an impact on performance and resource usage.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/Kuadrant/kuadrant-operator/main/config/observability/openshift/telemetry.yaml
+</span></code></pre></div>
+<p>You can configure scraping of metrics from the various Kuadrant operators with the below resources.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/Kuadrant/kuadrant-operator/refs/heads/main/config/observability/prometheus/monitors/operators.yaml
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is 1 more metrics configuration that needs to be applied so that all relevant metrics are being scraped.
+That configuration depends on where you deploy your Gateway later.
+The steps to configure that are detailed in the follow on <a href="../../user-guides/secure-protect-connect-single-multi-cluster/">Secure, protect, and connect</a> guide.</p>
+</div>
+<p>The <a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/observability/examples/">example Grafana dashboards and alerts</a> for observing Kuadrant functionality use low-level CPU metrics and network metrics available from the user monitoring stack in OpenShift. They also use resource state metrics from Gateway API and Kuadrant resources.</p>
+<p>For Grafana installation details, see <a href="https://cloud.redhat.com/experts/o11y/ocp-grafana/">installing Grafana on OpenShift</a>. That guide also explains how to set up a data source for the Thanos Query instance in OpenShift. For more detailed information about accessing the Thanos Query endpoint, see the <a href="https://docs.openshift.com/container-platform/4.17/observability/monitoring/accessing-third-party-monitoring-apis.html#accessing-metrics-from-outside-cluster_accessing-monitoring-apis-by-using-the-cli">OpenShift documentation</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For some dashboard panels to work correctly, HTTPRoutes must include a "service" and "deployment" label with a value that matches the name of the service &amp; deployment being routed to. eg. "service=myapp, deployment=myapp".
+This allows low level Istio &amp; envoy metrics to be joined with Gateway API state metrics.</p>
+</div>
 <h3 id="step-7-setup-the-catalogsource">Step 7 - Setup the catalogsource<a class="headerlink" href="#step-7-setup-the-catalogsource" title="Permanent link">&para;</a></h3>
 <p>Before installing the Kuadrant Operator, you must enter the following commands to set up secrets that you will use later:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>ns<span class="w"> </span>kuadrant-system
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>ns<span class="w"> </span>kuadrant-system
 </span></code></pre></div>
 <p>Set up a <code>CatalogSource</code> as follows:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="s">apiVersion: operators.coreos.com/v1alpha1</span>
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="s">kind: CatalogSource</span>
-</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="s">metadata:</span>
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="s">  name: kuadrant-operator-catalog</span>
-</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="s">  namespace: kuadrant-system</span>
-</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="s">spec:</span>
-</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="s">  sourceType: grpc</span>
-</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="s">  image: quay.io/kuadrant/kuadrant-operator-catalog:${KUADRANT_VERSION}</span>
-</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="s">  displayName: Kuadrant Operators</span>
-</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="s">  publisher: grpc</span>
-</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="s">  updateStrategy:</span>
-</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="s">    registryPoll:</span>
-</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="s">      interval: 45m</span>
-</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="s">EOF</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="s">apiVersion: operators.coreos.com/v1alpha1</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="s">kind: CatalogSource</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="s">metadata:</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="s">  name: kuadrant-operator-catalog</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="s">  namespace: kuadrant-system</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="s">spec:</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="s">  sourceType: grpc</span>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="s">  image: quay.io/kuadrant/kuadrant-operator-catalog:${KUADRANT_VERSION}</span>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="s">  displayName: Kuadrant Operators</span>
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="s">  publisher: grpc</span>
+</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="s">  updateStrategy:</span>
+</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="s">    registryPoll:</span>
+</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="s">      interval: 45m</span>
+</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <h3 id="step-8-install-the-kuadrant-operator">Step 8 - Install the Kuadrant Operator<a class="headerlink" href="#step-8-install-the-kuadrant-operator" title="Permanent link">&para;</a></h3>
 <p>To install the Kuadrant Operator, enter the following command:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="s">apiVersion: operators.coreos.com/v1alpha1</span>
-</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="s">kind: Subscription</span>
-</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="s">metadata:</span>
-</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="s">  name: kuadrant-operator</span>
-</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="s">  namespace: kuadrant-system</span>
-</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="s">spec:</span>
-</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="s">  channel: stable</span>
-</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="s">  installPlanApproval: Automatic</span>
-</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="s">  name: kuadrant-operator</span>
-</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="s">  source: kuadrant-operator-catalog</span>
-</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="s">  sourceNamespace: kuadrant-system</span>
-</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="s">---</span>
-</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="s">kind: OperatorGroup</span>
-</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="s">apiVersion: operators.coreos.com/v1</span>
-</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="s">metadata:</span>
-</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="s">  name: kuadrant</span>
-</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="s">  namespace: kuadrant-system</span>
-</span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="s">spec:</span>
-</span><span id="__span-15-20"><a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="s">  upgradeStrategy: Default</span>
-</span><span id="__span-15-21"><a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a><span class="s">EOF</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="s">apiVersion: operators.coreos.com/v1alpha1</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="s">kind: Subscription</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="s">metadata:</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="s">  name: kuadrant-operator</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="s">  namespace: kuadrant-system</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="s">spec:</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="s">  channel: stable</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="s">  installPlanApproval: Automatic</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="s">  name: kuadrant-operator</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="s">  source: kuadrant-operator-catalog</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="s">  sourceNamespace: kuadrant-system</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="s">---</span>
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="s">kind: OperatorGroup</span>
+</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="s">apiVersion: operators.coreos.com/v1</span>
+</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="s">metadata:</span>
+</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="s">  name: kuadrant</span>
+</span><span id="__span-17-18"><a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="s">  namespace: kuadrant-system</span>
+</span><span id="__span-17-19"><a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="s">spec:</span>
+</span><span id="__span-17-20"><a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a><span class="s">  upgradeStrategy: Default</span>
+</span><span id="__span-17-21"><a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <p>Wait for the Kuadrant Operators to be installed as follows:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>installplan<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>-o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].status.phase}&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>installplan<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>-o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].status.phase}&#39;</span>
 </span></code></pre></div>
 <p>After some time, this command should return <code>complete</code>.</p>
 <h4 id="set-up-a-dnsprovider">Set up a DNSProvider<a class="headerlink" href="#set-up-a-dnsprovider" title="Permanent link">&para;</a></h4>
 <p>The example here is for AWS Route 53. It is important the secret for the DNSProvider is setup in the same namespace as the gateway.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>ns<span class="w"> </span>ingress-gateway
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>ns<span class="w"> </span>ingress-gateway
 </span></code></pre></div>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>ingress-gateway<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>aws-credentials<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span>--type<span class="o">=</span>kuadrant.io/aws<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span><span class="nv">$AWS_ACCESS_KEY_ID</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span><span class="nv">$AWS_SECRET_ACCESS_KEY</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>ingress-gateway<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>aws-credentials<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span>--type<span class="o">=</span>kuadrant.io/aws<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span><span class="nv">$AWS_ACCESS_KEY_ID</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span><span class="nv">$AWS_SECRET_ACCESS_KEY</span>
 </span></code></pre></div>
 <p>For more details on other providers take a look at <a href="https://docs.kuadrant.io/latest/dns-operator/docs/provider/">DNS Providers</a></p>
 <h3 id="step-9-install-kuadrant-components">Step 9 - Install Kuadrant Components<a class="headerlink" href="#step-9-install-kuadrant-components" title="Permanent link">&para;</a></h3>
 <p>To trigger your Kuadrant deployment, enter the following command:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="s">apiVersion: kuadrant.io/v1beta1</span>
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="s">kind: Kuadrant</span>
-</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="s">metadata:</span>
-</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="s">  name: kuadrant</span>
-</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="s">  namespace: kuadrant-system</span>
-</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="s">EOF</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="s">apiVersion: kuadrant.io/v1beta1</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="s">kind: Kuadrant</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="s">metadata:</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="s">  name: kuadrant</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="s">  namespace: kuadrant-system</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <p>Wait for Kuadrant to be ready as follows:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>kuadrant/kuadrant<span class="w"> </span>--for<span class="o">=</span><span class="s2">&quot;condition=Ready=true&quot;</span><span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--timeout<span class="o">=</span>300s
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>kuadrant/kuadrant<span class="w"> </span>--for<span class="o">=</span><span class="s2">&quot;condition=Ready=true&quot;</span><span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--timeout<span class="o">=</span>300s
 </span></code></pre></div>
 <p>This will setup and configure a number of Kuadrant subcomponents. Some of these can also take additional configuration:</p>
 <ul>
@@ -4113,21 +4130,21 @@ by using the web console.</p>
 <h3 id="configuring-redis-storage-for-limitador">Configuring Redis Storage for Limitador<a class="headerlink" href="#configuring-redis-storage-for-limitador" title="Permanent link">&para;</a></h3>
 <h4 id="redis-credentials-for-storage-of-rate-limiting-counters">Redis credentials for storage of rate limiting counters<a class="headerlink" href="#redis-credentials-for-storage-of-rate-limiting-counters" title="Permanent link">&para;</a></h4>
 <p>In this installation we will show how to configure ratelimiting counters to be stored in redis. Before we go further we need to setup a redis secret to use later:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>redis-config<span class="w"> </span>--from-literal<span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="o">=</span><span class="nv">$REDIS_URL</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>redis-config<span class="w"> </span>--from-literal<span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="o">=</span><span class="nv">$REDIS_URL</span>
 </span></code></pre></div>
 <h4 id="update-limitador-config">Update limitador config<a class="headerlink" href="#update-limitador-config" title="Permanent link">&para;</a></h4>
 <p>To configure redis storage for Limatador, we must update the Limitador custom resource to use the secret we created:</p>
 <p>You can run a command like the one below to add this configuration:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>kubectl patch limitador limitador --type=merge -n kuadrant-system -p &#39;
-</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>spec:
-</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>  storage:
-</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>    redis:
-</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>      configSecretRef:
-</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>        name: redis-config
-</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>&#39;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>kubectl patch limitador limitador --type=merge -n kuadrant-system -p &#39;
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>spec:
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>  storage:
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>    redis:
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>      configSecretRef:
+</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>        name: redis-config
+</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>&#39;
 </span></code></pre></div>
 <p>Check that limitador is back to ready:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>kubectl wait limitador/limitador -n kuadrant-system --for=&quot;condition=Ready=true&quot;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>kubectl wait limitador/limitador -n kuadrant-system --for=&quot;condition=Ready=true&quot;
 </span></code></pre></div>
 <p>Kuadrant is now ready to use.</p>
 <h3 id="step-10-configure-the-kuadrant-console-plugin">Step 10 - Configure the Kuadrant Console Plugin<a class="headerlink" href="#step-10-configure-the-kuadrant-console-plugin" title="Permanent link">&para;</a></h3>

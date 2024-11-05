@@ -513,6 +513,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optional-observability-setup-istio-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      (Optional) Observability setup (Istio only)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optional-dnspolicy-setup" class="md-nav__link">
     <span class="md-ellipsis">
       (Optional) DNSPolicy setup
@@ -3585,6 +3594,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optional-observability-setup-istio-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      (Optional) Observability setup (Istio only)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optional-dnspolicy-setup" class="md-nav__link">
     <span class="md-ellipsis">
       (Optional) DNSPolicy setup
@@ -3730,18 +3748,38 @@ Removal of any labels with the prefix may cause unexpected behaviour and degrada
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>--for<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.state}&#39;</span><span class="o">=</span>AtLatestKnown<span class="w"> </span>subscription/my-kuadrant-operator<span class="w"> </span>-n<span class="w"> </span>operators<span class="w"> </span>--timeout<span class="o">=</span>600s
 </span></code></pre></div>
 <p>Kuadrant is now ready to use.</p>
+<h3 id="optional-observability-setup-istio-only">(Optional) Observability setup (Istio only)<a class="headerlink" href="#optional-observability-setup-istio-only" title="Permanent link">&para;</a></h3>
+<p>There is a set of example dashboards and alerts in the kuadrant-operator repo that can be used for obserability of the Kuadrant components and gateway.
+To make use of these, first install the example monitoring stack and configuration:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>github.com/Kuadrant/kuadrant-operator/config/observability?ref<span class="o">=</span>main<span class="w"> </span>--dry-run<span class="o">=</span>client<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-i<span class="w"> </span>docker.io/ryane/kfilt<span class="w"> </span>-i<span class="w"> </span><span class="nv">kind</span><span class="o">=</span>CustomResourceDefinition<span class="w"> </span><span class="p">|</span><span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>--server-side<span class="w"> </span>-f<span class="w"> </span>-
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>github.com/Kuadrant/kuadrant-operator/config/observability?ref<span class="o">=</span>main<span class="w"> </span>--dry-run<span class="o">=</span>client<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-i<span class="w"> </span>docker.io/ryane/kfilt<span class="w"> </span>-x<span class="w"> </span><span class="nv">kind</span><span class="o">=</span>CustomResourceDefinition<span class="w"> </span><span class="p">|</span><span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>github.com/Kuadrant/kuadrant-operator/config/thanos?ref<span class="o">=</span>main
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>github.com/Kuadrant/kuadrant-operator/examples/dashboards?ref<span class="o">=</span>main
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>github.com/Kuadrant/kuadrant-operator/examples/alerts?ref<span class="o">=</span>main
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="nv">THANOS_RECEIVE_ROUTER_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>-n<span class="w"> </span>monitoring<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>thanos-receive-router-lb<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.loadBalancer.ingress[0].ip}&#39;</span><span class="k">)</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>monitoring<span class="w"> </span>patch<span class="w"> </span>prometheus<span class="w"> </span>k8s<span class="w"> </span>--type<span class="o">=</span><span class="s1">&#39;merge&#39;</span><span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;remoteWrite&quot;:[{&quot;url&quot;:&quot;http://&#39;</span><span class="s2">&quot;</span><span class="nv">$THANOS_RECEIVE_ROUTER_IP</span><span class="s2">&quot;</span><span class="s1">&#39;:19291/api/v1/receive&quot;, &quot;writeRelabelConfigs&quot;:[{&quot;action&quot;:&quot;replace&quot;, &quot;replacement&quot;:&quot;&#39;</span><span class="s2">&quot;</span><span class="nv">$KUADRANT_CLUSTER_NAME</span><span class="s2">&quot;</span><span class="s1">&#39;&quot;, &quot;targetLabel&quot;:&quot;cluster_id&quot;}]}]}}&#39;</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>github.com/Kuadrant/kuadrant-operator/config/observability/prometheus/monitors/istio?ref<span class="o">=</span>main
+</span></code></pre></div>
+<p>This will deploy prometheus, alertmanager and Grafana into the monitoring namespace, along with metrics scrape configuration for Istio and Envoy Proxy. Thanos will also be deployed with prometheus configured to remote write to it.</p>
+<p>To access Grafana and Prometheus, you can port forward to the services:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>monitoring<span class="w"> </span>port-forward<span class="w"> </span>service/grafana<span class="w"> </span><span class="m">3000</span>:3000
+</span></code></pre></div>
+<p>The Grafana UI can then be found at http://127.0.0.1:3000/ (default user/pass of admin &amp; admin).</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>monitoring<span class="w"> </span>port-forward<span class="w"> </span>service/prometheus-k8s<span class="w"> </span><span class="m">9090</span>:9090
+</span></code></pre></div>
+<p>The Prometheus UI can then be found at http://127.0.0.1:9090.</p>
 <h3 id="optional-dnspolicy-setup">(Optional) <code>DNSPolicy</code> setup<a class="headerlink" href="#optional-dnspolicy-setup" title="Permanent link">&para;</a></h3>
 <p>If you plan to use <code>DNSPolicy</code>, this doc uses an AWS Account with access to Route 53. There are other providers that you can also use for DNS integration: </p>
 <p><a href="https://docs.kuadrant.io/latest/dns-operator/docs/provider/">DNS Providers</a></p>
 <p>Export the following environment variables for setup:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>xxxxxxx<span class="w"> </span><span class="c1"># Key ID from AWS with Route 53 access</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>xxxxxxx<span class="w"> </span><span class="c1"># Access key from AWS with Route 53 access</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>xxxxxxx<span class="w"> </span><span class="c1"># Key ID from AWS with Route 53 access</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>xxxxxxx<span class="w"> </span><span class="c1"># Access key from AWS with Route 53 access</span>
 </span></code></pre></div>
 <p>Create an AWS credentials secret:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>aws-credentials<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span>--type<span class="o">=</span>kuadrant.io/aws<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span><span class="nv">$AWS_ACCESS_KEY_ID</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span><span class="nv">$AWS_SECRET_ACCESS_KEY</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>aws-credentials<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span>--type<span class="o">=</span>kuadrant.io/aws<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span><span class="nv">$AWS_ACCESS_KEY_ID</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span><span class="nv">$AWS_SECRET_ACCESS_KEY</span>
 </span></code></pre></div>
 <h3 id="optional-multi-cluster-ratelimitpolicy">(Optional) Multi-cluster <code>RateLimitPolicy</code><a class="headerlink" href="#optional-multi-cluster-ratelimitpolicy" title="Permanent link">&para;</a></h3>
 <p>To enable <code>RateLimitPolicy</code> to use shared, multi-cluster counters for Kuadrant's Limitador component, you need to configure Kuadrant with a Redis cluster URL. Redis URIs can be either <code>redis://</code> for standard connections or <code>rediss://</code> for secure connections.</p>
@@ -3752,28 +3790,28 @@ Removal of any labels with the prefix may cause unexpected behaviour and degrada
 </li>
 <li>
 <p>Execute the following commands:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Replace this with an accessible Redis cluster URL</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">REDIS_URL</span><span class="o">=</span>redis://user:xxxxxx@some-redis.com:6379
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Replace this with an accessible Redis cluster URL</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">REDIS_URL</span><span class="o">=</span>redis://user:xxxxxx@some-redis.com:6379
 </span></code></pre></div>
 </li>
 <li>
 <p>Create the secret:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>redis-config<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">URL</span><span class="o">=</span><span class="nv">$REDIS_URL</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>redis-config<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">URL</span><span class="o">=</span><span class="nv">$REDIS_URL</span>
 </span></code></pre></div>
 </li>
 </ol>
 <p>This will create a secret named <code>redis-config</code> in the <code>kuadrant-system</code> namespace containing your Redis cluster URL, which Kuadrant will use for multi-cluster rate limiting.</p>
 <p>You'll also need to update the <code>Limitador</code> instance (the component that handles rate limiting) to reconfigure Kuadrant to use Redis:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>limitador<span class="w"> </span>limitador<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="s1">spec:</span>
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="s1">  storage:</span>
-</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="s1">    redis:</span>
-</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="s1">      configSecretRef:</span>
-</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="s1">        name: redis-config</span>
-</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="s1">&#39;</span>
-</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>
-</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>limitador/limitador<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--for<span class="o">=</span><span class="s2">&quot;condition=Ready=true&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>limitador<span class="w"> </span>limitador<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="s1">spec:</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="s1">  storage:</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="s1">    redis:</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="s1">      configSecretRef:</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="s1">        name: redis-config</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="s1">&#39;</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>limitador/limitador<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--for<span class="o">=</span><span class="s2">&quot;condition=Ready=true&quot;</span>
 </span></code></pre></div>
 <h3 id="metal-lb-local-setup">Metal LB (local setup)<a class="headerlink" href="#metal-lb-local-setup" title="Permanent link">&para;</a></h3>
 <p>If you are using a local kind cluster, we recommend using <a href="https://metallb.universe.tf/">metallb</a> to allow the service type loadbalancer to be used with your gateways and an IP to be assigned to your gateway address rather than an internal service name.</p>
