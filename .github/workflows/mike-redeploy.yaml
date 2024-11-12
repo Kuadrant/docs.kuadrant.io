@@ -10,6 +10,8 @@ on:
         description: 'Source Branch'
         required: true
         default: '0.8'
+  schedule:
+    - cron: '0 0 * * *'  # Runs every day at midnight UTC
 
 jobs:
   mike-redeploy:
@@ -19,7 +21,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Fetches all history for all branches and tags
-          ref: ${{ github.event.inputs.sourceBranch }}
+          ref: ${{ github.event_name == 'schedule' && 'main' || github.event.inputs.sourceBranch }}
 
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -32,15 +34,20 @@ jobs:
       - name: Validate User Permissions
         id: validate_user
         run: |
-          USER_PERMISSION=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/collaborators/${{ github.actor }}/permission")
-          echo "User permissions: $USER_PERMISSION"
-          if [[ "$USER_PERMISSION" =~ (\"permission\": \"admin\") ]]; then
-            echo "User is authorized to deploy."
+          if [ "${{ github.event_name }}" == "schedule" ]; then
+            echo "Scheduled run, bypassing user permission check."
             echo "::set-output name=can_deploy::true"
           else
-            echo "::error::User is not authorized to deploy."
-            echo "::set-output name=can_deploy::false"
+            USER_PERMISSION=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              "https://api.github.com/repos/${{ github.repository }}/collaborators/${{ github.actor }}/permission")
+            echo "User permissions: $USER_PERMISSION"
+            if [[ "$USER_PERMISSION" =~ (\"permission\": \"admin\") ]]; then
+              echo "User is authorized to deploy."
+              echo "::set-output name=can_deploy::true"
+            else
+              echo "::error::User is not authorized to deploy."
+              echo "::set-output name=can_deploy::false"
+            fi
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -54,6 +61,6 @@ jobs:
       - name: Deploy Documentation
         if: steps.validate_user.outputs.can_deploy == 'true'
         run: |
-          mike deploy ${{ github.event.inputs.version }} -t "${{ github.event.inputs.version }}" --push
+          mike deploy ${{ github.event_name == 'schedule' && 'dev' || github.event.inputs.version }} -t "${{ github.event_name == 'schedule' && 'dev' || github.event.inputs.version }}" --push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
