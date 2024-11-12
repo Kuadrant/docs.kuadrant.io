@@ -1,82 +1,164 @@
 # Kuadrant Docs
 
-## Installing mkdocs
-`pip install mkdocs`
+## Overview
 
-And dependencies
-`pip install -r requirements.txt`
+This repository contains documentation for Kuadrant, built using MkDocs and the `mike` plugin for multi-versioning. You can run and build these docs using Docker/Podman or by installing MkDocs locally.
 
+## Using Docker/Podman
 
-## Running Locally
-`mkdocs serve -s`
+### Running the Docs with Docker
 
-The docs should then be available locally from http://127.0.0.1:8000/, from the current branch.
+To run the docs using Docker, mount the current directory to the container and bind it to port `8000`:
 
-If you'd like to test multi-versioning, run locally with the `mike` equivalent:
+```bash
+docker run -v "$(pwd):/docs" -p 8000:8000 quay.io/kuadrant/docs.kuadrant.io:latest "mkdocs serve -s -a 0.0.0.0:8000"
+```
 
-`mike serve`
+This will serve the docs at [http://localhost:8000](http://localhost:8000).
 
-This will serve docs directly from the `gh-pages` branch, with multi-versioning. For general local development and testing of changes, you probably want `mkdocs serve`.
+---
 
-**Note:** `mkdocs` will automatically clone component repositories as configured via `mkdocs.yml`.
+## Running Locally without Docker
 
-## Building
+### Installing MkDocs
 
-See `.github/workflows/build.yaml` & `.github/workflows/manual-deploy.yaml`
+First, install MkDocs using pip:
 
-## `mike`
-We use `mike` for multi-versioned docs. It's quite straight-forward: it works by adding new commits to the `gh-pages` branch each time you run `mike deploy`. It takes care of setting up the aliases, and leaves previously "deployed" docs untouched, in their old folders. These old deployments ideally shouldn't be touched, but can be re-built if necessary.
+```bash
+pip install mkdocs
+```
 
-Some useful commands:
+### Installing Dependencies
 
-List releases:
+Install any additional dependencies:
 
-`mike list`
+```bash
+pip install -r requirements.txt
+```
 
-Build a new release, with a custom title:
+### Serving the Docs Locally
 
-`mike deploy 0.7.0 -t "0.7.0 (dev)"`
+To serve the docs locally, run:
 
-Delete a release:
+```bash
+mkdocs serve -s
+```
 
-`mike delete 0.7.0`
+You can then view the docs at [http://127.0.0.1:8000](http://127.0.0.1:8000) on your current branch.
 
-Run a multi-version release:
+### Running Multi-Versioned Docs
 
-`mike serve -S`
+If you’d like to test the multi-versioned documentation setup locally, use `mike`:
 
-## Mike aliases
+```bash
+mike serve
+```
 
-We have two aliases in use:
+Or, with Docker / Podman:
 
-- `latest` which should always point at the latest, stable released docs (e.g. `latest` - > `0.7.0`)
-- `dev` which always points at the `HEAD` of main, for publishing unstable/pre-release docs quickly
+```bash
+docker run -v "$(pwd):/docs" -p 8000:8000 quay.io/kuadrant/docs.kuadrant.io:latest "mike serve -s -a 0.0.0.0:8000"
+```
+
+This will serve the docs from the `gh-pages` branch with multi-versioning. For general development, use `mkdocs serve`.
+
+---
+
+## Building the Docs
+
+For automated builds, see the GitHub Actions workflows in `.github/workflows/build.yaml` and `.github/workflows/manual-deploy.yaml`.
+
+---
+
+## Using `mike` for Versioned Docs
+
+We use `mike` for managing multi-versioned docs. It works by adding new commits to the `gh-pages` branch each time you run `mike deploy`. Older versions remain available without modification. If needed, existing versions can be re-built.
+
+### Common `mike` Commands
+
+#### List releases
+
+Locally:
+
+```bash
+mike list
+```
+
+Docker / Podman:
+
+```bash
+docker run -v "$(pwd):/docs" quay.io/kuadrant/docs.kuadrant.io:latest "mike list"
+```
+
+#### Deploy a new release with a custom title
+
+Locally:
+
+```bash
+mike deploy 0.7.0 -t "0.7.0 (dev)"
+```
+
+Docker / Podman:
+
+```bash
+docker run -v "$(pwd):/docs" quay.io/kuadrant/docs.kuadrant.io:latest "mike deploy 0.7.0 -t '0.7.0 (dev)'"
+```
+
+#### Delete a release
+
+Locally:
+
+```bash
+mike delete 0.7.0
+```
+
+Docker / Podman:
+
+```bash
+docker run -v "$(pwd):/docs" quay.io/kuadrant/docs.kuadrant.io:latest "mike delete 0.7.0"
+```
+
+#### Serve multi-versioned docs
+
+Locally:
+
+```bash
+mike serve -S
+```
+
+Docker / Podman:
+
+```bash
+docker run -v "$(pwd):/docs" -p 8000:8000 quay.io/kuadrant/docs.kuadrant.io:latest "mike serve -s -a 0.0.0.0:8000"
+```
+
+---
+
+## Mike Aliases
+
+We use two aliases with `mike`:
+
+- `latest`: Points to the latest stable release (e.g., `latest -> 0.7.0`)
+- `dev`: Points to `HEAD` of `main`, for unstable or pre-release documentation
+
+---
 
 ## Releases
 
-Dev releases from main will always be deployed to `dev` as a fast channel. The `latest` docs version will always be a known, stable release. The version picker defaults to the latest stable release - newer docs can be found by looking at the latest dev release.
+Development releases from `main` will deploy to `dev` as a fast channel. The `latest` alias points to the most recent stable release by default.
 
-Stable releases should be tagged (e.g. `git tag 0.6.1`).
+Stable releases should be tagged (e.g., `git tag 0.6.1`) for clarity.
 
-### Stable releases:
+### Creating a Stable Release
 
-This describes the manual steps needed to create a new release and mark that as stable.
+To mark a new release as stable, follow these steps:
 
-A scenario:
+> **Note:** This process is currently manual and will be automated soon.
 
-- 0.6.1 was the stable release
-- 0.7.0 has just been released, and we want to mark it as stable
-- Changes on the `HEAD` of `main` will continue to flow to the `dev` release
-
-To mark this new release as stable:
-
-> **Note:** This is quite manual right now. It will be automated soon.
-
-- Branch from `main`, e.g. `git checkout -b 0.7.x`
-- In your release branch, e.g. `0.7.x`:
-  - Update `mkdocs.yml` to update the `branch=` refs to tags for all components
-  - Set latest release as default:
-    - Update `mkdocs.yml` to set latest default release:
+1. Create a release branch from `main` (e.g., `git checkout -b 0.7.x`).
+2. In the release branch (`0.7.x`):
+    - Update `mkdocs.yml` to replace `branch=` references with specific tags for all components.
+    - Set the latest release as default in `mkdocs.yml`:
       ```yaml
       extra:
         version:
@@ -84,85 +166,91 @@ To mark this new release as stable:
           default:
             - 0.7.0
       ```
-    - Update `mkdocs.yml` to set the git-refs on the `import_url`'s to reference release branches for 0.7
-    - Update `export KUADRANT_REF=v0.7.0` in `getting-started-single-cluster.md`
-    - Update the `latest` alias to point to our newest stable release:
-      - `mike deploy --update-aliases 0.7.0 latest`
-    - Update refs in `0.7.x` branch:
-      - `mike set-default 0.7.0`
-    - Update changes, push deploy:
-      - `mike deploy 0.7.0 -t "0.7.0" --push`
-  - Tag the repo (e.g. `git tag 0.7.0 && git push --tags <upstream-origin>`)
-- Back on `main`:
-    - `git checkout main`
-    - Update `mkdocs.yml`:
-      ```yaml
-      default:
-        - 0.7.0
-      ```
-    - `mike deploy dev -t "dev" --push`
+    - Update any other references for the new release, including `import_url` git refs and other version-specific settings.
+3. Deploy the release with the `latest` alias:
 
-## Re-release docs
+Locally:
 
-Generally not advised given how `mike` works, but if you need to patch an existing release (in this example, `0.7.0`):
+```bash
+mike deploy --update-aliases 0.7.0 latest
+```
 
-### Via CI (recommended)
+Docker / Podman:
 
-For values to use for "Source Branch" and "Version" when running the `Re-deploy via mike` GitHub action, refer to this table:
+```bash
+docker run -v "$(pwd):/docs" quay.io/kuadrant/docs.kuadrant.io:latest "mike deploy --update-aliases 0.7.0 latest"
+```
 
-| Use workflow from | The version to deploy | Source Branch | Notes                  |
-|-------------------|-----------------------|---------------|------------------------|
-| main              | 0.10.0                | 0.10.0        | Latest Stable          |
-| main              | 0.8.0                 | 0.8           |                        |
-| main              | dev                   | main          | Development - Unstable |
+4. Set this release as the default version:
 
-[See also](https://github.com/Kuadrant/docs.kuadrant.io/blob/gh-pages/versions.json).
+Locally:
 
-To re-release docs via CI:
+```bash
+mike set-default 0.7.0
+```
 
-- Go to `Actions` -> `Re-deploy via mike` -> `Run Workflow`
-  - For version to deploy, pick an existing version (e.g. `0.7.0`)
-  - For source branch, pick a release branch (e.g. `0.7.x`) or `main`
-  - This will:
-    - Checkout your source branch
-    - Build your docs (new changes will be pulled in via git-refs in `mkdocs.yml`)
-    - And run the equivalent of `mike deploy 0.7.0 -t "0.7.0" --push`
+Docker / Podman:
 
-### Manually
+```bash
+docker run -v "$(pwd):/docs" quay.io/kuadrant/docs.kuadrant.io:latest "mike set-default 0.7.0"
+```
 
-To do this manually:
+5. Tag the repo (e.g., `git tag 0.7.0 && git push --tags <upstream-origin>`).
 
-- Fetch: `git fetch --all` (need latest gh-pages branch)
-- Check out the release branch:`git checkout 0.7.x`
-- Make your changes
-- `mike deploy 0.7.0 -t "0.7.0" --push`
-- You may receive an error like:
-  ```bash
-  error: failed to push branch gh-pages to origin:
-  To github.com:Kuadrant/docs.kuadrant.io.git
-   ! [rejected]        gh-pages -> gh-pages (non-fast-forward)
-  error: failed to push some refs to 'github.com:Kuadrant/docs.kuadrant.io.git'
-  hint: Updates were rejected because a pushed branch tip is behind its remote
-  hint: counterpart. Check out this branch and integrate the remote changes
-  hint: (e.g. 'git pull ...') before pushing again.
-  hint: See the 'Note about fast-forwards' in 'git push --help' for details.
-  ```
-- If this happens:
-  - `git checkout gh-pages`
-  - `git rebase upstream gh-pages` or (to reset) `git reset --hard upstream/gh-pages`
-  - Re-run: `mike deploy 0.7.0 -t "0.7.0" --push`
-  - Delete and re-tag
+---
 
+## Re-Releasing Docs
 
+Re-releasing an existing version is generally not recommended but can be done if necessary.
 
+### Via GitHub Actions (Recommended)
 
+To re-release a version, go to `Actions > Re-deploy via mike` in GitHub and run the workflow with the desired version and source branch.
+
+For reference:
+
+| Workflow Source | Version to Deploy | Source Branch | Notes               |
+|-----------------|-------------------|---------------|---------------------|
+| main            | 0.10.0            | 0.10.0        | Latest Stable       |
+| main            | 0.8.0             | 0.8           |                     |
+| main            | dev               | main          | Development - Unstable |
+
+### Manual Re-release
+
+1. Fetch latest changes: `git fetch --all`
+2. Check out the release branch: `git checkout 0.7.x`
+3. Make necessary changes and re-deploy:
+
+Locally:
+
+```bash
+mike deploy 0.7.0 -t "0.7.0" --push
+```
+
+Docker / Podman:
+
+```bash
+docker run -v "$(pwd):/docs" quay.io/kuadrant/docs.kuadrant.io:latest "mike deploy 0.7.0 -t '0.7.0' --push"
+```
+
+4. If there’s a push error, reset to the latest `gh-pages` branch and try again.
+
+---
 
 ## Deploying
-This is deployed via GitHub Pages, on merge to `main`.
 
-If you need to re-trigger a deployment from main for any reason, manually run `Actions > ci > Run Workflow`:
+This site deploys automatically via GitHub Pages on merge to `main`. To manually trigger a deployment, go to `Actions > ci > Run Workflow`:
 
-![alt text](docs/assets/images/deploy.png)
+![Deploy](docs/assets/images/deploy.png)
 
-This will build a docs bundle, and then trigger the `pages-build-deployment` action afterwards to push changes to the `gh-pages` branch.
+This workflow will build the documentation bundle and trigger a push to the `gh-pages` branch.
 
+
+## Building the Docker Image
+
+To build the Docker image, run:
+
+```bash
+docker build -t quay.io/kuadrant/docs.kuadrant.io:latest .
+docker push quay.io/kuadrant/docs.kuadrant.io:latest
+```
