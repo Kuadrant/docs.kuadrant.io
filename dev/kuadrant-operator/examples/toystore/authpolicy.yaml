@@ -1,5 +1,5 @@
 ---
-apiVersion: kuadrant.io/v1beta3
+apiVersion: kuadrant.io/v1
 kind: AuthPolicy
 metadata:
   name: toystore
@@ -20,14 +20,14 @@ spec:
           prefix: APIKEY
     response:
       success:
-        dynamicMetadata:
+        filters:
           "ext_auth_data":
             json:
               properties:
                 "user-id":
                   selector: auth.identity.metadata.annotations.secret\.kuadrant\.io/user-id
 ---
-apiVersion: kuadrant.io/v1beta3
+apiVersion: kuadrant.io/v1
 kind: AuthPolicy
 metadata:
   name: toystore

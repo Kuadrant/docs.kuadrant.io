@@ -907,6 +907,24 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#predicate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Predicate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Counter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#limit" class="md-nav__link">
     <span class="md-ellipsis">
       Limit
@@ -920,15 +938,6 @@
   <a href="#ratelimit" class="md-nav__link">
     <span class="md-ellipsis">
       RateLimit
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#whencondition" class="md-nav__link">
-    <span class="md-ellipsis">
-      WhenCondition
     </span>
   </a>
   
@@ -3518,6 +3527,24 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#predicate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Predicate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Counter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#limit" class="md-nav__link">
     <span class="md-ellipsis">
       Limit
@@ -3531,15 +3558,6 @@
   <a href="#ratelimit" class="md-nav__link">
     <span class="md-ellipsis">
       RateLimit
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#whencondition" class="md-nav__link">
-    <span class="md-ellipsis">
-      WhenCondition
     </span>
   </a>
   
@@ -3603,22 +3621,6 @@
 
 
 <h1 id="the-ratelimitpolicy-custom-resource-definition-crd">The RateLimitPolicy Custom Resource Definition (CRD)<a class="headerlink" href="#the-ratelimitpolicy-custom-resource-definition-crd" title="Permanent link">&para;</a></h1>
-<ul>
-<li><a href="#ratelimitpolicy">RateLimitPolicy</a></li>
-<li><a href="#ratelimitpolicyspec">RateLimitPolicySpec</a><ul>
-<li><a href="#rateLimitPolicyCommonSpec">RateLimitPolicyCommonSpec</a></li>
-<li><a href="#limit">Limit</a><ul>
-<li><a href="#ratelimit">RateLimit</a></li>
-<li><a href="#whencondition">WhenCondition</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#ratelimitpolicystatus">RateLimitPolicyStatus</a><ul>
-<li><a href="#conditionspec">ConditionSpec</a></li>
-</ul>
-</li>
-</ul>
 <h2 id="ratelimitpolicy">RateLimitPolicy<a class="headerlink" href="#ratelimitpolicy" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3693,10 +3695,54 @@
 </thead>
 <tbody>
 <tr>
+<td><code>when</code></td>
+<td>[]<a href="#predicate">Predicate</a></td>
+<td>No</td>
+<td>List of dynamic predicates to activate the policy. All expression must evaluate to true for the policy to be applied</td>
+</tr>
+<tr>
 <td><code>limits</code></td>
 <td>Map<String: <a href="#limit">Limit</a>></td>
 <td>No</td>
 <td>Explicit Limit definitions. This field is mutually exclusive with <a href="#ratelimitpolicyspec">RateLimitPolicySpec</a> <code>limits</code> field</td>
+</tr>
+</tbody>
+</table>
+<h3 id="predicate">Predicate<a class="headerlink" href="#predicate" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th><strong>Field</strong></th>
+<th><strong>Type</strong></th>
+<th><strong>Required</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>predicate</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Defines one CEL expression that must be evaluated to bool</td>
+</tr>
+</tbody>
+</table>
+<h3 id="counter">Counter<a class="headerlink" href="#counter" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th><strong>Field</strong></th>
+<th><strong>Type</strong></th>
+<th><strong>Required</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>expression</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Defines one CEL expression that will be used as rate limiting counter</td>
 </tr>
 </tbody>
 </table>
@@ -3719,15 +3765,15 @@
 </tr>
 <tr>
 <td><code>counters</code></td>
-<td>[]String</td>
+<td>[]<a href="#counter">Counter</a></td>
 <td style="text-align: center;">No</td>
 <td>List of rate limit counter qualifiers. Items must be a valid <a href="https://github.com/Kuadrant/architecture/blob/main/rfcs/0002-well-known-attributes.md">Well-known attribute</a>. Each distinct value resolved in the data plane starts a separate counter for each rate limit.</td>
 </tr>
 <tr>
 <td><code>when</code></td>
-<td>[]<a href="#whencondition">WhenCondition</a></td>
+<td>[]<a href="#predicate">Predicate</a></td>
 <td style="text-align: center;">No</td>
-<td>List of additional dynamic conditions (expressions) to activate the limit. All expression must evaluate to true for the limit to be applied. Use it for filtering attributes that cannot be expressed in the targeted HTTPRoute's <code>spec.hostnames</code> and <code>spec.rules.matches</code> fields, or when targeting a Gateway.</td>
+<td>List of dynamic predicates to activate the limit. All expression must evaluate to true for the limit to be applied</td>
 </tr>
 </tbody>
 </table>
@@ -3749,47 +3795,10 @@
 <td>Maximum value allowed within the given period of time (duration)</td>
 </tr>
 <tr>
-<td><code>duration</code></td>
-<td>Number</td>
-<td style="text-align: center;">Yes</td>
-<td>The period of time in the specified unit that the limit applies</td>
-</tr>
-<tr>
-<td><code>unit</code></td>
+<td><code>window</code></td>
 <td>String</td>
 <td style="text-align: center;">Yes</td>
-<td>Unit of time for the duration of the limit. One-of: "second", "minute", "hour", "day".</td>
-</tr>
-</tbody>
-</table>
-<h4 id="whencondition">WhenCondition<a class="headerlink" href="#whencondition" title="Permanent link">&para;</a></h4>
-<table>
-<thead>
-<tr>
-<th><strong>Field</strong></th>
-<th><strong>Type</strong></th>
-<th style="text-align: center;"><strong>Required</strong></th>
-<th><strong>Description</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>selector</code></td>
-<td>String</td>
-<td style="text-align: center;">Yes</td>
-<td>A valid <a href="https://github.com/Kuadrant/architecture/blob/main/rfcs/0002-well-known-attributes.md">Well-known attribute</a> whose resolved value in the data plane will be compared to <code>value</code>, using the <code>operator</code>.</td>
-</tr>
-<tr>
-<td><code>operator</code></td>
-<td>String</td>
-<td style="text-align: center;">Yes</td>
-<td>The binary operator to be applied to the resolved value specified by the selector. One-of: "eq" (equal to), "neq" (not equal to)</td>
-</tr>
-<tr>
-<td><code>value</code></td>
-<td>String</td>
-<td style="text-align: center;">Yes</td>
-<td>The static value to be compared to the one resolved from the selector.</td>
+<td>The period of time that the limit applies. Follows <a href="https://gateway-api.sigs.k8s.io/geps/gep-2257/?h=duration#gateway-api-duration-format">Gateway API Duration format</a></td>
 </tr>
 </tbody>
 </table>
