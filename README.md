@@ -57,7 +57,7 @@ mike serve
 Or, with Docker / Podman:
 
 ```bash
-docker run -v "$(pwd):/docs" -p 8000:8000 quay.io/kuadrant/docs.kuadrant.io:latest "mike serve -s -a 0.0.0.0:8000"
+docker run -v "$(pwd):/docs" -p 8000:8000 quay.io/kuadrant/docs.kuadrant.io:latest "mike serve -a 0.0.0.0:8000"
 ```
 
 This will serve the docs from the `gh-pages` branch with multi-versioning. For general development, use `mkdocs serve`.
@@ -129,7 +129,7 @@ mike serve -S
 Docker / Podman:
 
 ```bash
-docker run -v "$(pwd):/docs" -p 8000:8000 quay.io/kuadrant/docs.kuadrant.io:latest "mike serve -s -a 0.0.0.0:8000"
+docker run -v "$(pwd):/docs" -p 8000:8000 quay.io/kuadrant/docs.kuadrant.io:latest "mike serve -a 0.0.0.0:8000"
 ```
 
 ---
