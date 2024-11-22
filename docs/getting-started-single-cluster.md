@@ -51,7 +51,7 @@ If you want to make use of the Kuadrant `DNSPolicy` you should setup the followi
 ### Set the release you want to use 
 
 ```bash
-export KUADRANT_REF=main
+export KUADRANT_REF=release-v1.0.0
 ```
 
 ### Set Up a kind cluster and install Kuadrant

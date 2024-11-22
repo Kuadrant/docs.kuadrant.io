@@ -211,8 +211,8 @@ For reference:
 
 | Workflow Source | Version to Deploy | Source Branch | Notes               |
 |-----------------|-------------------|---------------|---------------------|
-| main            | 0.10.0            | 0.10.0        | Latest Stable       |
-| main            | 0.8.0             | 0.8           |                     |
+| main            | 1.0.0             | v1.0.x        | Latest Stable       |
+| main            | 0.10.0            | 0.11.0        |                     |
 | main            | dev               | main          | Development - Unstable |
 
 ### Manual Re-release
