@@ -3757,17 +3757,15 @@
 </span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="s">  authorization:</span>
 </span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="s">    &quot;acl&quot;:</span>
 </span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="s">      when:</span>
-</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="s">      - selector: context.request.http.path</span>
-</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="s">        operator: eq</span>
-</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="s">        value: /bye</span>
-</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="s">      patternMatching:</span>
-</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="s">        patterns:</span>
-</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="s">        - selector: context.request.http.headers.authorization.@extract:{&quot;pos&quot;:1}|@base64:decode|@extract:{&quot;sep&quot;:&quot;:&quot;}</span>
-</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="s">          operator: eq</span>
-</span><span id="__span-6-29"><a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="s">          value: john</span>
-</span><span id="__span-6-30"><a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="s">EOF</span>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="s">      - predicate: request.path == &#39;/bye&#39;</span>
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="s">      patternMatching:</span>
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="s">        patterns:</span>
+</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="s">        - selector: context.request.http.headers.authorization.@extract:{&quot;pos&quot;:1}|@base64:decode|@extract:{&quot;sep&quot;:&quot;:&quot;}</span>
+</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="s">          operator: eq</span>
+</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="s">          value: john</span>
+</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="s">EOF</span>
 </span></code></pre></div>
-<p>Check out the docs for information about the common feature <a href="../../features/#common-feature-json-paths-selector">JSON paths</a> for reading from the <a href="../../architecture/#the-authorization-json">Authorization JSON</a>, including the description of the string modifiers <code>@extract</code> and <code>@case</code> used above. Check out as well the common feature <a href="../../features/#common-feature-conditions-when">Conditions</a> about skipping parts of an <code>AuthConfig</code> in the auth pipeline based on context.</p>
+<p>Check out the docs about using <a href="./features.md#common-feature-common-expression-language-cel">Common Expression Language (CEL)</a> for reading from the <a href="../../architecture/#the-authorization-json">Authorization JSON</a>. Check out as well the common feature <a href="../../features/#common-feature-conditions-when">Conditions</a> about skipping parts of an <code>AuthConfig</code> in the auth pipeline based on context.</p>
 <h2 id="create-user-credentials">❻ Create user credentials<a class="headerlink" href="#create-user-credentials" title="Permanent link">&para;</a></h2>
 <p>To create credentials for HTTP "Basic" Authentication, store each <code>username:password</code>, base64-encoded, in the <code>api_key</code> value of the Kubernetes <code>Secret</code> resources. E.g.:</p>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">printf</span><span class="w"> </span><span class="s2">&quot;john:ndyBzreUzF4zqDQsqSPMHkRhriEOtcRx&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64

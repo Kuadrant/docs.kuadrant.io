@@ -3771,17 +3771,14 @@
 </span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="s">  authorization:</span>
 </span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="s">    &quot;email-verified-only&quot;:</span>
 </span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="s">      when:</span>
-</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="s">      - selector: &quot;context.request.http.headers.x-forwarded-for.@extract:{\&quot;sep\&quot;: \&quot;,\&quot;}&quot;</span>
-</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="s">        operator: matches</span>
-</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="s">        value: 192\\.168\\.1\\.\\d+</span>
-</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="s">      patternMatching:</span>
-</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="s">        patterns:</span>
-</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="s">        - selector: auth.identity.email_verified</span>
-</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="s">          operator: eq</span>
-</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="s">          value: &quot;true&quot;</span>
-</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="s">EOF</span>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="s">      - predicate: |</span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="s">          request.headers[&#39;x-forwarded-for&#39;].split(&#39;,&#39;)[0].matches(&quot;^192\\\.168\\\.1\\\.\\\d+$&quot;)</span>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="s">      patternMatching:</span>
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="s">        patterns:</span>
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="s">        - predicate: auth.identity.email_verified</span>
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="s">EOF</span>
 </span></code></pre></div>
-<p>Check out the docs for information about semantics and operators supported by the <a href="../../features/#pattern-matching-authorization-authorizationpatternmatching">JSON pattern-matching authorization</a> feature, as well the common feature <a href="../../features/#common-feature-json-paths-selector">JSON paths</a> for reading from the <a href="../../architecture/#the-authorization-json">Authorization JSON</a>, including the description of the string modifier <code>@extract</code> used above. Check out as well the common feature <a href="../../features/#common-feature-conditions-when">Conditions</a> about skipping parts of an <code>AuthConfig</code> in the auth pipeline based on context.</p>
+<p>Check out the doc about using <a href="./features.md#common-feature-common-expression-language-cel">Common Expression Language (CEL)</a> for reading from the <a href="../../architecture/#the-authorization-json">Authorization JSON</a>. Check out as well the common feature <a href="../../features/#common-feature-conditions-when">Conditions</a> about skipping parts of an <code>AuthConfig</code> in the auth pipeline based on context.</p>
 <h2 id="obtain-an-access-token-and-consume-the-api">❻ Obtain an access token and consume the API<a class="headerlink" href="#obtain-an-access-token-and-consume-the-api" title="Permanent link">&para;</a></h2>
 <h3 id="obtain-an-access-token-and-consume-the-api-as-jane-email-verified">Obtain an access token and consume the API as Jane (email verified)<a class="headerlink" href="#obtain-an-access-token-and-consume-the-api-as-jane-email-verified" title="Permanent link">&para;</a></h3>
 <p>Obtain an access token with the Keycloak server for Jane:</p>

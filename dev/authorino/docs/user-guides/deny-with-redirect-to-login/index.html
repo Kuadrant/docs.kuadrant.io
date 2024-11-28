@@ -3850,10 +3850,11 @@
 </span><span id="__span-6-29"><a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="s">      code: 302</span>
 </span><span id="__span-6-30"><a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="s">      headers:</span>
 </span><span id="__span-6-31"><a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="s">        &quot;Location&quot;:</span>
-</span><span id="__span-6-32"><a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a><span class="s">          selector: &quot;http://matrix-quotes.127.0.0.1.nip.io:8000/login.html?redirect_to={request.path}&quot;</span>
-</span><span id="__span-6-33"><a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a><span class="s">EOF</span>
+</span><span id="__span-6-32"><a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a><span class="s">          expression: |</span>
+</span><span id="__span-6-33"><a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a><span class="s">            &#39;http://matrix-quotes.127.0.0.1.nip.io:8000/login.html?redirect_to=&#39; + request.path</span>
+</span><span id="__span-6-34"><a id="__codelineno-6-34" name="__codelineno-6-34" href="#__codelineno-6-34"></a><span class="s">EOF</span>
 </span></code></pre></div>
-<p>Check out the docs for information about the common feature <a href="../../features/#common-feature-json-paths-selector">JSON paths</a> for reading from the <a href="../../architecture/#the-authorization-json">Authorization JSON</a>.</p>
+<p>Check out the docs about using <a href="./features.md#common-feature-common-expression-language-cel">Common Expression Language (CEL)</a> for reading from the <a href="../../architecture/#the-authorization-json">Authorization JSON</a>.</p>
 <h2 id="create-an-api-key">❻ Create an API key<a class="headerlink" href="#create-an-api-key" title="Permanent link">&para;</a></h2>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="s">&lt;&lt;EOF</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="s">apiVersion: v1</span>
@@ -3923,8 +3924,9 @@
 </span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="s">      code: 302</span>
 </span><span id="__span-14-20"><a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="s">      headers:</span>
 </span><span id="__span-14-21"><a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="s">        &quot;Location&quot;:</span>
-</span><span id="__span-14-22"><a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a><span class="s">          selector: &quot;http://keycloak:8080/realms/kuadrant/protocol/openid-connect/auth?client_id=matrix-quotes&amp;redirect_uri=http://matrix-quotes.127.0.0.1.nip.io:8000/auth?redirect_to={request.path}&amp;scope=openid&amp;response_type=code&quot;</span>
-</span><span id="__span-14-23"><a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a><span class="s">EOF</span>
+</span><span id="__span-14-22"><a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a><span class="s">          expression: |</span>
+</span><span id="__span-14-23"><a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a><span class="s">            &#39;http://keycloak:8080/realms/kuadrant/protocol/openid-connect/auth?client_id=matrix-quotes&amp;redirect_uri=http://matrix-quotes.127.0.0.1.nip.io:8000/auth?redirect_to=&#39; + request.path + &#39;&amp;scope=openid&amp;response_type=code&#39;</span>
+</span><span id="__span-14-24"><a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <h3 id="consume-the-application-again">Consume the application again<a class="headerlink" href="#consume-the-application-again" title="Permanent link">&para;</a></h3>
 <p>Refresh the browser window or navigate again to http://matrix-quotes.127.0.0.1.nip.io:8000.</p>

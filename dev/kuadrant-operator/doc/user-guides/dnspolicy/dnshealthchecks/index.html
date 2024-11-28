@@ -3430,6 +3430,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#manually-removing-unhealthy-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manually removing unhealthy records
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3562,6 +3571,27 @@
 </span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="nt">reason</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Status</span><span class="nv"> </span><span class="s">code:</span><span class="nv"> </span><span class="s">503&#39;</span>
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">503</span>
 </span></code></pre></div>
+<h2 id="manually-removing-unhealthy-records">Manually removing unhealthy records<a class="headerlink" href="#manually-removing-unhealthy-records" title="Permanent link">&para;</a></h2>
+<p>If you have a failing health check for one of your gateway listeners and you would like to remove it from the DNS provider, you can do this by deleting the associated DNSRecord resource.</p>
+<p><strong>Finding the correct record</strong></p>
+<p>DNSRecord resources are kept in the same namespace as the DNSPolicy that configured and created them.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>dnsrecords.kuadrant.io<span class="w"> </span>-n<span class="w"> </span>&lt;dns-policy-namespace&gt;
+</span></code></pre></div>
+<p>As shown above, when a health check is failing, the DNSPolicy will show a status for that listener host to surface that failure:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">recordConditions</span><span class="p">:</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="nt">t1a.cb.hcpapps.net</span><span class="p">:</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">lastTransitionTime</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2024-11-27T14:00:52Z&quot;</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">      </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Not</span><span class="nv"> </span><span class="s">healthy</span><span class="nv"> </span><span class="s">addresses:</span><span class="nv"> </span><span class="s">[ae4d131ee5d7b4fb098f4afabf4aba4c-513237325.us-east-1.elb.amazonaws.com]&#39;</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">      </span><span class="nt">observedGeneration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">      </span><span class="nt">reason</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HealthChecksFailed</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">      </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;False&quot;</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Healthy</span>
+</span></code></pre></div>
+<p>The DNSRecord resource is named after the gateway and the listener name. So if you have a gateway called <code>ingress</code> and a listener called <code>example</code> you will have a <code>DNSRecord</code> resource named <code>ingress-example</code> in the same namespace as your DNSPolicy. So from this status you can get the hostname and find the associated listener on your gateway. You can then delete the associated DNSRecord resource. </p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>dnsrecord.kuadrant.io<span class="w"> </span>&lt;gateway-name&gt;-&lt;listener-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;dns<span class="w"> </span>policy<span class="w"> </span>namespace&gt;
+</span></code></pre></div>
+<p>Removing this resource will remove all of the associated DNS records in the DNS provider and while the health check is failing, the dns operator will not re-publish these records. </p>
 
 
 
