@@ -11,7 +11,12 @@ This repository contains documentation for Kuadrant, built using MkDocs and the 
 To run the docs using Docker, mount the current directory to the container and bind it to port `8000`:
 
 ```bash
-docker run -v "$(pwd):/docs" -p 8000:8000 quay.io/kuadrant/docs.kuadrant.io:latest "mkdocs serve -s -a 0.0.0.0:8000"
+docker run \
+  -v "$(pwd):/docs" \
+  -v "$HOME/.gitconfig:/opt/app-root/src/.gitconfig:ro" \
+  -v "$HOME/.ssh:/opt/app-root/src/.ssh:ro" \
+  -p 8000:8000 quay.io/kuadrant/docs.kuadrant.io:latest \
+  "mkdocs serve -s -a 0.0.0.0:8000"
 ```
 
 This will serve the docs at [http://localhost:8000](http://localhost:8000).
@@ -57,7 +62,12 @@ mike serve
 Or, with Docker / Podman:
 
 ```bash
-docker run -v "$(pwd):/docs" -p 8000:8000 quay.io/kuadrant/docs.kuadrant.io:latest "mike serve -a 0.0.0.0:8000"
+docker run \
+  -v "$(pwd):/docs" \
+  -v "$HOME/.gitconfig:/opt/app-root/src/.gitconfig:ro" \
+  -v "$HOME/.ssh:/opt/app-root/src/.ssh:ro" \
+  -p 8000:8000 quay.io/kuadrant/docs.kuadrant.io:latest \
+  "mike serve -a 0.0.0.0:8000"
 ```
 
 This will serve the docs from the `gh-pages` branch with multi-versioning. For general development, use `mkdocs serve`.
@@ -87,7 +97,12 @@ mike list
 Docker / Podman:
 
 ```bash
-docker run -v "$(pwd):/docs" quay.io/kuadrant/docs.kuadrant.io:latest "mike list"
+docker run \
+  -v "$(pwd):/docs" \
+  -v "$HOME/.gitconfig:/opt/app-root/src/.gitconfig:ro" \
+  -v "$HOME/.ssh:/opt/app-root/src/.ssh:ro" \
+  quay.io/kuadrant/docs.kuadrant.io:latest \
+  "mike list"
 ```
 
 #### Deploy a new release with a custom title
@@ -95,13 +110,18 @@ docker run -v "$(pwd):/docs" quay.io/kuadrant/docs.kuadrant.io:latest "mike list
 Locally:
 
 ```bash
-mike deploy 0.7.0 -t "0.7.0 (dev)"
+mike deploy 1.0.x -t "1.0.x (latest stable)"
 ```
 
 Docker / Podman:
 
 ```bash
-docker run -v "$(pwd):/docs" quay.io/kuadrant/docs.kuadrant.io:latest "mike deploy 0.7.0 -t '0.7.0 (dev)'"
+docker run \
+  -v "$(pwd):/docs" \
+  -v "$HOME/.gitconfig:/opt/app-root/src/.gitconfig:ro" \
+  -v "$HOME/.ssh:/opt/app-root/src/.ssh:ro" \
+  quay.io/kuadrant/docs.kuadrant.io:latest \
+  "mike deploy 1.0.x -t '1.0.x (latest stable)'"
 ```
 
 #### Delete a release
@@ -109,13 +129,18 @@ docker run -v "$(pwd):/docs" quay.io/kuadrant/docs.kuadrant.io:latest "mike depl
 Locally:
 
 ```bash
-mike delete 0.7.0
+mike delete 1.0.x
 ```
 
 Docker / Podman:
 
 ```bash
-docker run -v "$(pwd):/docs" quay.io/kuadrant/docs.kuadrant.io:latest "mike delete 0.7.0"
+docker run \
+  -v "$(pwd):/docs" \
+  -v "$HOME/.gitconfig:/opt/app-root/src/.gitconfig:ro" \
+  -v "$HOME/.ssh:/opt/app-root/src/.ssh:ro" \
+  quay.io/kuadrant/docs.kuadrant.io:latest \
+  "mike delete 1.0.x"
 ```
 
 #### Serve multi-versioned docs
@@ -129,7 +154,12 @@ mike serve -S
 Docker / Podman:
 
 ```bash
-docker run -v "$(pwd):/docs" -p 8000:8000 quay.io/kuadrant/docs.kuadrant.io:latest "mike serve -a 0.0.0.0:8000"
+docker run \
+  -v "$(pwd):/docs" \
+  -v "$HOME/.gitconfig:/opt/app-root/src/.gitconfig:ro" \
+  -v "$HOME/.ssh:/opt/app-root/src/.ssh:ro" \
+  -p 8000:8000 quay.io/kuadrant/docs.kuadrant.io:latest \
+  "mike serve -a 0.0.0.0:8000"
 ```
 
 ---
@@ -138,7 +168,7 @@ docker run -v "$(pwd):/docs" -p 8000:8000 quay.io/kuadrant/docs.kuadrant.io:late
 
 We use two aliases with `mike`:
 
-- `latest`: Points to the latest stable release (e.g., `latest -> 0.7.0`)
+- `latest`: Points to the latest stable release (e.g., `latest -> 1.0.x`)
 - `dev`: Points to `HEAD` of `main`, for unstable or pre-release documentation
 
 ---
@@ -155,8 +185,8 @@ To mark a new release as stable, follow these steps:
 
 > **Note:** This process is currently manual and will be automated soon.
 
-1. Create a release branch from `main` (e.g., `git checkout -b 0.7.x`).
-2. In the release branch (`0.7.x`):
+1. Create a release branch from `main` (e.g., `git checkout -b v1.0.x`).
+2. In the release branch (`v1.0.x`):
     - Update `mkdocs.yml` to replace `branch=` references with specific tags for all components.
     - Set the latest release as default in `mkdocs.yml`:
       ```yaml
@@ -164,7 +194,8 @@ To mark a new release as stable, follow these steps:
         version:
           provider: mike
           default:
-            - 0.7.0
+            - 1.0.x
+            - latest
       ```
     - Update any other references for the new release, including `import_url` git refs and other version-specific settings.
 3. Deploy the release with the `latest` alias:
@@ -172,13 +203,18 @@ To mark a new release as stable, follow these steps:
 Locally:
 
 ```bash
-mike deploy --update-aliases 0.7.0 latest
+mike deploy --update-aliases 1.0.x latest --push
 ```
 
 Docker / Podman:
 
 ```bash
-docker run -v "$(pwd):/docs" quay.io/kuadrant/docs.kuadrant.io:latest "mike deploy --update-aliases 0.7.0 latest"
+docker run \
+  -v "$(pwd):/docs" \
+  -v "$HOME/.gitconfig:/opt/app-root/src/.gitconfig:ro" \
+  -v "$HOME/.ssh:/opt/app-root/src/.ssh:ro" \
+  quay.io/kuadrant/docs.kuadrant.io:latest \
+  "mike deploy --update-aliases 1.0.x latest --push --allow-empty"
 ```
 
 4. Set this release as the default version:
@@ -186,16 +222,21 @@ docker run -v "$(pwd):/docs" quay.io/kuadrant/docs.kuadrant.io:latest "mike depl
 Locally:
 
 ```bash
-mike set-default 0.7.0
+mike set-default 1.0.x --push
 ```
 
 Docker / Podman:
 
 ```bash
-docker run -v "$(pwd):/docs" quay.io/kuadrant/docs.kuadrant.io:latest "mike set-default 0.7.0"
+docker run \
+  -v "$(pwd):/docs" \
+  -v "$HOME/.gitconfig:/opt/app-root/src/.gitconfig:ro" \
+  -v "$HOME/.ssh:/opt/app-root/src/.ssh:ro" \
+  quay.io/kuadrant/docs.kuadrant.io:latest \
+  "mike set-default 1.0.x --push --allow-empty"
 ```
 
-5. Tag the repo (e.g., `git tag 0.7.0 && git push --tags <upstream-origin>`).
+5. Tag the repo (e.g., `git tag 1.0.x && git push --tags <upstream-origin>`).
 
 ---
 
@@ -224,13 +265,18 @@ For reference:
 Locally:
 
 ```bash
-mike deploy 0.7.0 -t "0.7.0" --push
+mike deploy 1.0.x -t "1.0.x" --push
 ```
 
 Docker / Podman:
 
 ```bash
-docker run -v "$(pwd):/docs" quay.io/kuadrant/docs.kuadrant.io:latest "mike deploy 0.7.0 -t '0.7.0' --push"
+docker run \
+  -v "$(pwd):/docs" \
+  -v "$HOME/.gitconfig:/opt/app-root/src/.gitconfig:ro" \
+  -v "$HOME/.ssh:/opt/app-root/src/.ssh:ro" \
+  quay.io/kuadrant/docs.kuadrant.io:latest \
+  "mike deploy 1.0.x -t '1.0.x' --push"
 ```
 
 4. If there’s a push error, reset to the latest `gh-pages` branch and try again.
@@ -254,3 +300,20 @@ To build the Docker image, run:
 docker build -t quay.io/kuadrant/docs.kuadrant.io:latest .
 docker push quay.io/kuadrant/docs.kuadrant.io:latest
 ```
+
+
+### Troubleshooting
+
+#### Errors with the docs.kuadrant.io container
+
+```bash
+error: failed to push branch gh-pages to origin:
+  /opt/app-root/src/.ssh/config: line 8: Bad configuration option: usekeychain
+  /opt/app-root/src/.ssh/config: terminating, 1 bad configuration options
+  fatal: Could not read from remote repository.
+
+  Please make sure you have the correct access rights
+  and the repository exists.
+```
+
+Remove the `usekeychain` option from your `~/.ssh/config` and try again.
