@@ -61,6 +61,7 @@ jobs:
       - name: Deploy Documentation
         if: steps.validate_user.outputs.can_deploy == 'true'
         run: |
+          mkdocs build -s
           mike deploy ${{ github.event_name == 'schedule' && 'dev' || github.event.inputs.version }} -t "${{ github.event_name == 'schedule' && 'dev' || github.event.inputs.version }}" --push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
