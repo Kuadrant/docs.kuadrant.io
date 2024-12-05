@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: monitoring
+
+# grafana-dashboard dashboards as configmaps
+configMapGenerator:
+- name: grafana-app-developer
+  files:
+  - ./app_developer.json
+- name: grafana-business-user
+  files:
+  - ./business_user.json
+- name: grafana-platform-engineer
+  files:
+  - ./platform_engineer.json
+- name: grafana-controller-runtime-metrics
+  files:
+  - ./controller-runtime-metrics.json
+- name: grafana-controller-resources-metrics
+  files:
+  - ./controller-resources-metrics.json    
+
+generatorOptions:
+  disableNameSuffixHash: true
