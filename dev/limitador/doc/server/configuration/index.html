@@ -3731,9 +3731,9 @@ reload, or the server will fail to start.</p>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">conditions</span><span class="p">:</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;req_method</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;GET&#39;&quot;</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;descriptors[0].req_method</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;GET&#39;&quot;</span>
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">variables</span><span class="p">:</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user_id</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">descriptors[0].user_id</span>
 </span></code></pre></div>
 <ul>
 <li><code>namespace</code> namespaces the limit, will generally be the domain, <a href="../../how-it-works/">see here</a></li>
@@ -3747,13 +3747,11 @@ reload, or the server will fail to start.</p>
 <h4 id="condition-syntax"><code>condition</code> syntax<a class="headerlink" href="#condition-syntax" title="Permanent link">&para;</a></h4>
 <p>Each <code>condition</code> is an expression producing a boolean value (<code>true</code> or <code>false</code>). All <code>conditions</code> <em>must</em> evaluate to
 <code>true</code> for the <code>limit</code> to be applied on a request.</p>
-<p>Expressions follow the following syntax: <code>$IDENTIFIER $OP $STRING_LITERAL</code>, where:</p>
-<ul>
-<li><code>$IDENTIFIER</code> will be used to resolve the value at evaluation time, e.g. <code>role</code></li>
-<li><code>$OP</code> is an operator, either <code>==</code> or <code>!=</code></li>
-<li><code>$STRING_LITERAL</code> is a literal string value, <code>"</code> or <code>'</code> demarcated, e.g. <code>"admin"</code></li>
-</ul>
-<p>So that <code>role != "admin"</code> would apply the limit on request from all users, but <code>admin</code>'s.</p>
+<p>These predicates are <a href="https://cel.dev/">CEL</a> Expressions that operate on the context provided by the <code>Limit</code> itself
+(it's <code>id</code> and <code>name</code>fields), along with the <code>descriptors</code> from Envoy's
+<a href="https://www.envoyproxy.io/docs/envoy/latest/api-v3/service/ratelimit/v3/rls.proto#service-ratelimit-v3-ratelimitrequest">
+<code>service.ratelimit.v3.RateLimitRequest</code></a>,
+each of which being exposed a <code>List</code> of <code>Map</code> with both keys and values as <code>String</code>.</p>
 <h3 id="counter-storages">Counter storages<a class="headerlink" href="#counter-storages" title="Permanent link">&para;</a></h3>
 <p>Limitador will load all the <code>limit</code> definitions from the <code>LIMITS_FILE</code> and keep these in memory. To enforce these
 limits, Limitador needs to track requests in the form of counters. There would be at least one counter per limit, but

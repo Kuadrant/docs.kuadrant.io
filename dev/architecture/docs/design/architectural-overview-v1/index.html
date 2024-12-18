@@ -550,9 +550,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#istio-required" class="md-nav__link">
+  <a href="#istio-or-envoy-gateway" class="md-nav__link">
     <span class="md-ellipsis">
-      Istio: Required
+      Istio or Envoy Gateway:
     </span>
   </a>
   
@@ -562,24 +562,6 @@
   <a href="#gateway-api-required" class="md-nav__link">
     <span class="md-ellipsis">
       Gateway API: Required
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#integrations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Integrations
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#open-cluster-manager-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      Open Cluster Manager: Optional
     </span>
   </a>
   
@@ -3819,9 +3801,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#istio-required" class="md-nav__link">
+  <a href="#istio-or-envoy-gateway" class="md-nav__link">
     <span class="md-ellipsis">
-      Istio: Required
+      Istio or Envoy Gateway:
     </span>
   </a>
   
@@ -3831,24 +3813,6 @@
   <a href="#gateway-api-required" class="md-nav__link">
     <span class="md-ellipsis">
       Gateway API: Required
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#integrations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Integrations
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#open-cluster-manager-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      Open Cluster Manager: Optional
     </span>
   </a>
   
@@ -3907,7 +3871,7 @@
 <li>Installation and configuration of other control plane components</li>
 <li>Installation of data plane policy enforcement components via their respective control plane operators</li>
 <li>Configures the Gateway via WASM plugin and other APIs to leverage the data plane components for auth and rate limiting on incoming requests.</li>
-<li>Exposes <a href="https://docs.kuadrant.io/kuadrant-operator/doc/rate-limiting/"><code>RateLimitPolicy</code></a> , <a href="https://docs.kuadrant.io/kuadrant-operator/doc/auth/"><code>AuthPolicy</code></a>, <a href="https://docs.kuadrant.io/kuadrant-operator/doc/dns/"><code>DNSPolicy</code></a> and <a href="https://docs.kuadrant.io/kuadrant-operator/doc/tls/"><code>TLSPolicy</code></a> and reconciles these into enforceable configuration for the data plane.</li>
+<li>Exposes <a href="https://docs.kuadrant.io/dev/kuadrant-operator/doc/overviews/rate-limiting/"><code>RateLimitPolicy</code></a> , <a href="https://docs.kuadrant.io/dev/kuadrant-operator/doc/overviews/auth/"><code>AuthPolicy</code></a>, <a href="https://docs.kuadrant.io/dev/kuadrant-operator/doc/overviews/dns/"><code>DNSPolicy</code></a> and <a href="https://docs.kuadrant.io/dev/kuadrant-operator/doc/overviews/tls/"><code>TLSPolicy</code></a> and reconciles these into enforceable configuration for the data plane.</li>
 <li>Exposes <a href="https://github.com/Kuadrant/kuadrant-operator/blob/main/doc/reference/kuadrant.md"><code>Kuadrant</code></a> and reconciles this to configure and trigger installation of the required data plane components and other control plane components.</li>
 </ul>
 <h4 id="limitador-operator"><a href="https://github.com/Kuadrant/limitador-operator">Limitador Operator:</a><a class="headerlink" href="#limitador-operator" title="Permanent link">&para;</a></h4>
@@ -3940,15 +3904,15 @@ AWS, Azure and Google DNS are our main targets</li>
 </ul>
 <h4 id="wasm-shim"><a href="https://github.com/Kuadrant/wasm-shim">WASM Shim</a><a class="headerlink" href="#wasm-shim" title="Permanent link">&para;</a></h4>
 <ul>
-<li>Uses the <a href="https://github.com/proxy-wasm/spec">Proxy WASM ABI Spec</a> to integrate with Envoy and provide filtering and connectivity to Limitador for request time enforcement of and rate limiting.</li>
+<li>Uses the <a href="https://github.com/proxy-wasm/spec">Proxy WASM ABI Spec</a> to integrate with Envoy and provide filtering and connectivity to Limitador (for request time enforcement of rate limiting) and Authorino (for request time enforcement of authentication &amp; authorization).</li>
 </ul>
 <h3 id="single-cluster-layout">Single Cluster Layout<a class="headerlink" href="#single-cluster-layout" title="Permanent link">&para;</a></h3>
 <p>In a single cluster, you have the Kuadrant control plane and data plane sitting together. It is configured to integrate with Gateways on the same cluster and configure a DNS zone via a DNS provider secret (configured alongside a DNSPolicy). Storage of rate limit counters is possible but not required as they are not being shared.</p>
 <p><img alt="" src="../images/single-cluster-layout.jpg" /></p>
 <h3 id="multi-cluster">Multi-Cluster<a class="headerlink" href="#multi-cluster" title="Permanent link">&para;</a></h3>
 <p>In the default multi-cluster setup. Each individual cluster has Kuadrant installed. Each of these clusters are unaware of the other. They are effectively operating as single clusters. The multi-cluster aspect is created by sharing access with the DNS zone, using a shared host across the clusters and leveraging shared counter storage. 
-The zone is operated on independently by each of DNS operator on both clusters to form a single cohesive record set. More details on this can be found in the following RFC document: TODO add link.
-The rate limit counters can also be shared and used by different clusters in order to provide global rate limiting. This is achieved by connecting each instance of Limitador to a shared data store that uses the Redis protocol. There is another option available for achieving multi-cluster connectivity (see intgrations below) that requires the use of a "hub" cluster and integration with OCM (open cluster management).</p>
+The zone is operated on independently by each of DNS operator on both clusters to form a single cohesive record set. More details on this can be found in the <a href="https://github.com/Kuadrant/architecture/pull/70">following RFC</a>.
+The rate limit counters can also be shared and used by different clusters in order to provide global rate limiting. This is achieved by connecting each instance of Limitador to a shared data store that uses the Redis protocol.</p>
 <p><img alt="" src="../images/multi-cluster-layout.jpg" /></p>
 <p>Shown above is a multi-cluster multi ingress gateway topology. This might be used to support a geographically distributed system for example. However, it is also possible to leverage overlay networking tools such as <a href="https://skupper.io">Skupper</a> that integrate at the Kubernetes service level to have a single gateway cluster that then integrates with multiple backends (on different clusters or in custom infrastructure).</p>
 <h3 id="observability">Observability<a class="headerlink" href="#observability" title="Permanent link">&para;</a></h3>
@@ -3972,24 +3936,16 @@ The log collector (vector) can forward logs to a central loki instance.
 Finally, the visualisation component (Grafana) is centralised as well, with data sources configured for each of the 3 components on the same cluster.</p>
 <p><img alt="" src="../images/arch_observability_2.jpg" /></p>
 <h3 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h3>
-<h4 id="istio-required"><a href="https://istio.io">Istio</a>: <strong>Required</strong><a class="headerlink" href="#istio-required" title="Permanent link">&para;</a></h4>
+<h4 id="istio-or-envoy-gateway"><a href="https://istio.io">Istio</a> or <a href="https://gateway.envoyproxy.io/">Envoy Gateway</a>:<a class="headerlink" href="#istio-or-envoy-gateway" title="Permanent link">&para;</a></h4>
 <ul>
-<li>Gateway API provider that Kuadrant integrates with via WASM and Istio APIS to provide service protection capabilities. Kuadrant configures Envoy via the Istio control plane in order to enforce the applied policies and register components such as Authorino and Limitador. </li>
-<li>Used by <a href="https://docs.kuadrant.io/kuadrant-operator/doc/rate-limiting/"><code>RateLimitPolicy</code></a> and <a href="https://docs.kuadrant.io/kuadrant-operator/doc/auth/"><code>AuthPolicy</code></a></li>
+<li>Gateway API provider that Kuadrant integrates with via WASM to provide service protection capabilities. Kuadrant configures Envoy Proxy via the Istio/Envoy Gateway control plane in order to enforce the applied policies and register components such as Authorino and Limitador. </li>
+<li>Used by <a href="https://docs.kuadrant.io/dev/kuadrant-operator/doc/overviews/rate-limiting/"><code>RateLimitPolicy</code></a> and <a href="https://docs.kuadrant.io/dev/kuadrant-operator/doc/overviews/auth/"><code>AuthPolicy</code></a></li>
 </ul>
 <h4 id="gateway-api-required"><a href="https://github.com/kubernetes-sigs/gateway-api">Gateway API</a>: <strong>Required</strong><a class="headerlink" href="#gateway-api-required" title="Permanent link">&para;</a></h4>
 <ul>
 <li>New standard for Ingress from the Kubernetes community</li>
 <li>Gateway API is the core API that Kuadrant integrates with.</li>
 </ul>
-<h4 id="integrations">Integrations<a class="headerlink" href="#integrations" title="Permanent link">&para;</a></h4>
-<h4 id="open-cluster-manager-optional"><a href="https://open-cluster-management.io/">Open Cluster Manager</a>: <strong>Optional</strong><a class="headerlink" href="#open-cluster-manager-optional" title="Permanent link">&para;</a></h4>
-<ul>
-<li>Provides a multi-cluster control plane to enable the defining and distributing of Gateways across multiple clusters.</li>
-</ul>
-<p>While the default setup is to leverage a distributed configuration for DNS and rate limiting. There is also a component that offers experimental integration with Open Cluster Management. </p>
-<p>In this setup, the OCM integration controller is installed into the HUB alongside the DNS Operator and the cert-manager. This integration allows you to define gateways in the Hub and distribute them to "spoke" clusters. The addresses of these gateways are gathered from the spokes and aggregated back to the hub. The Kuadrant operator and DNS operator then act on this information as though it were a single cluster gateway with multiple addresses. The DNS zone in the configured DNS provider is managed centrally by one DNS operator instance.</p>
-<p><img alt="" src="../images/high-level-multi-cluster.png" /></p>
 
 
 

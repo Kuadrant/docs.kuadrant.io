@@ -3480,21 +3480,22 @@
   <h1>How it works</h1>
 
 <h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
-<p>Limitador ensures that <em>the most restrictive limit configuration will apply</em>.</p>
-<p>Limitador will try to match each incoming descriptor with the same <em>namespaced</em>
-counter's conditions and variables.
-The namespace for the descriptors is defined by the <code>domain</code> field
-whereas for the rate limit configuration the <code>namespace</code> field is being used.
-For each matching counter, the counter is increased and the limits checked.</p>
+<p>Limitador will increment counters for all <code>Limit</code>s that apply, if any of these counter is above its <code>Limit</code>'s
+<code>max_value</code> the request will be considered to be <em>rate limited</em>. So think of it as if <em>the most restrictive limit
+configuration will apply</em>.</p>
+<p>Limitador will evaluate whether a <code>Limit</code> applies against its <em>namespace</em>, its conditions and whether all variables are
+resolvable. The namespace for the descriptors is defined by the <code>domain</code> field from the <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v3/service/ratelimit/v3/rls.proto#service-ratelimit-v3-ratelimitrequest">
+<code>service.ratelimit.v3.RateLimitRequest</code></a>.
+For each matching <code>Limit</code>, its counter is increased and checked against the <code>Limit</code> <code>max_value</code>.</p>
 <p>One example to illustrate:</p>
-<p>Let's say we have 1 rate limit configuration (one counter per config):</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;KEY_A</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;VALUE_A&#39;&quot;</span><span class="p p-Indicator">]</span>
+<p>Let's say we have one rate limit:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&quot;descriptors[0].KEY_A</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;VALUE_A&#39;&quot;</span><span class="w"> </span><span class="p p-Indicator">]</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nt">variables</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example.org</span>
 </span></code></pre></div>
-<p>Limitador receives one descriptor with two entries:</p>
+<p>Limitador Server receives a request with one descriptor with two entries:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example.org</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">descriptors</span><span class="p">:</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
@@ -3502,17 +3503,16 @@ For each matching counter, the counter is increased and the limits checked.</p>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">KEY_A</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VALUE_A</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">OTHER_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OTHER_VALUE</span>
 </span></code></pre></div>
-<p>The counter's condition will match. Then, the counter will be increased and the limit checked.
+<p>The counter's condition all match. Then, the counter will be increased and the limit checked.
 If the limit is exceeded, the request will be rejected with <code>429 Too Many Requests</code>,
 otherwise accepted.</p>
 <p>Note that the counter is being activated even though it does not match <em>all</em> the entries of the
 descriptor. The same rule applies for the <em>variables</em> field.</p>
-<p>Currently, the implementation of <em>condition</em> only allow for <em>equal</em> (<code>==</code>) and <em>not equal</em> (<code>!=</code>) operators.
-More operators will be implemented based off the use cases for them.</p>
+<p>Conditions are <a href="https://cel.dev">CEL</a> expressions evaluating to a <code>bool</code> value.</p>
 <p>The <em>variables</em> field is a list of keys.
 The matching rule is defined just as the existence of the list of descriptor entries with the
-same key values. If <em>variables</em> is <code>variables: [A, B, C]</code>,
-one descriptor matches if it has <em>at least</em> three entries with the same A, B, C keys.</p>
+same key values. If <em>variables</em> is <code>variables: ["descriptors[0].A", "descriptors[0].B", "descriptors[0].C]"</code>,
+the limit will match if the first descriptor has <em>at least</em> three entries with the same A, B, C keys.</p>
 <p>Few examples to illustrate.</p>
 <p>Having the following descriptors:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example.org</span>
@@ -3523,7 +3523,7 @@ one descriptor matches if it has <em>at least</em> three entries with the same A
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">OTHER_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OTHER_VALUE</span>
 </span></code></pre></div>
 <p>the following counters would <strong>not</strong> be activated.</p>
-<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;KEY_B</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;VALUE_B&#39;&quot;</span><span class="p p-Indicator">]</span>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&quot;descriptors[0].KEY_B</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;VALUE_B&#39;&quot;</span><span class="w"> </span><span class="p p-Indicator">]</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nt">seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="nt">variables</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
@@ -3532,8 +3532,8 @@ one descriptor matches if it has <em>at least</em> three entries with the same A
 Reason: conditions key does not exist</p>
 <p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">conditions</span><span class="p">:</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;KEY_A</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;VALUE_A&#39;&quot;</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;OTHER_KEY</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;WRONG_VALUE&#39;&quot;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;descriptors[0].KEY_A</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;VALUE_A&#39;&quot;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;descriptors[0].OTHER_KEY</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;WRONG_VALUE&#39;&quot;</span>
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 </span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="nt">seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="nt">variables</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
@@ -3543,14 +3543,14 @@ Reason: not all the conditions match</p>
 <p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nt">seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nt">variables</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;MY_VAR&quot;</span><span class="p p-Indicator">]</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nt">variables</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&quot;descriptors[0].MY_VAR&quot;</span><span class="w"> </span><span class="p p-Indicator">]</span>
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example.org</span>
 </span></code></pre></div>
 Reason: the variable name does not exist</p>
-<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;KEY_B</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;VALUE_B&#39;&quot;</span><span class="p p-Indicator">]</span>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&quot;descriptors[0].KEY_B</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;VALUE_B&#39;&quot;</span><span class="w"> </span><span class="p p-Indicator">]</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nt">seconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nt">variables</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;MY_VAR&quot;</span><span class="p p-Indicator">]</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nt">variables</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&quot;descriptors[0].MY_VAR&quot;</span><span class="w"> </span><span class="p p-Indicator">]</span>
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example.org</span>
 </span></code></pre></div>
 Reason: Both variables and conditions must match. In this particular case, only conditions match</p>
