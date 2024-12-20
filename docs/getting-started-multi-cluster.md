@@ -37,4 +37,4 @@ To ensure that any DNS records are removed, you should remove any `DNSPolicy` an
 
 The next step is to setup and use the policies provided by Kuadrant. 
 
-[Secure, Protect and Connect your Gateway](kuadrant-operator/doc/user-guides/full-walkthrough/secure-protect-connect-k8s.md)
+[Secure, Protect and Connect your Gateway](kuadrant-operator/doc/user-guides/full-walkthrough/secure-protect-connect.md)
