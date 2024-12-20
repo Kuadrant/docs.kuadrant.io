@@ -11,6 +11,7 @@ In this quick start, we will cover:
 - [Kind](https://kind.sigs.k8s.io/)
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/)
 - [Helm](https://helm.sh/)
+- [Kustomize](https://kubectl.docs.kubernetes.io/installation/kustomize/)
 - OpenSSL >= 3
 - AWS account with Route 53 enabled or GCP with Cloud DNS enabled
 - [Docker Mac Net Connect](https://github.com/chipmk/docker-mac-net-connect) (macOS users only)
