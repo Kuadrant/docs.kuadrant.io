@@ -11,6 +11,10 @@
         <link rel="canonical" href="https://docs.kuadrant.io/dev/kuadrant-operator/doc/user-guides/ratelimiting/multi-auth-rlp-diff-section/">
       
       
+        <link rel="prev" href="../authenticated-rl-with-jwt-and-k8s-authnz/">
+      
+      
+        <link rel="next" href="../multi-auth-rlp-same-section/">
       
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
@@ -18,7 +22,7 @@
     
     
       
-        <title>Gateway Rate Limiting - Kuadrant Documentation</title>
+        <title>Authenticated Rate Limit Policies for different listeners in an ingress gateway - Kuadrant Documentation</title>
       
     
     
@@ -113,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Gateway Rate Limiting
+              Authenticated Rate Limit Policies for different listeners in an ingress gateway
             
           </span>
         </div>
@@ -388,7 +392,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../install/install-kubernetes/" class="md-nav__link">
+      <a href="../../../install/install-kubernetes.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -816,17 +820,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
@@ -840,7 +846,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             How-to Guides
@@ -1169,17 +1175,19 @@
                 
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_6" checked>
         
           
           <label class="md-nav__link" for="__nav_6_6" id="__nav_6_6_label" tabindex="0">
@@ -1193,7 +1201,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6_6">
             <span class="md-nav__icon md-icon"></span>
             Rate Limiting
@@ -1254,6 +1262,160 @@
   
   <span class="md-ellipsis">
     Authenticated Rate Limiting with JWTs and Kubernetes RBAC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limit Policies for different listeners in an ingress gateway
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limit Policies for different listeners in an ingress gateway
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setup-the-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup the environment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-the-sample-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploy the sample API:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-the-ingress-gateways" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create the ingress gateways
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#route-traffic-to-the-api-from-both-gateways-listeners" class="md-nav__link">
+    <span class="md-ellipsis">
+      Route traffic to the API from both gateways listeners
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-kuadrant-ratelimitpolicy-to-configure-rate-limiting-for-the-external-listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create a Kuadrant RateLimitPolicy to configure rate limiting for the external listener:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-kuadrant-ratelimitpolicy-to-configure-rate-limiting-for-the-local-listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create a Kuadrant RateLimitPolicy to configure rate limiting for the local listener:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify-the-rate-limiting-works-by-sending-requests-in-a-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verify the rate limiting works by sending requests in a loop
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cleanup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cleanup
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multi-auth-rlp-same-section/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limit Policies for the same HTTPRoute rule
   </span>
   
 
@@ -3471,7 +3633,7 @@
 <h1 id="gateway-rate-limiting">Gateway Rate Limiting<a class="headerlink" href="#gateway-rate-limiting" title="Permanent link">&para;</a></h1>
 <p>This user guide walks you through an example of how to configure multiple rate limit polices for different listeners in an ingress gateway.</p>
 <h3 id="setup-the-environment">Setup the environment<a class="headerlink" href="#setup-the-environment" title="Permanent link">&para;</a></h3>
-<p>Follow this <a href="https://github.com/Kuadrant/kuadrant-operator/blob/main/doc/install/install-make-target.md">setup doc</a> to set up your environment before continuing with this doc.</p>
+<p>Follow this <a href="https://github.com/Kuadrant/kuadrant-operator/blob/main/doc/install/install-make.md">setup doc</a> to set up your environment before continuing with this doc.</p>
 <h3 id="deploy-the-sample-api">Deploy the sample API:<a class="headerlink" href="#deploy-the-sample-api" title="Permanent link">&para;</a></h3>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>examples/toystore/toystore.yaml
 </span></code></pre></div>
@@ -3537,7 +3699,7 @@
 </span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="s">    name: environment</span>
 </span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="s">    sectionName: external</span>
 </span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="s">  defaults:</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="s">    strategy: merge  </span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="s">    strategy: merge</span>
 </span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="s">    limits:</span>
 </span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="s">      &quot;external&quot;:</span>
 </span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="s">        rates:</span>
@@ -3559,7 +3721,7 @@
 </span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="s">    name: environment</span>
 </span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="s">    sectionName: local</span>
 </span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="s">  defaults:</span>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="s">    strategy: merge    </span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="s">    strategy: merge</span>
 </span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="s">    limits:</span>
 </span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="s">      &quot;local&quot;:</span>
 </span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="s">        rates:</span>
