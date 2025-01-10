@@ -21,16 +21,12 @@ metadata:
 EOF
 ```
 
-If everything went well, the status of the resource shoulde be `Ready`
+If everything went well, the status of the resource should be `Ready`
 
 ```bash
-kubectl get kuadrant kuadrant -n kuadrant-system -o=wide
+kubectl get kuadrant kuadrant -n kuadrant-system -o=jsonpath='{.status.conditions[?(@.type=="Ready")].message}{"\n"}'
 ```
 
-```bash
-NAME       STATUS   AGE
-kuadrant   Ready    64s
-```
 
 ## Next Steps
 
