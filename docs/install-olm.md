@@ -23,7 +23,7 @@ This document will walk you through setting up the required configuration to ins
 * [kubectl CLI](https://kubernetes.io/docs/reference/kubectl/)
 - [OLM installed](https://olm.operatorframework.io/docs/getting-started/) - ([operator lifecycle manager releases](https://github.com/operator-framework/operator-lifecycle-manager/releases))
 - Gateway provider installed
-    - If you don't have a Gateway provider installed, steps are included in this guide to install the [Sail Operator](https://github.com/istio-ecosystem/sail-operator) that will configure and install an Istio installation. Kuadrant is intended to work with [Istio](https://istio.io) or [Envoy Gateway](https://gateway.envoyproxy.io/) as a gateway provider before you can make use of Kuadrant one of these providers should be installed.  
+    - If you don't have a Gateway provider installed, steps are included in this guide to install the [Sail Operator](https://github.com/istio-ecosystem/sail-operator) that will configure and install an Istio installation. Kuadrant is intended to work with [Istio](https://istio.io) or [Envoy Gateway](https://gateway.envoyproxy.io/).  
 - (Optional) cert-manager for automated TLS capabilities:
     - [cert-manager Operator for Red Hat OpenShift](https://docs.openshift.com/container-platform/4.16/security/cert_manager_operator/cert-manager-operator-install.html)
     - [installing cert-manager via OperatorHub](https://cert-manager.io/docs/installation/operator-lifecycle-manager/)
@@ -46,15 +46,15 @@ touch $KUADRANT_DIR/install/kustomization.yaml
 
 ```
 
-> Setting the version to install: You can set the version of kuadrant to install by adding / changing the `?ref=v1.0.1` in the resource links.
+Add the below kustomisation CR to the kustomization.yaml created above:
 
 ```yaml
-# add this to the kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - https://github.com/Kuadrant/kuadrant-operator//config/install/standard?ref=v1.0.1 #set the versio by adding ?ref=v1.0.1 change this version as needed (see https://github.com/Kuadrant/kuadrant-operator/releases)
-  #- https://github.com/Kuadrant/kuadrant-operator//config/install/openshift?ref=v1.0.1 #use if targeting an OCP cluster. Change this version as needed (see https://github.com/Kuadrant/kuadrant-operator/releases).
+  # choose the cluster preference that matches your scenario below. Set the version by adding ?ref=v1.0.1. Change this version as needed (see https://github.com/Kuadrant/kuadrant-operator/releases)
+  - https://github.com/Kuadrant/kuadrant-operator//config/install/standard?ref=v1.0.1 
+  # - https://github.com/Kuadrant/kuadrant-operator//config/install/openshift?ref=v1.0.1
 
 patches: # remove this subscription patch if you are installing a development version. It will then use the "preview" channel
   - patch: |-
@@ -141,30 +141,19 @@ kubectl apply -k $KUADRANT_DIR/configure
 
 ```
 
-### Verify kuadrant is installed and ready:
+### Verify Kuadrant is installed and ready:
 
 ```bash
-kubectl get kuadrant kuadrant -n kuadrant-system -o=wide
-
-# NAME       STATUS   AGE
-# kuadrant   Ready    109s
-
+kubectl get kuadrant kuadrant -n kuadrant-system -o=jsonpath='{.status.conditions[?(@.type=="Ready")].message}{"\n"}'
 ```
 
-You should see the condition with type `Ready` with a message of `kuadrant is ready`. 
-
+You should see the message `kuadrant is ready`.
 
 ### Verify Istio is configured and ready:
 
 ```bash
-kubectl get istio -n gateway-system
-
-#sample output
-# NAME      REVISIONS   READY   IN USE   ACTIVE REVISION   VERSION   AGE
-# default   1           1       1        Healthy           v1.23.0   3d22h
+kubectl wait istio/default --for=condition=ready=true
 ```
-
-
 
 At this point Kuadrant is installed and ready to be used as is Istio as the gateway provider. This means AuthPolicy and RateLimitPolicy can now be configured and used to protect any Gateways you create. 
 
@@ -267,11 +256,7 @@ kubectl apply -k $KUADRANT_DIR/configure
 The cluster issuer should become ready:
 
 ```bash
-kubectl get clusterissuer -o=wide
-
-# NAME               READY   STATUS                                                 AGE
-# lets-encrypt-aws   True    The ACME account was registered with the ACME server   14s
-
+kubectl wait clusterissuer/lets-encrypt-aws --for=condition=ready=true
 ```
 
 We create two credentials. One for use with `DNSPolicy` in the gateway-system namespace and one for use by cert-manager in the `cert-manager` namespace. With these credentials in place and the cluster issuer configured. You are now ready to start using DNSPolicy and TLSPolicy to secure and connect your Gateways.
