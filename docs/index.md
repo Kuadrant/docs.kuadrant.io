@@ -6,5 +6,5 @@ Kuadrant combines [Gateway API](https://gateway-api.sigs.k8s.io/) with gateway p
 
 ## Getting Started
 
-For a quick local setup of Kuadrant, see our [Single Cluster](getting-started-single-cluster.md) or [Multi Cluster](getting-started-multi-cluster.md) guides.
-Explore the single and multi-cluster architecture in our [Architectural Overview](architecture/docs/design/architectural-overview-v1.md).
+For a quick setup of Kuadrant, see our [Getting Started](getting-started.md) guide.
+Alternatively, explore the architecture in our [Architectural Overview](architecture/docs/design/architectural-overview-v1.md).
