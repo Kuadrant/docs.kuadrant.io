@@ -1,0 +1,30 @@
+apiVersion: kuadrant.io/v1beta2
+kind: RateLimitPolicy
+metadata:
+  name: toystore-gw
+  namespace: gateway-system
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: kuadrant-ingressgateway
+  limits:
+    "expensive-operation":
+      rates:
+      - limit: 2
+        duration: 30
+        unit: second
+      when:
+      - selector: request.method
+        operator: eq
+        value: POST
+
+    "limit-per-ip":
+      rates:
+      - limit: 5
+        duration: 30
+        unit: second
+      when:
+      - selector: source.ip
+        operator: eq
+        value: source.address
