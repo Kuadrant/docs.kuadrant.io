@@ -2,8 +2,8 @@
 
 ## Framework
 
-Follow the [Diátaxis framework](https://diataxis.fr/) for which section of the site the document should be placed, and understanding the goal of the document.
-This will help inform what way to structure the document, what to focus on, and what to avoid from a content point of view.
+Follow the [Diátaxis approach](https://diataxis.fr/) when you think about and work on new documentation. 
+This approach helps you decide on what kind of documentation to write and how to write it well. 
 
 ## Voice
 
