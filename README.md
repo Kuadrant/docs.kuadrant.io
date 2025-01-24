@@ -4,6 +4,10 @@
 
 This repository contains documentation for Kuadrant, built using MkDocs and the `mike` plugin for multi-versioning. You can run and build these docs using Docker/Podman or by installing MkDocs locally.
 
+## Contributing
+
+See [./CONTRIBUTING.md](./CONTRIBUTING.md)
+
 ## Using Docker/Podman
 
 ### Running the Docs with Docker
