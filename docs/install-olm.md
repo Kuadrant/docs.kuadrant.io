@@ -604,7 +604,7 @@ kubectl apply -k config/observability/openshift/grafana
 Create the example dashboards in Grafana
 
 ```bash
-kubectl apply -k https://github.com/Kuadrant/kuadrant-operator//examples/dashboards?ref=v1.0.1
+kubectl apply -k https://github.com/Kuadrant/kuadrant-operator/examples/dashboards?ref=v1.0.1
 ```
 
 Access the Grafana UI, using the default user/pass of root/secret.
