@@ -52,59 +52,95 @@ plugins:
       css_dir: css
       javascript_dir: js
   - search
+  # Note: Try to avoid globs for `imports`. Be explicit about imports, so we can avoid having 
+  # published dangling docs with no routes to them from the nav/other pages - these will go stale quickly.
   - multirepo:
       cleanup: true
       keep_docs_dir: true
       nav_repos:
         - name: kuadrant-operator
-          import_url: 'https://github.com/kuadrant/kuadrant-operator?edit_uri=/blob/main/&branch=main'
+          import_url: https://github.com/kuadrant/kuadrant-operator?edit_uri=/blob/main/&branch=main
           imports:
-            - /README.md
-            - /doc/*
-            - /config/samples/*
-            - /examples/*
+          - /doc/install/mtls-configuration.md
+          - /doc/observability/examples.md
+          - /doc/observability/metrics.md
+          - /doc/observability/tracing.md
+          - /doc/overviews/auth.md
+          - /doc/overviews/dns.md
+          - /doc/overviews/rate-limiting.md
+          - /doc/overviews/tls.md
+          - /doc/reference/authpolicy.md
+          - /doc/reference/dnspolicy.md
+          - /doc/reference/kuadrant.md
+          - /doc/reference/ratelimitpolicy.md
+          - /doc/reference/tlspolicy.md
+          - /doc/user-guides/auth/auth-for-app-devs-and-platform-engineers.md
+          - /doc/user-guides/dns/basic-dns-configuration.md
+          - /doc/user-guides/dns/dnshealthchecks.md
+          - /doc/user-guides/dns/gateway-dns.md
+          - /doc/user-guides/dns/load-balanced-dns.md
+          - /doc/user-guides/full-walkthrough/secure-protect-connect.md
+          - /doc/user-guides/ratelimiting/authenticated-rl-for-app-developers.md
+          - /doc/user-guides/ratelimiting/authenticated-rl-with-jwt-and-k8s-authnz.md
+          - /doc/user-guides/ratelimiting/gateway-rl-for-cluster-operators.md
+          - /doc/user-guides/ratelimiting/multi-auth-rlp-diff-section.md
+          - /doc/user-guides/ratelimiting/multi-auth-rlp-same-section.md
+          - /doc/user-guides/tls/gateway-tls.md
+          - /doc/observability/grafana_trace.png
+          - /doc/observability/grafana_tracing_loki.png
+          - /doc/user-guides/ratelimiting/simple-rl-for-app-developers.md
         - name: authorino
-          import_url: 'https://github.com/kuadrant/authorino?edit_uri=/blob/main/&branch=main'
+          import_url: https://github.com/kuadrant/authorino?edit_uri=/blob/main/&branch=main
           imports:
-            - /README.md
-            - /docs/*
-            - /docs/user-guides/*
-            - /install/crd/*
-        - name: authorino-operator
-          import_url: 'https://github.com/kuadrant/authorino-operator?edit_uri=/blob/main/&branch=main'
-          imports:
-            - /README.md
-        - name: limitador
-          import_url: 'https://github.com/kuadrant/limitador?edit_uri=/blob/main/&branch=main'
-          imports:
-            - /README.md
-            - /doc/*
-            - /limitador-server/README.md
-            - /limitador-server/docs/*
-            - /limitador/README.md
-            - /limitador-server/kubernetes/*
-            - /limitador-server/sandbox/*
-            - /LICENSE
-        - name: limitador-operator
-          import_url: 'https://github.com/kuadrant/limitador-operator?edit_uri=/blob/main/&branch=main'
-          imports:
-            - /README.md
-            - /doc/*
+          - /docs/user-guides/observability.md
+          - /docs/features.md
+          - /docs/architecture.md
+          - /docs/architecture.gif
+          - /docs/auth-pipeline.gif
+          - /install/crd/*
+          - /docs/user-guides.md
+          - /docs/user-guides/*
+          - /docs/user-guides/hello-world.md
+          - /docs/user-guides/anonymous-access.md
+          - /docs/user-guides/oidc-user-info.md
+          - /docs/user-guides/oidc-rbac.md
+          - /docs/user-guides/authzed.md
+          - /docs/user-guides/injecting-data.md
+          - /docs/user-guides/host-override.md
+          - /docs/user-guides/sharding.md
+          - /docs/user-guides/caching.md
+          - /docs/user-guides/sharding.md
+          - /docs/getting-started.md
+          - /docs/user-guides/api-key-authentication.md
+          - /docs/user-guides/authenticated-rate-limiting-envoy-dynamic-metadata.md
+          - /docs/user-guides/deny-with-redirect-to-login.md
+          - /docs/user-guides/edge-authentication-architecture-festival-wristbands.md
+          - /docs/user-guides/envoy-jwt-authn-and-authorino.md
+          - /docs/user-guides/external-metadata.md
+          - /docs/user-guides/http-basic-authentication.md
+          - /docs/user-guides/json-pattern-matching-authorization.md
+          - /docs/user-guides/keycloak-authorization-services.md
+          - /docs/user-guides/kubernetes-subjectaccessreview.md
+          - /docs/user-guides/kubernetes-tokenreview.md
+          - /docs/user-guides/mtls-authentication.md
+          - /docs/user-guides/oauth2-token-introspection.md
+          - /docs/user-guides/oidc-jwt-authentication.md
+          - /docs/user-guides/opa-authorization.md
+          - /docs/user-guides/passing-credentials.md
+          - /docs/user-guides/resource-level-authorization-uma.md
+          - /docs/user-guides/token-normalization.md
+          - /docs/terminology.md
+          - /docs/contributing.md
+          - /docs/README.md
         - name: architecture
-          import_url: 'https://github.com/kuadrant/architecture?edit_uri=/blob/main/&branch=main'
+          import_url: https://github.com/kuadrant/architecture?edit_uri=/blob/main/&branch=main
           imports:
-            - /docs/design/*
-        - name: kuadrantctl
-          import_url: 'https://github.com/kuadrant/kuadrantctl?edit_uri=/blob/main/&branch=main'
-          imports:
-            - /README.md
-            - /doc/*
+          - /docs/design/architectural-overview-v1.md
+          - /docs/design/images/*
         - name: dns-operator
-          import_url: 'https://github.com/kuadrant/dns-operator?edit_uri=/blob/main/&branch=main'
+          import_url: https://github.com/kuadrant/dns-operator?edit_uri=/blob/main/&branch=main
           imports:
-            - /README.md
-            - /docs/*
-            - /config/samples/*
+          - /docs/provider.md
   - redirects:
       redirect_maps:
         'getting-started-single-cluster.md': 'getting-started.md'
