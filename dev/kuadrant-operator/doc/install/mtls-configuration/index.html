@@ -1201,39 +1201,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Enabling mTLS">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#kuadrant-components" class="md-nav__link">
-    <span class="md-ellipsis">
-      Kuadrant components
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#envoy-filter" class="md-nav__link">
-    <span class="md-ellipsis">
-      Envoy Filter
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#istio-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Istio configuration
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1418,39 +1385,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Enabling mTLS">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#kuadrant-components" class="md-nav__link">
-    <span class="md-ellipsis">
-      Kuadrant components
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#envoy-filter" class="md-nav__link">
-    <span class="md-ellipsis">
-      Envoy Filter
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#istio-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Istio configuration
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1487,7 +1421,7 @@
 
 <h1 id="configure-mtls-between-the-gateway-and-kuadrant-components">Configure mTLS between the Gateway and Kuadrant components<a class="headerlink" href="#configure-mtls-between-the-gateway-and-kuadrant-components" title="Permanent link">&para;</a></h1>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>This guide includes manual steps to enable mTLS between an Istio provided gateway and the Kuadrant components.
+<p>This guide includes manual steps to enable mTLS between an Istio provided gateway and the Kuadrant data plane components.
 If you use an AuthPolicy or RateLimitPolicy, there will be communication between the gateway and the respective Kuadrant components at request time. This communication happens between the Wasm plugin in Envoy proxy, and Authorino or Limitador.
 At the time of writing there is <a href="https://github.com/Kuadrant/architecture/pull/110">an RFC</a> discussing how to add mTLS capabilities as a feature of the Kuadrant operator. If you are interested in having that feature or influencing how it is delivered, please engage on that pull request.</p>
 <div class="admonition note">
@@ -1496,109 +1430,38 @@ At the time of writing there is <a href="https://github.com/Kuadrant/architectur
 </div>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Have <a href="https://istio.io/">Istio</a> as the Gateway API provider installed.</li>
 <li>You have installed Kuadrant in a Kubernetes cluster.</li>
-<li>Additionally, you have at least 1 AuthPolicy or RateLimitPolicy attached to your Gateway or HTTPRoute.</li>
 </ul>
 <h2 id="enabling-mtls">Enabling mTLS<a class="headerlink" href="#enabling-mtls" title="Permanent link">&para;</a></h2>
-<h3 id="kuadrant-components">Kuadrant components<a class="headerlink" href="#kuadrant-components" title="Permanent link">&para;</a></h3>
-<p>As the Kuadrant components (Authorino &amp; Limitador) are already part of the service mesh in Istio, mTLS can be enabled after an Envoy proxy sidecar is deployed alongside them.
-To do this, apply the Istio sidecar label to both Deployment templates.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>patch<span class="w"> </span>deployment<span class="w"> </span>authorino<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;template&quot;:{&quot;metadata&quot;:{&quot;labels&quot;:{&quot;sidecar.istio.io/inject&quot;:&quot;true&quot;}}}}}&#39;</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>patch<span class="w"> </span>deployment<span class="w"> </span>limitador-limitador<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;template&quot;:{&quot;metadata&quot;:{&quot;labels&quot;:{&quot;sidecar.istio.io/inject&quot;:&quot;true&quot;}}}}}&#39;</span>
+<p>In order to ensure that communications between the gateway and the kuadrant data plane components are secured,
+set kuadrant's custom resource <code>spec.mtls.enable</code> field to <code>true</code>.</p>
+<p>Example:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant.io/v1beta1</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kuadrant</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant-sample</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">mtls</span><span class="p">:</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span></code></pre></div>
-<p>You should see the number of containers in either pod increase from 1 to 2, as the <code>istio-proxy</code> is added to the pods. This change will force all traffic to those pods to go through the proxy. However, mTLS is not enabled yet.</p>
-<h3 id="envoy-filter">Envoy Filter<a class="headerlink" href="#envoy-filter" title="Permanent link">&para;</a></h3>
-<p>The next step enables mTLS for traffic originating in the gateway (where the Wasm plugin executes), going to the Kuadrant components.
-This requires modifying the EnvoyFilters directly.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Any changes to the EnvoyFilters may be reverted by the Kuadrant operator when related resources like Gateways, HTTPRoutes or policies are modified. It is recommended to automate the next step, for example via a job or GitOps controller, to ensure the changes persist.</p>
+<p>In the absence of AuthPolicy or RateLimitPolicy, the gateway does not communicate with kuadrant data plane components. Hence, enabling mTLS is useless.</p>
 </div>
-<p>The EnvoyFilter resources will typically have a name prefix of <code>kuadrant-</code> in the same namespace as your Gateway.
-Add the snippet below to the <code>spec.configPatches[].patch.value</code> value in each EnvoyFilter.</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="w">        </span><span class="nt">transport_socket</span><span class="p">:</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">envoy.transport_sockets.tls</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">          </span><span class="nt">typed_config</span><span class="p">:</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">            </span><span class="s">&#39;@type&#39;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">            </span><span class="nt">common_tls_context</span><span class="p">:</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">              </span><span class="nt">tls_certificate_sds_secret_configs</span><span class="p">:</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">                </span><span class="nt">sds_config</span><span class="p">:</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">                  </span><span class="nt">api_config_source</span><span class="p">:</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">                    </span><span class="nt">api_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GRPC</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">                    </span><span class="nt">grpc_services</span><span class="p">:</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">                    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">envoy_grpc</span><span class="p">:</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">                        </span><span class="nt">cluster_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sds-grpc</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">              </span><span class="nt">validation_context_sds_secret_config</span><span class="p">:</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ROOTCA</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">                </span><span class="nt">sds_config</span><span class="p">:</span>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">                  </span><span class="nt">api_config_source</span><span class="p">:</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">                    </span><span class="nt">api_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GRPC</span>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">                    </span><span class="nt">grpc_services</span><span class="p">:</span>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">                    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">envoy_grpc</span><span class="p">:</span>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">                        </span><span class="nt">cluster_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sds-grpc</span>
-</span></code></pre></div>
-<p>The <code>envoy.transport_sockets.tls</code> <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/transport_sockets/tls/v3/tls.proto#tls-transport-socket-proto">transport socket</a> name tells Envoy to use the built-in TLS transport socket, enabling TLS encryption.
-The <code>@type</code> specifies that the configuration follows the <code>UpstreamTlsContext</code> message from Envoy's TLS transport socket extension. This is used for <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/transport_sockets/tls/v3/tls.proto#envoy-v3-api-msg-extensions-transport-sockets-tls-v3-upstreamtlscontext">client-side TLS settings</a>.
-The <code>tls_certificate_sds_secret_configs</code> configures Envoy to obtain client certificates and private keys via the Secret Discovery Service (SDS) over GRPC.
-The <code>validation_context_sds_secret_config</code> configures Envoy to obtain the root CA certificates via SDS (over GRPC) to validate the server's certificate.</p>
-<h3 id="istio-configuration">Istio configuration<a class="headerlink" href="#istio-configuration" title="Permanent link">&para;</a></h3>
-<p>The last step is to ensure Authorino and Limitador are configured to require and accept mTLS connections.
-In Istio, this is done by creating a <a href="https://istio.io/latest/docs/reference/config/security/peer_authentication/">PeerAuthentication</a> resource where the <code>mtls</code> mode is set to <code>STRICT</code>.
-The below command will enable STRICT mode on all pods with Istio sidecar injection in the <code>kuadrant-system</code> namespace.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="s">apiVersion: security.istio.io/v1</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="s">kind: PeerAuthentication</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="s">metadata:</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="s">  name: default</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="s">  namespace: kuadrant-system</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="s">spec:</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="s">  mtls:</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="s">    mode: STRICT</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="s">EOF</span>
-</span></code></pre></div>
-<p>If you prefer to only enable mTLS for a specific component, you can modify just the EnvoyFilter and Deployment for that component.
-Then, when creating the <code>PeerAuthentication</code> resource, you can be more specific about what pods the mTLS mode apply to. For example, the following resource would enable STRICT mode just for the Limitador component.</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">security.istio.io/v1</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PeerAuthentication</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nt">metadata</span><span class="p">:</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">limitador-mtls</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant-system</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="nt">spec</span><span class="p">:</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">limitador</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">  </span><span class="nt">mtls</span><span class="p">:</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STRICT</span>
-</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Behind the scenes, kuadrant will create a <a href="https://istio.io/latest/docs/reference/config/security/peer_authentication/">PeerAuthentication</a> resource where the <code>mtls</code> mode is set to <code>STRICT</code>.</p>
+</div>
 <h2 id="disabling-mtls">Disabling mTLS<a class="headerlink" href="#disabling-mtls" title="Permanent link">&para;</a></h2>
-<p>To disable mTLS, remove the <code>transport_socket</code> changes from any EnvoyFilters.
-Then you can either set the mTLS mode to PERMISSIVE in the <code>PeerAuthentication</code> resource:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>peerauthentication<span class="w"> </span>default<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--type<span class="o">=</span><span class="s1">&#39;merge&#39;</span><span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;mtls&quot;:{&quot;mode&quot;:&quot;PERMISSIVE&quot;}}}&#39;</span>
-</span></code></pre></div>
-<p>Or delete the resource:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>peerauthentication<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>default
-</span></code></pre></div>
-<p>You don't have to remove the sidecar from the Kuadrant components, but it is safe to do so by removing the <code>sidecar.istio.io/inject</code> label:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>patch<span class="w"> </span>deployment<span class="w"> </span>authorino<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span>--type<span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span>-p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;remove&quot;, &quot;path&quot;: &quot;/spec/template/metadata/labels/sidecar.istio.io~1inject&quot;}]&#39;</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>patch<span class="w"> </span>deployment<span class="w"> </span>limitador-limitador<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">  </span>--type<span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">  </span>-p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;remove&quot;, &quot;path&quot;: &quot;/spec/template/metadata/labels/sidecar.istio.io~1inject&quot;}]&#39;</span>
-</span></code></pre></div>
-<p>Or set the value to <code>false</code>:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>patch<span class="w"> </span>deployment<span class="w"> </span>authorino<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;template&quot;:{&quot;metadata&quot;:{&quot;labels&quot;:{&quot;sidecar.istio.io/inject&quot;:&quot;false&quot;}}}}}&#39;</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>patch<span class="w"> </span>deployment<span class="w"> </span>limitador-limitador<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;template&quot;:{&quot;metadata&quot;:{&quot;labels&quot;:{&quot;sidecar.istio.io/inject&quot;:&quot;false&quot;}}}}}&#39;</span>
+<p>To disable mTLS, either set kuadrant's custom resource <code>spec.mtls.enable</code> field to <code>false</code> or just remove optional <code>spec.mtls</code> field.</p>
+<p>Example:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant.io/v1beta1</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kuadrant</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant-sample</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">mtls</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
 </span></code></pre></div>
 
 
