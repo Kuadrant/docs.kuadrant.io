@@ -1424,12 +1424,8 @@ The scraped metrics are used in the <a href="../../../observability/examples/">E
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">observability</span><span class="p">:</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span></code></pre></div>
-<p>When enabled, Kuadrant creates ServiceMonitors and PodMonitors for its own components in the same namespae as the Kuadrant operator.
-A single set of monitors are also created in each gateway namespace (Envoy Gateway or Istio) to scrape metrics from all gateways in the gateway namespace, and in the corresponding gateway "system" namespace:</p>
-<ul>
-<li>Istio: <code>istio-system</code> namespace for the istiod pod</li>
-<li>Envoy Gateway:  <code>envoy-gateway-system</code> namespace for the envoy gateway pod</li>
-</ul>
+<p>When enabled, Kuadrant creates ServiceMonitors and PodMonitors for its own components in the same namespace as the Kuadrant operator.
+Pod monitors are also created in each gateway namespace (Envoy Gateway or Istio) to scrape metrics from all gateways in the gateway namespace.</p>
 <p>You can check all created monitors using this command:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="l l-Scalar l-Scalar-Plain">kubectl get servicemonitor,podmonitor -A -l kuadrant.io/observability=true</span>
 </span></code></pre></div>
