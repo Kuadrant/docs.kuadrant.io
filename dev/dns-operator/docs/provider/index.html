@@ -1659,36 +1659,46 @@ When providing a credential you should limit that credential down to just have w
 <h4 id="azure-cloud-dns-access-permissions-required">Azure Cloud DNS Access permissions required<a class="headerlink" href="#azure-cloud-dns-access-permissions-required" title="Permanent link">&para;</a></h4>
 <p>You will need to grant read and contributor access to the zone(s) you want managed for the service principal you are using.</p>
 <p>1)  fetch DNS id used to grant access to the service principal</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>DNS_ID=$(az network dns zone show --name example.com \
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a> --resource-group ExampleDNSResourceGroup --query &quot;id&quot; --output tsv)
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a># get yor resource group id
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>RESOURCE_GROUP_ID=az group show --resource-group ExampleDNSResourceGroup | jq &quot;.id&quot; -r
-</span></code></pre></div>
-<h1 id="provide-reader-access-to-the-resource-group">provide reader access to the resource group<a class="headerlink" href="#provide-reader-access-to-the-resource-group" title="Permanent link">&para;</a></h1>
-<p>$ az role assignment create --role "Reader" --assignee $DNS_SP_APP_ID --scope $DNS_ID</p>
-<h1 id="provide-contributor-access-to-dns-zone-itself">provide contributor access to DNS Zone itself<a class="headerlink" href="#provide-contributor-access-to-dns-zone-itself" title="Permanent link">&para;</a></h1>
-<p>$ az role assignment create --role "Contributor" --assignee $DNS_SP_APP_ID --scope $DNS_ID</p>
-<p>As we are setting up advanced traffic rules for GEO and Weighted responses you will also need to grant traffic manager access:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>az role assignment create --role &quot;Traffic Manager Contributor&quot; --assignee $DNS_SP_APP_ID --scope $RESOURCE_GROUP_ID
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cat &lt;&lt;-EOF &gt; /local/path/to/azure.json
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>{
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  &quot;tenantId&quot;: &quot;$(az account show --query tenantId -o tsv)&quot;,
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  &quot;subscriptionId&quot;: &quot;$(az account show --query id -o tsv)&quot;,
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  &quot;resourceGroup&quot;: &quot;ExampleDNSResourceGroup&quot;,
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  &quot;aadClientId&quot;: &quot;$DNS_SP_APP_ID&quot;,
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  &quot;aadClientSecret&quot;: &quot;$DNS_SP_PASSWORD&quot;
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>}
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>EOF
-</span></code></pre></div>
-<p>Finally setup the secret with the credential azure.json file</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-test-azure-credentials<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span>--namespace<span class="o">=</span>kuadrant-dns-system<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span>--type<span class="o">=</span>kuadrant.io/azure<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span>--from-file<span class="o">=</span>azure.json<span class="o">=</span>/local/path/to/azure.json
-</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>```bash
+DNS_ID=$(az network dns zone show --name example.com \
+ --resource-group ExampleDNSResourceGroup --query &quot;id&quot; --output tsv)
+
+# get yor resource group id
+
+RESOURCE_GROUP_ID=az group show --resource-group ExampleDNSResourceGroup | jq &quot;.id&quot; -r
+```
+</code></pre></div>
+<p>2) provide reader access to the resource group
+    <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>az<span class="w"> </span>role<span class="w"> </span>assignment<span class="w"> </span>create<span class="w"> </span>--role<span class="w"> </span><span class="s2">&quot;Reader&quot;</span><span class="w"> </span>--assignee<span class="w"> </span><span class="nv">$DNS_SP_APP_ID</span><span class="w"> </span>--scope<span class="w"> </span><span class="nv">$DNS_ID</span>
+</span></code></pre></div></p>
+<p>3) provide contributor access to DNS Zone itself
+    <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$<span class="w"> </span>az<span class="w"> </span>role<span class="w"> </span>assignment<span class="w"> </span>create<span class="w"> </span>--role<span class="w"> </span><span class="s2">&quot;Contributor&quot;</span><span class="w"> </span>--assignee<span class="w"> </span><span class="nv">$DNS_SP_APP_ID</span><span class="w"> </span>--scope<span class="w"> </span><span class="nv">$DNS_ID</span>
+</span></code></pre></div></p>
+<p>4) As we are setting up advanced traffic rules for GEO and Weighted responses, you will also need to grant traffic manager access:</p>
+<div class="language-text highlight"><pre><span></span><code>```bash
+az role assignment create --role &quot;Traffic Manager Contributor&quot; --assignee $DNS_SP_APP_ID --scope $RESOURCE_GROUP_ID
+```
+
+```bash
+cat &lt;&lt;-EOF &gt; /local/path/to/azure.json
+{
+  &quot;tenantId&quot;: &quot;$(az account show --query tenantId -o tsv)&quot;,
+  &quot;subscriptionId&quot;: &quot;$(az account show --query id -o tsv)&quot;,
+  &quot;resourceGroup&quot;: &quot;ExampleDNSResourceGroup&quot;,
+  &quot;aadClientId&quot;: &quot;$DNS_SP_APP_ID&quot;,
+  &quot;aadClientSecret&quot;: &quot;$DNS_SP_PASSWORD&quot;
+}
+EOF
+```
+</code></pre></div>
+<p>5) Finally setup the secret with the credential azure.json file</p>
+<div class="language-text highlight"><pre><span></span><code>```bash
+kubectl create secret generic my-test-azure-credentials \
+  --namespace=kuadrant-dns-system \
+  --type=kuadrant.io/azure \
+  --from-file=azure.json=/local/path/to/azure.json
+```
+</code></pre></div>
 
 
 
