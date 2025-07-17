@@ -29,20 +29,24 @@ This will serve the docs at [http://localhost:8000](http://localhost:8000).
 
 ## Running Locally without Docker
 
-### Installing MkDocs
+### Installing uv
 
-First, install MkDocs using pip:
+First, install uv (a fast Python package installer):
 
 ```bash
-pip install mkdocs
+# Using curl
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 ### Installing Dependencies
 
-Install any additional dependencies:
+Install the project dependencies using uv:
 
 ```bash
-pip install -r requirements.txt
+# Create a virtual environment and install dependencies
+uv venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+uv pip install -e .
 ```
 
 ### Serving the Docs Locally
