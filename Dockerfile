@@ -1,9 +1,16 @@
 FROM registry.access.redhat.com/ubi9/python-39
 
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
 WORKDIR /docs
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY pyproject.toml .
+
+RUN uv venv $HOME/venv && \
+    . $HOME/venv/bin/activate && \
+    uv pip install -r pyproject.toml
+
+ENV PATH="$HOME/venv/bin:$PATH"
 
 VOLUME /docs
 
