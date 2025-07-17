@@ -299,6 +299,32 @@ This site deploys automatically via GitHub Pages on merge to `main`. To manually
 
 This workflow will build the documentation bundle and trigger a push to the `gh-pages` branch.
 
+---
+
+## Creating a Markdown Pack
+
+For ingesting documentation into MCP (Model Context Protocol) servers or other systems, you can create a markdown pack containing all documentation from the multi-repo setup:
+
+```bash
+# Using Make
+make markdown-pack
+
+# Or directly
+python fetch_markdown_pack.py
+```
+
+This will:
+1. Clone all configured repositories from mkdocs.yml
+2. Extract only the imported markdown files and assets
+3. Create a `markdown-pack/` directory with all content organized by source
+4. Generate a manifest.json with metadata about all files
+
+The pack is useful for:
+- MCP server ingestion
+- Offline documentation browsing
+- Documentation analysis
+- AI/LLM context
+
 
 ## Building the Docker Image
 
