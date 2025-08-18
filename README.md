@@ -31,7 +31,7 @@ This will serve the docs at [http://localhost:8000](http://localhost:8000).
 
 ### Installing uv
 
-First, install uv (a fast Python package installer):
+First, install `uv` (a fast Python package installer):
 
 ```bash
 # Using curl
@@ -40,13 +40,12 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ### Installing Dependencies
 
-Install the project dependencies using uv:
+Install the project dependencies using `uv`:
 
 ```bash
-# Create a virtual environment and install dependencies
 uv venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-uv pip install -e .
+source .venv/bin/activate
+uv pip install -r pyproject.toml
 ```
 
 ### Serving the Docs Locally
