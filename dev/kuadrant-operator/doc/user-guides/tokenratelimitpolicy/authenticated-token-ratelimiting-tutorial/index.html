@@ -1129,6 +1129,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#test-streaming-with-a-free-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test streaming with a free user
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#test-with-a-gold-user" class="md-nav__link">
     <span class="md-ellipsis">
       Test with a gold user
@@ -1656,6 +1665,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#test-streaming-with-a-free-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test streaming with a free user
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#test-with-a-gold-user" class="md-nav__link">
     <span class="md-ellipsis">
       Test with a gold user
@@ -1748,9 +1766,6 @@
 
 <h1 id="token-based-rate-limiting-for-large-language-model-apis">Token-based Rate Limiting for Large Language Model APIs<a class="headerlink" href="#token-based-rate-limiting-for-large-language-model-apis" title="Permanent link">&para;</a></h1>
 <p>This tutorial walks you through configuring token-based rate limiting using Kuadrant's <code>TokenRateLimitPolicy</code> to protect Large Language Model (LLM) APIs. Unlike traditional request counting, this approach limits API usage based on actual token consumption.</p>
-<blockquote>
-<p><strong>Note:</strong> Currently, <code>TokenRateLimitPolicy</code> only supports non-streaming responses (where <code>stream: false</code> or is omitted in the request). Support for streaming responses is planned for future releases.</p>
-</blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>Traditional rate limiting counts requests, but LLM APIs have varying computational costs based on token usage. <code>TokenRateLimitPolicy</code> addresses this by:</p>
 <ul>
@@ -2036,20 +2051,41 @@
 <blockquote>
 <p><strong>Note:</strong> The <code>TokenRateLimitPolicy</code> automatically extracts the <code>total_tokens</code> value from this response and counts it against the user's limit.</p>
 </blockquote>
-<h3 id="test-with-a-gold-user">Test with a gold user<a class="headerlink" href="#test-with-a-gold-user" title="Permanent link">&para;</a></h3>
+<h3 id="test-streaming-with-a-free-user">Test streaming with a free user<a class="headerlink" href="#test-streaming-with-a-free-user" title="Permanent link">&para;</a></h3>
+<p>Make a chat completion request with streaming enabled. Ensure the request includes <code>"stream": true</code> and <code>"stream_options": { "include_usage": true }</code> so that usage is emitted at the end of the stream and can be enforced by the policy:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: trlp-tutorial.example.com&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">     </span>-H<span class="w"> </span><span class="s1">&#39;Authorization: APIKEY iamagolduser&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">     </span>-H<span class="w"> </span><span class="s1">&#39;Authorization: APIKEY iamafreeuser&#39;</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">     </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">     </span>-X<span class="w"> </span>POST<span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/v1/chat/completions<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">     </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
 </span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="s1">           &quot;model&quot;: &quot;meta-llama/Llama-3.1-8B-Instruct&quot;,</span>
 </span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="s1">           &quot;messages&quot;: [</span>
-</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="s1">             { &quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Explain cloud native architecture&quot; }</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="s1">             { &quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What is Kubernetes?&quot; }</span>
 </span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="s1">           ],</span>
-</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="s1">           &quot;max_tokens&quot;: 200,</span>
-</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="s1">           &quot;stream&quot;: false,</span>
-</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="s1">           &quot;usage&quot;: true</span>
-</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="s1">         }&#39;</span>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="s1">           &quot;max_tokens&quot;: 100,</span>
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="s1">           &quot;stream&quot;: true,</span>
+</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="s1">           &quot;stream_options&quot;: {</span>
+</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="s1">             &quot;include_usage&quot;: true</span>
+</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="s1">           }</span>
+</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="s1">         }&#39;</span>
+</span></code></pre></div>
+<blockquote>
+<p><strong>Note:</strong> If <code>stream_options.include_usage</code> is omitted when <code>stream: true</code>, Kuadrant cannot extract token usage from the stream. Depending on the policy <code>failureMode</code>, the request may either be allowed without limiting or rejected.</p>
+</blockquote>
+<h3 id="test-with-a-gold-user">Test with a gold user<a class="headerlink" href="#test-with-a-gold-user" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: trlp-tutorial.example.com&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">     </span>-H<span class="w"> </span><span class="s1">&#39;Authorization: APIKEY iamagolduser&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">     </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">     </span>-X<span class="w"> </span>POST<span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">     </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="s1">           &quot;model&quot;: &quot;meta-llama/Llama-3.1-8B-Instruct&quot;,</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="s1">           &quot;messages&quot;: [</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="s1">             { &quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Explain cloud native architecture&quot; }</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="s1">           ],</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="s1">           &quot;max_tokens&quot;: 200,</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="s1">           &quot;stream&quot;: false,</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="s1">           &quot;usage&quot;: true</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="s1">         }&#39;</span>
 </span></code></pre></div>
 <h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
 <ol>
@@ -2064,12 +2100,12 @@
 <li><strong><code>rates</code></strong>: Define the token limits and time windows</li>
 <li><strong><code>when</code></strong>: Conditions that determine when a limit applies (based on user groups)</li>
 <li><strong><code>counters</code></strong>: Identify what to count (user ID in this case)</li>
-<li><strong>Token extraction</strong>: Automatically reads <code>usage.total_tokens</code> from non-streaming JSON responses</li>
+<li><strong>Token extraction</strong>: Automatically reads <code>usage.total_tokens</code> from non-streaming JSON responses; for streaming requests, requires <code>"stream": true</code> and <code>"stream_options": { "include_usage": true }</code> to extract usage from the final event</li>
 </ul>
 <h2 id="monitoring-usage">Monitoring usage<a class="headerlink" href="#monitoring-usage" title="Permanent link">&para;</a></h2>
 <p>Check the generated rate limit configuration:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># View the generated WasmPlugin configuration</span>
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>wasmplugin<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>kuadrant-<span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span>yaml
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># View the generated WasmPlugin configuration</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>wasmplugin<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>kuadrant-<span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span>yaml
 </span></code></pre></div>
 <h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2083,40 +2119,39 @@
 <li>Verify the API key is correct</li>
 <li>Check if the user has exceeded their token limit</li>
 <li>Ensure the LLM response includes <code>usage.total_tokens</code></li>
-<li>Verify the request is not using streaming (<code>stream: true</code>) as this is not currently supported</li>
 <li>Review the <code>AuthPolicy</code> and <code>TokenRateLimitPolicy</code> status</li>
 </ol>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Check AuthPolicy status</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>authpolicy<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>trlp-tutorial-llm-api-keys<span class="w"> </span>-o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.conditions[?(@.type==&quot;Accepted&quot;)].message}&#39;</span>
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
-</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="c1"># Check TokenRateLimitPolicy status</span>
-</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>kubectl<span class="w"> </span>get<span class="w"> </span>tokenratelimitpolicy<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>trlp-tutorial-token-limits<span class="w"> </span>-o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.conditions[?(@.type==&quot;Accepted&quot;)].message}&#39;</span>
-</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>
-</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="c1"># View full policy details if needed</span>
-</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>kubectl<span class="w"> </span>get<span class="w"> </span>authpolicy<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>trlp-tutorial-llm-api-keys<span class="w"> </span>-o<span class="w"> </span>yaml
-</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>kubectl<span class="w"> </span>get<span class="w"> </span>tokenratelimitpolicy<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>trlp-tutorial-token-limits<span class="w"> </span>-o<span class="w"> </span>yaml
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Check AuthPolicy status</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>authpolicy<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>trlp-tutorial-llm-api-keys<span class="w"> </span>-o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.conditions[?(@.type==&quot;Accepted&quot;)].message}&#39;</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="c1"># Check TokenRateLimitPolicy status</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>kubectl<span class="w"> </span>get<span class="w"> </span>tokenratelimitpolicy<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>trlp-tutorial-token-limits<span class="w"> </span>-o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.conditions[?(@.type==&quot;Accepted&quot;)].message}&#39;</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="c1"># View full policy details if needed</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>kubectl<span class="w"> </span>get<span class="w"> </span>authpolicy<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>trlp-tutorial-llm-api-keys<span class="w"> </span>-o<span class="w"> </span>yaml
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>kubectl<span class="w"> </span>get<span class="w"> </span>tokenratelimitpolicy<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>trlp-tutorial-token-limits<span class="w"> </span>-o<span class="w"> </span>yaml
 </span></code></pre></div>
 <h2 id="cleanup">Cleanup<a class="headerlink" href="#cleanup" title="Permanent link">&para;</a></h2>
 <p>To remove all resources created in this tutorial:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Delete policies</span>
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>tokenratelimitpolicy<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>trlp-tutorial-token-limits
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>authpolicy<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>trlp-tutorial-llm-api-keys
-</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
-</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="c1"># Delete API key secrets</span>
-</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>secret<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_SYSTEM_NS</span><span class="si">}</span><span class="w"> </span>trlp-tutorial-api-key-free-user-1<span class="w"> </span>trlp-tutorial-api-key-gold-user-1
-</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>
-</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="c1"># Delete HTTPRoute</span>
-</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>httproute<span class="w"> </span>trlp-tutorial-llm-sim
-</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>
-</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="c1"># Delete Gateway</span>
-</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>gateway<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span>
-</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>
-</span><span id="__span-19-14"><a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="c1"># Delete LLM service and deployment</span>
-</span><span id="__span-19-15"><a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>service<span class="w"> </span>trlp-tutorial-llm-sim
-</span><span id="__span-19-16"><a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>trlp-tutorial-llm-sim
-</span><span id="__span-19-17"><a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a>
-</span><span id="__span-19-18"><a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a><span class="c1"># Delete the gateway namespace (if not used by other resources)</span>
-</span><span id="__span-19-19"><a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a><span class="c1"># kubectl delete namespace ${KUADRANT_GATEWAY_NS}</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># Delete policies</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>tokenratelimitpolicy<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>trlp-tutorial-token-limits
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>authpolicy<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>trlp-tutorial-llm-api-keys
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="c1"># Delete API key secrets</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>secret<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_SYSTEM_NS</span><span class="si">}</span><span class="w"> </span>trlp-tutorial-api-key-free-user-1<span class="w"> </span>trlp-tutorial-api-key-gold-user-1
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="c1"># Delete HTTPRoute</span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>httproute<span class="w"> </span>trlp-tutorial-llm-sim
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>
+</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="c1"># Delete Gateway</span>
+</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>gateway<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span>
+</span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a>
+</span><span id="__span-20-14"><a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="c1"># Delete LLM service and deployment</span>
+</span><span id="__span-20-15"><a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>service<span class="w"> </span>trlp-tutorial-llm-sim
+</span><span id="__span-20-16"><a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>trlp-tutorial-llm-sim
+</span><span id="__span-20-17"><a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a>
+</span><span id="__span-20-18"><a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a><span class="c1"># Delete the gateway namespace (if not used by other resources)</span>
+</span><span id="__span-20-19"><a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a><span class="c1"># kubectl delete namespace ${KUADRANT_GATEWAY_NS}</span>
 </span></code></pre></div>
 
 
