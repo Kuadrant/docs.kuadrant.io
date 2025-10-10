@@ -1,0 +1,2068 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://docs.kuadrant.io/1.3.x/authorino/docs/architecture/">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Architecture - Kuadrant Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.0253249f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#architecture" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  These docs are not for the latest version.
+  <a href="../../../.."> 
+    <strong>Click here to go to latest, stable docs.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Kuadrant Documentation" class="md-header__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+      
+  <img src="../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kuadrant Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Architecture
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kuadrant/docs.kuadrant.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Kuadrant Documentation" class="md-nav__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+      
+  <img src="../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Kuadrant Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kuadrant/docs.kuadrant.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../install-helm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Install with Helm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../install-olm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Install with OLM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Concepts
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/docs/design/architectural-overview-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/overviews/auth/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AuthPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/overviews/dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/overviews/rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/overviews/tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TLSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/overviews/token-rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TokenRateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/overviews/telemetrypolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TelemetryPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    APIs & Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            APIs & Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/reference/authpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AuthPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/reference/dnspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/reference/ratelimitpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/reference/tlspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TLSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/reference/tokenratelimitpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TokenRateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/reference/kuadrant/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kuadrant
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Observability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_7">
+            <span class="md-nav__icon md-icon"></span>
+            Observability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/observability/metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Metrics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-guides/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication and Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/reference/telemetrypolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TelemetryPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Tutorials
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/full-walkthrough/secure-protect-connect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Secure, connect and protect
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/tls/gateway-tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway TLS for Cluster Operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/auth/auth-for-app-devs-and-platform-engineers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Enforcing authentication & authorization with Kuadrant AuthPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/ratelimiting/gateway-rl-for-cluster-operators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway Rate Limiting for Cluster Operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/ratelimiting/authenticated-rl-for-app-developers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limiting for Application Developers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/ratelimiting/authenticated-rl-with-jwt-and-k8s-authnz/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limiting with JWTs and Kubernetes RBAC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/ratelimiting/multi-auth-rlp-diff-section/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway Rate Limiting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/ratelimiting/multi-auth-rlp-same-section/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Multi authenticated Rate Limiting for an Application
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/tokenratelimitpolicy/authenticated-token-ratelimiting-tutorial/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Token Rate Limiting for Large Language Model APIs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DNS configuration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1">
+            <span class="md-nav__icon md-icon"></span>
+            DNS configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dns-operator/docs/provider/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuring a DNS Provider
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/dns/gateway-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway DNS for ingress Gateway
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/dns/basic-dns-configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Basic DNS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/dns/load-balanced-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNS Load Balancing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/dns/dnshealthchecks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Health Checks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/install/mtls-configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    mTLS Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_3" id="__nav_7_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Observability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_3">
+            <span class="md-nav__icon md-icon"></span>
+            Observability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/observability/monitors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configure Observability
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/observability/examples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dashboards and Alerts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/observability/tracing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tracing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/observability/limitador-metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring Limitador
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/observability/token-metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring AI Token Metrics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topologies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topologies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Topologies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#centralized-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      Centralized gateway
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#centralized-authorization-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Centralized authorization service
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sidecars" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sidecars
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-wide-vs-namespaced-instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cluster-wide vs. Namespaced instances
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-authorino-authconfig-custom-resource-definition-crd" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Authorino AuthConfig Custom Resource Definition (CRD)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resource-reconciliation-and-status-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resource reconciliation and status update
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-auth-pipeline-aka-enforcing-protection-in-request-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      The "Auth Pipeline" (aka: enforcing protection in request-time)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#host-lookup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Host lookup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Host lookup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#avoiding-host-name-collision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Avoiding host name collision
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-authorization-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Authorization JSON
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raw-http-authorization-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Raw HTTP Authorization interface
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      Caching
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Caching">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#openid-connect-and-user-managed-access-configs" class="md-nav__link">
+    <span class="md-ellipsis">
+      OpenID Connect and User-Managed Access configs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#json-web-keys-jwks-and-json-web-key-sets-jwks" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON Web Keys (JWKs) and JSON Web Key Sets (JWKS)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#revoked-access-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Revoked access tokens
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      External metadata
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compiled-rego-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compiled Rego policies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#repeated-requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Repeated requests
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sharding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sharding
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rbac" class="md-nav__link">
+    <span class="md-ellipsis">
+      RBAC
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Observability
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/kuadrant/authorino/blob/main/docs/architecture.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p><img alt="Architecture" src="../architecture.gif" /></p>
+<p>There are a few concepts to understand Authorino's architecture. The main components are: <strong>Authorino</strong>, <strong>Envoy</strong> and the <strong>Upstream</strong> service to be protected. Envoy proxies requests to the configured <strong>virtual host</strong> upstream service, first contacting with Authorino to decide on authN/authZ.</p>
+<p>The topology can vary from centralized proxy and centralized authorization service, to dedicated sidecars, with the nuances in between. Read more about the topologies in the <a href="#topologies">Topologies</a> section below.</p>
+<p>Authorino is deployed using the <a href="https://github.com/kuadrant/authorino-operator"><strong>Authorino Operator</strong></a>, from an <a href="https://github.com/Kuadrant/authorino-operator/blob/main/config/crd/bases/operator.authorino.kuadrant.io_authorinos.yaml"><strong><code>Authorino</code></strong></a> Kubernetes custom resource. Then, from another kind of custom resource, the <strong><a href="#the-authorino-authconfig-custom-resource-definition-crd"><code>AuthConfig</code></a></strong> CRs, each Authorino instance reads and adds to the <strong>index</strong> the exact rules of authN/authZ to enforce for each protected host ("index reconciliation").</p>
+<p>Everything that the AuthConfig <strong>reconciler</strong> can fetch in reconciliation-time is stored in the index. This is the case of static parameters such as signing keys, authentication secrets and authorization policies from external <strong>policy registries</strong>.</p>
+<p><code>AuthConfig</code>s can refer to identity providers (IdP) and trusted <strong>auth servers</strong> whose access tokens will be accepted to authenticate to the protected host. <strong>Consumers</strong> obtain an authentication token (short-lived access token or long-lived <strong>API key</strong>) and send those in the requests to the protected service.</p>
+<p>When Authorino is triggered by Envoy via the <strong>gRPC</strong> interface, it starts evaluating the <a href="#the-auth-pipeline-aka-enforcing-protection-in-request-time"><strong>Auth Pipeline</strong></a>, i.e. it applies to the request the parameters to verify the identity and to enforce authorization, as found in the index for the requested host (See <a href="#host-lookup">host lookup</a> for details).</p>
+<p>Apart from static rules, these parameters can include instructions to contact online with external identity verifiers, external sources of <strong>metadata</strong> and policy decision points (<strong>PDPs</strong>).</p>
+<p>On every request, Authorino's "working memory" is called <a href="#the-authorization-json"><strong>Authorization JSON</strong></a>, a data structure that holds information about the context (the HTTP request) and objects from each phase of the auth pipeline: i.e., authentication verification (phase i), ad-hoc metadata fetching (phase ii), authorization policy enforcement (phase iii), dynamic response (phase iv), and callbacks (phase v). The evaluators in each of these phases can both read and write from the Authorization JSON for dynamic steps and decisions of authN/authZ.</p>
+<h2 id="topologies">Topologies<a class="headerlink" href="#topologies" title="Permanent link">&para;</a></h2>
+<p>Typically, upstream APIs are deployed to the same Kubernetes cluster and namespace where the Envoy proxy and Authorino is running (although not necessarily). Whatever is the case, Envoy must be proxying to the upstream API (see Envoy's <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/route/v3/route_components.proto">HTTP route components</a> and virtual hosts) and pointing to Authorino in the external authorization filter.</p>
+<p>This can be achieved with different topologies:</p>
+<ul>
+<li>Envoy can be a <a href="#centralized-gateway">centralized gateway</a> with one dedicated instance of Authorino, proxying to one or more upstream services</li>
+<li>Envoy can be deployed as a sidecar of each protected service, but still contacting from a <a href="#centralized-authorization-service">centralized Authorino authorization service</a></li>
+<li>Both Envoy and Authorino deployed as <a href="#sidecars">sidecars</a> of the protected service, restricting all communication between them to localhost</li>
+</ul>
+<p>Each topology above induces different measures for security.</p>
+<h3 id="centralized-gateway">Centralized gateway<a class="headerlink" href="#centralized-gateway" title="Permanent link">&para;</a></h3>
+<p><img alt="Centralized gateway topology" src="http://www.plantuml.com/plantuml/png/XOynJiKm343tdCBw0rk75aQ4_XyOsBY2rPWc-eaTEGa88Gu26pkduYJyfYf2KCJav5alJzddWbfg32OVFITKZ125PNGgaQ1e9MCIZaUS299Om3oF7fuCWD9OaAT0iFjuVO73xSrktcFolNdUqeP_j65RE_-blR_1DT_BOnDfFlrHlFYfNfvbvodOApZKuaGzor9VR-qXpuNq3iUJ06tj-nFieLjZou2kfcxvxmgiF713mnTIFxdIVI_iYMsDuHC0" /></p>
+<p>Recommended in the protected services to validate the origin of the traffic. It must have been proxied by Envoy. See Authorino <a href="../features/#json-injection-responsesuccessheadersdynamicmetadatajson">JSON injection</a> for an extra validation option using a shared secret passed in HTTP header.</p>
+<h3 id="centralized-authorization-service">Centralized authorization service<a class="headerlink" href="#centralized-authorization-service" title="Permanent link">&para;</a></h3>
+<p><img alt="Centralized Authorino topology" src="http://www.plantuml.com/plantuml/png/XO-xIiSm58VtFCMXWrk7n5Ma7HpSV8L3Ucn3Smcv228-Y6xkFfLFOjFIyASKEftBBz-Nf8i9Gyf6ipWhwp6W0UEiarDmXY25J8nvb3EE1DuDWB4K3XyC891CQ4TDqFnzVq7_yjoK7BtYX_Jt1vxictjVSoeTPvzdOd4X5fTYSIw-FueVxkAaI0-FqESqkQ2isoxPf_M5oYOAhoWN0DPOyPETM0voQFUVeIzJ7RS2xQswjXKJ1HCL4nksB8g-8pjae_y1" /></p>
+<p>Protected service should only listen on <code>localhost</code> and all traffic can be considered safe.</p>
+<h3 id="sidecars">Sidecars<a class="headerlink" href="#sidecars" title="Permanent link">&para;</a></h3>
+<p><img alt="Sidecars topology" src="http://www.plantuml.com/plantuml/png/bOyzJWCn48NxESKe1TqMdXgXfA2WumgZtM5tbFMFPcqaX3W8TFISYfE0ipAW42bAzUpt_AplRPVCbekVOTbhI6piqSSG-ycY5ynM121nl-THCCK1UQdYy1aGJVhCOPm5DvzlhxYxlzlKd9Ewe_JZ7M_3Otmwv59FHo-khvP9PHvkS5Vo54r3NFzgDmSlfq3e30YT1Q4BGQY2QCXY3zn_5_0GgplX4O0wxDhWLR0hgQjeluRfEENkxrPGQZs2LNvwpVZV8zXA68gVlm00" /></p>
+<p>Recommended <a href="#cluster-wide-vs-namespaced-instances"><code>namespaced</code> instances of Authorino</a> with <a href="#sharding">fine-grained label selectors</a> to avoid unnecessary caching of <code>AuthConfig</code>s.</p>
+<p>Apart from that, protected service should only listen on <code>localhost</code> and all traffic can be considered safe.</p>
+<h2 id="cluster-wide-vs-namespaced-instances">Cluster-wide vs. Namespaced instances<a class="headerlink" href="#cluster-wide-vs-namespaced-instances" title="Permanent link">&para;</a></h2>
+<p>Authorino instances can run in either <strong>cluster-wide</strong> or <strong>namespaced</strong> mode.</p>
+<p>Namespace-scoped instances only watch resources (<code>AuthConfig</code>s and <code>Secret</code>s) created in a given namespace. This deployment mode does not require admin privileges over the Kubernetes cluster to deploy the instance of the service (given Authorino's CRDs have been installed beforehand, such as when Authorino is installed using the <a href="https://github.com/kuadrant/authorino-operator">Authorino Operator</a>).</p>
+<p>Cluster-wide deployment mode, in contraposition, deploys instances of Authorino that watch resources across the entire cluster, consolidating all resources into a multi-namespace index of auth configs. Admin privileges over the Kubernetes cluster is required to deploy Authorino in cluster-wide mode.</p>
+<p>Be careful to avoid superposition when combining multiple Authorino instances and instance modes in the same Kubernetes cluster. Apart from caching unnecessary auth config data in the instances depending on your routing settings, the leaders of each instance (set of replicas) may compete for updating the status of the custom resources that are reconciled. See <a href="#resource-reconciliation-and-status-update">Resource reconciliation and status update</a> for more information.</p>
+<p>If necessary, use label selectors to narrow down the space of resources watched and reconciled by each Authorino instance. Check out the <a href="#sharding">Sharding</a> section below for details.</p>
+<h2 id="the-authorino-authconfig-custom-resource-definition-crd">The Authorino <code>AuthConfig</code> Custom Resource Definition (CRD)<a class="headerlink" href="#the-authorino-authconfig-custom-resource-definition-crd" title="Permanent link">&para;</a></h2>
+<p>The desired protection for a service is declaratively stated by applying an <code>AuthConfig</code> <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources">Custom Resource</a> to the Kubernetes cluster running Authorino.</p>
+<p>An <code>AuthConfig</code> resource typically looks like the following:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">authorino.kuadrant.io/v1beta3</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AuthConfig</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api-protection</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="c1"># The list of public host names of the services protected by this AuthConfig resource.</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="c1"># Authorino uses the host name provided in the payload of external authorization request to lookup for the corresponding AuthConfig to enforce.</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="c1"># Hostname collisions are prevented by rejecting to index a hostname already taken by another AuthConfig.</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="c1"># Format: hostname[:port]</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="nt">hosts</span><span class="p">:</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api.io:443</span><span class="w"> </span><span class="c1"># north-south traffic</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api.ns.svc.cluster.local</span><span class="w"> </span><span class="c1"># east-west traffic</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="c1"># Set of stored named patterns to be reused in conditions and pattern-matching authorization rules</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="nt">patterns</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="s">&quot;name&quot;</span><span class="w"> </span><span class="nv">→</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">selector</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">operator</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">value</span><span class="p p-Indicator">},</span><span class="w"> </span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">  </span><span class="c1"># Top-level conditions for the AuthConfig to be enforced.</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="c1"># If omitted, the AuthConfig will be enforced at all requests.</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="c1"># If present, all conditions must match for the AuthConfig to be enforced; otherwise, Authorino skips the AuthConfig and returns to the auth request with status OK.</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">  </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[{</span><span class="nv">selector</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">operator</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">value | named pattern ref</span><span class="p p-Indicator">},</span><span class="w"> </span><span class="nv">…</span><span class="p p-Indicator">]</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">  </span><span class="c1"># List of one or more trusted sources of identity:</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">  </span><span class="c1"># - Configurations to verify JSON Web Tokens (JWTs) issued by an OpenID Connect (OIDC) server</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">  </span><span class="c1"># - Endpoints for OAuth 2.0 token introspection</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">  </span><span class="c1"># - Attributes for the Kubernetes `TokenReview` API</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">  </span><span class="c1"># - Label selectors for API keys (stored in Kubernetes `Secret`s)</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">  </span><span class="c1"># - Label selectors trusted x509 issuer certificates (stored in Kubernetes `Secret`s)</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">  </span><span class="c1"># - Selectors for plain identity objects supplied in the payload of the authorization request</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">  </span><span class="c1"># - Anonymous access configs</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">  </span><span class="nt">authentication</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="s">&quot;name&quot;</span><span class="w"> </span><span class="nv">→</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">},</span><span class="w"> </span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">  </span><span class="c1"># List of sources of external metadata for the authorization (optional):</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">  </span><span class="c1"># - Endpoints for HTTP GET or GET-by-POST requests</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">  </span><span class="c1"># - OIDC UserInfo endpoints (associated with an OIDC token issuer specified in the authentication configs)</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w">  </span><span class="c1"># - User-Managed Access (UMA) resource registries</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="w">  </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="s">&quot;name&quot;</span><span class="w"> </span><span class="nv">→</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">},</span><span class="w"> </span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="w">  </span><span class="c1"># List of authorization policies to be enforced (optional):</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="w">  </span><span class="c1"># - Pattern-matching rules (e.g. `context.request.http.path eq &#39;/pets&#39;`)</span>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w">  </span><span class="c1"># - Open Policy Agent (OPA) inline or external Rego policies</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w">  </span><span class="c1"># - Attributes for the Kubernetes `SubjectAccessReview` API</span>
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="w">  </span><span class="c1"># – Attributes for authorization with an external SpiceDB server</span>
+</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="w">  </span><span class="nt">authorization</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="s">&quot;name&quot;</span><span class="w"> </span><span class="nv">→</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">},</span><span class="w"> </span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a>
+</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a><span class="w">  </span><span class="c1"># Customization to the response to the external authorization request (optional)</span>
+</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a><span class="w">  </span><span class="nt">response</span><span class="p">:</span>
+</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a><span class="w">    </span><span class="c1"># List of dynamic response elements into the request on success authoization (optional):</span>
+</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a><span class="w">    </span><span class="c1"># - Plain text</span>
+</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a><span class="w">    </span><span class="c1"># - JSON objects</span>
+</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a><span class="w">    </span><span class="c1"># - Festival Wristbands (signed JWTs issued by Authorino)</span>
+</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a><span class="w">    </span><span class="nt">success</span><span class="p">:</span>
+</span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a><span class="w">      </span><span class="c1"># List of HTTP headers to inject into the request post-authorization (optional):</span>
+</span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a><span class="w">      </span><span class="nt">headers</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="s">&quot;name&quot;</span><span class="w"> </span><span class="nv">→</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">},</span><span class="w"> </span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a>
+</span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a><span class="w">      </span><span class="c1"># List of Envoy Dynamic Metadata to inject into the request post-authorization (optional):</span>
+</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a><span class="w">      </span><span class="nt">dynamicMetadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="s">&quot;name&quot;</span><span class="w"> </span><span class="nv">→</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">},</span><span class="w"> </span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58" href="#__codelineno-0-58"></a>
+</span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59" href="#__codelineno-0-59"></a><span class="w">    </span><span class="c1"># Custom HTTP status code, message and headers to replace the default `401 Unauthorized` response (optional)</span>
+</span><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60" href="#__codelineno-0-60"></a><span class="w">    </span><span class="nt">unauthenticated</span><span class="p">:</span>
+</span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61" href="#__codelineno-0-61"></a><span class="w">      </span><span class="nt">code</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">302</span>
+</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62" href="#__codelineno-0-62"></a><span class="w">      </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Redirecting to login</span>
+</span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63" href="#__codelineno-0-63"></a><span class="w">      </span><span class="nt">headers</span><span class="p">:</span>
+</span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64" href="#__codelineno-0-64"></a><span class="w">        </span><span class="s">&quot;Location&quot;</span><span class="p p-Indicator">:</span>
+</span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65" href="#__codelineno-0-65"></a><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://my-app.io/login</span>
+</span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66" href="#__codelineno-0-66"></a>
+</span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67" href="#__codelineno-0-67"></a><span class="w">    </span><span class="c1"># Custom HTTP status code, message and headers to replace the default `and `403 Forbidden` response (optional)</span>
+</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68" href="#__codelineno-0-68"></a><span class="w">    </span><span class="nt">unauthorized</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">code</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">message</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">headers</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">body</span><span class="p p-Indicator">}</span>
+</span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69" href="#__codelineno-0-69"></a>
+</span><span id="__span-0-70"><a id="__codelineno-0-70" name="__codelineno-0-70" href="#__codelineno-0-70"></a><span class="w">  </span><span class="c1"># List of callback targets:</span>
+</span><span id="__span-0-71"><a id="__codelineno-0-71" name="__codelineno-0-71" href="#__codelineno-0-71"></a><span class="w">  </span><span class="c1"># - Endpoints for HTTP requests</span>
+</span><span id="__span-0-72"><a id="__codelineno-0-72" name="__codelineno-0-72" href="#__codelineno-0-72"></a><span class="w">  </span><span class="nt">callbacks</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="s">&quot;name&quot;</span><span class="w"> </span><span class="nv">→</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">…</span><span class="p p-Indicator">},</span><span class="w"> </span><span class="nv">…</span><span class="p p-Indicator">}</span>
+</span></code></pre></div>
+<p>Check out the <a href="../../install/crd/authorino.kuadrant.io_authconfigs.yaml">OAS</a> of the <code>AuthConfig</code> CRD for a formal specification of the options for <code>authentication</code> verification, external <code>metadata</code> fetching, <code>authorization</code> policies, and dynamic <code>response</code>, as well as any other host protection capability implemented by Authorino.</p>
+<p>You can also read the specification from the CLI using the <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#explain"><code>kubectl explain</code></a> command. The Authorino CRD is required to have been installed in Kubernetes cluster. E.g. <code>kubectl explain authconfigs.spec.authentication.overrides</code>.</p>
+<p>A complete description of supported features and corresponding configuration options within an <code>AuthConfig</code> CR can be found in the <a href="../features/">Features</a> page.</p>
+<p>More concrete examples of <code>AuthConfig</code>s for specific use-cases can be found in the <a href="../user-guides/">User guides</a>.</p>
+<h2 id="resource-reconciliation-and-status-update">Resource reconciliation and status update<a class="headerlink" href="#resource-reconciliation-and-status-update" title="Permanent link">&para;</a></h2>
+<p>The instances of the Authorino authorization service workload, following the <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/operator">Operator pattern</a>, watch events related to the <code>AuthConfig</code> custom resources, to build and reconcile an in-memory index of configs. Whenever a replica receives traffic for authorization request, it <a href="#host-lookup">looks up in the index</a> of <code>AuthConfig</code>s and then <a href="#the-auth-pipeline-aka-enforcing-protection-in-request-time">triggers the "Auth Pipeline"</a>, i.e. enforces the associated auth spec onto the request.</p>
+<p>An instance can be a single authorization service workload or a set of replicas. All replicas watch and reconcile the same set of resources that match the <code>--auth-config-label-selector</code> and <code>--secret-label-selector</code> configuration options. (See both <a href="#cluster-wide-vs-namespaced-instances">Cluster-wide vs. Namespaced instances</a> and <a href="#sharding">Sharding</a>, for details about defining the reconciliation space of Authorino instances.)</p>
+<p>The above means that all replicas of an Authorino instance should be able to receive traffic for authorization requests.</p>
+<p>Among the multiple replicas of an instance, Authorino elects one replica to be leader. The leader is responsible for updating the status of reconciled <code>AuthConfig</code>s. If the leader eventually becomes unavailable, the instance will automatically elect another replica take its place as the new leader.</p>
+<p>The status of an <code>AuthConfig</code> tells whether the resource is "ready" (i.e. indexed). It also includes summary information regarding the numbers of authentication configs, metadata configs, authorization configs and response configs within the spec, as well as whether <a href="../features/#festival-wristband-tokens-responsesuccessheadersdynamicmetadatawristband">Festival Wristband</a> tokens are being issued by the Authorino instance as by spec.</p>
+<p>Apart from watching events related to <code>AuthConfig</code> custom resources, Authorino also watches events related to Kubernetes <code>Secret</code>s, as part of Authorino's <a href="../features/#api-key-authenticationapikey">API key authentication</a> feature. <code>Secret</code> resources that store API keys are linked to their corresponding <code>AuthConfig</code>s in the index. Whenever the Authorino instance detects a change in the set of API key <code>Secret</code>s linked to an <code>AuthConfig</code>s, the instance reconciles the index.</p>
+<p>Authorino only watches events related to <code>Secret</code>s whose <code>metadata.labels</code> match the label selector <code>--secret-label-selector</code> of the Authorino instance. The default values of the label selector for Kubernetes <code>Secret</code>s representing Authorino API keys is <code>authorino.kuadrant.io/managed-by=authorino</code>.</p>
+<h2 id="the-auth-pipeline-aka-enforcing-protection-in-request-time">The "Auth Pipeline" (<em>aka:</em> enforcing protection in request-time)<a class="headerlink" href="#the-auth-pipeline-aka-enforcing-protection-in-request-time" title="Permanent link">&para;</a></h2>
+<p><img alt="Authorino Auth Pipeline" src="../auth-pipeline.gif" /></p>
+<p>In each request to the protected API, Authorino triggers the so-called "Auth Pipeline", a set of configured <em>evaluators</em> that are organized in a 5-phase pipeline:</p>
+<ul>
+<li><strong>(i) Authentication phase:</strong> at least one source of identity (i.e., one authentication config) must resolve the supplied credential in the request into a valid identity or Authorino will otherwise reject the request as unauthenticated (401 HTTP response status).</li>
+<li><strong>(ii) Metadata phase:</strong> optional fetching of additional data from external sources, to add up to context and identity information, and used in authorization policies, dynamic responses and callback requests (phases iii to v).</li>
+<li><strong>(iii) Authorization phase:</strong> all unskipped policies must evaluate to a positive result ("authorized"), or Authorino will otherwise reject the request as unauthorized (403 HTTP response code).</li>
+<li><strong>(iv) Response phase</strong> – Authorino builds all user-defined response items (dynamic JSON objects and/or <em>Festival Wristband</em> OIDC tokens), which are supplied back to the external authorization client within added HTTP headers or as Envoy Dynamic Metadata</li>
+<li><strong>(v) Callbacks phase</strong> – Authorino sends callbacks to specified HTTP endpoints.</li>
+</ul>
+<p>Each phase is sequential to the other, from (i) to (v), while the evaluators within each phase are triggered concurrently or as prioritized. The <strong>Authentication</strong> phase (i) is the only one required to list at least one evaluator (i.e. 1+ authentication configs); <strong>Metadata</strong>, <strong>Authorization</strong> and <strong>Response</strong> phases can have any number of evaluators (including zero, and even be omitted in this case).</p>
+<h2 id="host-lookup">Host lookup<a class="headerlink" href="#host-lookup" title="Permanent link">&para;</a></h2>
+<p>Authorino reads the request host from <code>Attributes.Http.Host</code> of Envoy's <a href="https://pkg.go.dev/github.com/envoyproxy/go-control-plane/envoy/service/auth/v3?utm_source=gopls#CheckRequest"><code>CheckRequest</code></a> type, and uses it as key to lookup in the <a href="#resource-reconciliation-and-status-update">index</a> of <code>AuthConfig</code>s, matched against <code>spec.hosts</code>.</p>
+<p>Alternatively to <code>Attributes.Http.Host</code>, a <code>host</code> entry can be supplied in the <code>Attributes.ContextExtensions</code> map of the external authorino request. This will take precedence before the host attribute of the HTTP request.</p>
+<p>The <code>host</code> context extension is useful to support use cases such as of <strong>path prefix-based lookup</strong> and <strong>wildcard subdomains lookup</strong> with lookup strongly dictated by the external authorization client (e.g. Envoy), which often knows about routing and the expected <code>AuthConfig</code> to enforce beyond what Authorino can infer strictly based on the host name.</p>
+<p>Wildcards can also be used in the host names specified in the <code>AuthConfig</code>, resolved by Authorino. E.g. if <code>*.pets.com</code> is in <code>spec.hosts</code>, Authorino will match the concrete host names <code>dogs.pets.com</code>, <code>cats.pets.com</code>, etc. In case, of multiple possible matches, Authorino will try the longest match first (in terms of host name labels) and fall back to the closest wildcard upwards in the domain tree (if any).</p>
+<p>When more than one host name is specified in the <code>AuthConfig</code>, all of them can be used as key, i.e. all of them can be requested in the authorization request and will be mapped to the same config.</p>
+<p><strong>Example.</strong> Host lookup with wildcards.</p>
+<p><img alt="Domain tree" src="http://www.plantuml.com/plantuml/png/RP71ReCm38RlVWhKuoGcjN2U-YPLb6MTDS0e9E-_v8zgNC4fyVU5nFo-Ryd5bEU9Ol39BSyfT9VFI-UsBeeaijZB355MYzUGDl2wiU93wQE-OfNpSu2jcpUnil97AOxtmU0-wrWWMOuVi1oUNtY5Agl5oKr_8VQl7bg9BiXpzEWlfrylomy_-oiELN0zqpVLjpCzg1xEzAXw92g1TtrU-pQI6YXA3AB6iLSQTaEOo2lAXX2uPcWOiPX7M8ndePAKxlTSW90Y4O80-DB8yVUDsJGjrev1XqPr_82ZXJXw3yjtdgT_" /></p>
+<p>The domain tree above induces the following relation:</p>
+<ul>
+<li><code>foo.nip.io</code> → <code>authconfig-1</code> (matches <code>*.io</code>)</li>
+<li><code>talker-api.nip.io</code> → <code>authconfig-2</code> (matches <code>talker-api.nip.io</code>)</li>
+<li><code>dogs.pets.com</code> → <code>authconfig-2</code> (matches <code>*.pets.com</code>)</li>
+<li><code>api.acme.com</code> → <code>authconfig-3</code> (matches <code>api.acme.com</code>)</li>
+<li><code>www.acme.com</code> → <code>authconfig-4</code> (matches <code>*.acme.com</code>)</li>
+<li><code>foo.org</code> → <code>404 Not found</code></li>
+</ul>
+<p><br/></p>
+<p>The host can include the port number (i.e. <code>hostname:port</code>) or it can be just the name of the host name. Authorino will first try finding in the index a config associated to <code>hostname:port</code>, as supplied in the authorization request; if the index misses an entry for <code>hostname:port</code>, Authorino will then remove the <code>:port</code> suffix and repeat the lookup using just <code>hostname</code> as key. This provides implicit support for multiple port numbers for a same host without having to list all combinations in the <code>AuthConfig</code>.</p>
+<h3 id="avoiding-host-name-collision">Avoiding host name collision<a class="headerlink" href="#avoiding-host-name-collision" title="Permanent link">&para;</a></h3>
+<p>Authorino tries to prevent host name collision between <code>AuthConfig</code>s by rejecting to link in the index any <code>AuthConfig</code> and host name if the host name is already linked to a different <code>AuthConfig</code> in the index. This was intentionally designed to prevent users from superseding each other's <code>AuthConfig</code>s, partially or fully, by just picking the same host names or overlapping host names as others.</p>
+<p>When wildcards are involved, a host name that matches a host wildcard already linked in the index to another <code>AuthConfig</code> will be considered taken, and therefore the newest <code>AuthConfig</code> will be rejected to be linked to that host.</p>
+<p>This behavior can be disabled to allow <code>AuthConfig</code>s to partially supersede each others' host names (limited to strict host subsets), by supplying the <code>--allow-superseding-host-subsets</code> command-line flag when running the Authorino instance.</p>
+<h2 id="the-authorization-json">The Authorization JSON<a class="headerlink" href="#the-authorization-json" title="Permanent link">&para;</a></h2>
+<p>On every Auth Pipeline, Authorino builds the <strong>Authorization JSON</strong>, a "working-memory" data structure composed of <code>context</code> (information about the request, as supplied by the Envoy proxy to Authorino) and <code>auth</code> (objects resolved in phases (i) to (v) of the pipeline). The evaluators of each phase can read from the Authorization JSON and implement dynamic properties and decisions based on its values.</p>
+<p>At phase (iii), the authorization evaluators count on an Authorization JSON payload that looks like the following:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>// The authorization JSON combined along Authorino&#39;s auth pipeline for each request
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>{
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  &quot;context&quot;: { // the input from the proxy
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    &quot;origin&quot;: {…},
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    &quot;request&quot;: {
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>      &quot;http&quot;: {
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        &quot;method&quot;: &quot;…&quot;,
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>        &quot;headers&quot;: {…},
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>        &quot;path&quot;: &quot;/…&quot;,
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        &quot;host&quot;: &quot;…&quot;,
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>        …
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>      }
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    }
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  },
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>  &quot;auth&quot;: {
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    &quot;identity&quot;: {
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>      // the identity resolved, from the supplied credentials, by one of the evaluators of phase (i)
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    },
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    &quot;metadata&quot;: {
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>      // each metadata object/collection resolved by the evaluators of phase (ii), by name of the evaluator
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>    }
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>  }
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>}
+</span></code></pre></div>
+<p>The policies evaluated can use any data from the authorization JSON to define authorization rules.</p>
+<p>After phase (iii), Authorino appends to the authorization JSON the results of this phase as well, and the payload available for phase (iv) becomes:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>// The authorization JSON combined along Authorino&#39;s auth pipeline for each request
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>{
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  &quot;context&quot;: { // the input from the proxy
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    &quot;origin&quot;: {…},
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    &quot;request&quot;: {
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>      &quot;http&quot;: {
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>        &quot;method&quot;: &quot;…&quot;,
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>        &quot;headers&quot;: {…},
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>        &quot;path&quot;: &quot;/…&quot;,
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>        &quot;host&quot;: &quot;…&quot;,
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>        …
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>      }
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    }
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>  },
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>  &quot;auth&quot;: {
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>    &quot;identity&quot;: {
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>      // the identity resolved, from the supplied credentials, by one of the evaluators of phase (i)
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>    },
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>    &quot;metadata&quot;: {
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>      // each metadata object/collection resolved by the evaluators of phase (ii), by name of the evaluator
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>    },
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>    &quot;authorization&quot;: {
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>      // each authorization policy result resolved by the evaluators of phase (iii), by name of the evaluator
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>    }
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>  }
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>}
+</span></code></pre></div>
+<p><a href="../features/#festival-wristband-tokens-responsesuccessheadersdynamicmetadatawristband">Festival Wristbands</a> and <a href="../features/#json-injection-responsesuccessheadersdynamicmetadatajson">Dynamic JSON</a> responses can include dynamic values (custom claims/properties) fetched from the authorization JSON. These can be returned to the external authorization client in added HTTP headers or as Envoy <a href="https://www.envoyproxy.io/docs/envoy/latest/configuration/advanced/well_known_dynamic_metadata">Well Known Dynamic Metadata</a>. Check out <a href="../features/#custom-response-features-response">Custom response features</a> for details.</p>
+<p>For information about reading and fetching data from the Authorization JSON (syntax, functions, etc), check out <a href="../features/#common-feature-common-expression-language-cel">Common Expression Language (CEL)</a>.</p>
+<h2 id="raw-http-authorization-interface">Raw HTTP Authorization interface<a class="headerlink" href="#raw-http-authorization-interface" title="Permanent link">&para;</a></h2>
+<p>Besides providing the gRPC authorization interface – that implements the Envoy gRPC authorization server –, Authorino also provides another interface for <strong>raw HTTP authorization</strong>. This second interface responds to <code>GET</code> and <code>POST</code> HTTP requests sent to <code>:5001/check</code>, and is suitable for other forms of integration, such as:</p>
+<ul>
+<li>using Authorino as Kubernetes ValidatingWebhook service (<a href="../user-guides/validating-webhook/">example</a>);</li>
+<li>other HTTP proxies and API gateways;</li>
+<li>old versions of Envoy incompatible with the latest version of gRPC external authorization protocol (Authorino is based on v3.19.1 of Envoy external authorization API)</li>
+</ul>
+<p>In the raw HTTP interface, the host used to <a href="#host-lookup">lookup</a> for an <code>AuthConfig</code> must be supplied in the <code>Host</code> HTTP header of the request. Other attributes of the HTTP request are also passed in the context to evaluate the <code>AuthConfig</code>, including the body of the request.</p>
+<h2 id="caching">Caching<a class="headerlink" href="#caching" title="Permanent link">&para;</a></h2>
+<h3 id="openid-connect-and-user-managed-access-configs">OpenID Connect and User-Managed Access configs<a class="headerlink" href="#openid-connect-and-user-managed-access-configs" title="Permanent link">&para;</a></h3>
+<p>OpenID Connect and User-Managed Access configurations, discovered usually at reconciliation-time from well-known discovery endpoints.</p>
+<p>Cached individual OpenID Connect configurations discovered by Authorino can be configured to be auto-refreshed, by setting the corresponding <code>spec.authentication.jwt.ttl</code> field in the AuthConfig (given in seconds, default: <code>0</code> – i.e. no cache update).</p>
+<h3 id="json-web-keys-jwks-and-json-web-key-sets-jwks">JSON Web Keys (JWKs) and JSON Web Key Sets (JWKS)<a class="headerlink" href="#json-web-keys-jwks-and-json-web-key-sets-jwks" title="Permanent link">&para;</a></h3>
+<p>JSON signature verification certificates linked by discovered OpenID Connect configurations, fetched usually at reconciliation-time.</p>
+<h3 id="revoked-access-tokens">Revoked access tokens<a class="headerlink" href="#revoked-access-tokens" title="Permanent link">&para;</a></h3>
+<table>
+  <tr>
+    <td><small>Not implemented - In analysis (<a href="https://github.com/kuadrant/authorino/issues/19">#19</a>)</small></td>
+  </tr>
+</table>
+
+<p>Caching of access tokens identified and or notified as revoked prior to expiration.</p>
+<h3 id="external-metadata">External metadata<a class="headerlink" href="#external-metadata" title="Permanent link">&para;</a></h3>
+<table>
+  <tr>
+    <td><small>Not implemented - Planned (<a href="https://github.com/kuadrant/authorino/issues/21">#21</a>)</small></td>
+  </tr>
+</table>
+
+<p>Caching of resource data obtained in previous requests.</p>
+<h3 id="compiled-rego-policies">Compiled Rego policies<a class="headerlink" href="#compiled-rego-policies" title="Permanent link">&para;</a></h3>
+<p>Performed automatically by Authorino at reconciliation-time for the authorization policies based on the built-in OPA module.</p>
+<p>Precompiled and cached individual Rego policies originally pulled by Authorino from external registries can be configured to be auto-refreshed, by setting the corresponding <code>spec.authorization.opa.externalRegistry.ttl</code> field in the AuthConfig (given in seconds, default: <code>0</code> – i.e. no cache update).</p>
+<h3 id="repeated-requests">Repeated requests<a class="headerlink" href="#repeated-requests" title="Permanent link">&para;</a></h3>
+<table>
+  <tr>
+    <td><small>Not implemented - In analysis (<a href="https://github.com/kuadrant/authorino/issues/20">#20</a>)</small></td>
+  </tr>
+</table>
+
+<p>For consecutive requests performed, within a given period of time, by a same user that request for a same resource, such that the result of the auth pipeline can be proven that would not change.</p>
+<h2 id="sharding">Sharding<a class="headerlink" href="#sharding" title="Permanent link">&para;</a></h2>
+<p>By default, Authorino instances will watch <code>AuthConfig</code> CRs in the entire space (namespace or entire cluster; see <a href="#cluster-wide-vs-namespaced-instances">Cluster-wide vs. Namespaced instances</a> for details). To support combining multiple Authorino instances and instance modes in the same Kubernetes cluster, and yet avoiding superposition between the instances (i.e. multiple instances reconciling the same <code>AuthConfig</code>s), Authorino offers support for data sharding, i.e. to horizontally narrow down the space of reconciliation of an Authorino instance to a subset of that space.</p>
+<p>The benefits of limiting the space of reconciliation of an Authorino instance include avoiding unnecessary caching and workload in instances that do not receive corresponding traffic (according to your routing settings) and preventing leaders of multiple instances (sets of replicas) to compete on resource status updates (see <a href="#resource-reconciliation-and-status-update">Resource reconciliation and status update</a> for details).</p>
+<p>Use-cases for sharding of <code>AuthConfig</code>s:</p>
+<ul>
+<li>Horizontal load balancing of traffic of authorization requests</li>
+<li>Supporting for managed centralized instances of Authorino to API owners who create and maintain their own <code>AuthConfig</code>s within their own user namespaces.</li>
+</ul>
+<p>Authorino's custom controllers filter the <code>AuthConfig</code>-related events to be reconciled using <a href="https://pkg.go.dev/k8s.io/apimachinery/pkg/labels#Parse">Kubernetes label selectors</a>, defined for the Authorino instance via <code>--auth-config-label-selector</code> command-line flag. By default, <code>--auth-config-label-selector</code> is empty, meaning all <code>AuthConfig</code>s in the space are watched; this variable can be set to any value parseable as a valid label selector, causing Authorino to then watch only events of <code>AuthConfig</code>s whose <code>metadata.labels</code> match the selector.</p>
+<p>The following are all valid examples of <code>AuthConfig</code> label selector filters:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>--auth-config-label-selector=&quot;authorino.kuadrant.io/managed-by=authorino&quot;
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>--auth-config-label-selector=&quot;authorino.kuadrant.io/managed-by=authorino,other-label=other-value&quot;
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>--auth-config-label-selector=&quot;authorino.kuadrant.io/managed-by in (authorino,kuadrant)&quot;
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>--auth-config-label-selector=&quot;authorino.kuadrant.io/managed-by!=authorino-v0.4&quot;
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>--auth-config-label-selector=&quot;!disabled&quot;
+</span></code></pre></div>
+<h2 id="rbac">RBAC<a class="headerlink" href="#rbac" title="Permanent link">&para;</a></h2>
+<p>The table below describes the roles and role bindings defined by the Authorino service:</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Kind</th>
+<th style="text-align: center;">Scope(*)</th>
+<th>Description</th>
+<th>Permissions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>authorino-manager-role</code></td>
+<td><code>ClusterRole</code></td>
+<td style="text-align: center;">C/N</td>
+<td>Role of the Authorino manager service</td>
+<td>Watch and reconcile <code>AuthConfig</code>s and <code>Secret</code>s</td>
+</tr>
+<tr>
+<td><code>authorino-manager-k8s-auth-role</code></td>
+<td><code>ClusterRole</code></td>
+<td style="text-align: center;">C/N</td>
+<td>Role for the Kubernetes auth features</td>
+<td>Create <code>TokenReview</code>s and <code>SubjectAccessReview</code>s (Kubernetes auth)</td>
+</tr>
+<tr>
+<td><code>authorino-leader-election-role</code></td>
+<td><code>Role</code></td>
+<td style="text-align: center;">N</td>
+<td>Leader election role</td>
+<td>Create/update the <code>ConfigMap</code> used to coordinate which replica of Authorino is the leader</td>
+</tr>
+<tr>
+<td><code>authorino-authconfig-editor-role</code></td>
+<td><code>ClusterRole</code></td>
+<td style="text-align: center;">-</td>
+<td><code>AuthConfig</code> editor</td>
+<td>R/W <code>AuthConfig</code>s; Read <code>AuthConfig/status</code></td>
+</tr>
+<tr>
+<td><code>authorino-authconfig-viewer-role</code></td>
+<td><code>ClusterRole</code></td>
+<td style="text-align: center;">-</td>
+<td><code>AuthConfig</code> viewer</td>
+<td>Read <code>AuthConfig</code>s and <code>AuthConfig/status</code></td>
+</tr>
+<tr>
+<td><code>authorino-proxy-role</code></td>
+<td><code>ClusterRole</code></td>
+<td style="text-align: center;">C/N</td>
+<td>Kube-rbac-proxy-role (sidecar)'s role</td>
+<td>Create <code>TokenReview</code>s and <code>SubjectAccessReview</code>s to check permissions to the <code>/metrics</code> endpoint</td>
+</tr>
+<tr>
+<td><code>authorino-metrics-reader</code></td>
+<td><code>ClusterRole</code></td>
+<td style="text-align: center;">-</td>
+<td>Metrics reader</td>
+<td><code>GET /metrics</code></td>
+</tr>
+</tbody>
+</table>
+<p><small>(*) C - Cluster-wide | N - Authorino namespace | C/N - Cluster-wide or Authorino namespace (depending on the <a href="#cluster-wide-vs-namespaced-instances">deployment mode</a>).</small></p>
+<h2 id="observability">Observability<a class="headerlink" href="#observability" title="Permanent link">&para;</a></h2>
+<p>Please refer to the <a href="../user-guides/observability/">Observability</a> user guide for info on Prometheus metrics exported by Authorino, readiness probe, logging, tracing, etc.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer id="footer" class="footer">
+  <div class="copyright">
+    <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+    <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks.</p> 
+    <p>For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+  </div>
+
+  <div class="sponsored-by">
+    <p>
+      <a href="https://www.cncf.io/sandbox-projects/"><img src="../../../assets/images/cncf-color.png" class="logo" alt="CNCF logo"></a>
+    </p>
+    <p>
+      We are a Cloud Native Computing Foundation sandbox project.
+    </p>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["1.3.x", "latest"], "provider": "mike"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>
