@@ -301,12 +301,27 @@ This workflow will build the documentation bundle and trigger a push to the `gh-
 
 ## Building the Docker Image
 
-To build the Docker image, run:
+### Single Architecture
 
 ```bash
 docker build -t quay.io/kuadrant/docs.kuadrant.io:latest .
 docker push quay.io/kuadrant/docs.kuadrant.io:latest
 ```
+
+### Multi-Architecture (amd64 + arm64)
+
+```bash
+# create and use buildx builder
+docker buildx create --name multiarch --use
+
+# build and push for both architectures
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -t quay.io/kuadrant/docs.kuadrant.io:latest \
+  --push .
+```
+
+**Note:** requires Docker Buildx and authentication to quay.io (`docker login quay.io`)
 
 
 ### Troubleshooting
