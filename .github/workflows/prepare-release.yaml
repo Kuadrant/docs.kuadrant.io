@@ -1,0 +1,166 @@
+name: prepare release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'version to release (e.g., 1.3.x, 0.10.0)'
+        required: true
+        type: string
+      version_prefix:
+        description: 'filter component tags by version prefix (e.g., v1.3)'
+        required: false
+        type: string
+      deploy:
+        description: 'deploy with mike'
+        required: false
+        type: boolean
+        default: false
+      push:
+        description: 'push to remote (only with deploy enabled)'
+        required: false
+        type: boolean
+        default: false
+      kuadrant_operator_tag:
+        description: 'override kuadrant-operator tag'
+        required: false
+        type: string
+      authorino_tag:
+        description: 'override authorino tag'
+        required: false
+        type: string
+      architecture_tag:
+        description: 'override architecture tag'
+        required: false
+        type: string
+      dns_operator_tag:
+        description: 'override dns-operator tag'
+        required: false
+        type: string
+
+jobs:
+  prepare-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: install dependencies
+        run: |
+          uv venv
+          source .venv/bin/activate
+          uv pip install -r pyproject.toml
+
+      - name: build command
+        id: build_cmd
+        run: |
+          CMD="python3 prepare_release.py ${{ inputs.version }}"
+
+          if [ -n "${{ inputs.version_prefix }}" ]; then
+            CMD="$CMD --version-prefix ${{ inputs.version_prefix }}"
+          fi
+
+          if [ -n "${{ inputs.kuadrant_operator_tag }}" ]; then
+            CMD="$CMD --kuadrant-operator-tag ${{ inputs.kuadrant_operator_tag }}"
+          fi
+
+          if [ -n "${{ inputs.authorino_tag }}" ]; then
+            CMD="$CMD --authorino-tag ${{ inputs.authorino_tag }}"
+          fi
+
+          if [ -n "${{ inputs.architecture_tag }}" ]; then
+            CMD="$CMD --architecture-tag ${{ inputs.architecture_tag }}"
+          fi
+
+          if [ -n "${{ inputs.dns_operator_tag }}" ]; then
+            CMD="$CMD --dns-operator-tag ${{ inputs.dns_operator_tag }}"
+          fi
+
+          if [ "${{ inputs.deploy }}" = "true" ]; then
+            CMD="$CMD --deploy"
+          fi
+
+          if [ "${{ inputs.push }}" = "true" ]; then
+            CMD="$CMD --push"
+          fi
+
+          echo "command=$CMD" >> $GITHUB_OUTPUT
+
+      - name: run prepare release
+        run: |
+          source .venv/bin/activate
+          ${{ steps.build_cmd.outputs.command }}
+
+      - name: show changes to mkdocs.yml
+        run: |
+          echo "## changes to mkdocs.yml" >> $GITHUB_STEP_SUMMARY
+          echo '```diff' >> $GITHUB_STEP_SUMMARY
+          git diff mkdocs.yml >> $GITHUB_STEP_SUMMARY || echo "no changes" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: show gh-pages changes
+        if: inputs.deploy == true
+        run: |
+          echo "## gh-pages branch commits" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          git log gh-pages --oneline -5 >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: push release branch
+        if: inputs.push == true && inputs.deploy == true
+        run: |
+          git push origin v${{ inputs.version }}
+          echo "✅ pushed release branch v${{ inputs.version }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: create artifact with changes
+        if: inputs.push == false
+        run: |
+          mkdir -p release-artifacts
+          git diff mkdocs.yml > release-artifacts/mkdocs.diff || true
+          git log gh-pages --oneline -10 > release-artifacts/gh-pages-log.txt || true
+          echo "${{ steps.build_cmd.outputs.command }}" > release-artifacts/command.txt
+
+      - name: upload artifact
+        if: inputs.push == false
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ inputs.version }}-changes
+          path: release-artifacts/
+
+      - name: summary
+        run: |
+          echo "## release preparation complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**version:** ${{ inputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**deploy:** ${{ inputs.deploy }}" >> $GITHUB_STEP_SUMMARY
+          echo "**push:** ${{ inputs.push }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ inputs.push }}" = "true" ]; then
+            echo "### ✅ changes pushed to remote" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "next steps:" >> $GITHUB_STEP_SUMMARY
+            echo "1. tag the release: \`git tag ${{ inputs.version }} && git push origin --tags\`" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### 📦 changes prepared locally (not pushed)" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "next steps:" >> $GITHUB_STEP_SUMMARY
+            echo "1. review the diff above" >> $GITHUB_STEP_SUMMARY
+            echo "2. download the artifact to see full changes" >> $GITHUB_STEP_SUMMARY
+            echo "3. run the workflow again with push enabled if happy" >> $GITHUB_STEP_SUMMARY
+          fi

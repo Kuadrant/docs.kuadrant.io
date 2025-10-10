@@ -2,6 +2,18 @@
 
 ## Quick start
 
+### Via GitHub Actions (recommended)
+
+1. go to `Actions > prepare release > Run workflow`
+2. fill in the version (e.g., `1.3.x`)
+3. optionally enable `deploy with mike`
+4. run the workflow
+5. review the diff in the workflow summary
+6. if happy, run again with `push to remote` enabled
+7. tag the release locally: `git tag 1.3.x && git push origin --tags`
+
+### Via local script
+
 ```bash
 # prepare release (creates branch, updates files)
 python3 prepare_release.py 1.3.x
@@ -25,7 +37,31 @@ git push origin gh-pages
 git tag 1.3.x && git push origin --tags
 ```
 
-## Usage
+## GitHub Actions workflow
+
+The workflow provides all the same options as the script:
+
+**Inputs:**
+- `version` (required): version to release (e.g., `1.3.x`)
+- `version_prefix`: filter component tags by prefix (e.g., `v1.3`)
+- `deploy`: deploy with mike (default: false)
+- `push`: push to remote - only works with deploy enabled (default: false)
+- `kuadrant_operator_tag`: override kuadrant-operator tag
+- `authorino_tag`: override authorino tag
+- `architecture_tag`: override architecture tag
+- `dns_operator_tag`: override dns-operator tag
+
+**Workflow summary shows:**
+- diff of mkdocs.yml changes
+- gh-pages commits (if deploy enabled)
+- artifact download with full changes (if push disabled)
+
+**Typical workflow:**
+1. run without push to preview changes
+2. review diff in summary
+3. run again with push enabled if satisfied
+
+## Local script usage
 
 ### Basic workflow
 
