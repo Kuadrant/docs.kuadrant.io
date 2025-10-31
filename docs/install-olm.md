@@ -155,8 +155,21 @@ You should see the message `kuadrant is ready`.
 kubectl wait istio/default --for=condition=ready=true
 ```
 
-At this point Kuadrant is installed and ready to be used as is Istio as the gateway provider. This means AuthPolicy and RateLimitPolicy can now be configured and used to protect any Gateways you create. 
+At this point Kuadrant is installed and ready to be used as is Istio as the gateway provider. This means AuthPolicy and RateLimitPolicy can now be configured and used to protect any Gateways you create.
 
+### Configure Gateway Controller Names (Required for OpenShift Service Mesh)
+
+When using OpenShift Service Mesh or other gateway providers that don't use the default gateway controller names, you must configure the appropriate environment variable on the Kuadrant operator controller manager deployment. Without this configuration, WasmPlugins will not be created properly.
+
+**Default Values:**
+- Istio: `istio.io/gateway-controller` 
+- Envoy Gateway: `gateway.envoyproxy.io/gatewayclass-controller`
+
+```bash
+kubectl patch subscription kuadrant -n kuadrant-system --type=json -p='[{"op":"add","path":"/spec/config","value":{"env":[{"name":"ISTIO_GATEWAY_CONTROLLER_NAMES","value":"openshift.io/gateway-controller/v1"}]}}]'
+```
+
+> **Note**: For Envoy Gateway, use the same command but change the environment variable name to `ENVOY_GATEWAY_GATEWAY_CONTROLLER_NAMES`. The environment variables accept comma-separated lists of gateway controller names.
 
 ## Configure DNS and TLS integration
 
