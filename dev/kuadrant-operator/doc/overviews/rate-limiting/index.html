@@ -1915,7 +1915,7 @@
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;HTTPRoute Name&gt;</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="nt">limits</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="nv">…</span><span class="w"> </span><span class="p p-Indicator">}</span>
 </span></code></pre></div>
-<p><img alt="Rate limit policy targeting a HTTPRoute resource" src="../images/rlp-httproute-target.png" /></p>
+<p><img alt="Rate limit policy targeting a HTTPRoute resource" src="../../images/rlp-httproute-target.png" /></p>
 <h4 id="hostnames-and-wildcards">Hostnames and wildcards<a class="headerlink" href="#hostnames-and-wildcards" title="Permanent link">&para;</a></h4>
 <p>If a RateLimitPolicy targets a route defined for <code>*.com</code> and another RateLimitPolicy targets another route for <code>api.com</code>, the Kuadrant control plane will not merge these two RateLimitPolicies. Unless one of the policies declare an <em>overrides</em> set of limites, the control plane will configure to mimic the behavior of gateway implementation by which the "most specific hostname wins", thus enforcing only the corresponding applicable policies and limit definitions.</p>
 <p>E.g., by default, a request coming for <code>api.com</code> will be rate limited according to the rules from the RateLimitPolicy that targets the route for <code>api.com</code>; while a request for <code>other.com</code> will be rate limited with the rules from the RateLimitPolicy targeting the route for <code>*.com</code>.</p>
@@ -1938,7 +1938,7 @@
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="nt">defaults</span><span class="p">:</span><span class="w"> </span><span class="c1"># alternatively: `overrides`</span>
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="nt">limits</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="nv">…</span><span class="w"> </span><span class="p p-Indicator">}</span>
 </span></code></pre></div>
-<p><img alt="rate limit policy targeting a Gateway resource" src="../images/rlp-gateway-target.png" /></p>
+<p><img alt="rate limit policy targeting a Gateway resource" src="../../images/rlp-gateway-target.png" /></p>
 <h4 id="overlapping-gateway-and-httproute-ratelimitpolicies">Overlapping Gateway and HTTPRoute RateLimitPolicies<a class="headerlink" href="#overlapping-gateway-and-httproute-ratelimitpolicies" title="Permanent link">&para;</a></h4>
 <p>Two possible semantics are to be considered here – gateway policy <em>defaults</em> vs gateway policy <em>overrides</em>.</p>
 <p>Gateway RateLimitPolicies that declare <em>defaults</em> (or alternatively neither defaults nor overrides) protect all traffic routed through the gateway except where a more specific HTTPRoute RateLimitPolicy exists, in which case the HTTPRoute RateLimitPolicy prevails.</p>
