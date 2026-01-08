@@ -41,6 +41,8 @@ jobs:
           restore-keys: |
             mkdocs-material-
       - run: uv pip install --system -r pyproject.toml
+      - name: Install asciidoctor
+        run: sudo gem install asciidoctor
       - name: Setup Docs Deploy
         run: |
           git config --global user.name "Docs Deploy"
@@ -64,6 +66,8 @@ jobs:
           enable-cache: true
           cache-dependency-glob: '**/pyproject.toml'
       - run: uv pip install --system -r pyproject.toml
+      - name: Install asciidoctor
+        run: sudo gem install asciidoctor
       - run: mkdocs build -s
   required-checks:
     name: CI Required Checks

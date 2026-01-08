@@ -12,7 +12,7 @@ To use Kuadrant, the `LoadBalancer` service type is required for Gateways. kind 
 
 ## Installation Options
 
-* [Install with Helm](./install-helm.md)
+* [Install with Helm](./install-helm.adoc)
 * [Install with OLM](./install-olm.md)
 
 ## Further Reading
