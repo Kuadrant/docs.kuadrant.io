@@ -1939,7 +1939,7 @@
 <h2 id="10000m-architecture">10000m Architecture<a class="headerlink" href="#10000m-architecture" title="Permanent link">&para;</a></h2>
 <p><img alt="" src="../images/highest-level.jpg" /></p>
 <h3 id="control-plane-components-and-responsibilities">Control Plane Components and Responsibilities<a class="headerlink" href="#control-plane-components-and-responsibilities" title="Permanent link">&para;</a></h3>
-<p>The control plane is a set of controllers and operators that are responsible for for installation and configuration of other components such as the data plane enforcement components and configuration of the Gateway to enable the data plane components to interact with incoming requests. The control plane also owns and reconciles the policy CRD APIs into more complex and specific configuration objects that the policy enforcement components consume in order to know the rules to apply to incoming requests or the configuration to apply to external integrations such as DNS and ACME providers. </p>
+<p>The control plane is a set of controllers and operators that are responsible for installation and configuration of other components such as the data plane enforcement components and configuration of the Gateway to enable the data plane components to interact with incoming requests. The control plane also owns and reconciles the policy CRD APIs into more complex and specific configuration objects that the policy enforcement components consume in order to know the rules to apply to incoming requests or the configuration to apply to external integrations such as DNS and ACME providers. </p>
 <p><img alt="" src="../images/control-plane-overview.jpg" /></p>
 <h4 id="kuadrant-operator"><a href="https://github.com/Kuadrant/Kuadrant-operator">Kuadrant Operator</a><a class="headerlink" href="#kuadrant-operator" title="Permanent link">&para;</a></h4>
 <ul>
@@ -1963,8 +1963,8 @@
 </ul>
 <h4 id="dns-operator"><a href="https://github.com/Kuadrant/dns-operator">DNS Operator</a><a class="headerlink" href="#dns-operator" title="Permanent link">&para;</a></h4>
 <ul>
-<li>DNS operator consumes DNSRecord resources that are configured via the DNSPolicy api and applies them into the targeted cloud DNS provider
-AWS, Azure and Google DNS are our main targets</li>
+<li>DNS operator consumes DNSRecord resources that are configured via the DNSPolicy api and applies them into the targeted cloud DNS provider.
+AWS, Azure and Google DNS are our main targets.</li>
 </ul>
 <h3 id="data-plane-components-and-responsibilities">Data Plane Components and Responsibilities<a class="headerlink" href="#data-plane-components-and-responsibilities" title="Permanent link">&para;</a></h3>
 <p><img alt="" src="../images/data-plane-overview.jpg" /></p>
@@ -1975,17 +1975,17 @@ AWS, Azure and Google DNS are our main targets</li>
 </ul>
 <h4 id="authorino"><a href="https://github.com/Kuadrant/authorino">Authorino</a><a class="headerlink" href="#authorino" title="Permanent link">&para;</a></h4>
 <ul>
-<li>Complies with the Envoy external auth API to provide auth integration to the gateway. It provides both Authn and Authz. Consumes AuthConfigs created by the kuadrant operator based on the defined <code>AuthPolicy</code> API.</li>
+<li>Complies with the Envoy external auth API to provide auth integration to the gateway. It provides both Authn and Authz. Consumes AuthConfigs created by the Kuadrant operator based on the defined <code>AuthPolicy</code> API.</li>
 </ul>
 <h4 id="wasm-shim"><a href="https://github.com/Kuadrant/wasm-shim">WASM Shim</a><a class="headerlink" href="#wasm-shim" title="Permanent link">&para;</a></h4>
 <ul>
 <li>Uses the <a href="https://github.com/proxy-wasm/spec">Proxy WASM ABI Spec</a> to integrate with Envoy and provide filtering and connectivity to Limitador (for request time enforcement of rate limiting) and Authorino (for request time enforcement of authentication &amp; authorization).</li>
 </ul>
 <h3 id="single-cluster-layout">Single Cluster Layout<a class="headerlink" href="#single-cluster-layout" title="Permanent link">&para;</a></h3>
-<p>In a single cluster, you have the Kuadrant control plane and data plane sitting together. It is configured to integrate with Gateways on the same cluster and configure a DNS zone via a DNS provider secret (configured alongside a DNSPolicy). Storage of rate limit counters is possible but not required as they are not being shared.</p>
+<p>In a single cluster, you have the Kuadrant control plane and data plane sitting together. It is configured to integrate with Gateways on the same cluster and configure a DNS zone via a  secret (configured alongside a DNSPolicy). Storage of rate limit counters is possible but not required as they are not being shared.</p>
 <p><img alt="" src="../images/single-cluster-layout.jpg" /></p>
 <h3 id="multi-cluster">Multi-Cluster<a class="headerlink" href="#multi-cluster" title="Permanent link">&para;</a></h3>
-<p>In the default multi-cluster setup. Each individual cluster has Kuadrant installed. Each of these clusters are unaware of the other. They are effectively operating as single clusters. The multi-cluster aspect is created by sharing access with the DNS zone, using a shared host across the clusters and leveraging shared counter storage. 
+<p>In the default multi-cluster setup, each individual cluster has Kuadrant installed. Each of these clusters are unaware of the other. They are effectively operating as single clusters. The multi-cluster aspect is created by sharing access with the DNS zone, using a shared host across the clusters and leveraging shared counter storage. 
 Multi cluster DNS is achieved by using the eventual provider DNS service (AWS Route etc ..) as a store for ownership metadata using specially created TXT records, and as a central API service that all clusters can communicate with. The zone is operated on independently by each of DNS operator on both clusters to form a single cohesive record set. Each cluster processes its own DNSRecords, becoming aware of other DNSRecords contributing to the same set of endpoints via this centrally stored data, in turn allowing it to correctly translate the DNSRecord endpoints into an appropriate API operation. More details on this can be found in the <a href="https://github.com/Kuadrant/architecture/pull/70">following RFC</a>.
 The rate limit counters can also be shared and used by different clusters in order to provide global rate limiting. This is achieved by connecting each instance of Limitador to a shared data store that uses the Redis protocol.</p>
 <p><img alt="" src="../images/multi-cluster-layout.jpg" /></p>
