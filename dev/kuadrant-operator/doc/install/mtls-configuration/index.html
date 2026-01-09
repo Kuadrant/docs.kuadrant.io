@@ -47,6 +47,8 @@
     
       <link rel="stylesheet" href="../../../../assets/stylesheets/extra.css">
     
+      <link rel="stylesheet" href="../../../../assets/asciidoc.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1647,6 +1649,12 @@ At the time of writing there is <a href="https://github.com/Kuadrant/architectur
 <p class="admonition-title">Note</p>
 <p>This method currently only works if the Gateway is provided by Istio, with service mesh capabilities enabled across the cluster. For example, the <a href="https://github.com/istio-ecosystem/sail-operator/blob/main/docs/README.md#istiocni-resource">Istio CNI</a> agent is running on each node.</p>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">OpenShift 4.19+ Users</p>
+<p>If you require mTLS on OpenShift Container Platform (OCP) 4.19 or later, the Cluster Ingress Operator (CIO) managed Istio is <strong>not</strong> a viable option because it lacks the necessary service mesh capabilities that Kuadrant's mTLS feature relies on.</p>
+<p>Instead, you must create a custom Istio CR (Custom Resource) with the CNI (Container Network Interface) requirement enabled. The Gateway API can also be enabled on this custom Istio CR.</p>
+<p><strong>Important:</strong> When defining your Gateways, ensure they avoid using the <code>openshift.io/gateway-controller/v1</code> controller name. This prevents the Cluster Ingress Operator from attempting to manage resources for your custom Istio control plane.</p>
+</div>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Have <a href="https://istio.io/">Istio</a> as the Gateway API provider installed.</li>
@@ -1753,6 +1761,8 @@ set kuadrant's custom resource <code>spec.mtls.enable</code> field to <code>true
     
     
       <script src="../../../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="../../../../assets/strip_callouts.js"></script>
       
     
   </body>
