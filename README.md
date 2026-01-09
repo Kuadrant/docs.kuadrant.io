@@ -48,6 +48,16 @@ source .venv/bin/activate
 uv pip install -r pyproject.toml
 ```
 
+You'll also need `asciidoctor` for AsciiDoc support:
+
+```bash
+# macOS
+brew install asciidoctor
+
+# Linux
+gem install asciidoctor
+```
+
 ### Serving the Docs Locally
 
 To serve the docs locally, run:
@@ -57,6 +67,33 @@ mkdocs serve -s
 ```
 
 You can then view the docs at [http://127.0.0.1:8000](http://127.0.0.1:8000) on your current branch.
+
+### AsciiDoc Support
+
+Both Markdown (`.md`) and AsciiDoc (`.adoc`) files are supported. AsciiDoc files are converted using [Asciidoctor](https://asciidoctor.org/) via the [mkdocs-asciidoctor-backend](https://github.com/aireilly/mkdocs-asciidoctor-backend) plugin.
+
+To add an AsciiDoc page:
+
+1. Create a `.adoc` file in `docs/`
+2. Add it to the `nav` section in `mkdocs.yml`
+
+Example AsciiDoc file:
+
+```asciidoc
+= Page Title
+
+== Section
+
+Some content with *bold* and _italic_ text.
+
+[source,yaml]
+----
+apiVersion: v1
+kind: ConfigMap
+----
+```
+
+See `docs/install-helm.adoc` for an example.
 
 ### Running Multi-Versioned Docs
 

@@ -1,0 +1,34 @@
+= Install with Helm
+
+== Prerequisites
+
+* Kubernetes cluster with support for services of type `LoadBalancer`
+* https://kubernetes.io/docs/reference/kubectl/[kubectl CLI]
+
+== Basic Installation
+
+The latest helm installation instructions for the kuadrant operator are maintained at https://artifacthub.io/packages/helm/kuadrant/kuadrant-operator[ArtifactHub].
+
+After installing the operator, you can create a Kuadrant resource to install the operand components.
+
+[source,bash]
+----
+kubectl apply -f - <<EOF
+apiVersion: kuadrant.io/v1beta1
+kind: Kuadrant
+metadata:
+  name: kuadrant
+  namespace: kuadrant-system
+EOF
+----
+
+If everything went well, the status of the resource should be `Ready`
+
+[source,bash]
+----
+kubectl get kuadrant kuadrant -n kuadrant-system -o=jsonpath='{.status.conditions[?(@.type=="Ready")].message}{"\n"}'
+----
+
+== Next Steps
+
+* Try out our link:../kuadrant-operator/doc/user-guides/full-walkthrough/secure-protect-connect/[Secure, protect, and connect] guide

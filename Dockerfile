@@ -2,6 +2,10 @@ FROM registry.access.redhat.com/ubi9/python-39
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
+USER 0
+RUN dnf install -y ruby && dnf clean all && gem install asciidoctor
+USER 1001
+
 WORKDIR /docs
 
 COPY pyproject.toml .
