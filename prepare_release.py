@@ -154,6 +154,11 @@ def main():
         help="override tag for dns-operator",
         default=None
     )
+    parser.add_argument(
+        "--mcp-gateway-tag",
+        help="override tag for mcp-gateway",
+        default=None
+    )
 
     args = parser.parse_args()
 
@@ -192,6 +197,7 @@ def main():
         'authorino': 'https://github.com/kuadrant/authorino',
         'architecture': 'https://github.com/kuadrant/architecture',
         'dns-operator': 'https://github.com/kuadrant/dns-operator',
+        'mcp-gateway': 'https://github.com/kuadrant/mcp-gateway',
     }
 
     # fetch latest tags for each component
