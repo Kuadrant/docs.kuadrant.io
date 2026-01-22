@@ -1,0 +1,2307 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://docs.kuadrant.io/dev/kuadrant-backstage-plugin/KUADRANT/">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Kuadrant Plugin Development - Kuadrant Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../assets/asciidoc.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kuadrant-plugin-development" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  These docs are not for the latest version.
+  <a href="../../.."> 
+    <strong>Click here to go to latest, stable docs.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Kuadrant Documentation" class="md-header__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kuadrant Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Kuadrant Plugin Development
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kuadrant/docs.kuadrant.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Kuadrant Documentation" class="md-nav__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Kuadrant Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kuadrant/docs.kuadrant.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install-helm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Install with Helm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install-olm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Install with OLM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Concepts
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/docs/design/architectural-overview-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/overviews/auth/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AuthPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/overviews/dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/overviews/rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/overviews/tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TLSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/overviews/token-rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TokenRateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/overviews/telemetrypolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TelemetryPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/extensions/planpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PlanPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    APIs & Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            APIs & Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/reference/authpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AuthPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/reference/dnspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/reference/ratelimitpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/reference/tlspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TLSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/reference/tokenratelimitpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TokenRateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/reference/kuadrant/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kuadrant
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Observability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_7">
+            <span class="md-nav__icon md-icon"></span>
+            Observability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/observability/metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Metrics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../authorino/docs/user-guides/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication and Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/reference/telemetrypolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TelemetryPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Tutorials
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/full-walkthrough/secure-protect-connect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Secure, connect and protect
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/tls/gateway-tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway TLS for Cluster Operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/auth/auth-for-app-devs-and-platform-engineers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Enforcing authentication & authorization with Kuadrant AuthPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/ratelimiting/gateway-rl-for-cluster-operators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway Rate Limiting for Cluster Operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/ratelimiting/authenticated-rl-for-app-developers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limiting for Application Developers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/ratelimiting/authenticated-rl-with-jwt-and-k8s-authnz/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limiting with JWTs and Kubernetes RBAC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/ratelimiting/multi-auth-rlp-diff-section/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway Rate Limiting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/ratelimiting/multi-auth-rlp-same-section/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Multi authenticated Rate Limiting for an Application
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/tokenratelimitpolicy/authenticated-token-ratelimiting-tutorial/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Token Rate Limiting for Large Language Model APIs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/planpolicy/plan-based-rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Plan-based Rate Limiting with PlanPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DNS configuration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1">
+            <span class="md-nav__icon md-icon"></span>
+            DNS configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dns-operator/docs/provider/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuring a DNS Provider
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/dns/gateway-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway DNS for ingress Gateway
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/dns/basic-dns-configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Basic DNS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/dns/load-balanced-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNS Load Balancing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/dns/dnshealthchecks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Health Checks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/dns/core-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CoreDNS Support
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/dns/understanding_dns_delegation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cluster Aware DNSRecord Delegation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/install/mtls-configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    mTLS Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_3" id="__nav_7_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Observability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_3">
+            <span class="md-nav__icon md-icon"></span>
+            Observability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/observability/monitors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configure Observability
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/observability/examples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dashboards and Alerts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/observability/tracing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tracing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/observability/limitador-metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring Limitador
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kuadrant-operator/doc/user-guides/observability/token-metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring AI Token Metrics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Developer Portal
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Developer Portal
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_4" id="__nav_8_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_4">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer-portal-controller/docs/references/apiproduct/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    APIProduct
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer-portal-controller/docs/references/apikey/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    APIKey
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#branching-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Branching Strategy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Branching Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#repository-remotes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Repository Remotes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pulling-rhdh-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pulling RHDH Updates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expected-merge-conflicts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expected Merge Conflicts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customisations-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Customisations Summary
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Customisations Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added-filesdirectories" class="md-nav__link">
+    <span class="md-ellipsis">
+      Added Files/Directories
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modified-rhdh-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modified RHDH Files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Development Workflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Development Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#first-time-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      First Time Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#daily-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Daily Development
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kubernetes Access
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rebuilding-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rebuilding Cluster
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rbac-and-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      RBAC and Permissions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RBAC and Permissions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#three-tier-role-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Three-Tier Role Hierarchy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kuadrant-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kuadrant Permissions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-with-different-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing with Different Users
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rbac-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      RBAC Policy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes-rbac" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kubernetes RBAC
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#philosophy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Philosophy
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/kuadrant/kuadrant-backstage-plugin/blob/main/KUADRANT.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="kuadrant-plugin-development">Kuadrant Plugin Development<a class="headerlink" href="#kuadrant-plugin-development" title="Permanent link">&para;</a></h1>
+<p>This repository is a customised fork of <a href="https://github.com/redhat-developer/rhdh">Red Hat Developer Hub (RHDH)</a> for developing Kuadrant Backstage plugins.</p>
+<h2 id="branching-strategy">Branching Strategy<a class="headerlink" href="#branching-strategy" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>main</code></strong> - Our development branch with Kuadrant plugins and customisations</li>
+<li><strong><code>rhdh-upstream-main</code></strong> - Tracking branch for upstream RHDH main (reference only, do not commit here)</li>
+<li><strong><code>pre-migration-backup</code></strong> - Snapshot of old plugin structure before migration (backup only)</li>
+</ul>
+<h3 id="repository-remotes">Repository Remotes<a class="headerlink" href="#repository-remotes" title="Permanent link">&para;</a></h3>
+<p>This repository tracks three remotes:</p>
+<ul>
+<li><strong><code>origin</code></strong> - Your fork (e.g., jasonmadigan/kuadrant-backstage-plugin)</li>
+<li><strong><code>upstream</code></strong> - Kuadrant organisation repo (Kuadrant/kuadrant-backstage-plugin)</li>
+<li><strong><code>rhdh-upstream</code></strong> - Red Hat Developer Hub upstream (redhat-developer/rhdh)</li>
+</ul>
+<h3 id="pulling-rhdh-updates">Pulling RHDH Updates<a class="headerlink" href="#pulling-rhdh-updates" title="Permanent link">&para;</a></h3>
+<p>To pull the latest changes from upstream RHDH and rebase our Kuadrant customisations:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># fetch latest from rhdh upstream</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>git<span class="w"> </span>fetch<span class="w"> </span>rhdh-upstream
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># update the tracking branch (optional, for reference)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>git<span class="w"> </span>checkout<span class="w"> </span>rhdh-upstream-main
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>rhdh-upstream/main
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>git<span class="w"> </span>push<span class="w"> </span>upstream<span class="w"> </span>rhdh-upstream-main
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># rebase our main branch on top of latest rhdh</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>git<span class="w"> </span>checkout<span class="w"> </span>main
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>git<span class="w"> </span>rebase<span class="w"> </span>rhdh-upstream/main
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># resolve any conflicts (see below)</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="c1"># force push to update upstream after rebase</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>git<span class="w"> </span>push<span class="w"> </span>--force-with-lease<span class="w"> </span>upstream<span class="w"> </span>main
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>git<span class="w"> </span>push<span class="w"> </span>--force-with-lease<span class="w"> </span>origin<span class="w"> </span>main
+</span></code></pre></div>
+<h3 id="expected-merge-conflicts">Expected Merge Conflicts<a class="headerlink" href="#expected-merge-conflicts" title="Permanent link">&para;</a></h3>
+<p>When rebasing, you'll likely see conflicts in these files:</p>
+<p><strong>packages/app/src/components/AppBase/AppBase.tsx</strong></p>
+<ul>
+<li>Conflict: Kuadrant route and Navigate import</li>
+<li>Resolution: Keep both upstream changes and our Kuadrant route</li>
+</ul>
+<p><strong>packages/app/src/components/catalog/EntityPage/defaultTabs.tsx</strong></p>
+<ul>
+<li>Conflict: Kuadrant tab definitions</li>
+<li>Resolution: Keep our Kuadrant imports and tab configurations</li>
+</ul>
+<p><strong>packages/app/src/components/catalog/EntityPage/OverviewTabContent.tsx</strong></p>
+<ul>
+<li>Conflict: EntityKuadrantApiAccessCard in API entity section</li>
+<li>Resolution: Keep our Kuadrant card addition</li>
+</ul>
+<p><strong>packages/app/src/consts.ts</strong></p>
+<ul>
+<li>Conflict: Kuadrant menu item</li>
+<li>Resolution: Keep our menu item addition</li>
+</ul>
+<p><strong>packages/app/package.json</strong></p>
+<ul>
+<li>Conflict: Kuadrant plugin dependency</li>
+<li>Resolution: Keep our @internal/plugin-kuadrant dependency</li>
+</ul>
+<p><strong>packages/backend/src/index.ts</strong></p>
+<ul>
+<li>Conflict: Kuadrant backend plugin registration</li>
+<li>Resolution: Keep our backend.add() calls for Kuadrant plugins</li>
+</ul>
+<p><strong>app-config.local.yaml</strong></p>
+<ul>
+<li>Conflict: Usually none (gitignored)</li>
+<li>Resolution: N/A</li>
+</ul>
+<h2 id="customisations-summary">Customisations Summary<a class="headerlink" href="#customisations-summary" title="Permanent link">&para;</a></h2>
+<h3 id="added-filesdirectories">Added Files/Directories<a class="headerlink" href="#added-filesdirectories" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>plugins/kuadrant/                      # Frontend plugin
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>plugins/kuadrant-backend/              # Backend plugin
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>kuadrant-dev-setup/                    # Kind cluster setup
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  ├── crds/                            # APIProduct, APIKey
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  ├── demo/                            # Toystore demo
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  ├── rbac/                            # RHDH service account
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  ├── scripts/                         # Kind cluster config
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  ├── kuadrant-instance.yaml           # Kuadrant CR
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  ├── Makefile                         # Cluster setup
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  └── README.md
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>KUADRANT.md                            # This file
+</span></code></pre></div>
+<h3 id="modified-rhdh-files">Modified RHDH Files<a class="headerlink" href="#modified-rhdh-files" title="Permanent link">&para;</a></h3>
+<p><strong>Frontend routing:</strong></p>
+<ul>
+<li><code>packages/app/src/components/AppBase/AppBase.tsx</code></li>
+<li>Added: <code>import { Navigate, Route } from 'react-router-dom'</code></li>
+<li>Added: <code>&lt;Route path="/" element={&lt;Navigate to="catalog" /&gt;} /&gt;</code></li>
+<li>Added: <code>&lt;Route path="/kuadrant" element={&lt;KuadrantPage /&gt;} /&gt;</code></li>
+</ul>
+<p><strong>Entity page integration:</strong></p>
+<ul>
+<li><code>packages/app/src/components/catalog/EntityPage/defaultTabs.tsx</code></li>
+<li>Added: Kuadrant imports</li>
+<li>Added: <code>/api-keys</code> and <code>/api-product-info</code> tabs</li>
+<li>
+<p>Added: Grid wrapping for full-width layout</p>
+</li>
+<li>
+<p><code>packages/app/src/components/catalog/EntityPage/OverviewTabContent.tsx</code></p>
+</li>
+<li>Added: <code>EntityKuadrantApiAccessCard</code> for API entities</li>
+</ul>
+<p><strong>Navigation:</strong></p>
+<ul>
+<li><code>packages/app/src/consts.ts</code></li>
+<li>Added: Kuadrant menu item</li>
+</ul>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li><code>packages/app/package.json</code></li>
+<li>Added: <code>"@internal/plugin-kuadrant": "0.1.0"</code></li>
+</ul>
+<p><strong>Backend:</strong></p>
+<ul>
+<li><code>packages/backend/src/index.ts</code></li>
+<li>Added: <code>backend.add(import('@internal/plugin-kuadrant-backend'))</code></li>
+<li>Added: <code>backend.add(import('@internal/plugin-kuadrant-backend/alpha'))</code></li>
+</ul>
+<p><strong>Documentation:</strong></p>
+<ul>
+<li><code>CLAUDE.md</code> - Added Kuadrant development guidance</li>
+</ul>
+<h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h3>
+<p><strong>app-config.local.yaml</strong> (checked in for dev convenience):
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">app</span><span class="p">:</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">baseUrl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://localhost:3000</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nt">backend</span><span class="p">:</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">baseUrl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://localhost:7007</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">cors</span><span class="p">:</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">origin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://localhost:3000</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">credentials</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="nt">auth</span><span class="p">:</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">  </span><span class="nt">environment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">development</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">  </span><span class="nt">providers</span><span class="p">:</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="nt">guest</span><span class="p">:</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">      </span><span class="nt">dangerouslyAllowOutsideDevelopment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="nt">catalog</span><span class="p">:</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">allow</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Component</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">System</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Group</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Resource</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Location</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Template</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">API</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">APIProduct</span><span class="p p-Indicator">]</span>
+</span></code></pre></div></p>
+<h2 id="development-workflow">Development Workflow<a class="headerlink" href="#development-workflow" title="Permanent link">&para;</a></h2>
+<h3 id="first-time-setup">First Time Setup<a class="headerlink" href="#first-time-setup" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Install dependencies</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>yarn<span class="w"> </span>install
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Create kind cluster with Kuadrant</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="nb">cd</span><span class="w"> </span>kuadrant-dev-setup
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>make<span class="w"> </span>kind-create
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="nb">cd</span><span class="w"> </span>..
+</span></code></pre></div>
+<h3 id="daily-development">Daily Development<a class="headerlink" href="#daily-development" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Start RHDH with hot reload</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>yarn<span class="w"> </span>dev
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># Visit http://localhost:3000</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c1"># - /kuadrant - Main plugin page</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1"># - /catalog - Catalog with APIProduct entities</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># - /catalog/default/api/toystore-api - API with Kuadrant tabs</span>
+</span></code></pre></div>
+<h3 id="kubernetes-access">Kubernetes Access<a class="headerlink" href="#kubernetes-access" title="Permanent link">&para;</a></h3>
+<p>The backend uses your local <code>~/.kube/config</code> for development. Verify access:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span>config<span class="w"> </span>current-context
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>apiproducts<span class="w"> </span>-A
+</span></code></pre></div>
+<h3 id="rebuilding-cluster">Rebuilding Cluster<a class="headerlink" href="#rebuilding-cluster" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">cd</span><span class="w"> </span>kuadrant-dev-setup
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>make<span class="w"> </span>kind-delete
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>make<span class="w"> </span>kind-create
+</span></code></pre></div>
+<h2 id="rbac-and-permissions">RBAC and Permissions<a class="headerlink" href="#rbac-and-permissions" title="Permanent link">&para;</a></h2>
+<p>The Kuadrant plugins ship with a comprehensive permission system for access control.</p>
+<h3 id="three-tier-role-hierarchy">Three-Tier Role Hierarchy<a class="headerlink" href="#three-tier-role-hierarchy" title="Permanent link">&para;</a></h3>
+<p>These are example role configurations - permissions are composable, so you can create custom roles mixing these permissions however you want.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>API Consumer (browse all, manage own keys)
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    ↓
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>API Owner (owns specific products, approves requests for own products)
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    ↓
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>API Admin (owns all products, approves any request)
+</span></code></pre></div>
+<p><strong>API Admin</strong> (platform engineer)</p>
+<ul>
+<li><strong>Can do</strong>: View/edit ALL API Products, approve/reject any API key requests, manage RBAC policies, read PlanPolicy</li>
+<li><strong>Cannot do</strong>: Create/update/delete PlanPolicy (managed on cluster by platform engineers via kubectl)</li>
+<li><strong>Use case</strong>: Platform engineers who manage all API products and access control</li>
+</ul>
+<p><strong>API Owner</strong></p>
+<ul>
+<li><strong>Can do</strong>: Create/update OWN API Products, approve/reject requests for OWN APIs, read PlanPolicy (to reference), request API access</li>
+<li><strong>Cannot do</strong>: View/edit other owners' APIs, create/update/delete PlanPolicy (managed on cluster)</li>
+<li><strong>Use case</strong>: Publishes APIs they own, manages access to their own APIs</li>
+</ul>
+<p><strong>API Consumer</strong></p>
+<ul>
+<li><strong>Can do</strong>: Read ALL APIProducts (for catalog browsing), create APIKeys, manage own API keys</li>
+<li><strong>Cannot do</strong>: Approve requests, create APIs, modify rate limits</li>
+<li><strong>Use case</strong>: Browses APIs, requests access, uses APIs within quotas</li>
+</ul>
+<h3 id="kuadrant-permissions">Kuadrant Permissions<a class="headerlink" href="#kuadrant-permissions" title="Permanent link">&para;</a></h3>
+<p>The backend exports these permissions (defined in <code>plugins/kuadrant-backend/src/permissions.ts</code>). These appear in the RBAC plugin UI and can be composed into custom roles.</p>
+<p><strong>PlanPolicy (rate limit tiers):</strong></p>
+<ul>
+<li><code>kuadrant.planpolicy.create</code> - create PlanPolicy resources</li>
+<li><code>kuadrant.planpolicy.read</code> - read PlanPolicy resources</li>
+<li><code>kuadrant.planpolicy.update</code> - update PlanPolicy resources</li>
+<li><code>kuadrant.planpolicy.delete</code> - delete PlanPolicy resources</li>
+<li><code>kuadrant.planpolicy.list</code> - list PlanPolicy resources</li>
+</ul>
+<p><strong>APIProduct (catalog entries with ownership):</strong></p>
+<ul>
+<li><code>kuadrant.apiproduct.create</code> - create APIProduct resources</li>
+<li><code>kuadrant.apiproduct.read.own</code> - read own APIProduct resources</li>
+<li><code>kuadrant.apiproduct.read.all</code> - read all APIProduct resources</li>
+<li><code>kuadrant.apiproduct.update.own</code> - update own APIProduct resources</li>
+<li><code>kuadrant.apiproduct.update.all</code> - update any APIProduct resource</li>
+<li><code>kuadrant.apiproduct.delete.own</code> - delete own APIProduct resources</li>
+<li><code>kuadrant.apiproduct.delete.all</code> - delete any APIProduct resource</li>
+<li><code>kuadrant.apiproduct.list</code> - list APIProduct resources (backend filters by ownership)</li>
+</ul>
+<p><strong>APIKey (access requests with ownership):</strong></p>
+<ul>
+<li><code>kuadrant.apikey.create</code> - create APIKey resources (resource permission scoped to APIProduct)</li>
+<li><code>kuadrant.apikey.read.own</code> - read own APIKey resources</li>
+<li><code>kuadrant.apikey.read.all</code> - read all APIKey resources</li>
+<li><code>kuadrant.apikey.update.own</code> - update own APIKey resources</li>
+<li><code>kuadrant.apikey.update.all</code> - update any APIKey (approve/reject)</li>
+<li><code>kuadrant.apikey.delete.own</code> - delete own APIKey resources</li>
+<li><code>kuadrant.apikey.delete.all</code> - delete any APIKey resource</li>
+</ul>
+<p><strong>Ownership Model:</strong></p>
+<p>APIProducts track ownership via Kubernetes annotations:</p>
+<ul>
+<li><code>backstage.io/created-by-user-id</code> - user ID for permission checks</li>
+<li><code>backstage.io/created-by-user-ref</code> - user entity ref for catalog owner field</li>
+<li><code>backstage.io/created-at</code> - creation timestamp</li>
+</ul>
+<p>Backend enforces ownership checks for <code>.own</code> permissions:</p>
+<ul>
+<li>API Owners can only view/edit/delete their own APIProducts</li>
+<li>API Admins can view/edit/delete all APIProducts</li>
+<li>APIKey approval requires ownership of the associated APIProduct</li>
+</ul>
+<h3 id="testing-with-different-users">Testing with Different Users<a class="headerlink" href="#testing-with-different-users" title="Permanent link">&para;</a></h3>
+<p>Test users are defined in <code>catalog-entities/kuadrant-users.yaml</code>:</p>
+<p><strong>API Consumers:</strong></p>
+<ul>
+<li><code>consumer1</code> (consumer1@kuadrant.local)</li>
+<li><code>consumer2</code> (consumer2@kuadrant.local)</li>
+</ul>
+<p><strong>API Owners:</strong></p>
+<ul>
+<li><code>owner1</code> (owner1@kuadrant.local) - API Owner 1</li>
+<li><code>owner2</code> (owner2@kuadrant.local) - API Owner 2</li>
+</ul>
+<p><strong>API Admins:</strong></p>
+<ul>
+<li><code>admin</code> (admin@kuadrant.local) - Administrator</li>
+</ul>
+<p><strong>Development:</strong></p>
+<ul>
+<li><code>guest</code> (guest@kuadrant.local) - Guest User (member of api-owners for development convenience)</li>
+</ul>
+<p>To test different permission levels, sign in as different users through your authentication provider (Dex, Keycloak, etc.)</p>
+<h3 id="rbac-policy">RBAC Policy<a class="headerlink" href="#rbac-policy" title="Permanent link">&para;</a></h3>
+<p>The RBAC policy is defined in <code>rbac-policy.csv</code> using Casbin format. This maps:</p>
+<ul>
+<li>Roles to permissions (what each role can do)</li>
+<li>Groups to roles (which groups have which roles)</li>
+<li>Users to roles (which users have which roles)</li>
+</ul>
+<p>Example policy entry:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>p, role:default/platform-engineer, kuadrant.policy.write, update, allow
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>g, group:default/platform-engineers, role:default/platform-engineer
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>g, user:default/platform-engineer, role:default/platform-engineer
+</span></code></pre></div></p>
+<h3 id="configuration_1">Configuration<a class="headerlink" href="#configuration_1" title="Permanent link">&para;</a></h3>
+<p>RBAC is configured in <code>app-config.local.yaml</code>:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">auth</span><span class="p">:</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">environment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">development</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">providers</span><span class="p">:</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="nt">guest</span><span class="p">:</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">      </span><span class="nt">dangerouslyAllowOutsideDevelopment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="nt">permission</span><span class="p">:</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">  </span><span class="nt">rbac</span><span class="p">:</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">    </span><span class="nt">policies-csv-file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">../../rbac-policy.csv</span>
+</span></code></pre></div>
+<p>The RBAC policy file maps groups to roles, and users inherit permissions from their group memberships defined in the catalog.</p>
+<h3 id="kubernetes-rbac">Kubernetes RBAC<a class="headerlink" href="#kubernetes-rbac" title="Permanent link">&para;</a></h3>
+<p>For production deployments, the RHDH service account needs these permissions:</p>
+<ul>
+<li>Read/write access to <code>apiproducts.devportal.kuadrant.io</code></li>
+<li>Read/write access to <code>apikeys.devportal.kuadrant.io</code></li>
+<li>Read/write access to <code>secrets</code> (for API key storage)</li>
+<li>Read access to Kuadrant policies (optional, for policy viewing)</li>
+</ul>
+<p>See <code>kuadrant-dev-setup/rbac/rhdh-rbac.yaml</code> for the development cluster setup.</p>
+<h2 id="philosophy">Philosophy<a class="headerlink" href="#philosophy" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>main is ours</strong> - This is our development repo for Kuadrant plugins</li>
+<li><strong>Track upstream RHDH</strong> - Periodically rebase from rhdh-upstream to stay current with RHDH releases</li>
+<li><strong>Customisations are minimal</strong> - Keep changes focused on Kuadrant integration</li>
+<li><strong>Clean history</strong> - Use rebase workflow to maintain clean commit history</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer id="footer" class="footer">
+  <div class="copyright">
+    <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+    <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks.</p> 
+    <p>For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+  </div>
+
+  <div class="sponsored-by">
+    <p>
+      <a href="https://www.cncf.io/sandbox-projects/"><img src="../../assets/images/cncf-color.png" class="logo" alt="CNCF logo"></a>
+    </p>
+    <p>
+      We are a Cloud Native Computing Foundation sandbox project.
+    </p>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["1.3.x", "latest"], "provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="../../assets/strip_callouts.js"></script>
+      
+    
+  </body>
+</html>
