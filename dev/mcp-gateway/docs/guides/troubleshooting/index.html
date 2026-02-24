@@ -3280,22 +3280,24 @@
 </ul>
 <h3 id="envoyfilter-not-applied">EnvoyFilter Not Applied<a class="headerlink" href="#envoyfilter-not-applied" title="Permanent link">&para;</a></h3>
 <p><strong>Symptom</strong>: MCP requests fail or bypass the router</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Check EnvoyFilter exists</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>envoyfilter<span class="w"> </span>-n<span class="w"> </span>istio-system
+<p>The EnvoyFilter is automatically created by the MCP Gateway controller when the MCPGatewayExtension is ready. It is created in the <strong>Gateway's namespace</strong> (not istio-system).</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Check EnvoyFilter exists (in Gateway namespace)</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>envoyfilter<span class="w"> </span>-n<span class="w"> </span>&lt;gateway-namespace&gt;<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/managed-by<span class="o">=</span>mcp-gateway-controller
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Verify EnvoyFilter configuration</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>envoyfilter<span class="w"> </span>mcp-ext-proc<span class="w"> </span>-n<span class="w"> </span>istio-system
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>envoyfilter<span class="w"> </span>-n<span class="w"> </span>&lt;gateway-namespace&gt;<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/managed-by<span class="o">=</span>mcp-gateway-controller
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1"># Check Istio gateway pod configuration</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span>deploy/mcp-gateway-istio<span class="w"> </span>--<span class="w"> </span>curl<span class="w"> </span>localhost:15000/config_dump<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>ext_proc
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-n<span class="w"> </span>&lt;gateway-namespace&gt;<span class="w"> </span>deploy/&lt;gateway-name&gt;-istio<span class="w"> </span>--<span class="w"> </span>curl<span class="w"> </span>localhost:15000/config_dump<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>ext_proc
 </span></code></pre></div>
 <p><strong>Solutions</strong>:</p>
 <ul>
-<li>Ensure EnvoyFilter is in <code>istio-system</code> namespace</li>
-<li>Verify <code>workloadSelector</code> matches Istio gateway labels: <code>kubectl get pods -n gateway-system --show-labels</code></li>
+<li>Verify MCPGatewayExtension is Ready: <code>kubectl get mcpgatewayextension -A</code></li>
+<li>Check controller logs for EnvoyFilter creation errors: <code>kubectl logs -n mcp-system deployment/mcp-gateway-controller</code></li>
+<li>Ensure the Gateway exists and is in the expected namespace</li>
+<li>Verify ReferenceGrant exists if MCPGatewayExtension is in a different namespace than the Gateway</li>
 <li>Check port number matches Gateway listener port (default: 8080)</li>
-<li>Verify broker service name and namespace in <code>grpc_service</code> configuration</li>
-<li>Restart Istio gateway to force config reload: <code>kubectl rollout restart deployment/mcp-gateway-istio -n gateway-system</code></li>
+<li>Restart Istio gateway to force config reload: <code>kubectl rollout restart deployment/&lt;gateway-name&gt;-istio -n &lt;gateway-namespace&gt;</code></li>
 </ul>
 <h2 id="mcpgatewayextension-issues">MCPGatewayExtension Issues<a class="headerlink" href="#mcpgatewayextension-issues" title="Permanent link">&para;</a></h2>
 <h3 id="mcpgatewayextension-not-ready">MCPGatewayExtension Not Ready<a class="headerlink" href="#mcpgatewayextension-not-ready" title="Permanent link">&para;</a></h3>
@@ -3352,7 +3354,7 @@
 </span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>mcp-controller<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>&lt;server-name&gt;
 </span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
 </span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="c1"># Check broker logs</span>
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>mcp-broker-router<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;Discovered tools&quot;</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>mcp-gateway<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;Discovered tools&quot;</span>
 </span></code></pre></div>
 <p><strong>Solutions</strong>:</p>
 <ul>
@@ -3373,7 +3375,7 @@
 </span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;id&quot;: 1, &quot;method&quot;: &quot;tools/list&quot;}&#39;</span>
 </span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>
 </span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="c1"># Check broker router logs for errors</span>
-</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>mcp-broker-router
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>mcp-gateway
 </span></code></pre></div>
 <p><strong>Solutions</strong>:</p>
 <ul>
@@ -3394,7 +3396,7 @@
 <ul>
 <li>Ensure <code>toolPrefix</code> is set in MCPServerRegistration spec</li>
 <li>Verify no typos in <code>toolPrefix</code> field name</li>
-<li>Restart broker after MCPServerRegistration changes: <code>kubectl rollout restart deployment/mcp-gateway-broker-router -n mcp-system</code></li>
+<li>Restart broker after MCPServerRegistration changes: <code>kubectl rollout restart deployment/mcp-gateway -n mcp-system</code></li>
 </ul>
 <h2 id="external-mcp-server-issues">External MCP Server Issues<a class="headerlink" href="#external-mcp-server-issues" title="Permanent link">&para;</a></h2>
 <h3 id="cannot-connect-to-external-server">Cannot Connect to External Server<a class="headerlink" href="#cannot-connect-to-external-server" title="Permanent link">&para;</a></h3>
@@ -3437,11 +3439,11 @@
 </span></code></pre></div>
 <p><strong>Solutions</strong>:</p>
 <ul>
-<li>Ensure secret has label <code>mcp.kagenti.com/credential: "true"</code></li>
+<li>Ensure secret has label <code>mcp.kuadrant.io/credential: "true"</code></li>
 <li>Verify secret data key matches <code>credentialRef.key</code> in MCPServerRegistration</li>
 <li>Check credential format (e.g., "Bearer TOKEN" for GitHub)</li>
 <li>Verify credential has necessary permissions for the external service</li>
-<li>Check broker logs for credential errors: <code>kubectl logs -n mcp-system deployment/mcp-gateway-broker-router | grep -i auth</code></li>
+<li>Check broker logs for credential errors: <code>kubectl logs -n mcp-system deployment/mcp-gateway | grep -i auth</code></li>
 </ul>
 <h2 id="authentication-issues">Authentication Issues<a class="headerlink" href="#authentication-issues" title="Permanent link">&para;</a></h2>
 <h3 id="oauth-discovery-not-working">OAuth Discovery Not Working<a class="headerlink" href="#oauth-discovery-not-working" title="Permanent link">&para;</a></h3>
@@ -3450,7 +3452,7 @@
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>curl<span class="w"> </span>http://&lt;mcp-hostname&gt;/.well-known/oauth-protected-resource
 </span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
 </span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="c1"># Check broker environment variables</span>
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployment<span class="w"> </span>mcp-gateway-broker-router<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A<span class="w"> </span><span class="m">10</span><span class="w"> </span>env
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployment<span class="w"> </span>mcp-gateway<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A<span class="w"> </span><span class="m">10</span><span class="w"> </span>env
 </span></code></pre></div>
 <p><strong>Solutions</strong>:</p>
 <ul>
@@ -3592,7 +3594,7 @@
 <h3 id="session-state-lost">Session State Lost<a class="headerlink" href="#session-state-lost" title="Permanent link">&para;</a></h3>
 <p><strong>Symptom</strong>: Subsequent requests fail with "session not found"</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># Check broker session storage</span>
-</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>mcp-broker-router<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>session
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>mcp-gateway<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>session
 </span></code></pre></div>
 <p><strong>Solutions</strong>:</p>
 <ul>
@@ -3607,7 +3609,7 @@
 </span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>kubectl<span class="w"> </span><span class="nb">set</span><span class="w"> </span>env<span class="w"> </span>deployment/mcp-gateway-controller<span class="w"> </span><span class="nv">LOG_LEVEL</span><span class="o">=</span>debug<span class="w"> </span>-n<span class="w"> </span>mcp-system
 </span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>
 </span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="c1"># Increase log verbosity for broker (adjust deployment name as needed)</span>
-</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>kubectl<span class="w"> </span><span class="nb">set</span><span class="w"> </span>env<span class="w"> </span>deployment/mcp-gateway-broker-router<span class="w"> </span><span class="nv">LOG_LEVEL</span><span class="o">=</span>debug<span class="w"> </span>-n<span class="w"> </span>mcp-system
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>kubectl<span class="w"> </span><span class="nb">set</span><span class="w"> </span>env<span class="w"> </span>deployment/mcp-gateway<span class="w"> </span><span class="nv">LOG_LEVEL</span><span class="o">=</span>debug<span class="w"> </span>-n<span class="w"> </span>mcp-system
 </span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>
 </span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="c1"># Check Istio proxy logs (adjust deployment name as needed)</span>
 </span><span id="__span-24-8"><a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span>deploy/mcp-gateway-istio<span class="w"> </span>-c<span class="w"> </span>istio-proxy
@@ -3629,7 +3631,7 @@
 <h3 id="network-connectivity-testing">Network Connectivity Testing<a class="headerlink" href="#network-connectivity-testing" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c1"># Test broker from within cluster</span>
 </span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>kubectl<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--image<span class="o">=</span>curlimages/curl<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">  </span>curl<span class="w"> </span>-v<span class="w"> </span>http://mcp-gateway-broker.mcp-system.svc.cluster.local:8080/health
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">  </span>curl<span class="w"> </span>-v<span class="w"> </span>http://mcp-gateway.mcp-system.svc.cluster.local:8080/health
 </span></code></pre></div>
 <h2 id="getting-help">Getting Help<a class="headerlink" href="#getting-help" title="Permanent link">&para;</a></h2>
 <p>If you continue to experience issues:</p>
@@ -3637,7 +3639,7 @@
 <li>
 <p>Collect logs from all components:
    <div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>mcp-controller<span class="w"> </span>&gt;<span class="w"> </span>controller.log
-</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>mcp-broker-router<span class="w"> </span>&gt;<span class="w"> </span>broker.log
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>mcp-gateway<span class="w"> </span>&gt;<span class="w"> </span>broker.log
 </span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>mcpsr<span class="w"> </span>-A<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span>&gt;<span class="w"> </span>mcpservers.yaml
 </span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>kubectl<span class="w"> </span>get<span class="w"> </span>httproute<span class="w"> </span>-A<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span>&gt;<span class="w"> </span>httproutes.yaml
 </span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span>-A<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span>&gt;<span class="w"> </span>gateways.yaml

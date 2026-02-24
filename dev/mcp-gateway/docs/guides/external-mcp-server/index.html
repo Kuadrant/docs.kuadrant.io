@@ -2782,13 +2782,13 @@
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="s">  name: github-token</span>
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="s">  namespace: mcp-test</span>
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="s">  labels:</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="s">    mcp.kagenti.com/credential: &quot;true&quot;  # required label</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="s">    mcp.kuadrant.io/credential: &quot;true&quot;  # required label</span>
 </span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="s">type: Opaque</span>
 </span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="s">stringData:</span>
 </span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="s">  token: &quot;Bearer $GITHUB_PAT&quot;</span>
 </span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="s">EOF</span>
 </span></code></pre></div>
-<p>The <code>mcp.kagenti.com/credential=true</code> label is required. Without it the MCPServerRegistration will fail validation.</p>
+<p>The <code>mcp.kuadrant.io/credential=true</code> label is required. Without it the MCPServerRegistration will fail validation.</p>
 <h2 id="step-5-create-the-mcpserverregistration-resource">Step 5: Create the MCPServerRegistration Resource<a class="headerlink" href="#step-5-create-the-mcpserverregistration-resource" title="Permanent link">&para;</a></h2>
 <p>Create the <code>MCPServer</code> resource that registers the GitHub MCP server with the gateway:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
@@ -2838,7 +2838,7 @@
 <h2 id="step-7-wait-for-configuration-sync">Step 7: Wait for Configuration Sync<a class="headerlink" href="#step-7-wait-for-configuration-sync" title="Permanent link">&para;</a></h2>
 <p>Wait for the configuration to sync to the broker:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Waiting for GitHub tools to be discovered...&quot;</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">until</span><span class="w"> </span>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>deploy/mcp-broker-router<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;Discovered.*tools.*github&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">until</span><span class="w"> </span>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>deploy/mcp-gateway<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;Discovered.*tools.*github&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Still waiting...&quot;</span>
 </span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span>sleep<span class="w"> </span><span class="m">5</span>
 </span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">done</span>
@@ -2847,7 +2847,7 @@
 <h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h2>
 <p>Check that the MCPServerRegistration is registered:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>mcpsrs<span class="w"> </span>-n<span class="w"> </span>mcp-test
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>deployment/mcp-broker-router<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;Discovered.*tools.*github&quot;</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>deployment/mcp-gateway<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;Discovered.*tools.*github&quot;</span>
 </span></code></pre></div>
 <h2 id="test-integration">Test Integration<a class="headerlink" href="#test-integration" title="Permanent link">&para;</a></h2>
 <p>Test tools/list through the gateway:</p>

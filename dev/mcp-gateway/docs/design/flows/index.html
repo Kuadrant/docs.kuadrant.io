@@ -2338,9 +2338,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#mcp-server-registration" class="md-nav__link">
+  <a href="#table-of-contents" class="md-nav__link">
     <span class="md-ellipsis">
-      MCP Server Registration
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Components
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#high-level-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      High Level Flow
     </span>
   </a>
   
@@ -2349,25 +2367,34 @@
         <li class="md-nav__item">
   <a href="#initialize" class="md-nav__link">
     <span class="md-ellipsis">
-      Initialize:
+      Initialize
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#aggregated-toolslist-no-auth" class="md-nav__link">
+  <a href="#aggregated-toolslist" class="md-nav__link">
     <span class="md-ellipsis">
-      Aggregated Tools/List (no auth)
+      Aggregated Tools/List
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#toolscall-no-auth" class="md-nav__link">
+  <a href="#toolscall" class="md-nav__link">
     <span class="md-ellipsis">
-      Tools/Call (no auth)
+      Tools/Call
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcp-server-registration" class="md-nav__link">
+    <span class="md-ellipsis">
+      MCP Server Registration
     </span>
   </a>
   
@@ -2389,12 +2416,27 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="MCP Gateway Request Authentication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#toolscall-with-auth-valid-bearer-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tools/Call with auth (valid bearer token)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
-  <a href="#mcp-server-tool-call-with-auth" class="md-nav__link">
+  <a href="#mcp-server-tool-call-with-auth-full-auth-flow" class="md-nav__link">
     <span class="md-ellipsis">
-      MCP Server Tool Call with Auth
+      MCP Server Tool Call with Auth (Full auth flow)
     </span>
   </a>
   
@@ -2433,106 +2475,195 @@
 
 
 <h1 id="mcp-gateway-request-flows">MCP Gateway Request Flows<a class="headerlink" href="#mcp-gateway-request-flows" title="Permanent link">&para;</a></h1>
-<p>Below are some theorized flows. They are likely to adapt and change as we get deeper into the weeds. The idea is to illustrate how it "might" work rather than dictate how it "should" work. </p>
+<p>This document captures the main request flows that involve the MCP Gateway.</p>
 <blockquote>
-<p>note: Some show "no auth" this is to reduce noise and focus on the main flow.</p>
+<p>note: Some show "no auth" this is to reduce noise and focus on the main flow through the gateway components.</p>
 </blockquote>
-<h2 id="mcp-server-registration">MCP Server Registration<a class="headerlink" href="#mcp-server-registration" title="Permanent link">&para;</a></h2>
-<p>For detailed information on how MCP server registration works, including the MCPManager lifecycle and configuration change handling, see the <a href="../backend-mcp-management/">backend MCP Management doc</a>.</p>
-<h2 id="initialize">Initialize:<a class="headerlink" href="#initialize" title="Permanent link">&para;</a></h2>
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#components">Components</a></li>
+<li><a href="#high-level-flows">High Level Flow</a></li>
+<li><a href="#initialize">Initialize</a></li>
+<li><a href="#aggregated-toolslist">Aggregated Tools/List</a></li>
+<li><a href="#toolscall-no-auth">Tools/Call (no auth)</a></li>
+<li><a href="#mcp-server-registration">MCP Server Registration</a></li>
+<li><a href="#auth">Auth</a></li>
+<li><a href="#toolscall-with-auth-valid-bearer-token">Tools/Call with auth (valid bearer token)</a></li>
+<li><a href="#mcp-server-tool-call-with-auth-full-auth-flow">MCP Server Tool Call with Auth (Full auth flow)</a></li>
+<li><a href="#mcp-notifications">MCP Notifications</a></li>
+</ul>
+<h2 id="components">Components<a class="headerlink" href="#components" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Gateway</strong></td>
+<td>Envoy proxy handling ingress traffic. Routes requests based on headers set by MCPRouter.</td>
+</tr>
+<tr>
+<td><strong>MCPRouter</strong></td>
+<td>Envoy external processor (ext_proc) that parses MCP requests, validates payloads, and sets routing headers (authority, x-mcp-tool, etc.).</td>
+</tr>
+<tr>
+<td><strong>MCPBroker</strong></td>
+<td>HTTP service that aggregates tools from multiple upstream MCP servers. Handles initialize and tools/list requests.</td>
+</tr>
+<tr>
+<td><strong>MCPServer</strong></td>
+<td>An upstream MCP server that provides tools. Receives tools/call requests routed by the Gateway.</td>
+</tr>
+<tr>
+<td><strong>SessionCache</strong></td>
+<td>In-memory or Redis based cache storing backend MCP server session IDs, keyed by gateway-session-id and server-name.</td>
+</tr>
+<tr>
+<td><strong>WASM</strong></td>
+<td>WebAssembly filter in Envoy that integrates with Authorino via Kuadrant for auth enforcement.</td>
+</tr>
+<tr>
+<td><strong>Authorino</strong></td>
+<td>Authentication and authorization service that validates JWTs and enforces AuthPolicy rules.</td>
+</tr>
+<tr>
+<td><strong>AuthServer</strong></td>
+<td>External OAuth/OIDC provider for client authentication.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="high-level-flow">High Level Flow<a class="headerlink" href="#high-level-flow" title="Permanent link">&para;</a></h2>
+<p>The flow below shows the common request flow with MCP Gateway. The MCPBackend represents either an actual MCPServer or the MCPBroker component. The type of request dictates which of these will be called in response to the MCP request.</p>
+<pre class="mermaid"><code>sequenceDiagram
+        title MCP Gateway Request Flow
+        actor MCPClient
+        MCPClient-&gt;&gt;Gateway: MCP Request
+        Gateway-&gt;&gt;MCPRouter: MCP Request
+        MCPRouter-&gt;&gt;Gateway: Set headers and routing instructions
+        Gateway-&gt;&gt;Auth: Auth MCP Request &lt;br/&gt; (if configured)
+        Auth-&gt;&gt;Gateway: Auth response &lt;br/&gt; (ok/not ok)
+        Gateway-&gt;&gt;MCPClient: (not ok)
+        note left of MCPRouter: (request auth ok)
+        note right of Gateway: tools/call to the target MCPServer &lt;br/&gt; tools/list, initialize to the MCPBroker component &lt;br/&gt; tool list filtering is applied by the MCPBroker component.
+        Gateway-&gt;&gt;MCPBackend:   MCP Request
+        MCPBackend-&gt;&gt;MCPClient: MCP Response</code></pre>
+<h2 id="initialize">Initialize<a class="headerlink" href="#initialize" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>sequenceDiagram
         title MCP Initialize Request Flow (no auth)
-        actor MCP Client
-        MCP Client-&gt;&gt;Gateway: POST /mcp init
-        Gateway-&gt;&gt;MCP Router: POST /mcp init
-        MCP Router-&gt;&gt;Gateway: no routing needed
-        Gateway-&gt;&gt;MCP Broker: POST /mcp init
-        note right of MCP Broker: MCP Broker is the default backend for /mcp
-        MCP Broker-&gt;&gt;MCP Client: set mcp-session-id</code></pre>
-<h2 id="aggregated-toolslist-no-auth">Aggregated Tools/List (no auth)<a class="headerlink" href="#aggregated-toolslist-no-auth" title="Permanent link">&para;</a></h2>
+        actor MCPClient
+        MCPClient-&gt;&gt;Gateway: POST /mcp init
+        Gateway-&gt;&gt;MCPRouter: POST /mcp init
+        MCPRouter-&gt;&gt;Gateway: set headers
+        Gateway-&gt;&gt;MCPBroker: POST /mcp init
+        note right of MCPBroker: MCPBroker is the default backend for /mcp
+        MCPBroker-&gt;&gt;MCPClient: set mcp-session-id</code></pre>
+<h2 id="aggregated-toolslist">Aggregated Tools/List<a class="headerlink" href="#aggregated-toolslist" title="Permanent link">&para;</a></h2>
+<p>Auth is removed in this diagram. Auth is shown in larger diagrams below.</p>
 <pre class="mermaid"><code>sequenceDiagram
-  actor MCP Client
+  actor MCPClient
   participant Gateway as Gateway
-  participant MCP Router as MCP Router
-  participant MCP Broker as MCP Broker
-
-  MCP Client-&gt;&gt;Gateway: tools/list (with auth bearer token)
-  Gateway-&gt;&gt;MCP Router: tools/list
-  MCP Router-&gt;&gt;Gateway: nothing to do
-  Gateway-&gt;&gt;MCP Broker: tools/list
-  MCP Broker-&gt;&gt;MCP Client: aggregated tools/list response
-  note left of MCP Broker: list is built via discovery phase</code></pre>
-<h2 id="toolscall-no-auth">Tools/Call (no auth)<a class="headerlink" href="#toolscall-no-auth" title="Permanent link">&para;</a></h2>
+  participant MCPRouter as MCPRouter
+  participant MCPBroker as MCPBroker
+  MCPClient-&gt;&gt;Gateway: tools/list
+  Gateway-&gt;&gt;MCPRouter: tools/list
+  MCPRouter-&gt;&gt;Gateway: set headers
+  Gateway-&gt;&gt;MCPBroker: tools/list
+  MCPBroker-&gt;&gt;MCPClient: aggregated tools/list response
+  note left of MCPBroker: list is built via discovery phase. &lt;br/&gt; The MCPBroker applies filtering to this list. &lt;br/&gt; via signed x-authorised-tools header &lt;br/&gt; and client specified x-mcp-virtualserver headers.</code></pre>
+<h2 id="toolscall">Tools/Call<a class="headerlink" href="#toolscall" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>sequenceDiagram
-        title MCP Tool Call (auth)
-        actor MCP Client
-        MCP Client-&gt;&gt;Gateway: POST /mcp 
-        note right of MCP Client: method: tools/call
-        Gateway-&gt;&gt;MCP Router: POST /mcp
-        note left of MCP Router: method: tools/call &lt;br/&gt; gateway mcp-session-id present &lt;br/&gt; payload validated
-        MCP Router-&gt;&gt;Session Cache: get backend mcp-session-id based ok key  gateway-session-id/server-name
-        Session Cache-&gt;&gt;MCP Router: no session found
-        MCP Router-&gt;&gt;Gateway: initialize with client headers via gateway to ensure additional auth applied
-        Gateway-&gt;&gt;MCP Server: initialize 
-        MCP Server-&gt;&gt;MCP Router: initialize response OK
-        MCP Router-&gt;&gt;Session Cache: store mcp-session-id under gateway-session-id/server-name
-        MCP Router-&gt;&gt;Gateway: set header mcp-session-id
-        MCP Router-&gt;&gt;Gateway: set header authority: &lt;configured host&gt;
-        MCP Router-&gt;&gt;Gateway: update body to remove prefix 
-        MCP Router-&gt;&gt;Gateway: set header x-mcp-tool header 
-        Gateway-&gt;&gt;MCP Server: Route &lt;configured host&gt; Post /mcp tools/call
-        MCP Server-&gt;&gt;MCP Client: tools/call response</code></pre>
+        title MCP Tool Call
+        actor MCPClient
+        MCPClient-&gt;&gt;Gateway: POST /mcp
+        note right of MCPClient: method: tools/call
+        Gateway-&gt;&gt;MCPRouter: POST /mcp
+        note left of MCPRouter: method: tools/call &lt;br/&gt; gateway mcp-session-id present &lt;br/&gt; payload validated
+        MCPRouter-&gt;&gt;SessionCache: get backend mcp server mcp-session-id
+        SessionCache-&gt;&gt;MCPRouter: no backend mcp server session found
+        MCPRouter-&gt;&gt;Gateway: initialize with client headers via gateway to ensure any additional auth applied
+        Gateway-&gt;&gt;MCPServer: initialize
+        MCPServer-&gt;&gt;MCPRouter: initialize response OK
+        MCPRouter-&gt;&gt;SessionCache: store backend mcp server mcp-session-id keyed against gateway-session-id/server-name
+        MCPRouter-&gt;&gt;Gateway: set header mcp-session-id
+        MCPRouter-&gt;&gt;Gateway: set header authority: &lt;configured host&gt;
+        MCPRouter-&gt;&gt;Gateway: update body to remove prefix (if needed)
+        MCPRouter-&gt;&gt;Gateway: set header x-mcp-tool header
+        Gateway-&gt;&gt;MCPServer: Route &lt;configured host&gt; Post /mcp tools/call
+        MCPServer-&gt;&gt;MCPClient: tools/call response</code></pre>
+<h2 id="mcp-server-registration">MCP Server Registration<a class="headerlink" href="#mcp-server-registration" title="Permanent link">&para;</a></h2>
+<p>For detailed information on how MCP server registration works, including the MCPManager lifecycle and configuration change handling, see the <a href="../backend-mcp-management/">backend MCP Management doc</a>.</p>
 <h2 id="auth">Auth<a class="headerlink" href="#auth" title="Permanent link">&para;</a></h2>
-<p>Below are some attempts with Auth in the mix. Still need some refinement of these flows</p>
+<p>Below are some attempts with Auth in the mix.</p>
 <h2 id="mcp-gateway-request-authentication">MCP Gateway Request Authentication<a class="headerlink" href="#mcp-gateway-request-authentication" title="Permanent link">&para;</a></h2>
+<h3 id="toolscall-with-auth-valid-bearer-token">Tools/Call with auth (valid bearer token)<a class="headerlink" href="#toolscall-with-auth-valid-bearer-token" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>sequenceDiagram
-        title MCP Initialize Request Flow (auth)
-        actor MCP Client
-        MCP Client-&gt;&gt;Gateway: POST /mcp init
-        Gateway-&gt;&gt;MCP Router: POST /mcp init
-        MCP Router-&gt;&gt;Gateway: no routing needed
-        Gateway-&gt;&gt;WASM: POST /mcp init
-        WASM-&gt;&gt;Authorino: Apply Auth
-        Authorino-&gt;&gt;MCP Client: 401 WWW-Authenticate with resource meta-data
-        note left of Authorino: WWW-Authenticate: Bearer &lt;br/&gt; resource_metadata=&lt;host&gt;/.well-known/oauth-protected-resource/mcp
-        MCP Client-&gt;&gt;Gateway: GET /.well-known/oauth-protected-resource/mcp
-        MCP Router-&gt;&gt;Gateway: no routing needed
-        Gateway-&gt;&gt;MCP Broker: GET /.well-known/oauth-protected-resource/mcp
-        MCP Broker-&gt;&gt;MCP Client: responds with resource json with configured auth server etc
-        MCP Client-&gt;&gt;Auth Server: register
-        MCP Client-&gt;&gt;Auth Server: authenticate
-        Auth Server-&gt;&gt;MCP Client: authenticated !
-        MCP Client-&gt;&gt;Gateway: Bearer header set POST/mcp init
-        Gateway-&gt;&gt;MCP Router: POST /mcp init
-        MCP Router-&gt;&gt;Gateway: no routing needed
-        Gateway-&gt;&gt;WASM: POST /mcp init
-        WASM-&gt;&gt;Authorino: Apply Auth
-        Authorino-&gt;&gt;WASM: 200
-        Gateway-&gt;&gt;MCP Broker: POST /mcp init
-        MCP Broker-&gt;&gt;MCP Client: init response 200</code></pre>
-<h2 id="mcp-server-tool-call-with-auth">MCP Server Tool Call with Auth<a class="headerlink" href="#mcp-server-tool-call-with-auth" title="Permanent link">&para;</a></h2>
-<pre class="mermaid"><code>sequenceDiagram
-        title MCP Tool Call (auth)
-        MCPClient-&gt;&gt;Gateway: POST /mcp 
+        title Simplified MCP Tool Call with Auth
+        MCPClient-&gt;&gt;Gateway: POST /mcp
         note right of MCPClient: method: tools/call &lt;br/&gt; name: prefix_echo
         Gateway-&gt;&gt;MCPRouter: POST /mcp
         note left of MCPRouter: method: tools/call &lt;br/&gt; name: prefix_echo
         MCPRouter-&gt;&gt;Gateway: set authority: &lt;prefix&gt;.&lt;host&gt;
-        MCPRouter-&gt;&gt;Gateway: update body to remove prefix 
-        MCPRouter-&gt;&gt;Gateway: set x-mcp-tool header 
-        Gateway-&gt;&gt;WASM: auth on authority
-        WASM-&gt;&gt;Authorino: apply auth 
-        note right of Authorino: checking JWT and tool name &lt;br/&gt; defined in AuthPolicy
-        Authorino-&gt;&gt;WASM: 401 WWW-Authenticate 
+        MCPRouter-&gt;&gt;Gateway: update body to remove prefix
+        MCPRouter-&gt;&gt;Gateway: set x-mcp-tool, x-mcp-method header
+        Gateway-&gt;&gt;WASM: apply auth
+        WASM-&gt;&gt;Authorino: apply auth policy rules
+        note right of Authorino: checking JWT, method and tool name access etc &lt;br/&gt; rules defined in AuthPolicy
+        Authorino-&gt;&gt;WASM: OK
+        WASM-&gt;&gt;Gateway: OK
+        Gateway-&gt;&gt;MCPServer: POST /mcp tools/call</code></pre>
+<p>In the above diagram we are showing the flow when a client has a valid bearer token. Below we have the full flow including the OAuth dance:</p>
+<pre class="mermaid"><code>sequenceDiagram
+        title MCP Initialize Request Flow (auth)
+        actor MCPClient
+        MCPClient-&gt;&gt;Gateway: POST /mcp init
+        Gateway-&gt;&gt;MCPRouter: POST /mcp init
+        MCPRouter-&gt;&gt;Gateway: no routing needed
+        Gateway-&gt;&gt;WASM: POST /mcp init
+        WASM-&gt;&gt;Authorino: Apply Auth
+        Authorino-&gt;&gt;MCPClient: 401 WWW-Authenticate with resource meta-data
         note left of Authorino: WWW-Authenticate: Bearer &lt;br/&gt; resource_metadata=&lt;host&gt;/.well-known/oauth-protected-resource/mcp
-        WASM-&gt;&gt;MCPClient: 401 WWW-Authenticate 
+        MCPClient-&gt;&gt;Gateway: GET /.well-known/oauth-protected-resource/mcp
+        Gateway-&gt;&gt;MCPRouter: GET /.well-known/oauth-protected-resource/mcp
+        MCPRouter-&gt;&gt;Gateway: no routing needed
+        Gateway-&gt;&gt;MCPBroker: GET /.well-known/oauth-protected-resource/mcp
+        MCPBroker-&gt;&gt;MCPClient: responds with resource json with configured auth server etc
+        MCPClient-&gt;&gt;AuthServer: register
+        MCPClient-&gt;&gt;AuthServer: authenticate
+        AuthServer-&gt;&gt;MCPClient: authenticated !
+        MCPClient-&gt;&gt;Gateway: Bearer header set POST/mcp init
+        Gateway-&gt;&gt;MCPRouter: POST /mcp init
+        MCPRouter-&gt;&gt;Gateway: no routing needed
+        Gateway-&gt;&gt;WASM: POST /mcp init
+        WASM-&gt;&gt;Authorino: Apply Auth
+        Authorino-&gt;&gt;WASM: 200
+        Gateway-&gt;&gt;MCPBroker: POST /mcp init
+        MCPBroker-&gt;&gt;MCPClient: init response 200</code></pre>
+<h2 id="mcp-server-tool-call-with-auth-full-auth-flow">MCP Server Tool Call with Auth (Full auth flow)<a class="headerlink" href="#mcp-server-tool-call-with-auth-full-auth-flow" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>sequenceDiagram
+        title MCP Tool Call (auth)
+        MCPClient-&gt;&gt;Gateway: POST /mcp
+        note right of MCPClient: method: tools/call &lt;br/&gt; name: prefix_echo
+        Gateway-&gt;&gt;MCPRouter: POST /mcp
+        note left of MCPRouter: method: tools/call &lt;br/&gt; name: prefix_echo
+        MCPRouter-&gt;&gt;Gateway: set authority: &lt;prefix&gt;.&lt;host&gt;
+        MCPRouter-&gt;&gt;Gateway: update body to remove prefix
+        MCPRouter-&gt;&gt;Gateway: set x-mcp-tool header
+        Gateway-&gt;&gt;WASM: auth on authority
+        WASM-&gt;&gt;Authorino: apply auth
+        note right of Authorino: checking JWT and tool name &lt;br/&gt; defined in AuthPolicy
+        Authorino-&gt;&gt;WASM: 401 WWW-Authenticate
+        note left of Authorino: WWW-Authenticate: Bearer &lt;br/&gt; resource_metadata=&lt;host&gt;/.well-known/oauth-protected-resource/mcp
+        WASM-&gt;&gt;MCPClient: 401 WWW-Authenticate
         note left of WASM: WWW-Authenticate: Bearer &lt;br/&gt; resource_metadata=&lt;host&gt;/.well-known/oauth-protected-resource/mcp
         MCPClient-&gt;&gt;Gateway: .well-known/oauth-protected-resource/mcp
         Gateway-&gt;&gt;MCPRouter: .well-known/oauth-protected-resource/mcp
         Gateway-&gt;&gt;MCPBroker: .well-known/oauth-protected-resource/mcp
         MCPBroker-&gt;&gt;MCPClient: auth metadata response
-        MCPClient-&gt;&gt;Auth-Server: Authenticate (dynamic client reg etc) 
-        Auth-Server-&gt;&gt;MCPClient: Authenticated !!
+        MCPClient-&gt;&gt;AuthServer: Authenticate (dynamic client reg etc)
+        AuthServer-&gt;&gt;MCPClient: Authenticated !!
         MCPClient-&gt;&gt;Gateway: Bearer header set POST/mcp
         note right of MCPClient: method: tools/call &lt;br/&gt; name: prefix_echo
         Gateway-&gt;&gt;MCPRouter: POST /mcp tools/call
@@ -2542,7 +2673,7 @@
         WASM-&gt;&gt;Authorino: Apply Auth
         Authorino-&gt;&gt;WASM: OK
         Gateway-&gt;&gt;MCPServer: POST /mcp tools/call
-        MCPServerRegistration-&gt;&gt;MCPClient: tools/call response</code></pre>
+        MCPServer-&gt;&gt;MCPClient: tools/call response</code></pre>
 <h2 id="mcp-notifications">MCP Notifications<a class="headerlink" href="#mcp-notifications" title="Permanent link">&para;</a></h2>
 <p>For detailed information on how notifications work in the MCP Gateway, see the <a href="../notifications/">notifications design documentation</a>.</p>
 

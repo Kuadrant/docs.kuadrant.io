@@ -3010,12 +3010,12 @@
 </tbody>
 </table>
 <p>For more details on all member overloads for these types, please refer to <a href="../standard/">the standard library docs</a>.</p>
-<blockquote>
-<p>[!Caution]
-CEL has no implicit type coercion.
+<div class="admonition danger">
+<p class="admonition-title">Caution</p>
+<p>CEL has no implicit type coercion.
 It isn't valid to for example compare different types, this expression is invalid:
 <code>"3" != 3</code></p>
-</blockquote>
+</div>
 <hr />
 <h2 id="logical-operators">Logical Operators<a class="headerlink" href="#logical-operators" title="Permanent link">&para;</a></h2>
 <p>Within policies, in <code>Predicate</code>s you can combine checks. If the expression evaluates to <code>true</code>, the policy applies (e.g. allowing or denying the request based on the action).</p>
@@ -3053,11 +3053,11 @@ It isn't valid to for example compare different types, this expression is invali
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>// Rule: If an Authorization header exists, it must start with &#39;Bearer&#39;
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>has(request.headers[&#39;authorization&#39;]) ? request.headers[&#39;authorization&#39;].startsWith(&#39;Bearer &#39;) : true
 </span></code></pre></div>
-<blockquote>
-<p>[!Note]
-For <code>request.headers</code>, checking <code>has()</code> ensures the key exists in the map. For standard attributes like <code>request.referer</code>, it checks if the value is populated.
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For <code>request.headers</code>, checking <code>has()</code> ensures the key exists in the map. For standard attributes like <code>request.referer</code>, it checks if the value is populated.
 See below to learn about the optional syntax, which can in places be an alternative to the ternary operator.</p>
-</blockquote>
+</div>
 <hr />
 <h2 id="working-with-lists-and-maps">Working with Lists and Maps<a class="headerlink" href="#working-with-lists-and-maps" title="Permanent link">&para;</a></h2>
 <p>While standard HTTP headers are often strings, Kuadrant provides powerful lists in some contexts like <strong>JWT Auth</strong> (Claims).
@@ -3107,10 +3107,10 @@ In CEL, you can use these macros on both <code>Map</code>s or <code>List</code>s
 <div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>// Rule: X-Request-ID must be a UUID-like format
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>request.headers[&#39;x-request-id&#39;].matches(r&#39;^[0-9a-f-]+$&#39;)
 </span></code></pre></div>
-<blockquote>
-<p>[!Tip]
-Always use <code>r'...'</code> for regex strings to handle backslashes correctly.</p>
-</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Always use <code>r'...'</code> for regex strings to handle backslashes correctly.</p>
+</div>
 <hr />
 <h2 id="type-conversion-math">Type Conversion &amp; Math<a class="headerlink" href="#type-conversion-math" title="Permanent link">&para;</a></h2>
 <p>HTTP headers are always strings. To compare them numerically (e.g., Content-Length or custom logic), you must cast them.</p>

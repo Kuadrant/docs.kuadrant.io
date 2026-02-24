@@ -1423,6 +1423,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#coredns-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      CoreDNS Provider
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2554,6 +2563,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#coredns-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      CoreDNS Provider
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2591,6 +2609,7 @@
 <li>AWS Route 53 (aws)</li>
 <li>Google Cloud DNS (gcp)</li>
 <li>Azure (azure)</li>
+<li>CoreDNS (coredns)</li>
 </ul>
 <h3 id="aws-route-53-provider">AWS Route 53 Provider<a class="headerlink" href="#aws-route-53-provider" title="Permanent link">&para;</a></h3>
 <p>Kuadrant expects a <code>Secret</code> with a credential. Below is an example for AWS Route 53. It is important to set the secret type to <code>aws</code>:</p>
@@ -2759,6 +2778,42 @@ kubectl create secret generic my-test-azure-credentials \
   --from-file=azure.json=/local/path/to/azure.json
 ```
 </code></pre></div>
+<h3 id="coredns-provider">CoreDNS Provider<a class="headerlink" href="#coredns-provider" title="Permanent link">&para;</a></h3>
+<p>CoreDNS provider enables self-hosted DNS using CoreDNS in Kubernetes. Unlike cloud providers, it requires configuration (zones and nameservers) rather than only supplying authentication credentials.</p>
+<p>Kuadrant expects a <code>Secret</code> with zone and nameserver configuration. Below is an example for CoreDNS. It is important to set the secret type to <code>coredns</code>:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-coredns-credentials<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span>--namespace<span class="o">=</span>kuadrant-dns-system<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span>--type<span class="o">=</span>kuadrant.io/coredns<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">ZONES</span><span class="o">=</span>example.com<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">NAMESERVERS</span><span class="o">=</span>ns1.example.com,ns2.example.com
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Example Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ZONES</code></td>
+<td><code>example.com</code></td>
+<td>(Required) DNS zone this provider manages</td>
+</tr>
+<tr>
+<td><code>NAMESERVERS</code></td>
+<td><code>ns1.example.com,ns2.example.com</code></td>
+<td>(Optional) Comma-separated list of authoritative nameservers for the zone. Only required for DNS Groups feature (active-passive failover).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note:</strong> The CoreDNS provider does not require authentication credentials. It only needs to know which zone it manages (<code>ZONES</code> field is required). </p>
+<p>For setting the secret as the default provider in a namespace, add the <code>kuadrant.io/default-provider=true</code> label:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>kubectl<span class="w"> </span>label<span class="w"> </span>secret<span class="w"> </span>my-coredns-credentials<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span>-n<span class="w"> </span>kuadrant-dns-system<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span>kuadrant.io/default-provider<span class="o">=</span><span class="nb">true</span>
+</span></code></pre></div>
 
 
 

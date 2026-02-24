@@ -919,6 +919,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Observability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dataplane" class="md-nav__link">
+    <span class="md-ellipsis">
+      DataPlane
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DataPlane">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#loglevel" class="md-nav__link">
+    <span class="md-ellipsis">
+      LogLevel
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tracing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tracing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2500,6 +2539,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Observability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dataplane" class="md-nav__link">
+    <span class="md-ellipsis">
+      DataPlane
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DataPlane">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#loglevel" class="md-nav__link">
+    <span class="md-ellipsis">
+      LogLevel
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tracing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tracing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2727,6 +2805,7 @@
 </tbody>
 </table>
 <h4 id="observability">Observability<a class="headerlink" href="#observability" title="Permanent link">&para;</a></h4>
+<p>Configures telemetry and monitoring settings for Kuadrant components. When enabled, it configures logging, tracing, and other observability features for both the control plane and data plane components.</p>
 <table>
 <thead>
 <tr>
@@ -2742,6 +2821,115 @@
 <td>Boolean</td>
 <td style="text-align: center;">No</td>
 <td>Enable observability on kuadrant. Default: <code>false</code></td>
+</tr>
+<tr>
+<td><code>dataPlane</code></td>
+<td><a href="#dataplane">DataPlane</a></td>
+<td style="text-align: center;">No</td>
+<td>Configures observability settings for the data plane components.</td>
+</tr>
+<tr>
+<td><code>tracing</code></td>
+<td><a href="#tracing">Tracing</a></td>
+<td style="text-align: center;">No</td>
+<td>Configures distributed tracing for request flows through the system.</td>
+</tr>
+</tbody>
+</table>
+<h5 id="dataplane">DataPlane<a class="headerlink" href="#dataplane" title="Permanent link">&para;</a></h5>
+<p>Configures observability for data plane components (WASM filters). Controls OpenTelemetry trace filtering and request correlation features.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Field</strong></th>
+<th><strong>Type</strong></th>
+<th style="text-align: center;"><strong>Required</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>defaultLevels</code></td>
+<td>[]<a href="#loglevel">LogLevel</a></td>
+<td style="text-align: center;">No</td>
+<td>Specifies the OpenTelemetry trace filtering levels for WASM modules. Controls which trace spans are exported to your observability backend (Jaeger, Tempo, etc.). The highest priority level set determines the filter level. <strong>Important:</strong> This controls trace span filtering, not gateway pod log verbosity. To control logs visible via <code>kubectl logs</code>, configure Envoy's log level separately.</td>
+</tr>
+<tr>
+<td><code>httpHeaderIdentifier</code></td>
+<td>String</td>
+<td style="text-align: center;">No</td>
+<td>Specifies the HTTP header name used to identify and correlate requests in traces (e.g., "x-request-id", "x-correlation-id"). If set, this header value will be included in trace spans for request correlation across components.</td>
+</tr>
+</tbody>
+</table>
+<h6 id="loglevel">LogLevel<a class="headerlink" href="#loglevel" title="Permanent link">&para;</a></h6>
+<p>Defines a trace filtering level. The highest priority level set (DEBUG &gt; INFO &gt; WARN &gt; ERROR) determines the OTEL trace filter. Only one field should be set per LogLevel entry.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Field</strong></th>
+<th><strong>Type</strong></th>
+<th style="text-align: center;"><strong>Required</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>debug</code></td>
+<td>String</td>
+<td style="text-align: center;">No</td>
+<td>Debug level for trace filtering - highest verbosity, most spans exported. <strong>Current implementation (MVP):</strong> Set to <code>"true"</code> to enable. <strong>Future:</strong> Will support CEL expressions for dynamic request-time evaluation.</td>
+</tr>
+<tr>
+<td><code>info</code></td>
+<td>String</td>
+<td style="text-align: center;">No</td>
+<td>Info level for trace filtering. <strong>Current implementation (MVP):</strong> Set to <code>"true"</code> to enable. <strong>Future:</strong> Will support CEL expressions.</td>
+</tr>
+<tr>
+<td><code>warn</code></td>
+<td>String</td>
+<td style="text-align: center;">No</td>
+<td>Warn level for trace filtering. <strong>Current implementation (MVP):</strong> Set to <code>"true"</code> to enable. <strong>Future:</strong> Will support CEL expressions.</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>String</td>
+<td style="text-align: center;">No</td>
+<td>Error level for trace filtering - lowest verbosity, minimal spans exported. <strong>Current implementation (MVP):</strong> Set to <code>"true"</code> to enable. <strong>Future:</strong> Will support CEL expressions.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">dataPlane</span><span class="p">:</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">defaultLevels</span><span class="p">:</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w">  </span><span class="c1"># Enable DEBUG level trace filtering</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">httpHeaderIdentifier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x-request-id</span>
+</span></code></pre></div></p>
+<h5 id="tracing">Tracing<a class="headerlink" href="#tracing" title="Permanent link">&para;</a></h5>
+<p>Configures distributed tracing integration for request flows. It enables tracing spans to be exported to external tracing systems (e.g., Jaeger, Zipkin, Tempo).</p>
+<table>
+<thead>
+<tr>
+<th><strong>Field</strong></th>
+<th><strong>Type</strong></th>
+<th style="text-align: center;"><strong>Required</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>defaultEndpoint</code></td>
+<td>String</td>
+<td style="text-align: center;">No</td>
+<td>The default URL of the tracing collector backend where spans should be sent. This endpoint is used by Auth (Authorino), RateLimiting (Limitador) and WASM services for exporting trace data. If tracing endpoints have been configured directly in Authorino or Limitador CRs, those take precedence over this default value. Note: Per-gateway overrides are not currently supported.</td>
+</tr>
+<tr>
+<td><code>insecure</code></td>
+<td>Boolean</td>
+<td style="text-align: center;">No</td>
+<td>Controls whether to skip TLS certificate verification. Default: <code>false</code></td>
 </tr>
 </tbody>
 </table>

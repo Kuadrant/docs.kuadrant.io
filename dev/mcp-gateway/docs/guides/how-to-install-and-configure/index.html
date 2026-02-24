@@ -2565,24 +2565,21 @@
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>--namespace<span class="w"> </span>mcp-system<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span>--create-namespace<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span>--set<span class="w"> </span>controller.enabled<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span>--set<span class="w"> </span>broker.create<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span>--set<span class="w"> </span>gateway.publicHost<span class="o">=</span>your-hostname.example.com<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span>--set<span class="w"> </span>envoyFilter.create<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span>--set<span class="w"> </span>envoyFilter.namespace<span class="o">=</span>istio-system<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span>--set<span class="w"> </span>envoyFilter.name<span class="o">=</span>your-gateway<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.gatewayRef.name<span class="o">=</span>your-gateway<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.gatewayRef.namespace<span class="o">=</span>gateway-system
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span>--set<span class="w"> </span>gateway.publicHost<span class="o">=</span>your-hostname.example.com<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.create<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.gatewayRef.name<span class="o">=</span>your-gateway<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.gatewayRef.namespace<span class="o">=</span>gateway-system
 </span></code></pre></div>
-<blockquote>
-<p><strong>Note:</strong> The <code>envoyFilter.name</code> must match the Gateway name. The EnvoyFilter uses this as a label selector (<code>gateway.io/name</code>) to target the correct Gateway pods.</p>
-</blockquote>
 <p>This automatically installs:</p>
 <ul>
-<li>MCP Controller (watches MCPGatewayExtension and MCPServerRegistration resources)</li>
-<li>MCP Broker/Router (aggregates tools from upstream MCP servers)</li>
-<li>MCPGatewayExtension resource targeting your Gateway</li>
-<li>EnvoyFilter for Istio integration (routes requests through the external processor)</li>
-<li>Required CRDs, RBAC, and Secrets</li>
+<li><strong>MCP Controller</strong> - Watches MCPGatewayExtension and MCPServerRegistration resources</li>
+<li><strong>MCPGatewayExtension</strong> - Custom resource targeting your Gateway</li>
+</ul>
+<p>When the MCPGatewayExtension becomes ready, the controller automatically creates:</p>
+<ul>
+<li><strong>MCP Broker/Router Deployment</strong> - Aggregates tools from upstream MCP servers</li>
+<li><strong>MCP Broker/Router Service</strong> - Named <code>mcp-gateway</code> in the MCPGatewayExtension namespace</li>
+<li><strong>EnvoyFilter</strong> - Configures Istio to route requests through the external processor (created in the Gateway's namespace)</li>
 </ul>
 <blockquote>
 <p><strong>Note:</strong> The <code>gateway.publicHost</code> value must match the hostname configured in your Gateway listener (see <a href="../configure-mcp-gateway-listener-and-router/">Configure Gateway Listener and Route</a>).</p>
