@@ -1,0 +1,3225 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://docs.kuadrant.io/dev/dns-operator/docs/coredns/coredns-integration/">
+      
+      
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>CoreDNS Integration Guide - Kuadrant Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.0253249f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../../../assets/asciidoc.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#coredns-integration-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  These docs are not for the latest version.
+  <a href="../../../../.."> 
+    <strong>Click here to go to latest, stable docs.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="Kuadrant Documentation" class="md-header__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+      
+  <img src="../../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kuadrant Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CoreDNS Integration Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kuadrant/docs.kuadrant.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="Kuadrant Documentation" class="md-nav__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+      
+  <img src="../../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Kuadrant Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kuadrant/docs.kuadrant.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../install-helm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Install with Helm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../install-olm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Install with OLM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Concepts
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/docs/design/architectural-overview-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/overviews/auth/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AuthPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/overviews/dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/overviews/rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/overviews/tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TLSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/overviews/token-rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TokenRateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/overviews/telemetrypolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TelemetryPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/extensions/planpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PlanPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_9" id="__nav_4_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CEL
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            CEL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/cel/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/cel/standard/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Standard library
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/cel/extensions/optional/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Optional type
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/cel/extensions/strings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    String extensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    APIs & Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            APIs & Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/reference/authpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AuthPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/reference/dnspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/reference/ratelimitpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/reference/tlspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TLSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/reference/tokenratelimitpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TokenRateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/reference/kuadrant/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kuadrant
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Observability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_7">
+            <span class="md-nav__icon md-icon"></span>
+            Observability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/observability/metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Metrics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../authorino/docs/user-guides/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication and Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/reference/telemetrypolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TelemetryPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Tutorials
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/full-walkthrough/secure-protect-connect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Secure, connect and protect
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/tls/gateway-tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway TLS for Cluster Operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/auth/auth-for-app-devs-and-platform-engineers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Enforcing authentication & authorization with Kuadrant AuthPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/ratelimiting/gateway-rl-for-cluster-operators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway Rate Limiting for Cluster Operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/ratelimiting/authenticated-rl-for-app-developers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limiting for Application Developers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/ratelimiting/authenticated-rl-with-jwt-and-k8s-authnz/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limiting with JWTs and Kubernetes RBAC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/ratelimiting/multi-auth-rlp-diff-section/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway Rate Limiting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/ratelimiting/multi-auth-rlp-same-section/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Multi authenticated Rate Limiting for an Application
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/tokenratelimitpolicy/authenticated-token-ratelimiting-tutorial/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Token Rate Limiting for Large Language Model APIs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/planpolicy/plan-based-rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Plan-based Rate Limiting with PlanPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DNS configuration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1">
+            <span class="md-nav__icon md-icon"></span>
+            DNS configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../provider/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuring a DNS Provider
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/dns/gateway-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway DNS for ingress Gateway
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/dns/basic-dns-configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Basic DNS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/dns/load-balanced-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNS Load Balancing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/dns/dnshealthchecks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Health Checks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/dns/core-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CoreDNS Support
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/dns/understanding_dns_delegation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cluster Aware DNSRecord Delegation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_1_8" id="__nav_7_1_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DNS Fail-over
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_1_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1_8">
+            <span class="md-nav__icon md-icon"></span>
+            DNS Fail-over
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../migrating_existing_clusters_to_use_groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Migrating Existing Clusters To Use Groups
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../exercising_dns_failover_via_groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exercising DNS Fail-over via Groups
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../migrating_away_from_dns_groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Migrating Away From DNS Groups
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/install/mtls-configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    mTLS Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_3" id="__nav_7_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Observability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_3">
+            <span class="md-nav__icon md-icon"></span>
+            Observability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/observability/monitors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configure Observability
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/observability/examples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dashboards and Alerts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/observability/tracing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tracing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/observability/envoy-access-logs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Envoy Access Logs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/observability/limitador-metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring Limitador
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/observability/token-metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring AI Token Metrics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Developer Portal
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Developer Portal
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-backstage-plugin/docs/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-backstage-plugin/docs/getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-backstage-plugin/docs/installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_4" id="__nav_8_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_4">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../developer-portal-controller/docs/references/apiproduct/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    APIProduct
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../developer-portal-controller/docs/references/apikey/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    APIKey
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    MCP Gateway
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            MCP Gateway
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_1" id="__nav_9_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_1">
+            <span class="md-nav__icon md-icon"></span>
+            About
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/design/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/how-to-install-and-configure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_4" id="__nav_9_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_4">
+            <span class="md-nav__icon md-icon"></span>
+            Configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/configure-mcp-gateway-listener-and-router/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Listener and Router
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_5" id="__nav_9_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    MCP Servers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_5">
+            <span class="md-nav__icon md-icon"></span>
+            MCP Servers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/register-mcp-servers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MCP Server Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/virtual-mcp-servers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Virtual MCP Servers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/external-mcp-server/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    External MCP Servers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_6" id="__nav_9_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_6">
+            <span class="md-nav__icon md-icon"></span>
+            Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/vault-integration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vault Integration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_7" id="__nav_9_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Support
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_7">
+            <span class="md-nav__icon md-icon"></span>
+            Support
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/troubleshooting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#is-this-for-you" class="md-nav__link">
+    <span class="md-ellipsis">
+      Is This for You?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#purpose-and-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Purpose and Use Cases
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Purpose and Use Cases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#primary-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Primary Use Cases
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Primary Use Cases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#self-hosted-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Hosted Infrastructure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restricted-and-isolated-environments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Restricted and Isolated Environments
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zone-delegation-from-edge-dns-servers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zone Delegation from Edge DNS Servers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#infrastructure-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Infrastructure Requirements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Infrastructure Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#coredns-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      CoreDNS Infrastructure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns-operator-integration-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      DNS Operator Integration Requirements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-cluster-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Cluster Requirements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-coredns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploying CoreDNS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploying CoreDNS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deployment-architectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment Architectures
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment-guides" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment Guides
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-coredns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring CoreDNS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring CoreDNS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Reference
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additional-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Additional Resources
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-the-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing the Deployment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing the Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verification-procedures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification Procedures
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-configuration-configuring-an-edge-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Configuration: Configuring an Edge Server
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Configuration: Configuring an Edge Server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-zone-delegation" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Zone Delegation?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Guide
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reference-configurations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference Configurations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glossary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Glossary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additional-resources_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Additional Resources
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/kuadrant/dns-operator/blob/main/docs/coredns/coredns-integration.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="coredns-integration-guide">CoreDNS Integration Guide<a class="headerlink" href="#coredns-integration-guide" title="Permanent link">&para;</a></h1>
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ol>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#purpose-and-use-cases">Purpose and Use Cases</a></li>
+<li><a href="#infrastructure-requirements">Infrastructure Requirements</a></li>
+<li><a href="#deploying-coredns">Deploying CoreDNS</a></li>
+<li><a href="#configuring-coredns">Configuring CoreDNS</a></li>
+<li><a href="#testing-the-deployment">Testing the Deployment</a></li>
+<li><a href="#advanced-configuration-configuring-an-edge-server">Advanced Configuration: Configuring an Edge Server</a></li>
+<li><a href="#appendix">Appendix</a></li>
+</ol>
+<hr />
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>CoreDNS integration enables DNS Operator to manage DNS records using a self-hosted CoreDNS instance running in Kubernetes, providing an alternative to cloud-managed DNS services (AWS Route53, Google Cloud DNS, Azure DNS).</p>
+<blockquote>
+<p>CoreDNS integration can be removed by deleting the CoreDNS deployment and switching DNSPolicies to use a different DNS provider. To migrate to a different provider, delete existing DNSRecords and recreate them with the new provider secret reference. No data is permanently locked into CoreDNS.</p>
+</blockquote>
+<h3 id="is-this-for-you">Is This for You?<a class="headerlink" href="#is-this-for-you" title="Permanent link">&para;</a></h3>
+<p>Consider CoreDNS integration if you:</p>
+<ul>
+<li>Need to avoid dependency on external cloud DNS services</li>
+<li>Operate in environments with no internet access or restricted network connectivity</li>
+<li>Have regulatory or compliance requirements mandating self-hosted infrastructure</li>
+<li>Want to delegate specific DNS zones from existing DNS servers (BIND, Unbound, or cloud DNS) to Kubernetes-managed CoreDNS</li>
+<li>Require consistent DNS management across hybrid or multi-cloud environments</li>
+<li>Need to reduce DNS operational costs by eliminating per-query charges</li>
+</ul>
+<p>Cloud DNS providers might be a simpler choice if you are running exclusively in cloud environments and none of these scenarios apply.</p>
+<p><strong>Audience</strong>: Platform engineers, DevOps engineers, and system administrators deploying DNS infrastructure.</p>
+<blockquote>
+<p><strong>Kuadrant-operator documentation</strong>: For Kuadrant-specific documentation including DNS delegation, DNSPolicy user guides, and deployment walkthroughs, see the <a href="https://github.com/Kuadrant/kuadrant-operator/tree/main/doc/user-guides">kuadrant-operator user guides</a>.</p>
+</blockquote>
+<hr />
+<h2 id="purpose-and-use-cases">Purpose and Use Cases<a class="headerlink" href="#purpose-and-use-cases" title="Permanent link">&para;</a></h2>
+<p>Using CoreDNS integration, you can self-manage your DNS infrastructure in Kubernetes environments. Organizations choose CoreDNS integration to maintain full control over their DNS records, meet regulatory compliance requirements, avoid cloud provider dependencies, or integrate with existing DNS infrastructure through zone delegation.</p>
+<h3 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
+<p>Unlike cloud DNS providers where a DNS Operator "pushes" records through API calls, CoreDNS integration works through a Kubernetes-native <strong>label-based watch mechanism</strong>:</p>
+<ol>
+<li><strong>DNS Operator processes DNSRecords</strong></li>
+<li><strong>DNS Operator adds a label</strong> <code>kuadrant.io/coredns-zone-name: &lt;zone&gt;</code> to processed DNSRecords</li>
+<li><strong>CoreDNS plugin watches</strong> for DNSRecords with this label via Kubernetes API</li>
+<li><strong>CoreDNS serves the records</strong> it discovers through the watch</li>
+</ol>
+<p><strong>The label is what activates CoreDNS integration</strong>, not a provider secret or API call. This design allows CoreDNS to remain a passive observer of Kubernetes resources while DNS Operator handles the orchestration logic.</p>
+<h3 id="primary-use-cases">Primary Use Cases<a class="headerlink" href="#primary-use-cases" title="Permanent link">&para;</a></h3>
+<h4 id="self-hosted-infrastructure">Self-Hosted Infrastructure<a class="headerlink" href="#self-hosted-infrastructure" title="Permanent link">&para;</a></h4>
+<p>Organizations that require full control over their DNS infrastructure without relying on external cloud services.</p>
+<p><strong>Scenarios</strong>:</p>
+<ul>
+<li><strong>On-Premise Deployments</strong>: Running Kubernetes clusters in your own data centers or colocation facilities</li>
+<li><strong>Cost Optimization</strong>: Eliminating per-query or per-zone costs from cloud DNS services</li>
+<li><strong>Complete Ownership</strong>: Maintaining full control over DNS data and infrastructure</li>
+</ul>
+<p><strong>Key Benefits</strong>:</p>
+<ul>
+<li>Complete ownership and control of DNS records</li>
+<li>No external service dependencies</li>
+<li>Reduced latency for local queries</li>
+<li>Integration with existing data center infrastructure</li>
+<li>Lower operational costs for DNS services</li>
+</ul>
+<h4 id="restricted-and-isolated-environments">Restricted and Isolated Environments<a class="headerlink" href="#restricted-and-isolated-environments" title="Permanent link">&para;</a></h4>
+<p>Deployments where external connectivity is limited, prohibited, or subject to strict compliance requirements.</p>
+<p><strong>Scenarios</strong>:</p>
+<ul>
+<li><strong>Air-Gapped Networks</strong>: Completely disconnected environments with no external internet access</li>
+<li><strong>Regulatory Compliance</strong>: Government, defense, financial, or healthcare sectors with mandatory network isolation</li>
+<li><strong>Data Sovereignty</strong>: Requirements to keep DNS data within specific geographic or organizational boundaries</li>
+<li><strong>Security-Critical Systems</strong>: Highly sensitive environments requiring complete audit trails and access control</li>
+<li><strong>Development/Test Isolation</strong>: Isolated environments that mirror production security constraints</li>
+</ul>
+<p><strong>Key Benefits</strong>:</p>
+<ul>
+<li>Fully self-contained DNS infrastructure</li>
+<li>Meets security and compliance mandates</li>
+<li>No external network dependencies</li>
+<li>Complete audit trails within controlled boundaries</li>
+<li>Reduced attack surface by eliminating external services</li>
+</ul>
+<h4 id="zone-delegation-from-edge-dns-servers">Zone Delegation from Edge DNS Servers<a class="headerlink" href="#zone-delegation-from-edge-dns-servers" title="Permanent link">&para;</a></h4>
+<p>Integration with existing DNS infrastructure by delegating specific zones to CoreDNS while maintaining authoritative control at the edge.</p>
+<p><strong>Scenario</strong>:</p>
+<ul>
+<li><strong>Edge DNS Integration</strong>: Delegate application-specific subdomains (e.g., <code>apps.example.com</code>) from your authoritative DNS servers (BIND, Unbound, or cloud DNS providers like Route53, Cloud DNS, Azure DNS) to CoreDNS</li>
+</ul>
+<p><strong>Key Benefits</strong>:</p>
+<ul>
+<li>Seamless integration with existing DNS infrastructure (self-hosted or cloud-based)</li>
+<li>Preserve existing DNS operations and processes</li>
+<li>Maintain edge DNS security controls and governance</li>
+<li>Flexible deployment without replacing entire DNS infrastructure</li>
+</ul>
+<hr />
+<h2 id="infrastructure-requirements">Infrastructure Requirements<a class="headerlink" href="#infrastructure-requirements" title="Permanent link">&para;</a></h2>
+<h3 id="coredns-infrastructure">CoreDNS Infrastructure<a class="headerlink" href="#coredns-infrastructure" title="Permanent link">&para;</a></h3>
+<p>For CoreDNS infrastructure requirements (resource limits, storage, networking, etc.), see the <a href="https://github.com/coredns/deployment/blob/master/kubernetes/Scaling_CoreDNS.md">CoreDNS scaling guide</a>.</p>
+<h3 id="dns-operator-integration-requirements">DNS Operator Integration Requirements<a class="headerlink" href="#dns-operator-integration-requirements" title="Permanent link">&para;</a></h3>
+<p><strong>Minimum Kubernetes Version</strong>: 1.19.0 or higher</p>
+<p><strong>Cluster Architecture</strong>:</p>
+<ul>
+<li><strong>Single Cluster</strong>: One Kubernetes cluster running CoreDNS and DNS Operator</li>
+<li><strong>Multi-Cluster</strong>: Multiple clusters with different roles:</li>
+<li><strong>Primary Clusters</strong>: Run CoreDNS instance and DNS Operator in primary mode</li>
+<li><strong>Secondary Clusters</strong>: Run DNS Operator only in secondary mode (no CoreDNS deployment needed)</li>
+</ul>
+<p><strong>RBAC Permissions</strong>:</p>
+<p>CoreDNS pods require Kubernetes API permissions to watch DNSRecord resources:</p>
+<ul>
+<li><strong>DNSRecord resources</strong> (<code>kuadrant.io</code> API group): <code>get</code>, <code>list</code>, <code>watch</code> permissions</li>
+<li><strong>Scope</strong>: Configured with the <code>WATCH_NAMESPACES</code> environment variable (empty = all namespaces, which is the default)</li>
+</ul>
+<h3 id="multi-cluster-requirements">Multi-Cluster Requirements<a class="headerlink" href="#multi-cluster-requirements" title="Permanent link">&para;</a></h3>
+<p>For multi-cluster delegation scenarios:</p>
+<p><strong>Network Connectivity</strong>:</p>
+<p>Primary clusters must have network connectivity to secondary cluster Kubernetes APIs. Required for synchronizing DNSRecord status across clusters</p>
+<p><strong>Cluster Interconnection Secrets</strong>:</p>
+<p>Primary clusters require kubeconfig interconnection secrets for all other clusters (primary and secondary):</p>
+<ul>
+<li>The secret must be created using the <code>kubectl-kuadrant_dns add-cluster-secret</code> command (from the <code>dns-operator</code> CLI, which must be installed separately - see <a href="../../cli/">CLI documentation</a>)</li>
+<li>Labeled with <code>kuadrant.io/multicluster-kubeconfig=true</code></li>
+<li>Stored in <code>dns-operator-system</code> namespace</li>
+</ul>
+<p><strong>DNS Operator Configuration</strong>:</p>
+<ul>
+<li>Primary clusters: <code>--delegation-role=primary</code> (default)</li>
+<li>Secondary clusters: <code>--delegation-role=secondary</code></li>
+</ul>
+<p>For complete details, see the DNS Record Delegation documentation in the kuadrant-operator repository</p>
+<hr />
+<h2 id="deploying-coredns">Deploying CoreDNS<a class="headerlink" href="#deploying-coredns" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>When DNS Operator is using CoreDNS, it can do so in both single-cluster and multi-cluster settings. However, <strong>for multi-cluster environments, the Delegation feature is required</strong>. Cloud DNS providers can operate in multi-cluster mode with or without delegation, but CoreDNS specifically requires delegation for multi-cluster coordination. See the DNS Record Delegation documentation in the kuadrant-operator repository for complete details.</p>
+</blockquote>
+<h3 id="deployment-architectures">Deployment Architectures<a class="headerlink" href="#deployment-architectures" title="Permanent link">&para;</a></h3>
+<p><strong>Single Cluster Deployment</strong>:</p>
+<p>A standalone deployment where all CoreDNS components run in a single Kubernetes cluster. Suitable for development, testing, or standalone deployments. No delegation required.</p>
+<p><strong>What Gets Deployed:</strong></p>
+<ul>
+<li>CoreDNS instance (with Kuadrant plugin) - serves DNS queries</li>
+<li>DNS Operator - reconciles DNSRecords</li>
+</ul>
+<p><strong>Multi-Cluster Deployment</strong>:</p>
+<p>Multi-cluster deployments use the delegation feature to coordinate DNS records across clusters. For complete details on how delegation works, see the DNS Record Delegation documentation in the kuadrant-operator repository.</p>
+<p><strong>What Gets Deployed:</strong></p>
+<ul>
+<li><strong>Primary Clusters</strong>:</li>
+<li>CoreDNS instance - serves DNS queries</li>
+<li>
+<p>DNS Operator in primary mode (<code>--delegation-role=primary</code>)</p>
+</li>
+<li>
+<p><strong>Secondary Clusters</strong>:</p>
+</li>
+<li>DNS Operator only in secondary mode (<code>--delegation-role=secondary</code>)</li>
+<li>No CoreDNS deployment needed</li>
+</ul>
+<h3 id="deployment-guides">Deployment Guides<a class="headerlink" href="#deployment-guides" title="Permanent link">&para;</a></h3>
+<p>Follow the step-by-step deployment guides for your scenario:</p>
+<p><strong>Local Environment</strong>:</p>
+<ul>
+<li><a href="../local-development/#setup-single-cluster-local-environment-kind">Single Cluster Setup</a> - Deploy to a local cluster for development and testing</li>
+<li><a href="../local-development/#setup-multi-cluster-local-environment-kind">Multi-Cluster Setup</a> - Deploy to multiple local clusters with delegation</li>
+</ul>
+<h3 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h3>
+<p>After deploying CoreDNS:</p>
+<ul>
+<li>For configuration details (Corefile, provider secrets, monitoring, logging, etc.), see <a href="#configuring-coredns">Configuring CoreDNS</a></li>
+<li>For verification procedures, see <a href="#testing-the-deployment">Testing the Deployment</a></li>
+</ul>
+<hr />
+<h2 id="configuring-coredns">Configuring CoreDNS<a class="headerlink" href="#configuring-coredns" title="Permanent link">&para;</a></h2>
+<p>CoreDNS configuration consists of two main components:</p>
+<ol>
+<li><strong>Corefile</strong>: Defines zones, plugins, and DNS server behavior</li>
+<li><strong>Provider Secrets</strong>: Enable DNS Operator to coordinate zone matching with CoreDNS</li>
+</ol>
+<h3 id="core-configuration">Core Configuration<a class="headerlink" href="#core-configuration" title="Permanent link">&para;</a></h3>
+<p><strong>Corefile</strong>:</p>
+<ul>
+<li>Zone definitions matching the zones CoreDNS serves with plugin directives and configuration</li>
+<li>Essential plugin: <code>kuadrant</code></li>
+</ul>
+<p><strong>Provider Secrets</strong>:</p>
+<ul>
+<li><strong>Non-delegating DNSRecords</strong> require a CoreDNS provider secret reference (with the <code>providerRef</code> or default provider label) for DNS Operator to add the zone label</li>
+<li><strong>Delegating DNSRecords</strong> do not require provider secrets themselves, but they cause authoritative DNSRecords to be created on primary clusters, which <strong>do require provider secrets</strong></li>
+</ul>
+<p><strong>Zone Coordination</strong>:
+Zones must be listed in both the Corefile and provider secret <code>ZONES</code> fields to ensure that the zones CoreDNS and DNS Operator manage are specified.</p>
+<h3 id="optional-configuration">Optional Configuration<a class="headerlink" href="#optional-configuration" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Monitoring</strong>: Prometheus metrics, Grafana dashboards</li>
+<li><strong>Logging</strong>: Debug, error, and query logging</li>
+</ul>
+<h3 id="configuration-reference">Configuration Reference<a class="headerlink" href="#configuration-reference" title="Permanent link">&para;</a></h3>
+<p>For complete technical details, see <strong><a href="../configuration/">CoreDNS Configuration Reference</a></strong></p>
+<h3 id="additional-resources">Additional Resources<a class="headerlink" href="#additional-resources" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><a href="../../../coredns/plugin/">Kuadrant CoreDNS Plugin Documentation</a></strong> - Plugin-specific configuration</li>
+<li><strong><a href="https://coredns.io/manual/toc/">CoreDNS Official Documentation</a></strong> - General CoreDNS plugins</li>
+</ul>
+<hr />
+<h2 id="testing-the-deployment">Testing the Deployment<a class="headerlink" href="#testing-the-deployment" title="Permanent link">&para;</a></h2>
+<p>After deploying and configuring CoreDNS, verify that the integration is functioning correctly by testing DNS resolution, zone transfers, and advanced routing features.</p>
+<h3 id="verification-procedures">Verification Procedures<a class="headerlink" href="#verification-procedures" title="Permanent link">&para;</a></h3>
+<p>The deployment guides include comprehensive verification procedures for testing CoreDNS functionality:</p>
+<p><strong>Local Environment</strong>:</p>
+<ul>
+<li><a href="../local-development/#verify">Single Cluster Verification</a> - Verify single cluster deployment</li>
+<li><a href="../local-development/#verify-1">Multi-Cluster Verification</a> - Verify multi-cluster deployment</li>
+<li><a href="../local-development/#geo">GEO Routing Verification</a> - Test geographic routing</li>
+</ul>
+<h3 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h3>
+<p><strong>Records not appearing in DNS queries</strong>:</p>
+<ol>
+<li>Verify DNSRecord has the <code>kuadrant.io/coredns-zone-name</code> label - DNS Operator adds this when processing the record</li>
+<li>Check the zone in the label matches a zone defined in your Corefile</li>
+<li>Review CoreDNS logs for watch errors or plugin issues</li>
+<li>Confirm that CoreDNS has RBAC permissions to watch DNSRecords in the target namespace</li>
+</ol>
+<p><strong>Geo-routing not working</strong>:</p>
+<ol>
+<li>Ensure <code>geoip</code> and <code>metadata</code> plugins are enabled in your Corefile</li>
+<li>Verify GeoIP database path in Corefile matches the mounted database location</li>
+<li>Enable debug logging in Corefile and review logs for GeoIP lookup failures</li>
+</ol>
+<p><strong>Multi-cluster coordination issues</strong>:</p>
+<ol>
+<li>For delegation issues, see the DNS Record Delegation documentation in the kuadrant-operator repository</li>
+<li>Verify kubeconfig secrets exist and are correctly labeled on primary clusters</li>
+<li>Check DNS Operator logs on both primary and secondary clusters for reconciliation errors</li>
+<li>Confirm network connectivity between clusters (primary clusters must reach secondary cluster APIs)</li>
+</ol>
+<hr />
+<h2 id="advanced-configuration-configuring-an-edge-server">Advanced Configuration: Configuring an Edge Server<a class="headerlink" href="#advanced-configuration-configuring-an-edge-server" title="Permanent link">&para;</a></h2>
+<p>This section covers <strong>zone delegation</strong> - an advanced configuration for integrating CoreDNS with existing DNS infrastructure. Zone delegation allows you to maintain your existing authoritative DNS servers while delegating specific subdomains to CoreDNS running in Kubernetes.</p>
+<blockquote>
+<p>Zone delegation is <strong>optional</strong>. If you're running CoreDNS as your primary DNS infrastructure without integrating with existing DNS servers, you can skip this section.</p>
+</blockquote>
+<h3 id="what-is-zone-delegation">What is Zone Delegation?<a class="headerlink" href="#what-is-zone-delegation" title="Permanent link">&para;</a></h3>
+<p>Zone delegation is a DNS mechanism where an authoritative DNS server delegates responsibility for a subdomain to another set of nameservers. This creates a hierarchical DNS structure where:</p>
+<ol>
+<li><strong>Parent Zone</strong> (e.g., <code>example.com</code>) is managed by an authoritative edge server (BIND9, cloud DNS, etc.)</li>
+<li><strong>Delegated Zone</strong> (e.g., <code>k.example.com</code>) is delegated to CoreDNS instances running in Kubernetes</li>
+<li><strong>Delegation Records</strong> (NS and glue A records) in the parent zone point to the CoreDNS nameservers</li>
+</ol>
+<p><strong>Why Use Zone Delegation?</strong></p>
+<ul>
+<li><strong>Production DNS Hierarchy</strong>: Maintain your existing authoritative DNS while delegating application zones to Kubernetes</li>
+<li><strong>Organizational Control</strong>: Keep root domains managed by existing DNS infrastructure and processes</li>
+<li><strong>Isolation</strong>: Separate Kubernetes-managed DNS from corporate DNS infrastructure</li>
+<li><strong>Flexibility</strong>: Change Kubernetes DNS infrastructure without affecting root domain configuration</li>
+</ul>
+<p><strong>Common Scenarios</strong>:</p>
+<ul>
+<li>Delegate <code>apps.example.com</code> from Bind9-managed <code>example.com</code> to CoreDNS</li>
+<li>Delegate internal zones from cloud DNS (Route53, Cloud DNS) to on-premise CoreDNS</li>
+<li>Create test/staging zones delegated to development CoreDNS instances</li>
+</ul>
+<h3 id="implementation-guide">Implementation Guide<a class="headerlink" href="#implementation-guide" title="Permanent link">&para;</a></h3>
+<p>For step-by-step instructions on configuring zone delegation with Bind9, see:</p>
+<ul>
+<li><strong><a href="../zone-delegation/">Zone Delegation Guide</a></strong> - Complete guide for setting up Bind9 delegation</li>
+</ul>
+<p><strong>What the guide covers</strong>:</p>
+<ul>
+<li>Configuring Bind9 (deployed with <code>make local-setup</code> command) to delegate zones to CoreDNS</li>
+<li>Creating NS and glue A records for delegation using <code>nsupdate</code></li>
+<li>Configuring cluster CoreDNS to forward queries to the edge server</li>
+<li>Setting up rewrite rules in <code>kuadrant-coredns</code> for active groups queries</li>
+<li>Verification procedures</li>
+</ul>
+<p><strong>Production Adaptations</strong>:</p>
+<ul>
+<li>If using an existing Bind9 server (not in Kubernetes), adapt the <code>nsupdate</code> commands to target your server</li>
+<li>For cloud DNS providers (Route53, Cloud DNS, Azure DNS), create NS records via their web console or API</li>
+<li>Ensure proper network connectivity between your edge DNS and CoreDNS LoadBalancer IPs</li>
+<li>Consider DNSSEC if your root zone uses it</li>
+<li>Implement monitoring for delegation chain health</li>
+</ul>
+<hr />
+<h2 id="appendix">Appendix<a class="headerlink" href="#appendix" title="Permanent link">&para;</a></h2>
+<h3 id="reference-configurations">Reference Configurations<a class="headerlink" href="#reference-configurations" title="Permanent link">&para;</a></h3>
+<p><strong>Corefile Examples</strong>:</p>
+<ul>
+<li><a href="../../config/coredns/Corefile">Production Corefile</a> - Example Corefile with all plugins configured</li>
+</ul>
+<p><strong>DNSRecord Examples</strong>:</p>
+<ul>
+<li><a href="../../../coredns/plugin/">Plugin README Examples</a> - DNSRecord examples with geo-routing and weighted routing</li>
+</ul>
+<p><strong>Deployment Configurations</strong>:</p>
+<ul>
+<li><a href="../../../config/coredns/kustomization.yaml">Kustomization</a> - Kustomize configuration including Helm chart values for CoreDNS deployment</li>
+</ul>
+<h3 id="glossary">Glossary<a class="headerlink" href="#glossary" title="Permanent link">&para;</a></h3>
+<p><strong>Authoritative DNSRecord</strong>: A DNSRecord created and managed by a primary cluster that merges delegating DNSRecords from all clusters in a multi-cluster setup.</p>
+<p><strong>CoreDNS</strong>: An open-source, cloud-native DNS server that serves as a flexible, extensible platform for DNS services in Kubernetes.</p>
+<p><strong>Corefile</strong>: The configuration file for CoreDNS that defines zones, plugins, and server behavior.</p>
+<p><strong>Delegating DNSRecord</strong>: A DNSRecord with <code>delegate: true</code> that is reconciled by primary clusters and merged into authoritative DNSRecords in multi-cluster deployments.</p>
+<p><strong>DNS Operator</strong>: A Kubernetes operator that manages DNS records across multiple providers (cloud and self-hosted) using DNSRecord custom resources.</p>
+<p><strong>DNSRecord</strong>: A custom resource (CRD) in the DNS Operator that represents DNS record configuration to be managed by the operator.</p>
+<p><strong>GeoIP Routing</strong>: DNS routing strategy that returns different responses based on the geographic location of the client making the query.</p>
+<p><strong>Kuadrant Plugin</strong>: The CoreDNS plugin that watches DNSRecord resources via the Kubernetes API and serves them as DNS responses.</p>
+<p><strong>Label-based Watch</strong>: The mechanism by which CoreDNS discovers DNSRecords - DNS Operator adds the <code>kuadrant.io/coredns-zone-name</code> label, and CoreDNS watches for resources with this label.</p>
+<p><strong>Non-delegating DNSRecord</strong>: A DNSRecord without <code>delegate: true</code> that requires a provider secret reference for zone matching and reconciliation.</p>
+<p><strong>Primary Cluster</strong>: A cluster running CoreDNS and DNS Operator in primary mode (<code>--delegation-role=primary</code>) that reconciles delegating DNSRecords into authoritative DNSRecords.</p>
+<p><strong>Provider Secret</strong>: A Kubernetes Secret containing provider-specific configuration (zones, credentials) that enables DNS Operator to interact with DNS providers.</p>
+<p><strong>Secondary Cluster</strong>: A cluster running only DNS Operator in secondary mode (<code>--delegation-role=secondary</code>) that creates delegating DNSRecords for primary clusters to reconcile.</p>
+<p><strong>Weighted Routing</strong>: DNS routing strategy that distributes traffic across multiple endpoints based on assigned weights.</p>
+<p><strong>Zone Coordination</strong>: The requirement that zones must be listed in both the Corefile (for CoreDNS) and provider secret <code>ZONES</code> field (for DNS Operator).</p>
+<p><strong>Zone Delegation</strong>: DNS mechanism where an authoritative DNS server delegates responsibility for a subdomain to another set of nameservers.</p>
+<h3 id="additional-resources_1">Additional Resources<a class="headerlink" href="#additional-resources_1" title="Permanent link">&para;</a></h3>
+<p><strong>CoreDNS Documentation</strong>:</p>
+<ul>
+<li><a href="https://coredns.io/manual/toc/">CoreDNS Official Documentation</a> - General CoreDNS configuration and plugins</li>
+<li><a href="../../../coredns/plugin/">Kuadrant CoreDNS Plugin</a> - Plugin-specific documentation and examples</li>
+</ul>
+<p><strong>DNS Operator Documentation</strong>:</p>
+<ul>
+<li><a href="../../provider/">Provider Documentation</a> - DNS provider configuration details</li>
+<li><a href="../../../">DNS Operator README</a> - Main project documentation</li>
+</ul>
+<p><strong>Deployment Guides</strong>:</p>
+<ul>
+<li><a href="../local-development/#setup-single-cluster-local-environment-kind">Local Single Cluster Setup</a> - Deploy to a local cluster</li>
+<li><a href="../local-development/#setup-multi-cluster-local-environment-kind">Local Multi-Cluster Setup</a> - Deploy to multiple local clusters with delegation</li>
+<li><a href="../zone-delegation/">Edge Server Configuration</a> - Configure Bind9 zone delegation</li>
+</ul>
+<p><strong>Configuration References</strong>:</p>
+<ul>
+<li><a href="../configuration/">CoreDNS Configuration Reference</a> - Detailed technical configuration guide</li>
+</ul>
+<p><strong>External Resources</strong>:</p>
+<ul>
+<li><a href="https://github.com/Kuadrant/architecture/blob/main/docs/design/core-dns-integration.md">Kuadrant Architecture - CoreDNS Integration</a></li>
+<li><a href="https://kuadrant.io/blog/core-dns-support/">CoreDNS Use Cases Blog Post</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer id="footer" class="footer">
+  <div class="copyright">
+    <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+    <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks.</p> 
+    <p>For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+  </div>
+
+  <div class="sponsored-by">
+    <p>
+      <a href="https://www.cncf.io/sandbox-projects/"><img src="../../../../assets/images/cncf-color.png" class="logo" alt="CNCF logo"></a>
+    </p>
+    <p>
+      We are a Cloud Native Computing Foundation sandbox project.
+    </p>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["1.3.x", "latest"], "provider": "mike"}}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="../../../../assets/strip_callouts.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,67 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: kuadrant-coredns
+resources:
+  - namespace.yaml
+helmCharts:
+  - name: coredns
+    releaseName: kuadrant
+    repo: https://coredns.github.io/helm
+    valuesInline:
+      deployment:
+        skipConfig: true
+      env:
+        - name: WATCH_NAMESPACES
+          value: kuadrant-coredns
+      image:
+        pullPolicy: Always
+        repository: quay.io/kuadrant/coredns-kuadrant
+        tag: latest
+      isClusterService: false
+      prometheus:
+        monitor:
+          enabled: true
+          namespace: kuadrant-coredns
+        service:
+          enabled: true
+      serviceType: LoadBalancer
+patches:
+  - path: k8s_prometheus_patch.yaml
+  - patch: |
+      - op: add
+        path: /rules/-
+        value:
+          apiGroups:
+            - kuadrant.io
+          resources:
+            - dnsrecords
+          verbs:
+            - get
+            - list
+            - watch
+    target:
+      kind: ClusterRole
+      name: kuadrant-coredns
+  - patch: |
+      - op: add
+        path: /spec/template/spec/containers/0/env
+        value:
+          - name: WATCH_NAMESPACES
+            value: ""
+    target:
+      kind: Deployment
+configMapGenerator:
+  - behavior: create
+    files:
+      - Corefile
+    name: kuadrant-coredns
+    options:
+      disableNameSuffixHash: true
+      labels:
+        app.kubernetes.io/instance: kuadrant
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: coredns
+images:
+  - name: quay.io/kuadrant/coredns-kuadrant
+    newName: quay.io/kuadrant/coredns-kuadrant
+    newTag: latest
