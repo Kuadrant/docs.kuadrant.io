@@ -2249,6 +2249,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#what-the-controller-configures" class="md-nav__link">
+    <span class="md-ellipsis">
+      What the Controller Configures
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2691,6 +2700,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#what-the-controller-configures" class="md-nav__link">
+    <span class="md-ellipsis">
+      What the Controller Configures
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2791,10 +2809,51 @@
 <li><strong>MCP Broker/Router Deployment</strong> - Aggregates tools from upstream MCP servers</li>
 <li><strong>MCP Broker/Router Service</strong> - Named <code>mcp-gateway</code> in the MCPGatewayExtension namespace</li>
 <li><strong>EnvoyFilter</strong> - Configures Istio to route requests through the external processor (created in the Gateway's namespace)</li>
+<li><strong>ServiceAccount</strong> - For the broker/router pods</li>
+<li><strong>Configuration Secret</strong> - <code>mcp-gateway-config</code> containing server configuration</li>
 </ul>
-<blockquote>
-<p><strong>Note:</strong> The <code>gateway.publicHost</code> value must match the hostname configured in your Gateway listener (see <a href="../configure-mcp-gateway-listener-and-router/">Configure Gateway Listener and Route</a>).</p>
-</blockquote>
+<h3 id="what-the-controller-configures">What the Controller Configures<a class="headerlink" href="#what-the-controller-configures" title="Permanent link">&para;</a></h3>
+<p>The controller reads the targeted Gateway listener (identified by <code>sectionName</code>) and uses it to configure the broker/router deployment. The following flags are set automatically based on the listener:</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--mcp-broker-public-address</code></td>
+<td><code>0.0.0.0:8080</code></td>
+<td>Fixed</td>
+</tr>
+<tr>
+<td><code>--mcp-gateway-private-host</code></td>
+<td><code>&lt;gateway&gt;-istio.&lt;namespace&gt;.svc.cluster.local:&lt;listener-port&gt;</code></td>
+<td>Listener port + Gateway name/namespace</td>
+</tr>
+<tr>
+<td><code>--mcp-gateway-public-host</code></td>
+<td>Listener hostname (wildcards like <code>*.example.com</code> become <code>mcp.example.com</code>)</td>
+<td>Listener hostname</td>
+</tr>
+<tr>
+<td><code>--mcp-router-key</code></td>
+<td>Auto-generated hash</td>
+<td>MCPGatewayExtension UID</td>
+</tr>
+<tr>
+<td><code>--mcp-gateway-config</code></td>
+<td><code>/config/config.yaml</code></td>
+<td>Fixed</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>--mcp-gateway-private-host</code> flag enables hair-pinning: when a <code>tools/call</code> request arrives, the router sends an <code>initialize</code> request back through the gateway to establish a backend session. The port in this address matches the listener port from the Gateway spec.</p>
+<p>The <code>--mcp-gateway-public-host</code> flag tells the router which <code>Host</code> header to expect on incoming requests, so it avoids rewriting it during routing.</p>
+<p>The <strong>EnvoyFilter</strong> is configured to intercept traffic on the listener's port and route it through the ext_proc (external processor) running on port 50051.</p>
+<p>The <strong>configuration secret</strong> only contains MCP server entries for MCPServerRegistrations whose HTTPRoutes attach to the same listener. This ensures team isolation when multiple teams share a single Gateway with different listeners.</p>
 <h2 id="post-installation-configuration">Post-Installation Configuration<a class="headerlink" href="#post-installation-configuration" title="Permanent link">&para;</a></h2>
 <p>After installation, you'll need to configure the gateway and connect your MCP servers:</p>
 <ol>

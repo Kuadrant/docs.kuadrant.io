@@ -3165,7 +3165,7 @@
 </span><span id="__span-24-16"><a id="__codelineno-24-16" name="__codelineno-24-16" href="#__codelineno-24-16"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <h3 id="mcpgatewayextension">MCPGatewayExtension<a class="headerlink" href="#mcpgatewayextension" title="Permanent link">&para;</a></h3>
-<p>Create the MCPGatewayExtension to associate the team's namespace with the target Gateway:</p>
+<p>Create the MCPGatewayExtension to associate the team's namespace with a specific listener on the target Gateway:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
 </span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="s">apiVersion: mcp.kagenti.com/v1alpha1</span>
 </span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="s">kind: MCPGatewayExtension</span>
@@ -3178,7 +3178,8 @@
 </span><span id="__span-25-10"><a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="s">    kind: Gateway</span>
 </span><span id="__span-25-11"><a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a><span class="s">    name: team-a-gateway</span>
 </span><span id="__span-25-12"><a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a><span class="s">    namespace: gateway-system</span>
-</span><span id="__span-25-13"><a id="__codelineno-25-13" name="__codelineno-25-13" href="#__codelineno-25-13"></a><span class="s">EOF</span>
+</span><span id="__span-25-13"><a id="__codelineno-25-13" name="__codelineno-25-13" href="#__codelineno-25-13"></a><span class="s">    sectionName: mcp  # Name of the listener on the Gateway to target</span>
+</span><span id="__span-25-14"><a id="__codelineno-25-14" name="__codelineno-25-14" href="#__codelineno-25-14"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <h3 id="deploy-without-automatic-resource-creation">Deploy without automatic resource creation<a class="headerlink" href="#deploy-without-automatic-resource-creation" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>helm<span class="w"> </span>install<span class="w"> </span>team-a-mcp-gateway<span class="w"> </span>./charts/mcp-gateway<span class="w"> </span><span class="se">\</span>
