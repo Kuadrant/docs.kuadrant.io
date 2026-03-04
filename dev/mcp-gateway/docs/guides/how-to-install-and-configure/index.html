@@ -2808,6 +2808,7 @@
 <ul>
 <li><strong>MCP Broker/Router Deployment</strong> - Aggregates tools from upstream MCP servers</li>
 <li><strong>MCP Broker/Router Service</strong> - Named <code>mcp-gateway</code> in the MCPGatewayExtension namespace</li>
+<li><strong>HTTPRoute</strong> - Named <code>mcp-gateway-route</code>, routes traffic from the Gateway listener to the broker service on <code>/mcp</code>. The hostname is derived from the listener (wildcards like <code>*.example.com</code> become <code>mcp.example.com</code>). This functionality can be disabled with the <code>kuadrant.io/alpha-disable-httproute: "true"</code> annotation on the MCPGatewayExtension if you need a custom HTTPRoute (e.g. with CORS headers or additional path rules). Note: disabling does not delete a previously created <code>mcp-gateway-route</code>; you must remove it manually</li>
 <li><strong>EnvoyFilter</strong> - Configures Istio to route requests through the external processor (created in the Gateway's namespace)</li>
 <li><strong>ServiceAccount</strong> - For the broker/router pods</li>
 <li><strong>Configuration Secret</strong> - <code>mcp-gateway-config</code> containing server configuration</li>
@@ -2855,12 +2856,12 @@
 <p>The <strong>EnvoyFilter</strong> is configured to intercept traffic on the listener's port and route it through the ext_proc (external processor) running on port 50051.</p>
 <p>The <strong>configuration secret</strong> only contains MCP server entries for MCPServerRegistrations whose HTTPRoutes attach to the same listener. This ensures team isolation when multiple teams share a single Gateway with different listeners.</p>
 <h2 id="post-installation-configuration">Post-Installation Configuration<a class="headerlink" href="#post-installation-configuration" title="Permanent link">&para;</a></h2>
-<p>After installation, you'll need to configure the gateway and connect your MCP servers:</p>
+<p>After installation, the controller automatically creates the HTTPRoute for gateway access. You can connect your MCP servers:</p>
 <ol>
-<li><strong><a href="../configure-mcp-gateway-listener-and-router/">Configure Gateway Listener and Route</a></strong> - Set up traffic routing</li>
 <li><strong><a href="../register-mcp-servers/">Register MCP Servers</a></strong> - Connect internal MCP servers</li>
 <li><strong><a href="../external-mcp-server/">Connect to External MCP Servers</a></strong> - Connect to external APIs</li>
 </ol>
+<p>If you need to customize the HTTPRoute (e.g. add CORS headers), see <a href="../configure-mcp-gateway-listener-and-router/">Configure Gateway Listener and Route</a>.</p>
 <h2 id="optional-configuration">Optional Configuration<a class="headerlink" href="#optional-configuration" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><a href="../authentication/">Authentication</a></strong> - Configure OAuth-based authentication</li>

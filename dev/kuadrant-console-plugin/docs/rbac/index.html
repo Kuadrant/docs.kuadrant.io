@@ -1872,6 +1872,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#resource-list-kebab-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resource list (kebab menu)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#policy-topology-page" class="md-nav__link">
     <span class="md-ellipsis">
       Policy Topology page
@@ -1928,6 +1937,15 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e2e-test-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      E2E test coverage
+    </span>
+  </a>
   
 </li>
       
@@ -2700,6 +2718,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#resource-list-kebab-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resource list (kebab menu)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#policy-topology-page" class="md-nav__link">
     <span class="md-ellipsis">
       Policy Topology page
@@ -2760,6 +2787,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#e2e-test-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      E2E test coverage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#known-limitations" class="md-nav__link">
     <span class="md-ellipsis">
       Known limitations
@@ -2792,57 +2828,163 @@
 
 
 <h1 id="console-plugin-rbac">Console Plugin RBAC<a class="headerlink" href="#console-plugin-rbac" title="Permanent link">&para;</a></h1>
+<p>Every permission check in the plugin UI is listed below. All checks use the Kubernetes <code>SelfSubjectAccessReview</code> API via the console SDK.</p>
 <h2 id="overview-page">Overview page<a class="headerlink" href="#overview-page" title="Permanent link">&para;</a></h2>
-<p>Requires <code>list</code> on each resource type to display the corresponding card. Checks are namespace-scoped against the active namespace (or <code>default</code> when all-namespaces is selected). Sections show an "Access Denied" empty state when the check fails.</p>
+<p>Checks <code>list</code> and <code>create</code> on each resource type. Checks run against the active namespace, or <code>default</code> when all-namespaces is selected.</p>
 <table>
 <thead>
 <tr>
 <th>Resource</th>
 <th>Group</th>
-<th>Needed for</th>
+<th>Verb</th>
+<th>UI effect</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>authpolicies</code></td>
-<td><code>kuadrant.io</code></td>
-<td>Policies card</td>
-</tr>
-<tr>
-<td><code>ratelimitpolicies</code></td>
-<td><code>kuadrant.io</code></td>
-<td>Policies card</td>
-</tr>
-<tr>
-<td><code>dnspolicies</code></td>
-<td><code>kuadrant.io</code></td>
-<td>Policies card</td>
-</tr>
-<tr>
-<td><code>tlspolicies</code></td>
-<td><code>kuadrant.io</code></td>
-<td>Policies card</td>
+<td><code>gateways</code></td>
+<td><code>gateway.networking.k8s.io</code></td>
+<td><code>list</code></td>
+<td>Shows Gateway traffic card. "Access Denied" if denied.</td>
 </tr>
 <tr>
 <td><code>gateways</code></td>
 <td><code>gateway.networking.k8s.io</code></td>
-<td>Gateway health card</td>
+<td><code>create</code></td>
+<td>Enables "Create Gateway" button. Disabled with tooltip if denied.</td>
 </tr>
 <tr>
 <td><code>httproutes</code></td>
 <td><code>gateway.networking.k8s.io</code></td>
-<td>HTTPRoute card</td>
+<td><code>list</code></td>
+<td>Shows HTTPRoutes card. "Access Denied" if denied.</td>
+</tr>
+<tr>
+<td><code>httproutes</code></td>
+<td><code>gateway.networking.k8s.io</code></td>
+<td><code>create</code></td>
+<td>Enables "Create HTTPRoute" button. Disabled with tooltip if denied.</td>
+</tr>
+<tr>
+<td><code>authpolicies</code></td>
+<td><code>kuadrant.io</code></td>
+<td><code>list</code></td>
+<td>Shows Policies card (needs at least one policy type). "Access Denied" if all denied.</td>
+</tr>
+<tr>
+<td><code>ratelimitpolicies</code></td>
+<td><code>kuadrant.io</code></td>
+<td><code>list</code></td>
+<td>Same as above.</td>
+</tr>
+<tr>
+<td><code>dnspolicies</code></td>
+<td><code>kuadrant.io</code></td>
+<td><code>list</code></td>
+<td>Same as above.</td>
+</tr>
+<tr>
+<td><code>tlspolicies</code></td>
+<td><code>kuadrant.io</code></td>
+<td><code>list</code></td>
+<td>Same as above.</td>
+</tr>
+<tr>
+<td><code>tokenratelimitpolicies</code></td>
+<td><code>kuadrant.io</code></td>
+<td><code>list</code></td>
+<td>Same as above.</td>
+</tr>
+<tr>
+<td><code>oidcpolicies</code></td>
+<td><code>extensions.kuadrant.io</code></td>
+<td><code>list</code></td>
+<td>Same as above.</td>
+</tr>
+<tr>
+<td><code>planpolicies</code></td>
+<td><code>extensions.kuadrant.io</code></td>
+<td><code>list</code></td>
+<td>Same as above.</td>
+</tr>
+<tr>
+<td>Each policy type</td>
+<td>respective group</td>
+<td><code>create</code></td>
+<td>Enables that policy in the "Create Policy" dropdown. Disabled with tooltip if denied.</td>
 </tr>
 </tbody>
 </table>
-<p><code>create</code> on a resource enables the corresponding creation button in the UI.</p>
-<p><strong>Known limitation:</strong> the Overview page has no namespace picker. The gateway health card watches gateways cluster-wide, so namespace-scoped users will not see gateway counts regardless of namespace-level permissions.</p>
+<p><strong>Known limitation:</strong> the overview page resolves <code>#ALL_NS#</code> to <code>default</code> for RBAC checks. Namespace-scoped users (with Roles, not ClusterRoles) will see "Access Denied" on all overview cards even if they have full permissions in their own namespace. Only users with ClusterRoles see the overview cards.</p>
 <h2 id="policies-page">Policies page<a class="headerlink" href="#policies-page" title="Permanent link">&para;</a></h2>
-<p>Requires <code>list</code> on a policy type to show its tab. Tabs for resource types the user cannot list are hidden silently.</p>
-<p><code>create</code> on a policy type enables the Create button for that type.</p>
-<p>DNS and TLS policy tabs are not shown in the developer perspective regardless of permissions.</p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Group</th>
+<th>Verb</th>
+<th>UI effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Each policy type</td>
+<td>respective group</td>
+<td><code>list</code></td>
+<td>"All Policies" tab filters the resource out. Individual policy tabs are always visible in admin perspective; tab content shows "You do not have permission to view this resource" if denied. If all denied, shows "You do not have permission to view Policies".</td>
+</tr>
+<tr>
+<td>Each policy type</td>
+<td>respective group</td>
+<td><code>create</code></td>
+<td>Enables that policy in the "Create Policy" dropdown. Disabled with tooltip if denied. If no create on any type, the entire dropdown is disabled.</td>
+</tr>
+</tbody>
+</table>
+<p>DNS and TLS policy tabs are hidden in the developer perspective regardless of permissions. In admin perspective, tabs are always visible but content is RBAC-gated.</p>
+<h2 id="resource-list-kebab-menu">Resource list (kebab menu)<a class="headerlink" href="#resource-list-kebab-menu" title="Permanent link">&para;</a></h2>
+<p>The kebab menu on each resource row checks <code>update</code> and <code>delete</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Verb</th>
+<th>UI effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The resource's own type</td>
+<td><code>update</code></td>
+<td>Enables "Edit" action. Disabled with tooltip if denied.</td>
+</tr>
+<tr>
+<td>The resource's own type</td>
+<td><code>delete</code></td>
+<td>Enables "Delete" action. Disabled with tooltip if denied.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="policy-topology-page">Policy Topology page<a class="headerlink" href="#policy-topology-page" title="Permanent link">&para;</a></h2>
-<p>Requires <code>get</code> on the <code>topology</code> ConfigMap in the namespace where the <code>Kuadrant</code> resource is created (often <code>kuadrant-system</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Group</th>
+<th>Verb</th>
+<th>UI effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>configmaps</code> (name: <code>topology</code>)</td>
+<td>core (<code>""</code>)</td>
+<td><code>get</code></td>
+<td>Shows topology view. "You do not have permission to view Policy Topology" if denied.</td>
+</tr>
+</tbody>
+</table>
+<p>The ConfigMap is in the namespace where the Kuadrant resource is created (typically <code>kuadrant-system</code>).</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Role</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
@@ -2855,7 +2997,6 @@
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="nt">resourceNames</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;topology&quot;</span><span class="p p-Indicator">]</span>
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nt">verbs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;get&quot;</span><span class="p p-Indicator">]</span>
 </span></code></pre></div>
-<p><strong>Known limitation:</strong> the topology represents the full cluster graph. There is currently no per-namespace filtering of the topology view.</p>
 <h2 id="gateway-httproute-detail-tabs">Gateway / HTTPRoute detail tabs<a class="headerlink" href="#gateway-httproute-detail-tabs" title="Permanent link">&para;</a></h2>
 <p>The Policies tab on a Gateway or HTTPRoute detail page requires <code>get</code> on that specific resource. Access is enforced by the OpenShift console SDK.</p>
 <h2 id="policy-creation-pages">Policy creation pages<a class="headerlink" href="#policy-creation-pages" title="Permanent link">&para;</a></h2>
@@ -2891,6 +3032,7 @@
 </span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;gateways&quot;</span><span class="p p-Indicator">]</span>
 </span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">  </span><span class="nt">verbs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;get&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;list&quot;</span><span class="p p-Indicator">]</span>
 </span></code></pre></div>
+<p>Note: this role grants access on the Policies page but <strong>not</strong> the Overview page (see known limitations).</p>
 <h3 id="platform-engineer-full-access-across-cluster">Platform engineer (full access across cluster)<a class="headerlink" href="#platform-engineer-full-access-across-cluster" title="Permanent link">&para;</a></h3>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterRole</span>
@@ -2921,9 +3063,48 @@
 </span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">  </span><span class="nt">resourceNames</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;topology&quot;</span><span class="p p-Indicator">]</span>
 </span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">  </span><span class="nt">verbs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;get&quot;</span><span class="p p-Indicator">]</span>
 </span></code></pre></div>
-<blockquote>
-<p>The topology ConfigMap role cannot be collapsed into the ClusterRole above via a ClusterRoleBinding - named resource restrictions only work with RoleBindings.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
+<p>The topology ConfigMap role cannot be collapsed into the ClusterRole above via a ClusterRoleBinding. Kubernetes ignores <code>resourceNames</code> restrictions when used with ClusterRoleBindings - they only take effect with namespace-scoped RoleBindings.</p>
+</div>
+<h2 id="e2e-test-coverage">E2E test coverage<a class="headerlink" href="#e2e-test-coverage" title="Permanent link">&para;</a></h2>
+<p>Tests in <code>e2e/tests/rbac.spec.ts</code> verify every permission check above using four personas:</p>
+<table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Type</th>
+<th>Permissions</th>
+<th>Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>test-dev</code></td>
+<td>Role (kuadrant-test)</td>
+<td>httproutes CRUD, gateways read</td>
+<td>No policy access; overview Access Denied (namespace-scoped); topology denied</td>
+</tr>
+<tr>
+<td><code>test-viewer</code></td>
+<td>Role (kuadrant-test)</td>
+<td>authpolicies + ratelimitpolicies read-only, gateways + httproutes read-only</td>
+<td>Tabs visible but create disabled; DNS/TLS tabs visible but content permission-gated; overview Access Denied (namespace-scoped)</td>
+</tr>
+<tr>
+<td><code>test-devops</code></td>
+<td>Role (kuadrant-test)</td>
+<td>authpolicies + ratelimitpolicies CRUD, gateways + httproutes read</td>
+<td>Auth/RateLimit tabs + create enabled; DNS/TLS tabs visible but content permission-gated; overview Access Denied (namespace-scoped)</td>
+</tr>
+<tr>
+<td><code>test-admin</code></td>
+<td>ClusterRole</td>
+<td>All kuadrant + gateway resources CRUD, configmaps read</td>
+<td>All tabs visible; all create enabled; overview cards visible; topology accessible</td>
+</tr>
+</tbody>
+</table>
 <h2 id="known-limitations">Known limitations<a class="headerlink" href="#known-limitations" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2934,8 +3115,16 @@
 </thead>
 <tbody>
 <tr>
-<td>Overview - gateway card</td>
-<td>Watches gateways cluster-wide; namespace-scoped users will not see gateway counts.</td>
+<td>Overview page</td>
+<td>RBAC checks resolve <code>#ALL_NS#</code> to <code>default</code> namespace. Namespace-scoped users see "Access Denied" on all cards even if they have permissions in their own namespace. Only ClusterRole users see overview content.</td>
+</tr>
+<tr>
+<td>Overview - gateway health</td>
+<td>The gateway health summary card watches gateways cluster-wide and is not gated by RBAC. It always shows 0/0/0 for users without cluster-wide gateway list.</td>
+</tr>
+<tr>
+<td>Policies page - tabs</td>
+<td>Individual policy tabs (DNS, TLS, Auth, etc.) are always visible in admin perspective. Users without <code>list</code> permission see a "no permission" message inside the tab, but the tab itself is not hidden. Only the "All Policies" view filters by RBAC.</td>
 </tr>
 <tr>
 <td>Policy Topology</td>

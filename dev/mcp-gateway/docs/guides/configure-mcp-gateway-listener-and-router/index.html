@@ -2289,11 +2289,26 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-2-create-httproute" class="md-nav__link">
+  <a href="#step-2-httproute-automatic" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 2: Create HTTPRoute
+      Step 2: HTTPRoute (Automatic)
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Step 2: HTTPRoute (Automatic)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-httproute-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom HTTPRoute (Optional)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2669,11 +2684,26 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-2-create-httproute" class="md-nav__link">
+  <a href="#step-2-httproute-automatic" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 2: Create HTTPRoute
+      Step 2: HTTPRoute (Automatic)
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Step 2: HTTPRoute (Automatic)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-httproute-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom HTTPRoute (Optional)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2728,7 +2758,7 @@
 
 
 <h1 id="configure-mcp-gateway-listener-and-route">Configure MCP Gateway Listener and Route<a class="headerlink" href="#configure-mcp-gateway-listener-and-route" title="Permanent link">&para;</a></h1>
-<p>This guide covers adding an MCP listener to your existing Gateway and creating an HTTPRoute to route traffic to the MCP Gateway broker.</p>
+<p>This guide covers adding an MCP listener to your existing Gateway. The controller automatically creates an HTTPRoute when the MCPGatewayExtension becomes ready. This guide also covers how to use a custom HTTPRoute if you need CORS headers or additional path rules.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
 <li>MCP Gateway installed in your cluster</li>
@@ -2761,67 +2791,93 @@
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>--set<span class="w"> </span>gateway.publicHost<span class="o">=</span>mcp.127-0-0-1.sslip.io
 </span></code></pre></div></p>
 </blockquote>
-<h2 id="step-2-create-httproute">Step 2: Create HTTPRoute<a class="headerlink" href="#step-2-create-httproute" title="Permanent link">&para;</a></h2>
-<p>Create an HTTPRoute to route MCP traffic to the broker:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="s">apiVersion: gateway.networking.k8s.io/v1</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="s">kind: HTTPRoute</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="s">metadata:</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="s">  name: mcp-route</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="s">  namespace: mcp-system</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="s">spec:</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="s">  parentRefs:</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="s">    - name: your-gateway-name        # Change to your Gateway name</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="s">      namespace: your-gateway-namespace  # Change to your Gateway namespace</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="s">  hostnames:</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="s">    - &#39;mcp.127-0-0-1.sslip.io&#39;              # Match the Gateway listener hostname</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="s">  rules:</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="s">    - matches:</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="s">        - path:</span>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="s">            type: PathPrefix</span>
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="s">            value: /mcp</span>
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="s">      filters:</span>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="s">        - type: ResponseHeaderModifier</span>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="s">          responseHeaderModifier:</span>
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="s">            add:</span>
-</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="s">              - name: Access-Control-Allow-Origin</span>
-</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="s">                value: &quot;*&quot;</span>
-</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="s">              - name: Access-Control-Allow-Methods</span>
-</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="s">                value: &quot;GET, POST, PUT, DELETE, OPTIONS, HEAD&quot;</span>
-</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="s">              - name: Access-Control-Allow-Headers</span>
-</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="s">                value: &quot;Content-Type, Authorization, Accept, Origin, X-Requested-With&quot;</span>
-</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="s">              - name: Access-Control-Max-Age</span>
-</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="s">                value: &quot;3600&quot;</span>
-</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="s">              - name: Access-Control-Allow-Credentials</span>
-</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="s">                value: &quot;true&quot;</span>
-</span><span id="__span-2-33"><a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="s">      backendRefs:</span>
-</span><span id="__span-2-34"><a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="s">        - name: mcp-gateway     # MCP Gateway broker service name</span>
-</span><span id="__span-2-35"><a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="s">          port: 8080</span>
-</span><span id="__span-2-36"><a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="s">    - matches:</span>
-</span><span id="__span-2-37"><a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="s">        - path:</span>
-</span><span id="__span-2-38"><a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="s">            type: PathPrefix</span>
-</span><span id="__span-2-39"><a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a><span class="s">            value: /.well-known/oauth-protected-resource</span>
-</span><span id="__span-2-40"><a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a><span class="s">      backendRefs:</span>
-</span><span id="__span-2-41"><a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="s">        - name: mcp-gateway</span>
-</span><span id="__span-2-42"><a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a><span class="s">          port: 8080</span>
-</span><span id="__span-2-43"><a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a><span class="s">EOF</span>
+<h2 id="step-2-httproute-automatic">Step 2: HTTPRoute (Automatic)<a class="headerlink" href="#step-2-httproute-automatic" title="Permanent link">&para;</a></h2>
+<p>The MCPGatewayExtension controller automatically creates an HTTPRoute named <code>mcp-gateway-route</code> when the extension becomes ready. The HTTPRoute:</p>
+<ul>
+<li>Routes <code>/mcp</code> traffic to the <code>mcp-gateway</code> broker service on port 8080</li>
+<li>Uses the hostname from the Gateway listener (wildcards like <code>*.example.com</code> become <code>mcp.example.com</code>)</li>
+<li>References the target Gateway with the correct <code>sectionName</code></li>
+<li>Is owned by the MCPGatewayExtension and cleaned up automatically on deletion</li>
+</ul>
+<p>Verify the HTTPRoute was created:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>httproute<span class="w"> </span>mcp-gateway-route<span class="w"> </span>-n<span class="w"> </span>mcp-system
 </span></code></pre></div>
+<h3 id="custom-httproute-optional">Custom HTTPRoute (Optional)<a class="headerlink" href="#custom-httproute-optional" title="Permanent link">&para;</a></h3>
+<p>If you need a custom HTTPRoute (e.g. with CORS headers, additional path rules, or OAuth well-known endpoints), disable automatic creation and manage your own:</p>
+<ol>
+<li>
+<p>Add the annotation to your MCPGatewayExtension:
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span>annotate<span class="w"> </span>mcpgatewayextension<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>your-extension-name<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span>kuadrant.io/alpha-disable-httproute<span class="o">=</span><span class="nb">true</span>
+</span></code></pre></div></p>
+</li>
+<li>
+<p>Delete the previously auto-created HTTPRoute if it exists:
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>httproute<span class="w"> </span>mcp-gateway-route<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>--ignore-not-found
+</span></code></pre></div></p>
+</li>
+<li>
+<p>Create your custom HTTPRoute:
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="s">apiVersion: gateway.networking.k8s.io/v1</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="s">kind: HTTPRoute</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="s">metadata:</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="s">  name: mcp-route</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="s">  namespace: mcp-system</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="s">spec:</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="s">  parentRefs:</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="s">    - name: your-gateway-name</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="s">      namespace: your-gateway-namespace</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="s">  hostnames:</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="s">    - &#39;mcp.127-0-0-1.sslip.io&#39;</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="s">  rules:</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="s">    - matches:</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="s">        - path:</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="s">            type: PathPrefix</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="s">            value: /mcp</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="s">      filters:</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="s">        - type: ResponseHeaderModifier</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="s">          responseHeaderModifier:</span>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="s">            add:</span>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="s">              - name: Access-Control-Allow-Origin</span>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="s">                value: &quot;*&quot;</span>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="s">              - name: Access-Control-Allow-Methods</span>
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="s">                value: &quot;GET, POST, PUT, DELETE, OPTIONS, HEAD&quot;</span>
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="s">              - name: Access-Control-Allow-Headers</span>
+</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="s">                value: &quot;Content-Type, Authorization, Accept, Origin, X-Requested-With&quot;</span>
+</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="s">              - name: Access-Control-Max-Age</span>
+</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="s">                value: &quot;3600&quot;</span>
+</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="s">              - name: Access-Control-Allow-Credentials</span>
+</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="s">                value: &quot;true&quot;</span>
+</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="s">      backendRefs:</span>
+</span><span id="__span-5-33"><a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a><span class="s">        - name: mcp-gateway</span>
+</span><span id="__span-5-34"><a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a><span class="s">          port: 8080</span>
+</span><span id="__span-5-35"><a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a><span class="s">    - matches:</span>
+</span><span id="__span-5-36"><a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a><span class="s">        - path:</span>
+</span><span id="__span-5-37"><a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a><span class="s">            type: PathPrefix</span>
+</span><span id="__span-5-38"><a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a><span class="s">            value: /.well-known/oauth-protected-resource</span>
+</span><span id="__span-5-39"><a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a><span class="s">      backendRefs:</span>
+</span><span id="__span-5-40"><a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a><span class="s">        - name: mcp-gateway</span>
+</span><span id="__span-5-41"><a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a><span class="s">          port: 8080</span>
+</span><span id="__span-5-42"><a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a><span class="s">EOF</span>
+</span></code></pre></div></p>
+</li>
+</ol>
 <h2 id="step-3-verify-envoyfilter-configuration">Step 3: Verify EnvoyFilter Configuration<a class="headerlink" href="#step-3-verify-envoyfilter-configuration" title="Permanent link">&para;</a></h2>
 <p>The MCP Gateway controller automatically creates the EnvoyFilter when the MCPGatewayExtension is ready. Check that it exists:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># EnvoyFilter is created in the Gateway&#39;s namespace</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>envoyfilter<span class="w"> </span>-n<span class="w"> </span>your-gateway-namespace<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/managed-by<span class="o">=</span>mcp-gateway-controller
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># EnvoyFilter is created in the Gateway&#39;s namespace</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>envoyfilter<span class="w"> </span>-n<span class="w"> </span>your-gateway-namespace<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/managed-by<span class="o">=</span>mcp-gateway-controller
 </span></code></pre></div>
 <p>If you see the EnvoyFilter, you can proceed to verification. If the EnvoyFilter is missing:</p>
 <ol>
 <li>
 <p>Check that the MCPGatewayExtension is ready:
-   <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>mcpgatewayextension<span class="w"> </span>-n<span class="w"> </span>mcp-system
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>mcpgatewayextension<span class="w"> </span>-n<span class="w"> </span>mcp-system
 </span></code></pre></div></p>
 </li>
 <li>
 <p>Check the controller logs for errors:
-   <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>deployment/mcp-gateway-controller
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>deployment/mcp-gateway-controller
 </span></code></pre></div></p>
 </li>
 <li>
@@ -2830,12 +2886,12 @@
 </ol>
 <h2 id="step-4-verify-configuration">Step 4: Verify Configuration<a class="headerlink" href="#step-4-verify-configuration" title="Permanent link">&para;</a></h2>
 <p>Test that the MCP endpoint is accessible through your Gateway:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://mcp.127-0-0-1.sslip.io:8080/mcp<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;id&quot;: 1, &quot;method&quot;: &quot;initialize&quot;}&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://mcp.127-0-0-1.sslip.io:8080/mcp<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;id&quot;: 1, &quot;method&quot;: &quot;initialize&quot;}&#39;</span>
 </span></code></pre></div>
 <p>You should get a response like this:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span><span class="nt">&quot;jsonrpc&quot;</span><span class="p">:</span><span class="s2">&quot;2.0&quot;</span><span class="p">,</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&quot;result&quot;</span><span class="p">:{</span><span class="nt">&quot;protocolVersion&quot;</span><span class="p">:</span><span class="s2">&quot;2025-03-26&quot;</span><span class="p">,</span><span class="nt">&quot;capabilities&quot;</span><span class="p">:{</span><span class="nt">&quot;tools&quot;</span><span class="p">:{</span><span class="nt">&quot;listChanged&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">}},</span><span class="nt">&quot;serverInfo&quot;</span><span class="p">:{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Kagenti MCP Broker&quot;</span><span class="p">,</span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="s2">&quot;0.0.1&quot;</span><span class="p">}}}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span><span class="nt">&quot;jsonrpc&quot;</span><span class="p">:</span><span class="s2">&quot;2.0&quot;</span><span class="p">,</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&quot;result&quot;</span><span class="p">:{</span><span class="nt">&quot;protocolVersion&quot;</span><span class="p">:</span><span class="s2">&quot;2025-03-26&quot;</span><span class="p">,</span><span class="nt">&quot;capabilities&quot;</span><span class="p">:{</span><span class="nt">&quot;tools&quot;</span><span class="p">:{</span><span class="nt">&quot;listChanged&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">}},</span><span class="nt">&quot;serverInfo&quot;</span><span class="p">:{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Kagenti MCP Broker&quot;</span><span class="p">,</span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="s2">&quot;0.0.1&quot;</span><span class="p">}}}</span>
 </span></code></pre></div>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <p>Now that you have MCP Gateway routing configured, you can connect your MCP servers:</p>
