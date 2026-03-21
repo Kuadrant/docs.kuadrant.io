@@ -14,10 +14,10 @@ This document will walk you through setting up the required configuration to ins
 
 5. [Authorino Resilient Configuration](#authorino-topologyconstraints-poddisruptionbudget-and-resource-limits)
 
-4. [[OpenShift Specific] Setup Observability ](#set-up-observability-openshift-only)
+6. [[OpenShift Specific] Setup Observability ](#set-up-observability-openshift-only)
 
 
-## Prerequisites  
+## Prerequisites
 
 * Kubernetes (or OpenShift) cluster with support for services of type `LoadBalancer`
 * [kubectl CLI](https://kubernetes.io/docs/reference/kubectl/)
@@ -78,7 +78,7 @@ kubectl apply -k $KUADRANT_DIR/install
 
 ```
 
-#### Verify the operators are installed:
+### Verify the operators are installed
 
 OLM should begin installing the dependencies for Kuadrant. To wait for them to be ready, run:
 
