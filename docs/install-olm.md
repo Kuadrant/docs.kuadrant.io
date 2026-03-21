@@ -1,6 +1,6 @@
 # Install and Configure Kuadrant and Sail via OLM using the kubectl CLI
 
-This document will walk you through setting up the required configuration to install kaudrant using [kustomize](https://kustomize.io/) or a tool that leverages kustomize such as kubectl along with OLM. It will also go through more advanced configuration options to enable building up a resilient configuration. You can view the full configuration built here: [Full AWS Example](https://github.com/Kuadrant/kuadrant-operator/tree/main/config/install/full-example-aws).
+This document will walk you through setting up the required configuration to install Kuadrant using [kustomize](https://kustomize.io/) or a tool that leverages kustomize such as kubectl along with OLM. It will also go through more advanced configuration options to enable building up a resilient configuration. You can view the full configuration built here: [Full AWS Example](https://github.com/Kuadrant/kuadrant-operator/tree/main/config/install/full-example-aws).
 
 
 
@@ -182,7 +182,7 @@ An example lets-encrypt certificate issuer is provided, but for more information
 
 Lets modify our existing local kustomize overlay to setup these secrets and the cluster certificate issuer:
 
-First you will need to setup the required `.env` file specified in the kuztomization.yaml file in the same directory as your existing configure kustomization. Below is an example for AWS:
+First you will need to setup the required `.env` file specified in the kustomization.yaml file in the same directory as your existing configure kustomization. Below is an example for AWS:
 
 ```bash
 touch $KUADRANT_DIR/configure/aws-credentials.env
@@ -323,7 +323,7 @@ patches:
 
 ```
 
-Your full `kustomize.yaml` will now be:
+Your full `kustomization.yaml` will now be:
 
 ```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -397,7 +397,7 @@ kubectl get kuadrant kuadrant -n kuadrant-system -o=wide
 
 ### Limitador: TopologyConstraints, PodDisruptionBudget and Resource Limits
 
-To set limits, replicas and a `PodDisruptionBudget` for limitador you can add the following to the existing limitador patch in your local `limitador` in the `$KUADRANT_DIR/configure/kustomize.yaml` spec:
+To set limits, replicas and a `PodDisruptionBudget` for limitador you can add the following to the existing limitador patch in your local `limitador` in the `$KUADRANT_DIR/configure/kustomization.yaml` spec:
 
 ```yaml
 pdb:
@@ -418,11 +418,11 @@ kubectl apply -k $KUADRANT_DIR/configure/
 
 For topology constraints, you will need to patch the limitador deployment directly:
 
-add the below `yaml` to a `limitador-topoloy-patch.yaml` file under a `$KUADRANT_DIR/configure/patches` directory:
+add the below `yaml` to a `limitador-topology-patch.yaml` file under a `$KUADRANT_DIR/configure/patches` directory:
 
 ```bash
 mkdir -p $KUADRANT_DIR/configure/patches
-touch $KUADRANT_DIR/configure/patches/limitador-topoloy-patch.yaml
+touch $KUADRANT_DIR/configure/patches/limitador-topology-patch.yaml
 ```
 
 ```yaml
@@ -448,7 +448,7 @@ spec:
 Apply this to the existing limitador deployment
 
 ```bash
-kubectl patch deployment limitador-limitador -n kuadrant-system --patch-file $KUADRANT_DIR/configure/patches/limitador-topoloy-patch.yaml
+kubectl patch deployment limitador-limitador -n kuadrant-system --patch-file $KUADRANT_DIR/configure/patches/limitador-topology-patch.yaml
 ```
 
 ### Authorino: TopologyConstraints, PodDisruptionBudget and Resource Limits
@@ -474,10 +474,10 @@ kubectl apply -k $KUADRANT_DIR/configure/
 ```
 
 To add resource limits and or topology constraints to Authorino. You will need to patch the Authorino deployment directly:
-Add the below `yaml` to a `authorino-topoloy-patch.yaml` under the `$KUADRANT_DIR/configure/patches` directory:
+Add the below `yaml` to a `authorino-topology-patch.yaml` under the `$KUADRANT_DIR/configure/patches` directory:
 
 ```bash
-touch $KUADRANT_DIR/configure/patches/authorino-topoloy-patch.yaml
+touch $KUADRANT_DIR/configure/patches/authorino-topology-patch.yaml
 ```
 
 ```yaml
@@ -509,7 +509,7 @@ spec:
 Apply the patch:
 
 ```bash
-kubectl patch deployment authorino -n kuadrant-system --patch-file $KUADRANT_DIR/configure/patches/authorino-topoloy-patch.yaml
+kubectl patch deployment authorino -n kuadrant-system --patch-file $KUADRANT_DIR/configure/patches/authorino-topology-patch.yaml
 ```
 
 Kuadrant is now installed and ready to use and the data plane components are configured to be distributed and resilient.
@@ -580,8 +580,8 @@ configure/
 ├── cluster-issuer.yaml
 ├── kustomization.yaml
 ├── patches
-│   ├── authorino-topoloy-patch.yaml
-│   └── limitador-topoloy-patch.yaml
+│   ├── authorino-topology-patch.yaml
+│   └── limitador-topology-patch.yaml
 └── redis-credentials.env
 ```
 
