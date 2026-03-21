@@ -32,9 +32,10 @@ Not all repos follow the same convention. When preparing a release branch, you n
 | `authorino` | Tag | `v0.23.0` |
 | `dns-operator` | Tag or release branch | `v0.15.0` |
 | `architecture` | Always `main` | `main` |
-| `developer-portal-controller` | TBD (new) | `main` |
-| `kuadrant-backstage-plugin` | TBD (new) | `main` |
-| `mcp-gateway` | TBD (new) | `main` |
+| `developer-portal-controller` | TBD | `main` |
+| `kuadrant-console-plugin` | TBD | `main` |
+| `kuadrant-backstage-plugin` | TBD | `main` |
+| `mcp-gateway` | Release branch | `release-0.5.1` |
 
 ## Running locally
 
