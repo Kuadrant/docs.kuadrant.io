@@ -31,7 +31,8 @@ This document will walk you through setting up the required configuration to ins
 - (Optional) Access to a Redis instance, for persistent storage for your rate limit counters.
 
 
-> Note: for multiple clusters, it would make sense to do the installation via a tool like [argocd](https://argo-cd.readthedocs.io/en/stable/). For other methods of addressing multiple clusters take a look at the [kubectl docs](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/)
+!!! note
+    For multiple clusters, it would make sense to do the installation via a tool like [argocd](https://argo-cd.readthedocs.io/en/stable/). For other methods of addressing multiple clusters take a look at the [kubectl docs](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/).
 
 ## Basic Installation
 
@@ -86,7 +87,8 @@ OLM should begin installing the dependencies for Kuadrant. To wait for them to b
 kubectl -n kuadrant-system wait --timeout=160s --for=condition=Available deployments --all
 ```
 
-> Note: you may see ` no matching resources found ` if the deployments are not yet present.
+!!! note
+    You may see `no matching resources found` if the deployments are not yet present.
 
 Once OLM has finished installing the operators (this can take several minutes). You should see the following in the kuadrant-system namespace:
 
@@ -169,7 +171,8 @@ When using OpenShift Service Mesh or other gateway providers that don't use the 
 kubectl patch subscription kuadrant -n kuadrant-system --type=json -p='[{"op":"add","path":"/spec/config","value":{"env":[{"name":"ISTIO_GATEWAY_CONTROLLER_NAMES","value":"openshift.io/gateway-controller/v1"}]}}]'
 ```
 
-> **Note**: For Envoy Gateway, use the same command but change the environment variable name to `ENVOY_GATEWAY_GATEWAY_CONTROLLER_NAMES`. The environment variables accept comma-separated lists of gateway controller names.
+!!! note
+    For Envoy Gateway, use the same command but change the environment variable name to `ENVOY_GATEWAY_GATEWAY_CONTROLLER_NAMES`. The environment variables accept comma-separated lists of gateway controller names.
 
 ## Configure DNS and TLS integration
 
