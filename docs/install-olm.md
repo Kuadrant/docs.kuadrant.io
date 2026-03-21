@@ -35,7 +35,7 @@ This document will walk you through setting up the required configuration to ins
 
 ## Basic Installation
 
-This first step will install just Kuadrant at a given released version (post v1.x) in the `kuadrant-system` namespace and the Sail Operator. There will be no credentials/dns providers configured (This is the most basic setup but means TLSPolicy and DNSPolicy will not be able to be used). 
+This first step will install Kuadrant at a given released version (post v1.x) in the `kuadrant-system` namespace and the Sail Operator. There will be no credentials/dns providers configured (This is the most basic setup but means TLSPolicy and DNSPolicy will not be able to be used). 
 
 Start by creating the following `kustomization.yaml` in a directory locally. For the purpose of this doc, we will use: `~/kuadrant/` directory.
 
@@ -133,7 +133,7 @@ resources:
 
 ```
 
-Lets apply this to your cluster:
+Apply this to your cluster:
 
 ```bash
 
@@ -180,7 +180,7 @@ In order for cert-manager and the Kuadrant DNS operator to be able to access and
 An example lets-encrypt certificate issuer is provided, but for more information on certificate issuers take a look at the [cert-manager documentation](https://cert-manager.io/docs/configuration/acme/).
 
 
-Lets modify our existing local kustomize overlay to setup these secrets and the cluster certificate issuer:
+Modify your existing local kustomize overlay to setup these secrets and the cluster certificate issuer:
 
 First you will need to setup the required `.env` file specified in the kustomization.yaml file in the same directory as your existing configure kustomization. Below is an example for AWS:
 
