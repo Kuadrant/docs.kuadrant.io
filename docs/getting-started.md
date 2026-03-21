@@ -1,6 +1,6 @@
 # Getting Started
 
-This guide let's you quickly evaluate Kuadrant. You will need a Kubernetes cluster to try out Kuadrant. If you prefer, you can use the following steps to set up a local [kind](https://kind.sigs.k8s.io/) cluster.
+This guide lets you quickly evaluate Kuadrant. You will need a Kubernetes cluster to try out Kuadrant. If you prefer, you can use the following steps to set up a local [kind](https://kind.sigs.k8s.io/) cluster.
 
 ## Kind Cluster Setup
 
