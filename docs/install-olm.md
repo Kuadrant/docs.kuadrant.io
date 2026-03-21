@@ -625,7 +625,7 @@ kubectl apply -k https://github.com/Kuadrant/kuadrant-operator/examples/dashboar
 
 Access the Grafana UI, using the default user/pass of root/secret.
 You should see the example dashboards in the 'monitoring' folder.
-For more information on the example dashboards, check out the [documentation](https://docs.kuadrant.io/latest/kuadrant-operator/doc/observability/examples/).
+For more information on the example dashboards, check out the [documentation](kuadrant-operator/doc/observability/examples.md).
 
 ```bash
 kubectl -n monitoring get routes grafana-route -o jsonpath="https://{.status.ingress[].host}"
