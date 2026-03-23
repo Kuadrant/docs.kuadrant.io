@@ -76,6 +76,10 @@ The site imports documentation from:
 - `authorino`: AuthN/AuthZ documentation
 - `architecture`: Architecture documentation and RFCs
 - `dns-operator`: DNS provider integrations
+- `developer-portal-controller`: Developer portal API management
+- `kuadrant-console-plugin`: OpenShift Console plugin
+- `kuadrant-backstage-plugin`: Backstage plugin
+- `mcp-gateway`: MCP gateway documentation
 
 Imports are defined in `mkdocs.yml` under the `multirepo` plugin configuration with branch/tag specifications.
 
@@ -89,7 +93,7 @@ Following the Diátaxis framework:
 ### Style Guidelines
 - Follow `style_guide.md` for writing standards:
   - Use second person ("you"), active voice, present tense
-  - Keep language simple (8th grade level)
+  - Keep language simple and accessible (avoid jargon, use short sentences, explain technical terms)
   - Use sentence case for headings
   - Code blocks must specify language
   - Environment variables use `SCREAMING_SNAKE_CASE`
