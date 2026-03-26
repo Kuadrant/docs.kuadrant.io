@@ -2386,9 +2386,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#clusterrole_2" class="md-nav__link">
+  <a href="#kuadrant-clusterrole" class="md-nav__link">
     <span class="md-ellipsis">
-      ClusterRole
+      Kuadrant ClusterRole
     </span>
   </a>
   
@@ -3568,9 +3568,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#clusterrole_2" class="md-nav__link">
+  <a href="#kuadrant-clusterrole" class="md-nav__link">
     <span class="md-ellipsis">
-      ClusterRole
+      Kuadrant ClusterRole
     </span>
   </a>
   
@@ -3733,26 +3733,28 @@
 <p><a href="https://docs.kuadrant.io/latest/getting-started/">Kuadrant operator 1.4+</a> installed</p>
 </li>
 <li>
-<p><strong>Use the development setup</strong> (recommended for testing):
-   <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>kuadrant-dev-setup
+<p><strong>Use the development setup</strong> (recommended for testing):</p>
+</li>
+</ol>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>kuadrant-dev-setup
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>make<span class="w"> </span>kind-create
 </span></code></pre></div>
-   This creates a kind cluster with:</p>
-</li>
+<p>This creates a kind cluster with:</p>
+<ul>
 <li>Kuadrant operator</li>
 <li>Gateway API CRDs v1.2.0</li>
 <li>Istio service mesh</li>
 <li>APIProduct and APIKey CRDs</li>
 <li>Demo resources (toystore)</li>
 <li>RHDH service account with proper RBAC</li>
-</ol>
+</ul>
 <h2 id="installation-on-red-hat-developer-hub-rhdh">Installation on Red Hat Developer Hub (RHDH)<a class="headerlink" href="#installation-on-red-hat-developer-hub-rhdh" title="Permanent link">&para;</a></h2>
 <p>This section covers installing the Kuadrant plugins on a Red Hat Developer Hub deployment in a Kubernetes/OpenShift cluster.</p>
 <h3 id="prerequisites_1">Prerequisites<a class="headerlink" href="#prerequisites_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Red Hat Developer Hub</li>
 </ul>
-<p>The Kuadrant plugins are tested and supported on <strong>Red Hat Developer Hub 1.6</strong> (based on Backstage 1.45.3).</p>
+<p>The Kuadrant plugins are tested and supported on <strong>Red Hat Developer Hub 1.8.4</strong> (based on Backstage 1.42.5).</p>
 <p><strong>Installation guide:</strong></p>
 <ul>
 <li><a href="https://docs.redhat.com/en/documentation/red_hat_developer_hub/1.6/">Installing Red Hat Developer Hub</a></li>
@@ -3766,17 +3768,26 @@
 <p>Set the following environment variables used for convenience in this tutorial:</p>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Your backstage instance namespace. Choose your own.</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">RHDH_NS</span><span class="o">=</span>rhdh
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_PLUGIN_VERSION</span><span class="o">=</span>v0.1.0
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_BACKSTAGE_PLUGIN_BACKEND_DYNAMIC_SHA256</span><span class="o">=</span><span class="k">$(</span>npm<span class="w"> </span>view<span class="w"> </span>@kuadrant/kuadrant-backstage-plugin-backend-dynamic@<span class="nv">$KUADRANT_PLUGIN_VERSION</span><span class="w"> </span>dist.integrity<span class="k">)</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_BACKSTAGE_PLUGIN_FRONTEND_SHA256</span><span class="o">=</span><span class="k">$(</span>npm<span class="w"> </span>view<span class="w"> </span>@kuadrant/kuadrant-backstage-plugin-frontend@<span class="nv">$KUADRANT_PLUGIN_VERSION</span><span class="w"> </span>dist.integrity<span class="k">)</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># base hostname of the cluster.</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># In openshift, this can be easily read with the following command</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1">#  oc get ingress.config.openshift.io cluster -o jsonpath=&#39;{.spec.domain}&#39;</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CLUSTER_HOSTNAME</span><span class="o">=</span>apps.example.com
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_PLUGIN_VERSION</span><span class="o">=</span>v0.2.1
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_BACKSTAGE_PLUGIN_BACKEND_DYNAMIC</span><span class="o">=</span><span class="s2">&quot;@kuadrant/kuadrant-backstage-plugin-backend-dynamic@</span><span class="nv">$KUADRANT_PLUGIN_VERSION</span><span class="s2">&quot;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_BACKSTAGE_PLUGIN_BACKEND_DYNAMIC_SHA256</span><span class="o">=</span><span class="k">$(</span>npm<span class="w"> </span>view<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_BACKSTAGE_PLUGIN_BACKEND_DYNAMIC</span><span class="si">}</span><span class="w"> </span>dist.integrity<span class="k">)</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_BACKSTAGE_PLUGIN_FRONTEND</span><span class="o">=</span><span class="s2">&quot;@kuadrant/kuadrant-backstage-plugin-frontend@</span><span class="nv">$KUADRANT_PLUGIN_VERSION</span><span class="s2">&quot;</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_BACKSTAGE_PLUGIN_FRONTEND_SHA256</span><span class="o">=</span><span class="k">$(</span>npm<span class="w"> </span>view<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_BACKSTAGE_PLUGIN_FRONTEND</span><span class="si">}</span><span class="w"> </span>dist.integrity<span class="k">)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># base hostname of the cluster.</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># In openshift, this can be easily read with the following command</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1">#  oc get ingress.config.openshift.io cluster -o jsonpath=&#39;{.spec.domain}&#39;</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CLUSTER_HOSTNAME</span><span class="o">=</span>apps.example.com
 </span></code></pre></div>
 <h4 id="backstage-namespace">Backstage Namespace<a class="headerlink" href="#backstage-namespace" title="Permanent link">&para;</a></h4>
 <p>Create namespace for the backstage instance</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span><span class="nv">$RHDH_NS</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="s">---</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="s">apiVersion: v1</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="s">kind: Namespace</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="s">metadata:</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="s">  name: $RHDH_NS</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <h4 id="dynamic-plugin-configmap">Dynamic Plugin ConfigMap<a class="headerlink" href="#dynamic-plugin-configmap" title="Permanent link">&para;</a></h4>
 <p>Create a config map with the dynamic plugin configuration required to load kuadrant backstage plugins as dynamic plugins.</p>
@@ -3816,25 +3827,24 @@ You can start with <a href="#rbac-policy">this RBAC policy content sample</a> th
 <p>The recommended approach is so-called <code>in-cluster</code> mode. In this mode, the backstage application running inside a Kubernetes pod authenticates to the Kubernetes API server using the service account automatically provided by Kubernetes.</p>
 <p>The <code>in-cluster</code> mode can be configured by either:</p>
 <ul>
-<li>
-<p>Omitting the <code>kubernetes</code> section entirely (setting it to null):
-  <div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">kubernetes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-</span></code></pre></div></p>
-</li>
-<li>
-<p>Omitting the <code>serviceAccountToken</code> when configuring clusters:
-  <div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">kubernetes</span><span class="p">:</span>
+<li>Omitting the <code>kubernetes</code> section entirely (setting it to null):</li>
+</ul>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">kubernetes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+</span></code></pre></div>
+<ul>
+<li>Omitting the <code>serviceAccountToken</code> when configuring clusters:</li>
+</ul>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">kubernetes</span><span class="p">:</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">serviceLocatorMethod</span><span class="p">:</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">multiTenant</span>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="nt">clusterLocatorMethods</span><span class="p">:</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">config</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">      </span><span class="nt">clusters</span><span class="p">:</span>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local-cluster</span>
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">          </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ignored</span>
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">          </span><span class="nt">authProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">serviceAccount</span>
-</span></code></pre></div></p>
-</li>
-</ul>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">config</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">      </span><span class="nt">clusters</span><span class="p">:</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local-cluster</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">          </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ignored</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">          </span><span class="nt">authProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">serviceAccount</span>
+</span></code></pre></div>
 <p>Alternatively, the kuadrant backstage plugin also supports the cluster locator method <a href="https://backstage.io/docs/features/kubernetes/configuration#config">config</a>. With this method, the kuadrant plugin will read cluster information, typically cluster URL and cluster access token (which usually expires), from the <code>app-config.yaml</code> file.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">kubernetes</span><span class="p">:</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">serviceLocatorMethod</span><span class="p">:</span>
@@ -3877,12 +3887,15 @@ You can start with <a href="#rbac-policy">this RBAC policy content sample</a> th
 </span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
 </span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>
 </span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">allow</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Component</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">API</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">APIProduct</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Location</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Template</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Domain</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">User</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Group</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">System</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Resource</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Plugin</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Package</span><span class="p p-Indicator">]</span>
-</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>
-</span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="nt">permission</span><span class="p">:</span>
-</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-12-23"><a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a><span class="w">  </span><span class="nt">rbac</span><span class="p">:</span>
-</span><span id="__span-12-24"><a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a><span class="w">    </span><span class="nt">policies-csv-file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/opt/app-root/etc/rbac-policy.csv</span>
-</span><span id="__span-12-25"><a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a><span class="w">    </span><span class="nt">policyFileReload</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="w">  </span><span class="nt">locations</span><span class="p">:</span>
+</span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">file</span>
+</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="w">      </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/opt/app-root/src/catalog-entities/all.yaml</span>
+</span><span id="__span-12-23"><a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>
+</span><span id="__span-12-24"><a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a><span class="nt">permission</span><span class="p">:</span>
+</span><span id="__span-12-25"><a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-12-26"><a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a><span class="w">  </span><span class="nt">rbac</span><span class="p">:</span>
+</span><span id="__span-12-27"><a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a><span class="w">    </span><span class="nt">policies-csv-file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/opt/app-root/etc/rbac-policy.csv</span>
+</span><span id="__span-12-28"><a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a><span class="w">    </span><span class="nt">policyFileReload</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span></code></pre></div>
 
 </details>
@@ -3892,7 +3905,7 @@ You can start with <a href="#rbac-policy">this RBAC policy content sample</a> th
 </span></code></pre></div>
 <h3 id="rbac-for-kuadrant-crds">RBAC for Kuadrant CRDs<a class="headerlink" href="#rbac-for-kuadrant-crds" title="Permanent link">&para;</a></h3>
 <p>This step grants permissions to the backstage application to manage kuadrant CRD's existing in the cluster. It consist on two steps: creating the clusterRole and then the ClusterRoleBinding.</p>
-<p>First, create the <a href="#clusterrole">ClusterRole</a> which defines permissions on the kuadrant CRD's.</p>
+<p>First, create the <a href="#kuadrant-clusterrole">ClusterRole</a> which defines permissions on the kuadrant CRD's.</p>
 <p>By default, backstage application will run with the <code>default</code> service account of the namespace.
 Thus, secondly, we need to bind that cluster role to this service account with cluster wide scope. Therefore, create <em>CluterRoleBinding</em> as follows:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="l l-Scalar l-Scalar-Plain">kubectl apply -f - &lt;&lt;EOF</span>
@@ -4000,10 +4013,10 @@ Thus, secondly, we need to bind that cluster role to this service account with c
 <p>This section covers installing the plugins using <a href="https://github.com/redhat-developer/rhdh-local">rhdh-local</a> for local development with Docker Compose.</p>
 <h3 id="1-configure-dynamic-plugins">1. Configure Dynamic Plugins<a class="headerlink" href="#1-configure-dynamic-plugins" title="Permanent link">&para;</a></h3>
 <p>Copy <a href="#dynamic-plugins">Kuadrant backstage dynamic plugins metadata</a> into a file named <code>configs/dynamic-plugins/dynamic-plugins.override.yaml</code>:</p>
-<p>To get the integrity hash:
+<p>To get the integrity hash:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>npm<span class="w"> </span>view<span class="w"> </span>@kuadrant/kuadrant-backstage-plugin-frontend<span class="w"> </span>dist.integrity
 </span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>npm<span class="w"> </span>view<span class="w"> </span>@kuadrant/kuadrant-backstage-plugin-backend-dynamic<span class="w"> </span>dist.integrity
-</span></code></pre></div></p>
+</span></code></pre></div>
 <h3 id="2-configure-kubernetes-access">2. Configure Kubernetes Access<a class="headerlink" href="#2-configure-kubernetes-access" title="Permanent link">&para;</a></h3>
 <p>Add to <code>configs/app-config/app-config.yaml</code>:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nt">kubernetes</span><span class="p">:</span>
@@ -4072,7 +4085,7 @@ Thus, secondly, we need to bind that cluster role to this service account with c
 <h3 id="5-start-rhdh">5. Start RHDH<a class="headerlink" href="#5-start-rhdh" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up
 </span></code></pre></div>
-<p>Visit http://localhost:7007/kuadrant</p>
+<p>Visit <a href="http://localhost:7007/kuadrant">http://localhost:7007/kuadrant</a></p>
 <h2 id="installation-on-backstage">Installation on Backstage<a class="headerlink" href="#installation-on-backstage" title="Permanent link">&para;</a></h2>
 <p>This section covers installing the plugins on a standard Backstage instance.</p>
 <h3 id="important-rbac-plugin-requirement">Important: RBAC Plugin Requirement<a class="headerlink" href="#important-rbac-plugin-requirement" title="Permanent link">&para;</a></h3>
@@ -4233,7 +4246,7 @@ Thus, secondly, we need to bind that cluster role to this service account with c
 <h3 id="11-start-backstage">11. Start Backstage<a class="headerlink" href="#11-start-backstage" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>yarn<span class="w"> </span>start
 </span></code></pre></div>
-<p>Visit http://localhost:3000/kuadrant</p>
+<p>Visit <a href="http://localhost:3000/kuadrant">http://localhost:3000/kuadrant</a></p>
 <hr />
 <h2 id="assets">Assets<a class="headerlink" href="#assets" title="Permanent link">&para;</a></h2>
 <h3 id="dynamic-plugins">Dynamic Plugins<a class="headerlink" href="#dynamic-plugins" title="Permanent link">&para;</a></h3>
@@ -4257,36 +4270,66 @@ Thus, secondly, we need to bind that cluster role to this service account with c
 </span><span id="__span-45-18"><a id="__codelineno-45-18" name="__codelineno-45-18" href="#__codelineno-45-18"></a><span class="w">      </span><span class="nt">dynamicPlugins</span><span class="p">:</span>
 </span><span id="__span-45-19"><a id="__codelineno-45-19" name="__codelineno-45-19" href="#__codelineno-45-19"></a><span class="w">        </span><span class="nt">frontend</span><span class="p">:</span>
 </span><span id="__span-45-20"><a id="__codelineno-45-20" name="__codelineno-45-20" href="#__codelineno-45-20"></a><span class="w">          </span><span class="nt">internal.plugin-kuadrant</span><span class="p">:</span>
-</span><span id="__span-45-21"><a id="__codelineno-45-21" name="__codelineno-45-21" href="#__codelineno-45-21"></a><span class="w">            </span><span class="nt">appIcons</span><span class="p">:</span>
-</span><span id="__span-45-22"><a id="__codelineno-45-22" name="__codelineno-45-22" href="#__codelineno-45-22"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrantIcon</span>
-</span><span id="__span-45-23"><a id="__codelineno-45-23" name="__codelineno-45-23" href="#__codelineno-45-23"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KuadrantIcon</span>
-</span><span id="__span-45-24"><a id="__codelineno-45-24" name="__codelineno-45-24" href="#__codelineno-45-24"></a><span class="w">            </span><span class="nt">dynamicRoutes</span><span class="p">:</span>
-</span><span id="__span-45-25"><a id="__codelineno-45-25" name="__codelineno-45-25" href="#__codelineno-45-25"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/kuadrant</span>
-</span><span id="__span-45-26"><a id="__codelineno-45-26" name="__codelineno-45-26" href="#__codelineno-45-26"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KuadrantPage</span>
-</span><span id="__span-45-27"><a id="__codelineno-45-27" name="__codelineno-45-27" href="#__codelineno-45-27"></a><span class="w">                </span><span class="nt">menuItem</span><span class="p">:</span>
-</span><span id="__span-45-28"><a id="__codelineno-45-28" name="__codelineno-45-28" href="#__codelineno-45-28"></a><span class="w">                  </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrantIcon</span>
-</span><span id="__span-45-29"><a id="__codelineno-45-29" name="__codelineno-45-29" href="#__codelineno-45-29"></a><span class="w">                  </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kuadrant</span>
-</span><span id="__span-45-30"><a id="__codelineno-45-30" name="__codelineno-45-30" href="#__codelineno-45-30"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/kuadrant/api-products/:namespace/:name</span>
-</span><span id="__span-45-31"><a id="__codelineno-45-31" name="__codelineno-45-31" href="#__codelineno-45-31"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ApiProductDetailPage</span>
-</span><span id="__span-45-32"><a id="__codelineno-45-32" name="__codelineno-45-32" href="#__codelineno-45-32"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/kuadrant/api-keys/:namespace/:name</span>
-</span><span id="__span-45-33"><a id="__codelineno-45-33" name="__codelineno-45-33" href="#__codelineno-45-33"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ApiKeyDetailPage</span>
-</span><span id="__span-45-34"><a id="__codelineno-45-34" name="__codelineno-45-34" href="#__codelineno-45-34"></a><span class="w">            </span><span class="nt">mountPoints</span><span class="p">:</span>
-</span><span id="__span-45-35"><a id="__codelineno-45-35" name="__codelineno-45-35" href="#__codelineno-45-35"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mountPoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">entity.page.api/cards</span>
-</span><span id="__span-45-36"><a id="__codelineno-45-36" name="__codelineno-45-36" href="#__codelineno-45-36"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EntityKuadrantApiKeyManagementTab</span>
-</span><span id="__span-45-37"><a id="__codelineno-45-37" name="__codelineno-45-37" href="#__codelineno-45-37"></a><span class="w">                </span><span class="nt">config</span><span class="p">:</span>
-</span><span id="__span-45-38"><a id="__codelineno-45-38" name="__codelineno-45-38" href="#__codelineno-45-38"></a><span class="w">                  </span><span class="nt">layout</span><span class="p">:</span>
-</span><span id="__span-45-39"><a id="__codelineno-45-39" name="__codelineno-45-39" href="#__codelineno-45-39"></a><span class="w">                    </span><span class="nt">gridColumn</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">-1&quot;</span>
-</span><span id="__span-45-40"><a id="__codelineno-45-40" name="__codelineno-45-40" href="#__codelineno-45-40"></a><span class="w">                  </span><span class="nt">if</span><span class="p">:</span>
-</span><span id="__span-45-41"><a id="__codelineno-45-41" name="__codelineno-45-41" href="#__codelineno-45-41"></a><span class="w">                    </span><span class="nt">allOf</span><span class="p">:</span>
-</span><span id="__span-45-42"><a id="__codelineno-45-42" name="__codelineno-45-42" href="#__codelineno-45-42"></a><span class="w">                      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">isKind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span>
-</span><span id="__span-45-43"><a id="__codelineno-45-43" name="__codelineno-45-43" href="#__codelineno-45-43"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mountPoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">entity.page.api/cards</span>
-</span><span id="__span-45-44"><a id="__codelineno-45-44" name="__codelineno-45-44" href="#__codelineno-45-44"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EntityKuadrantApiProductInfoContent</span>
-</span><span id="__span-45-45"><a id="__codelineno-45-45" name="__codelineno-45-45" href="#__codelineno-45-45"></a><span class="w">                </span><span class="nt">config</span><span class="p">:</span>
-</span><span id="__span-45-46"><a id="__codelineno-45-46" name="__codelineno-45-46" href="#__codelineno-45-46"></a><span class="w">                  </span><span class="nt">layout</span><span class="p">:</span>
-</span><span id="__span-45-47"><a id="__codelineno-45-47" name="__codelineno-45-47" href="#__codelineno-45-47"></a><span class="w">                    </span><span class="nt">gridColumn</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">-1&quot;</span>
-</span><span id="__span-45-48"><a id="__codelineno-45-48" name="__codelineno-45-48" href="#__codelineno-45-48"></a><span class="w">                  </span><span class="nt">if</span><span class="p">:</span>
-</span><span id="__span-45-49"><a id="__codelineno-45-49" name="__codelineno-45-49" href="#__codelineno-45-49"></a><span class="w">                    </span><span class="nt">allOf</span><span class="p">:</span>
-</span><span id="__span-45-50"><a id="__codelineno-45-50" name="__codelineno-45-50" href="#__codelineno-45-50"></a><span class="w">                      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">isKind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span>
+</span><span id="__span-45-21"><a id="__codelineno-45-21" name="__codelineno-45-21" href="#__codelineno-45-21"></a><span class="w">            </span><span class="nt">apiFactories</span><span class="p">:</span>
+</span><span id="__span-45-22"><a id="__codelineno-45-22" name="__codelineno-45-22" href="#__codelineno-45-22"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrantApiFactory</span>
+</span><span id="__span-45-23"><a id="__codelineno-45-23" name="__codelineno-45-23" href="#__codelineno-45-23"></a><span class="w">            </span><span class="nt">appIcons</span><span class="p">:</span>
+</span><span id="__span-45-24"><a id="__codelineno-45-24" name="__codelineno-45-24" href="#__codelineno-45-24"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrantIcon</span>
+</span><span id="__span-45-25"><a id="__codelineno-45-25" name="__codelineno-45-25" href="#__codelineno-45-25"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KuadrantIcon</span>
+</span><span id="__span-45-26"><a id="__codelineno-45-26" name="__codelineno-45-26" href="#__codelineno-45-26"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apiIcon</span>
+</span><span id="__span-45-27"><a id="__codelineno-45-27" name="__codelineno-45-27" href="#__codelineno-45-27"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ApiIcon</span>
+</span><span id="__span-45-28"><a id="__codelineno-45-28" name="__codelineno-45-28" href="#__codelineno-45-28"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyIcon</span>
+</span><span id="__span-45-29"><a id="__codelineno-45-29" name="__codelineno-45-29" href="#__codelineno-45-29"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KeyIcon</span>
+</span><span id="__span-45-30"><a id="__codelineno-45-30" name="__codelineno-45-30" href="#__codelineno-45-30"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">approvalIcon</span>
+</span><span id="__span-45-31"><a id="__codelineno-45-31" name="__codelineno-45-31" href="#__codelineno-45-31"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ApprovalIcon</span>
+</span><span id="__span-45-32"><a id="__codelineno-45-32" name="__codelineno-45-32" href="#__codelineno-45-32"></a><span class="w">            </span><span class="nt">menuItems</span><span class="p">:</span>
+</span><span id="__span-45-33"><a id="__codelineno-45-33" name="__codelineno-45-33" href="#__codelineno-45-33"></a><span class="w">              </span><span class="nt">kuadrant.api-products</span><span class="p">:</span>
+</span><span id="__span-45-34"><a id="__codelineno-45-34" name="__codelineno-45-34" href="#__codelineno-45-34"></a><span class="w">                </span><span class="nt">parent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant</span>
+</span><span id="__span-45-35"><a id="__codelineno-45-35" name="__codelineno-45-35" href="#__codelineno-45-35"></a><span class="w">              </span><span class="nt">kuadrant.my-api-keys</span><span class="p">:</span>
+</span><span id="__span-45-36"><a id="__codelineno-45-36" name="__codelineno-45-36" href="#__codelineno-45-36"></a><span class="w">                </span><span class="nt">parent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant</span>
+</span><span id="__span-45-37"><a id="__codelineno-45-37" name="__codelineno-45-37" href="#__codelineno-45-37"></a><span class="w">              </span><span class="nt">kuadrant.api-key-approval</span><span class="p">:</span>
+</span><span id="__span-45-38"><a id="__codelineno-45-38" name="__codelineno-45-38" href="#__codelineno-45-38"></a><span class="w">                </span><span class="nt">parent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant</span>
+</span><span id="__span-45-39"><a id="__codelineno-45-39" name="__codelineno-45-39" href="#__codelineno-45-39"></a><span class="w">            </span><span class="nt">dynamicRoutes</span><span class="p">:</span>
+</span><span id="__span-45-40"><a id="__codelineno-45-40" name="__codelineno-45-40" href="#__codelineno-45-40"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/kuadrant</span>
+</span><span id="__span-45-41"><a id="__codelineno-45-41" name="__codelineno-45-41" href="#__codelineno-45-41"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KuadrantPage</span>
+</span><span id="__span-45-42"><a id="__codelineno-45-42" name="__codelineno-45-42" href="#__codelineno-45-42"></a><span class="w">                </span><span class="nt">menuItem</span><span class="p">:</span>
+</span><span id="__span-45-43"><a id="__codelineno-45-43" name="__codelineno-45-43" href="#__codelineno-45-43"></a><span class="w">                  </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrantIcon</span>
+</span><span id="__span-45-44"><a id="__codelineno-45-44" name="__codelineno-45-44" href="#__codelineno-45-44"></a><span class="w">                  </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kuadrant</span>
+</span><span id="__span-45-45"><a id="__codelineno-45-45" name="__codelineno-45-45" href="#__codelineno-45-45"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/kuadrant/api-products</span>
+</span><span id="__span-45-46"><a id="__codelineno-45-46" name="__codelineno-45-46" href="#__codelineno-45-46"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ApiProductsPage</span>
+</span><span id="__span-45-47"><a id="__codelineno-45-47" name="__codelineno-45-47" href="#__codelineno-45-47"></a><span class="w">                </span><span class="nt">menuItem</span><span class="p">:</span>
+</span><span id="__span-45-48"><a id="__codelineno-45-48" name="__codelineno-45-48" href="#__codelineno-45-48"></a><span class="w">                  </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apiIcon</span>
+</span><span id="__span-45-49"><a id="__codelineno-45-49" name="__codelineno-45-49" href="#__codelineno-45-49"></a><span class="w">                  </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">API Products</span>
+</span><span id="__span-45-50"><a id="__codelineno-45-50" name="__codelineno-45-50" href="#__codelineno-45-50"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/kuadrant/my-api-keys</span>
+</span><span id="__span-45-51"><a id="__codelineno-45-51" name="__codelineno-45-51" href="#__codelineno-45-51"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MyApiKeysPage</span>
+</span><span id="__span-45-52"><a id="__codelineno-45-52" name="__codelineno-45-52" href="#__codelineno-45-52"></a><span class="w">                </span><span class="nt">menuItem</span><span class="p">:</span>
+</span><span id="__span-45-53"><a id="__codelineno-45-53" name="__codelineno-45-53" href="#__codelineno-45-53"></a><span class="w">                  </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyIcon</span>
+</span><span id="__span-45-54"><a id="__codelineno-45-54" name="__codelineno-45-54" href="#__codelineno-45-54"></a><span class="w">                  </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">My API Keys</span>
+</span><span id="__span-45-55"><a id="__codelineno-45-55" name="__codelineno-45-55" href="#__codelineno-45-55"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/kuadrant/api-key-approval</span>
+</span><span id="__span-45-56"><a id="__codelineno-45-56" name="__codelineno-45-56" href="#__codelineno-45-56"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ApiKeyApprovalPage</span>
+</span><span id="__span-45-57"><a id="__codelineno-45-57" name="__codelineno-45-57" href="#__codelineno-45-57"></a><span class="w">                </span><span class="nt">menuItem</span><span class="p">:</span>
+</span><span id="__span-45-58"><a id="__codelineno-45-58" name="__codelineno-45-58" href="#__codelineno-45-58"></a><span class="w">                  </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">approvalIcon</span>
+</span><span id="__span-45-59"><a id="__codelineno-45-59" name="__codelineno-45-59" href="#__codelineno-45-59"></a><span class="w">                  </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">API Key Approval</span>
+</span><span id="__span-45-60"><a id="__codelineno-45-60" name="__codelineno-45-60" href="#__codelineno-45-60"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/kuadrant/api-products/:namespace/:name</span>
+</span><span id="__span-45-61"><a id="__codelineno-45-61" name="__codelineno-45-61" href="#__codelineno-45-61"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ApiProductDetailPage</span>
+</span><span id="__span-45-62"><a id="__codelineno-45-62" name="__codelineno-45-62" href="#__codelineno-45-62"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/kuadrant/api-keys/:namespace/:name</span>
+</span><span id="__span-45-63"><a id="__codelineno-45-63" name="__codelineno-45-63" href="#__codelineno-45-63"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ApiKeyDetailPage</span>
+</span><span id="__span-45-64"><a id="__codelineno-45-64" name="__codelineno-45-64" href="#__codelineno-45-64"></a><span class="w">            </span><span class="nt">mountPoints</span><span class="p">:</span>
+</span><span id="__span-45-65"><a id="__codelineno-45-65" name="__codelineno-45-65" href="#__codelineno-45-65"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mountPoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">entity.page.api/cards</span>
+</span><span id="__span-45-66"><a id="__codelineno-45-66" name="__codelineno-45-66" href="#__codelineno-45-66"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EntityKuadrantApiKeyManagementTab</span>
+</span><span id="__span-45-67"><a id="__codelineno-45-67" name="__codelineno-45-67" href="#__codelineno-45-67"></a><span class="w">                </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-45-68"><a id="__codelineno-45-68" name="__codelineno-45-68" href="#__codelineno-45-68"></a><span class="w">                  </span><span class="nt">layout</span><span class="p">:</span>
+</span><span id="__span-45-69"><a id="__codelineno-45-69" name="__codelineno-45-69" href="#__codelineno-45-69"></a><span class="w">                    </span><span class="nt">gridColumn</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">-1&quot;</span>
+</span><span id="__span-45-70"><a id="__codelineno-45-70" name="__codelineno-45-70" href="#__codelineno-45-70"></a><span class="w">                  </span><span class="nt">if</span><span class="p">:</span>
+</span><span id="__span-45-71"><a id="__codelineno-45-71" name="__codelineno-45-71" href="#__codelineno-45-71"></a><span class="w">                    </span><span class="nt">allOf</span><span class="p">:</span>
+</span><span id="__span-45-72"><a id="__codelineno-45-72" name="__codelineno-45-72" href="#__codelineno-45-72"></a><span class="w">                      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">isKind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span>
+</span><span id="__span-45-73"><a id="__codelineno-45-73" name="__codelineno-45-73" href="#__codelineno-45-73"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mountPoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">entity.page.api/cards</span>
+</span><span id="__span-45-74"><a id="__codelineno-45-74" name="__codelineno-45-74" href="#__codelineno-45-74"></a><span class="w">                </span><span class="nt">importName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EntityKuadrantApiProductInfoContent</span>
+</span><span id="__span-45-75"><a id="__codelineno-45-75" name="__codelineno-45-75" href="#__codelineno-45-75"></a><span class="w">                </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-45-76"><a id="__codelineno-45-76" name="__codelineno-45-76" href="#__codelineno-45-76"></a><span class="w">                  </span><span class="nt">layout</span><span class="p">:</span>
+</span><span id="__span-45-77"><a id="__codelineno-45-77" name="__codelineno-45-77" href="#__codelineno-45-77"></a><span class="w">                    </span><span class="nt">gridColumn</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">-1&quot;</span>
+</span><span id="__span-45-78"><a id="__codelineno-45-78" name="__codelineno-45-78" href="#__codelineno-45-78"></a><span class="w">                  </span><span class="nt">if</span><span class="p">:</span>
+</span><span id="__span-45-79"><a id="__codelineno-45-79" name="__codelineno-45-79" href="#__codelineno-45-79"></a><span class="w">                    </span><span class="nt">allOf</span><span class="p">:</span>
+</span><span id="__span-45-80"><a id="__codelineno-45-80" name="__codelineno-45-80" href="#__codelineno-45-80"></a><span class="w">                      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">isKind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span>
 </span></code></pre></div>
 <h3 id="rbac-policy">RBAC Policy<a class="headerlink" href="#rbac-policy" title="Permanent link">&para;</a></h3>
 <p>Example <code>rbac-policy.csv</code> for Kuadrant permissions:</p>
@@ -4298,47 +4341,51 @@ Thus, secondly, we need to bind that cluster role to this service account with c
 </span><span id="__span-46-6"><a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a>p, role:default/api-consumer, kuadrant.apikey.update.own, update, allow
 </span><span id="__span-46-7"><a id="__codelineno-46-7" name="__codelineno-46-7" href="#__codelineno-46-7"></a>p, role:default/api-consumer, kuadrant.apikey.delete.own, delete, allow
 </span><span id="__span-46-8"><a id="__codelineno-46-8" name="__codelineno-46-8" href="#__codelineno-46-8"></a>p, role:default/api-consumer, catalog.entity.read, read, allow
-</span><span id="__span-46-9"><a id="__codelineno-46-9" name="__codelineno-46-9" href="#__codelineno-46-9"></a>
-</span><span id="__span-46-10"><a id="__codelineno-46-10" name="__codelineno-46-10" href="#__codelineno-46-10"></a># api owner: publishes apis they own, approves requests for their apis
-</span><span id="__span-46-11"><a id="__codelineno-46-11" name="__codelineno-46-11" href="#__codelineno-46-11"></a>p, role:default/api-owner, kuadrant.planpolicy.read, read, allow
-</span><span id="__span-46-12"><a id="__codelineno-46-12" name="__codelineno-46-12" href="#__codelineno-46-12"></a>p, role:default/api-owner, kuadrant.planpolicy.list, read, allow
-</span><span id="__span-46-13"><a id="__codelineno-46-13" name="__codelineno-46-13" href="#__codelineno-46-13"></a>p, role:default/api-owner, kuadrant.apiproduct.create, create, allow
-</span><span id="__span-46-14"><a id="__codelineno-46-14" name="__codelineno-46-14" href="#__codelineno-46-14"></a>p, role:default/api-owner, kuadrant.apiproduct.read.all, read, allow
-</span><span id="__span-46-15"><a id="__codelineno-46-15" name="__codelineno-46-15" href="#__codelineno-46-15"></a>p, role:default/api-owner, kuadrant.apiproduct.update.own, update, allow
-</span><span id="__span-46-16"><a id="__codelineno-46-16" name="__codelineno-46-16" href="#__codelineno-46-16"></a>p, role:default/api-owner, kuadrant.apiproduct.delete.own, delete, allow
-</span><span id="__span-46-17"><a id="__codelineno-46-17" name="__codelineno-46-17" href="#__codelineno-46-17"></a>p, role:default/api-owner, kuadrant.apiproduct.list, read, allow
-</span><span id="__span-46-18"><a id="__codelineno-46-18" name="__codelineno-46-18" href="#__codelineno-46-18"></a>p, role:default/api-owner, kuadrant.apikey.create, create, allow, apiproduct:*/*
-</span><span id="__span-46-19"><a id="__codelineno-46-19" name="__codelineno-46-19" href="#__codelineno-46-19"></a>p, role:default/api-owner, kuadrant.apikey.read.own, read, allow
-</span><span id="__span-46-20"><a id="__codelineno-46-20" name="__codelineno-46-20" href="#__codelineno-46-20"></a>p, role:default/api-owner, kuadrant.apikey.update.own, update, allow
-</span><span id="__span-46-21"><a id="__codelineno-46-21" name="__codelineno-46-21" href="#__codelineno-46-21"></a>p, role:default/api-owner, kuadrant.apikey.delete.own, delete, allow
-</span><span id="__span-46-22"><a id="__codelineno-46-22" name="__codelineno-46-22" href="#__codelineno-46-22"></a>p, role:default/api-owner, kuadrant.apikey.approve, update, allow
-</span><span id="__span-46-23"><a id="__codelineno-46-23" name="__codelineno-46-23" href="#__codelineno-46-23"></a>p, role:default/api-owner, catalog.entity.read, read, allow
-</span><span id="__span-46-24"><a id="__codelineno-46-24" name="__codelineno-46-24" href="#__codelineno-46-24"></a>
-</span><span id="__span-46-25"><a id="__codelineno-46-25" name="__codelineno-46-25" href="#__codelineno-46-25"></a># api admin: platform engineers who manage all api products
-</span><span id="__span-46-26"><a id="__codelineno-46-26" name="__codelineno-46-26" href="#__codelineno-46-26"></a>p, role:default/api-admin, kuadrant.planpolicy.read, read, allow
-</span><span id="__span-46-27"><a id="__codelineno-46-27" name="__codelineno-46-27" href="#__codelineno-46-27"></a>p, role:default/api-admin, kuadrant.planpolicy.list, read, allow
-</span><span id="__span-46-28"><a id="__codelineno-46-28" name="__codelineno-46-28" href="#__codelineno-46-28"></a>p, role:default/api-admin, kuadrant.apiproduct.create, create, allow
-</span><span id="__span-46-29"><a id="__codelineno-46-29" name="__codelineno-46-29" href="#__codelineno-46-29"></a>p, role:default/api-admin, kuadrant.apiproduct.read.all, read, allow
-</span><span id="__span-46-30"><a id="__codelineno-46-30" name="__codelineno-46-30" href="#__codelineno-46-30"></a>p, role:default/api-admin, kuadrant.apiproduct.update.all, update, allow
-</span><span id="__span-46-31"><a id="__codelineno-46-31" name="__codelineno-46-31" href="#__codelineno-46-31"></a>p, role:default/api-admin, kuadrant.apiproduct.delete.all, delete, allow
-</span><span id="__span-46-32"><a id="__codelineno-46-32" name="__codelineno-46-32" href="#__codelineno-46-32"></a>p, role:default/api-admin, kuadrant.apiproduct.list, read, allow
-</span><span id="__span-46-33"><a id="__codelineno-46-33" name="__codelineno-46-33" href="#__codelineno-46-33"></a>p, role:default/api-admin, kuadrant.apikey.create, create, allow, apiproduct:*/*
-</span><span id="__span-46-34"><a id="__codelineno-46-34" name="__codelineno-46-34" href="#__codelineno-46-34"></a>p, role:default/api-admin, kuadrant.apikey.read.all, read, allow
-</span><span id="__span-46-35"><a id="__codelineno-46-35" name="__codelineno-46-35" href="#__codelineno-46-35"></a>p, role:default/api-admin, kuadrant.apikey.update.all, update, allow
-</span><span id="__span-46-36"><a id="__codelineno-46-36" name="__codelineno-46-36" href="#__codelineno-46-36"></a>p, role:default/api-admin, kuadrant.apikey.delete.all, delete, allow
-</span><span id="__span-46-37"><a id="__codelineno-46-37" name="__codelineno-46-37" href="#__codelineno-46-37"></a>p, role:default/api-admin, kuadrant.apikey.approve, update, allow
-</span><span id="__span-46-38"><a id="__codelineno-46-38" name="__codelineno-46-38" href="#__codelineno-46-38"></a>p, role:default/api-admin, catalog.entity.read, read, allow
-</span><span id="__span-46-39"><a id="__codelineno-46-39" name="__codelineno-46-39" href="#__codelineno-46-39"></a>
-</span><span id="__span-46-40"><a id="__codelineno-46-40" name="__codelineno-46-40" href="#__codelineno-46-40"></a># assign groups to roles
-</span><span id="__span-46-41"><a id="__codelineno-46-41" name="__codelineno-46-41" href="#__codelineno-46-41"></a>g, group:default/api-consumers, role:default/api-consumer
-</span><span id="__span-46-42"><a id="__codelineno-46-42" name="__codelineno-46-42" href="#__codelineno-46-42"></a>g, group:default/api-owners, role:default/api-owner
-</span><span id="__span-46-43"><a id="__codelineno-46-43" name="__codelineno-46-43" href="#__codelineno-46-43"></a>g, group:default/api-admins, role:default/api-admin
-</span><span id="__span-46-44"><a id="__codelineno-46-44" name="__codelineno-46-44" href="#__codelineno-46-44"></a>
-</span><span id="__span-46-45"><a id="__codelineno-46-45" name="__codelineno-46-45" href="#__codelineno-46-45"></a># Development/testing only: assign guest user to admin role.
-</span><span id="__span-46-46"><a id="__codelineno-46-46" name="__codelineno-46-46" href="#__codelineno-46-46"></a># For production, remove this line and assign roles to your actual users or groups.
-</span><span id="__span-46-47"><a id="__codelineno-46-47" name="__codelineno-46-47" href="#__codelineno-46-47"></a>g, user:default/guest, role:default/api-admin
+</span><span id="__span-46-9"><a id="__codelineno-46-9" name="__codelineno-46-9" href="#__codelineno-46-9"></a>p, role:default/api-consumer, kuadrant.planpolicy.list, read, allow
+</span><span id="__span-46-10"><a id="__codelineno-46-10" name="__codelineno-46-10" href="#__codelineno-46-10"></a>p, role:default/api-consumer, kuadrant.authpolicy.list, read, allow
+</span><span id="__span-46-11"><a id="__codelineno-46-11" name="__codelineno-46-11" href="#__codelineno-46-11"></a>p, role:default/api-consumer, kuadrant.ratelimitpolicy.list, read, allow
+</span><span id="__span-46-12"><a id="__codelineno-46-12" name="__codelineno-46-12" href="#__codelineno-46-12"></a>p, role:default/api-consumer, kuadrant.httproute.list, read, allow
+</span><span id="__span-46-13"><a id="__codelineno-46-13" name="__codelineno-46-13" href="#__codelineno-46-13"></a>
+</span><span id="__span-46-14"><a id="__codelineno-46-14" name="__codelineno-46-14" href="#__codelineno-46-14"></a># api owner: publishes apis they own, approves requests for their apis
+</span><span id="__span-46-15"><a id="__codelineno-46-15" name="__codelineno-46-15" href="#__codelineno-46-15"></a>p, role:default/api-owner, kuadrant.planpolicy.read, read, allow
+</span><span id="__span-46-16"><a id="__codelineno-46-16" name="__codelineno-46-16" href="#__codelineno-46-16"></a>p, role:default/api-owner, kuadrant.planpolicy.list, read, allow
+</span><span id="__span-46-17"><a id="__codelineno-46-17" name="__codelineno-46-17" href="#__codelineno-46-17"></a>p, role:default/api-owner, kuadrant.apiproduct.create, create, allow
+</span><span id="__span-46-18"><a id="__codelineno-46-18" name="__codelineno-46-18" href="#__codelineno-46-18"></a>p, role:default/api-owner, kuadrant.apiproduct.read.all, read, allow
+</span><span id="__span-46-19"><a id="__codelineno-46-19" name="__codelineno-46-19" href="#__codelineno-46-19"></a>p, role:default/api-owner, kuadrant.apiproduct.update.own, update, allow
+</span><span id="__span-46-20"><a id="__codelineno-46-20" name="__codelineno-46-20" href="#__codelineno-46-20"></a>p, role:default/api-owner, kuadrant.apiproduct.delete.own, delete, allow
+</span><span id="__span-46-21"><a id="__codelineno-46-21" name="__codelineno-46-21" href="#__codelineno-46-21"></a>p, role:default/api-owner, kuadrant.apiproduct.list, read, allow
+</span><span id="__span-46-22"><a id="__codelineno-46-22" name="__codelineno-46-22" href="#__codelineno-46-22"></a>p, role:default/api-owner, kuadrant.apikey.create, create, allow, apiproduct:*/*
+</span><span id="__span-46-23"><a id="__codelineno-46-23" name="__codelineno-46-23" href="#__codelineno-46-23"></a>p, role:default/api-owner, kuadrant.apikey.read.own, read, allow
+</span><span id="__span-46-24"><a id="__codelineno-46-24" name="__codelineno-46-24" href="#__codelineno-46-24"></a>p, role:default/api-owner, kuadrant.apikey.update.own, update, allow
+</span><span id="__span-46-25"><a id="__codelineno-46-25" name="__codelineno-46-25" href="#__codelineno-46-25"></a>p, role:default/api-owner, kuadrant.apikey.delete.own, delete, allow
+</span><span id="__span-46-26"><a id="__codelineno-46-26" name="__codelineno-46-26" href="#__codelineno-46-26"></a>p, role:default/api-owner, kuadrant.apikey.approve, update, allow
+</span><span id="__span-46-27"><a id="__codelineno-46-27" name="__codelineno-46-27" href="#__codelineno-46-27"></a>p, role:default/api-owner, catalog.entity.read, read, allow
+</span><span id="__span-46-28"><a id="__codelineno-46-28" name="__codelineno-46-28" href="#__codelineno-46-28"></a>
+</span><span id="__span-46-29"><a id="__codelineno-46-29" name="__codelineno-46-29" href="#__codelineno-46-29"></a># api admin: platform engineers who manage all api products
+</span><span id="__span-46-30"><a id="__codelineno-46-30" name="__codelineno-46-30" href="#__codelineno-46-30"></a>p, role:default/api-admin, kuadrant.planpolicy.read, read, allow
+</span><span id="__span-46-31"><a id="__codelineno-46-31" name="__codelineno-46-31" href="#__codelineno-46-31"></a>p, role:default/api-admin, kuadrant.planpolicy.list, read, allow
+</span><span id="__span-46-32"><a id="__codelineno-46-32" name="__codelineno-46-32" href="#__codelineno-46-32"></a>p, role:default/api-admin, kuadrant.apiproduct.create, create, allow
+</span><span id="__span-46-33"><a id="__codelineno-46-33" name="__codelineno-46-33" href="#__codelineno-46-33"></a>p, role:default/api-admin, kuadrant.apiproduct.read.all, read, allow
+</span><span id="__span-46-34"><a id="__codelineno-46-34" name="__codelineno-46-34" href="#__codelineno-46-34"></a>p, role:default/api-admin, kuadrant.apiproduct.update.all, update, allow
+</span><span id="__span-46-35"><a id="__codelineno-46-35" name="__codelineno-46-35" href="#__codelineno-46-35"></a>p, role:default/api-admin, kuadrant.apiproduct.delete.all, delete, allow
+</span><span id="__span-46-36"><a id="__codelineno-46-36" name="__codelineno-46-36" href="#__codelineno-46-36"></a>p, role:default/api-admin, kuadrant.apiproduct.list, read, allow
+</span><span id="__span-46-37"><a id="__codelineno-46-37" name="__codelineno-46-37" href="#__codelineno-46-37"></a>p, role:default/api-admin, kuadrant.apikey.create, create, allow, apiproduct:*/*
+</span><span id="__span-46-38"><a id="__codelineno-46-38" name="__codelineno-46-38" href="#__codelineno-46-38"></a>p, role:default/api-admin, kuadrant.apikey.read.all, read, allow
+</span><span id="__span-46-39"><a id="__codelineno-46-39" name="__codelineno-46-39" href="#__codelineno-46-39"></a>p, role:default/api-admin, kuadrant.apikey.update.all, update, allow
+</span><span id="__span-46-40"><a id="__codelineno-46-40" name="__codelineno-46-40" href="#__codelineno-46-40"></a>p, role:default/api-admin, kuadrant.apikey.delete.all, delete, allow
+</span><span id="__span-46-41"><a id="__codelineno-46-41" name="__codelineno-46-41" href="#__codelineno-46-41"></a>p, role:default/api-admin, kuadrant.apikey.approve, update, allow
+</span><span id="__span-46-42"><a id="__codelineno-46-42" name="__codelineno-46-42" href="#__codelineno-46-42"></a>p, role:default/api-admin, catalog.entity.read, read, allow
+</span><span id="__span-46-43"><a id="__codelineno-46-43" name="__codelineno-46-43" href="#__codelineno-46-43"></a>
+</span><span id="__span-46-44"><a id="__codelineno-46-44" name="__codelineno-46-44" href="#__codelineno-46-44"></a># assign groups to roles
+</span><span id="__span-46-45"><a id="__codelineno-46-45" name="__codelineno-46-45" href="#__codelineno-46-45"></a>g, group:default/api-consumers, role:default/api-consumer
+</span><span id="__span-46-46"><a id="__codelineno-46-46" name="__codelineno-46-46" href="#__codelineno-46-46"></a>g, group:default/api-owners, role:default/api-owner
+</span><span id="__span-46-47"><a id="__codelineno-46-47" name="__codelineno-46-47" href="#__codelineno-46-47"></a>g, group:default/api-admins, role:default/api-admin
+</span><span id="__span-46-48"><a id="__codelineno-46-48" name="__codelineno-46-48" href="#__codelineno-46-48"></a>
+</span><span id="__span-46-49"><a id="__codelineno-46-49" name="__codelineno-46-49" href="#__codelineno-46-49"></a># Development/testing only: assign guest user to admin role.
+</span><span id="__span-46-50"><a id="__codelineno-46-50" name="__codelineno-46-50" href="#__codelineno-46-50"></a># For production, remove this line and assign roles to your actual users or groups.
+</span><span id="__span-46-51"><a id="__codelineno-46-51" name="__codelineno-46-51" href="#__codelineno-46-51"></a>g, user:default/guest, role:default/api-admin
 </span></code></pre></div>
-<h3 id="clusterrole_2">ClusterRole<a class="headerlink" href="#clusterrole_2" title="Permanent link">&para;</a></h3>
+<h3 id="kuadrant-clusterrole">Kuadrant ClusterRole<a class="headerlink" href="#kuadrant-clusterrole" title="Permanent link">&para;</a></h3>
 <p>Permissions to manage resources from kuadrant CRDs.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1</span>
 </span><span id="__span-47-2"><a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterRole</span>
@@ -4430,6 +4477,18 @@ Thus, secondly, we need to bind that cluster role to this service account with c
 <tr>
 <td><code>KuadrantIcon</code></td>
 <td>Kuadrant logo icon for navigation</td>
+</tr>
+<tr>
+<td><code>ApiIcon</code></td>
+<td>Api icon from standard MUI icons</td>
+</tr>
+<tr>
+<td><code>KeyIcon</code></td>
+<td>Key icon from standard MUI icons</td>
+</tr>
+<tr>
+<td><code>ApprovalIcon</code></td>
+<td>Approval icon from standard MUI icons</td>
 </tr>
 </tbody>
 </table>
