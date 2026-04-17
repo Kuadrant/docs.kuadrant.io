@@ -1,6 +1,6 @@
 # Install and Configure Kuadrant and Sail via OLM using the kubectl CLI
 
-This document will walk you through setting up the required configuration to install kaudrant using [kustomize](https://kustomize.io/) or a tool that leverages kustomize such as kubectl along with OLM. It will also go through more advanced configuration options to enable building up a resilient configuration. You can view the full configuration built here: [Full AWS Example](https://github.com/Kuadrant/kuadrant-operator/tree/main/config/install/full-example-aws).
+This document will walk you through setting up the required configuration to install Kuadrant using [kustomize](https://kustomize.io/) or a tool that leverages kustomize such as kubectl along with OLM. It will also go through more advanced configuration options to enable building up a resilient configuration. You can view the full configuration built here: [Full AWS Example](https://github.com/Kuadrant/kuadrant-operator/tree/main/config/install/full-example-aws).
 
 
 
@@ -14,10 +14,10 @@ This document will walk you through setting up the required configuration to ins
 
 5. [Authorino Resilient Configuration](#authorino-topologyconstraints-poddisruptionbudget-and-resource-limits)
 
-4. [[OpenShift Specific] Setup Observability ](#set-up-observability-openshift-only)
+6. [[OpenShift Specific] Setup Observability ](#set-up-observability-openshift-only)
 
 
-## Prerequisites  
+## Prerequisites
 
 * Kubernetes (or OpenShift) cluster with support for services of type `LoadBalancer`
 * [kubectl CLI](https://kubernetes.io/docs/reference/kubectl/)
@@ -31,11 +31,12 @@ This document will walk you through setting up the required configuration to ins
 - (Optional) Access to a Redis instance, for persistent storage for your rate limit counters.
 
 
-> Note: for multiple clusters, it would make sense to do the installation via a tool like [argocd](https://argo-cd.readthedocs.io/en/stable/). For other methods of addressing multiple clusters take a look at the [kubectl docs](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/)
+!!! note
+    For multiple clusters, it would make sense to do the installation via a tool like [argocd](https://argo-cd.readthedocs.io/en/stable/). For other methods of addressing multiple clusters take a look at the [kubectl docs](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/).
 
 ## Basic Installation
 
-This first step will install just Kuadrant at a given released version (post v1.x) in the `kuadrant-system` namespace and the Sail Operator. There will be no credentials/dns providers configured (This is the most basic setup but means TLSPolicy and DNSPolicy will not be able to be used). 
+This first step will install Kuadrant at a given released version (post v1.x) in the `kuadrant-system` namespace and the Sail Operator. There will be no credentials/dns providers configured (This is the most basic setup but means TLSPolicy and DNSPolicy will not be able to be used). 
 
 Start by creating the following `kustomization.yaml` in a directory locally. For the purpose of this doc, we will use: `~/kuadrant/` directory.
 
@@ -78,7 +79,7 @@ kubectl apply -k $KUADRANT_DIR/install
 
 ```
 
-#### Verify the operators are installed:
+### Verify the operators are installed
 
 OLM should begin installing the dependencies for Kuadrant. To wait for them to be ready, run:
 
@@ -86,7 +87,8 @@ OLM should begin installing the dependencies for Kuadrant. To wait for them to b
 kubectl -n kuadrant-system wait --timeout=160s --for=condition=Available deployments --all
 ```
 
-> Note: you may see ` no matching resources found ` if the deployments are not yet present.
+!!! note
+    You may see `no matching resources found` if the deployments are not yet present.
 
 Once OLM has finished installing the operators (this can take several minutes). You should see the following in the kuadrant-system namespace:
 
@@ -133,7 +135,7 @@ resources:
 
 ```
 
-Lets apply this to your cluster:
+Apply this to your cluster:
 
 ```bash
 
@@ -169,7 +171,8 @@ When using OpenShift Service Mesh or other gateway providers that don't use the 
 kubectl patch subscription kuadrant -n kuadrant-system --type=json -p='[{"op":"add","path":"/spec/config","value":{"env":[{"name":"ISTIO_GATEWAY_CONTROLLER_NAMES","value":"openshift.io/gateway-controller/v1"}]}}]'
 ```
 
-> **Note**: For Envoy Gateway, use the same command but change the environment variable name to `ENVOY_GATEWAY_GATEWAY_CONTROLLER_NAMES`. The environment variables accept comma-separated lists of gateway controller names.
+!!! note
+    For Envoy Gateway, use the same command but change the environment variable name to `ENVOY_GATEWAY_GATEWAY_CONTROLLER_NAMES`. The environment variables accept comma-separated lists of gateway controller names.
 
 ## Configure DNS and TLS integration
 
@@ -180,9 +183,9 @@ In order for cert-manager and the Kuadrant DNS operator to be able to access and
 An example lets-encrypt certificate issuer is provided, but for more information on certificate issuers take a look at the [cert-manager documentation](https://cert-manager.io/docs/configuration/acme/).
 
 
-Lets modify our existing local kustomize overlay to setup these secrets and the cluster certificate issuer:
+Modify your existing local kustomize overlay to setup these secrets and the cluster certificate issuer:
 
-First you will need to setup the required `.env` file specified in the kuztomization.yaml file in the same directory as your existing configure kustomization. Below is an example for AWS:
+First you will need to setup the required `.env` file specified in the kustomization.yaml file in the same directory as your existing configure kustomization. Below is an example for AWS:
 
 ```bash
 touch $KUADRANT_DIR/configure/aws-credentials.env
@@ -323,7 +326,7 @@ patches:
 
 ```
 
-Your full `kustomize.yaml` will now be:
+Your full `kustomization.yaml` will now be:
 
 ```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -397,7 +400,7 @@ kubectl get kuadrant kuadrant -n kuadrant-system -o=wide
 
 ### Limitador: TopologyConstraints, PodDisruptionBudget and Resource Limits
 
-To set limits, replicas and a `PodDisruptionBudget` for limitador you can add the following to the existing limitador patch in your local `limitador` in the `$KUADRANT_DIR/configure/kustomize.yaml` spec:
+To set limits, replicas and a `PodDisruptionBudget` for limitador you can add the following to the existing limitador patch in your local `limitador` in the `$KUADRANT_DIR/configure/kustomization.yaml` spec:
 
 ```yaml
 pdb:
@@ -418,11 +421,11 @@ kubectl apply -k $KUADRANT_DIR/configure/
 
 For topology constraints, you will need to patch the limitador deployment directly:
 
-add the below `yaml` to a `limitador-topoloy-patch.yaml` file under a `$KUADRANT_DIR/configure/patches` directory:
+add the below `yaml` to a `limitador-topology-patch.yaml` file under a `$KUADRANT_DIR/configure/patches` directory:
 
 ```bash
 mkdir -p $KUADRANT_DIR/configure/patches
-touch $KUADRANT_DIR/configure/patches/limitador-topoloy-patch.yaml
+touch $KUADRANT_DIR/configure/patches/limitador-topology-patch.yaml
 ```
 
 ```yaml
@@ -448,7 +451,7 @@ spec:
 Apply this to the existing limitador deployment
 
 ```bash
-kubectl patch deployment limitador-limitador -n kuadrant-system --patch-file $KUADRANT_DIR/configure/patches/limitador-topoloy-patch.yaml
+kubectl patch deployment limitador-limitador -n kuadrant-system --patch-file $KUADRANT_DIR/configure/patches/limitador-topology-patch.yaml
 ```
 
 ### Authorino: TopologyConstraints, PodDisruptionBudget and Resource Limits
@@ -474,10 +477,10 @@ kubectl apply -k $KUADRANT_DIR/configure/
 ```
 
 To add resource limits and or topology constraints to Authorino. You will need to patch the Authorino deployment directly:
-Add the below `yaml` to a `authorino-topoloy-patch.yaml` under the `$KUADRANT_DIR/configure/patches` directory:
+Add the below `yaml` to a `authorino-topology-patch.yaml` under the `$KUADRANT_DIR/configure/patches` directory:
 
 ```bash
-touch $KUADRANT_DIR/configure/patches/authorino-topoloy-patch.yaml
+touch $KUADRANT_DIR/configure/patches/authorino-topology-patch.yaml
 ```
 
 ```yaml
@@ -509,7 +512,7 @@ spec:
 Apply the patch:
 
 ```bash
-kubectl patch deployment authorino -n kuadrant-system --patch-file $KUADRANT_DIR/configure/patches/authorino-topoloy-patch.yaml
+kubectl patch deployment authorino -n kuadrant-system --patch-file $KUADRANT_DIR/configure/patches/authorino-topology-patch.yaml
 ```
 
 Kuadrant is now installed and ready to use and the data plane components are configured to be distributed and resilient.
@@ -580,8 +583,8 @@ configure/
 ├── cluster-issuer.yaml
 ├── kustomization.yaml
 ├── patches
-│   ├── authorino-topoloy-patch.yaml
-│   └── limitador-topoloy-patch.yaml
+│   ├── authorino-topology-patch.yaml
+│   └── limitador-topology-patch.yaml
 └── redis-credentials.env
 ```
 
@@ -622,7 +625,7 @@ kubectl apply -k https://github.com/Kuadrant/kuadrant-operator/examples/dashboar
 
 Access the Grafana UI, using the default user/pass of root/secret.
 You should see the example dashboards in the 'monitoring' folder.
-For more information on the example dashboards, check out the [documentation](https://docs.kuadrant.io/latest/kuadrant-operator/doc/observability/examples/).
+For more information on the example dashboards, check out the [documentation](kuadrant-operator/doc/observability/examples.md).
 
 ```bash
 kubectl -n monitoring get routes grafana-route -o jsonpath="https://{.status.ingress[].host}"

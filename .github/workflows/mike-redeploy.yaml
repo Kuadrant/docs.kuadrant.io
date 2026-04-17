@@ -18,13 +18,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Fetches all history for all branches and tags
           ref: ${{ github.event_name == 'schedule' && 'main' || github.event.inputs.sourceBranch }}
 
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
@@ -45,17 +45,17 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" == "schedule" ]; then
             echo "Scheduled run, bypassing user permission check."
-            echo "::set-output name=can_deploy::true"
+            echo "can_deploy=true" >> $GITHUB_OUTPUT
           else
             USER_PERMISSION=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
               "https://api.github.com/repos/${{ github.repository }}/collaborators/${{ github.actor }}/permission")
             echo "User permissions: $USER_PERMISSION"
             if [[ "$USER_PERMISSION" =~ (\"permission\": \"admin\") ]]; then
               echo "User is authorized to deploy."
-              echo "::set-output name=can_deploy::true"
+              echo "can_deploy=true" >> $GITHUB_OUTPUT
             else
               echo "::error::User is not authorized to deploy."
-              echo "::set-output name=can_deploy::false"
+              echo "can_deploy=false" >> $GITHUB_OUTPUT
             fi
           fi
         env:
