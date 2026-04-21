@@ -2166,16 +2166,80 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../how-to-install-and-configure/" class="md-nav__link">
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_10_3" id="__nav_10_3_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
     Installation
   </span>
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_3">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how-to-install-and-configure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Helm
+  </span>
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../olm-install/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OLM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -2249,6 +2313,27 @@
   
   <span class="md-ellipsis">
     Scaling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../opentelemetry/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenTelemetry
   </span>
   
 
@@ -2593,6 +2678,48 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vault-token-exchange/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vault Token Exchange
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tool-revocation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tool Revocation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2843,7 +2970,7 @@
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>}
 </span></code></pre></div>
 <blockquote>
-<p><strong>Note:</strong> The test Keycloak instance deployed in the <a href="../authentication/">authentication guide</a> is already configured to include these claims based on user group membership. The <code>mcp</code> user is part of both <code>accounting</code> group, which map to different tool permissions.</p>
+<p><strong>Note:</strong> The test Keycloak instance deployed in the <a href="../authentication/">authentication guide</a> is already configured to include these claims based on user group membership. The <code>mcp</code> user is part of the <code>accounting</code> group, which maps to specific tool permissions.</p>
 </blockquote>
 <h2 id="step-2-configure-tool-level-authorization">Step 2: Configure Tool-Level Authorization<a class="headerlink" href="#step-2-configure-tool-level-authorization" title="Permanent link">&para;</a></h2>
 <p>Apply an AuthPolicy that enforces tool-level access control:</p>
@@ -2905,7 +3032,7 @@
 <p><strong>Note</strong>: The authentication guide already created the <code>accounting</code> group, added the <code>mcp</code> user to it, and configured group claims in JWT tokens. No additional Keycloak configuration is needed.</p>
 <p>Test that authorization now controls tool access by setting up the MCP Inspector:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Start MCP Inspector (requires Node.js/npm)</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>npx<span class="w"> </span>@modelcontextprotocol/inspector@latest<span class="w"> </span><span class="p">&amp;</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>npx<span class="w"> </span>@modelcontextprotocol/inspector@0.21.1<span class="w"> </span><span class="p">&amp;</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nv">INSPECTOR_PID</span><span class="o">=</span><span class="nv">$!</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># Wait for services to start</span>
@@ -2922,13 +3049,12 @@
 </ul>
 <p><strong>Test Scenarios:</strong></p>
 <ol>
-<li><strong>Login as mcp/mcp</strong> (has both <code>accounting</code> and <code>developers</code> groups)</li>
+<li><strong>Login as mcp/mcp</strong> (has <code>accounting</code> and <code>engineering</code> groups)</li>
 <li><strong>Try allowed tools</strong>:</li>
 <li><code>test1_greet</code></li>
 <li><code>test2_headers</code></li>
-<li><code>test3_add</code></li>
 <li><strong>Try restricted tools</strong>:</li>
-<li><code>apikey_hello_world</code> - Should return 403 Forbidden</li>
+<li><code>test1_time</code> - Should return 403 Forbidden (accounting group only has the <code>greet</code> role for test-server1)</li>
 </ol>
 <h2 id="alternative-authorization-mechanisms">Alternative Authorization Mechanisms<a class="headerlink" href="#alternative-authorization-mechanisms" title="Permanent link">&para;</a></h2>
 <p>While this guide uses Kuadrant AuthPolicy, MCP Gateway supports various authorization approaches including other policy engines, built-in Istio authorization, and Gateway API policy extensions.</p>
@@ -2938,11 +3064,12 @@
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>authpolicy<span class="w"> </span>-A
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># View authorization logs</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>authorino
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>-l<span class="w"> </span>authorino-resource<span class="o">=</span>authorino
 </span></code></pre></div>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <p>With authorization configured, you can:</p>
 <ul>
+<li><strong><a href="../tool-revocation/">Tool Revocation</a></strong> - Revoke tool access and monitor enforcement</li>
 <li><strong><a href="../external-mcp-server/">External MCP Servers</a></strong> - Apply auth to external services</li>
 <li><strong><a href="../virtual-mcp-servers/">Virtual MCP Servers</a></strong> - Compose auth across multiple servers</li>
 <li><strong><a href="../troubleshooting/">Troubleshooting</a></strong> - Debug auth and authz issues</li>

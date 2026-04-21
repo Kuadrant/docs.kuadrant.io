@@ -2160,16 +2160,80 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../guides/how-to-install-and-configure/" class="md-nav__link">
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_10_3" id="__nav_10_3_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
     Installation
   </span>
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_3">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/how-to-install-and-configure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Helm
+  </span>
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/olm-install/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OLM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -2243,6 +2307,27 @@
   
   <span class="md-ellipsis">
     Scaling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/opentelemetry/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenTelemetry
   </span>
   
 
@@ -2464,6 +2549,48 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/vault-token-exchange/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vault Token Exchange
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/tool-revocation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tool Revocation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2606,6 +2733,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#sessionstore" class="md-nav__link">
+    <span class="md-ellipsis">
+      SessionStore
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#mcpgatewayextensionstatus" class="md-nav__link">
     <span class="md-ellipsis">
       MCPGatewayExtensionStatus
@@ -2667,6 +2803,7 @@
 <li><a href="#mcpgatewayextensionspec">MCPGatewayExtensionSpec</a></li>
 <li><a href="#mcpgatewayextensiontargetreference">MCPGatewayExtensionTargetReference</a></li>
 <li><a href="#trustedheaderskey">TrustedHeadersKey</a></li>
+<li><a href="#sessionstore">SessionStore</a></li>
 <li><a href="#mcpgatewayextensionstatus">MCPGatewayExtensionStatus</a></li>
 </ul>
 <h2 id="mcpgatewayextension">MCPGatewayExtension<a class="headerlink" href="#mcpgatewayextension" title="Permanent link">&para;</a></h2>
@@ -2741,6 +2878,12 @@
 <td style="text-align: center;">No</td>
 <td>Controls whether the operator manages the gateway HTTPRoute. <code>Enabled</code> (default): creates and manages the HTTPRoute. <code>Disabled</code>: does not create an HTTPRoute. Disabling does not delete a previously created route</td>
 </tr>
+<tr>
+<td><code>sessionStore</code></td>
+<td><a href="#sessionstore">SessionStore</a></td>
+<td style="text-align: center;">No</td>
+<td>References a secret for redis-based session storage. When not set, in-memory session storage is used</td>
+</tr>
 </tbody>
 </table>
 <h2 id="mcpgatewayextensiontargetreference">MCPGatewayExtensionTargetReference<a class="headerlink" href="#mcpgatewayextensiontargetreference" title="Permanent link">&para;</a></h2>
@@ -2811,6 +2954,25 @@
 </tr>
 </tbody>
 </table>
+<h2 id="sessionstore">SessionStore<a class="headerlink" href="#sessionstore" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th><strong>Field</strong></th>
+<th><strong>Type</strong></th>
+<th style="text-align: center;"><strong>Required</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>secretName</code></td>
+<td>String</td>
+<td style="text-align: center;">Yes</td>
+<td>Name of the secret containing a <code>CACHE_CONNECTION_STRING</code> data entry. The value should be a redis connection string (<code>redis://&lt;user&gt;:&lt;pass&gt;@&lt;host&gt;:&lt;port&gt;/&lt;db&gt;</code>). The secret must exist in the MCPGatewayExtension namespace and must have the label <code>mcp.kuadrant.io/secret: "true"</code>. Injected as <code>CACHE_CONNECTION_STRING</code> env var into the broker-router deployment</td>
+</tr>
+</tbody>
+</table>
 <h2 id="mcpgatewayextensionstatus">MCPGatewayExtensionStatus<a class="headerlink" href="#mcpgatewayextensionstatus" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2870,11 +3032,11 @@
 </tr>
 <tr>
 <td><code>SecretNotFound</code></td>
-<td>The trusted headers secret is missing</td>
+<td>A referenced secret is missing (trusted headers or session store)</td>
 </tr>
 <tr>
 <td><code>SecretInvalid</code></td>
-<td>The trusted headers secret lacks the required <code>key</code> data entry</td>
+<td>A referenced secret lacks the required data entry (<code>key</code> for trusted headers, <code>CACHE_CONNECTION_STRING</code> for session store)</td>
 </tr>
 </tbody>
 </table>

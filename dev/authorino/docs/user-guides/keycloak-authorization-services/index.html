@@ -2160,16 +2160,80 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../../../mcp-gateway/docs/guides/how-to-install-and-configure/" class="md-nav__link">
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_10_3" id="__nav_10_3_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
     Installation
   </span>
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_3">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/how-to-install-and-configure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Helm
+  </span>
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/olm-install/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OLM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -2243,6 +2307,27 @@
   
   <span class="md-ellipsis">
     Scaling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/opentelemetry/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenTelemetry
   </span>
   
 
@@ -2455,6 +2540,48 @@
   
   <span class="md-ellipsis">
     Vault Integration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/vault-token-exchange/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vault Token Exchange
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/tool-revocation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tool Revocation
   </span>
   
 
@@ -2791,15 +2918,15 @@
 </span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="s">      opa:</span>
 </span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="s">        rego: |</span>
 </span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="s">          pat := http.send({&quot;url&quot;:&quot;http://talker-api:523b92b6-625d-4e1e-a313-77e7a8ae4e88@keycloak.keycloak.svc.cluster.local:8080/realms/kuadrant/protocol/openid-connect/token&quot;,&quot;method&quot;: &quot;post&quot;,&quot;headers&quot;:{&quot;Content-Type&quot;:&quot;application/x-www-form-urlencoded&quot;},&quot;raw_body&quot;:&quot;grant_type=client_credentials&quot;}).body.access_token</span>
-</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="s">          resource_id := http.send({&quot;url&quot;:concat(&quot;&quot;,[&quot;http://keycloak.keycloak.svc.cluster.local:8080/realms/kuadrant/authz/protection/resource_set?uri=&quot;,input.context.request.http.path]),&quot;method&quot;:&quot;get&quot;,&quot;headers&quot;:{&quot;Authorization&quot;:concat(&quot; &quot;,[&quot;Bearer &quot;,pat])}}).body[0]</span>
+</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="s">          resource_id := http.send({&quot;url&quot;:concat(&quot;&quot;,[&quot;http://keycloak.keycloak.svc.cluster.local:8080/realms/kuadrant/authz/protection/resource_set?uri=&quot;,input.context.request.http.path]),&quot;method&quot;:&quot;get&quot;,&quot;headers&quot;:{&quot;Authorization&quot;:concat(&quot;&quot;,[&quot;Bearer &quot;,pat])}}).body[0]</span>
 </span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="s">          scope := lower(input.context.request.http.method)</span>
 </span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="s">          access_token := trim_prefix(input.context.request.http.headers.authorization, &quot;Bearer &quot;)</span>
 </span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>
 </span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="s">          default rpt = &quot;&quot;</span>
 </span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="s">          rpt = access_token { object.get(input.auth.identity, &quot;authorization&quot;, {}).permissions }</span>
 </span><span id="__span-8-25"><a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="s">          else = rpt_str {</span>
-</span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="s">            ticket := http.send({&quot;url&quot;:&quot;http://keycloak.keycloak.svc.cluster.local:8080/realms/kuadrant/authz/protection/permission&quot;,&quot;method&quot;:&quot;post&quot;,&quot;headers&quot;:{&quot;Authorization&quot;:concat(&quot; &quot;,[&quot;Bearer &quot;,pat]),&quot;Content-Type&quot;:&quot;application/json&quot;},&quot;raw_body&quot;:concat(&quot;&quot;,[&quot;[{\&quot;resource_id\&quot;:\&quot;&quot;,resource_id,&quot;\&quot;,\&quot;resource_scopes\&quot;:[\&quot;&quot;,scope,&quot;\&quot;]}]&quot;])}).body.ticket</span>
-</span><span id="__span-8-27"><a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a><span class="s">            rpt_str := object.get(http.send({&quot;url&quot;:&quot;http://keycloak.keycloak.svc.cluster.local:8080/realms/kuadrant/protocol/openid-connect/token&quot;,&quot;method&quot;:&quot;post&quot;,&quot;headers&quot;:{&quot;Authorization&quot;:concat(&quot; &quot;,[&quot;Bearer &quot;,access_token]),&quot;Content-Type&quot;:&quot;application/x-www-form-urlencoded&quot;},&quot;raw_body&quot;:concat(&quot;&quot;,[&quot;grant_type=urn:ietf:params:oauth:grant-type:uma-ticket&amp;ticket=&quot;,ticket,&quot;&amp;submit_request=true&quot;])}).body, &quot;access_token&quot;, &quot;&quot;)</span>
+</span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="s">            ticket := http.send({&quot;url&quot;:&quot;http://keycloak.keycloak.svc.cluster.local:8080/realms/kuadrant/authz/protection/permission&quot;,&quot;method&quot;:&quot;post&quot;,&quot;headers&quot;:{&quot;Authorization&quot;:concat(&quot;&quot;,[&quot;Bearer &quot;,pat]),&quot;Content-Type&quot;:&quot;application/json&quot;},&quot;raw_body&quot;:concat(&quot;&quot;,[&quot;[{\&quot;resource_id\&quot;:\&quot;&quot;,resource_id,&quot;\&quot;,\&quot;resource_scopes\&quot;:[\&quot;&quot;,scope,&quot;\&quot;]}]&quot;])}).body.ticket</span>
+</span><span id="__span-8-27"><a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a><span class="s">            rpt_str := object.get(http.send({&quot;url&quot;:&quot;http://keycloak.keycloak.svc.cluster.local:8080/realms/kuadrant/protocol/openid-connect/token&quot;,&quot;method&quot;:&quot;post&quot;,&quot;headers&quot;:{&quot;Authorization&quot;:concat(&quot;&quot;,[&quot;Bearer &quot;,access_token]),&quot;Content-Type&quot;:&quot;application/x-www-form-urlencoded&quot;},&quot;raw_body&quot;:concat(&quot;&quot;,[&quot;grant_type=urn:ietf:params:oauth:grant-type:uma-ticket&amp;ticket=&quot;,ticket,&quot;&amp;submit_request=true&quot;])}).body, &quot;access_token&quot;, &quot;&quot;)</span>
 </span><span id="__span-8-28"><a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a><span class="s">          }</span>
 </span><span id="__span-8-29"><a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a>
 </span><span id="__span-8-30"><a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a><span class="s">          allow {</span>

@@ -2160,16 +2160,80 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../how-to-install-and-configure/" class="md-nav__link">
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_10_3" id="__nav_10_3_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
     Installation
   </span>
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_3">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how-to-install-and-configure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Helm
+  </span>
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../olm-install/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OLM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -2243,6 +2307,27 @@
   
   <span class="md-ellipsis">
     Scaling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../opentelemetry/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenTelemetry
   </span>
   
 
@@ -2464,6 +2549,48 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vault-token-exchange/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vault Token Exchange
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tool-revocation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tool Revocation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2570,15 +2697,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overview
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       Prerequisites
@@ -2597,53 +2715,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-the-script-does" class="md-nav__link">
+  <a href="#test-with-mcp-inspector" class="md-nav__link">
     <span class="md-ellipsis">
-      What the Script Does
+      Test with MCP Inspector
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testing-your-setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      Testing Your Setup
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Testing Your Setup">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#mcp-inspector-access" class="md-nav__link">
-    <span class="md-ellipsis">
-      MCP Inspector Access
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#available-test-tools" class="md-nav__link">
-    <span class="md-ellipsis">
-      Available Test Tools
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#try-it-out" class="md-nav__link">
-    <span class="md-ellipsis">
-      Try It Out
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2698,80 +2774,97 @@
 
 
 <h1 id="quick-start-guide">Quick Start Guide<a class="headerlink" href="#quick-start-guide" title="Permanent link">&para;</a></h1>
-<p>Get MCP Gateway running in 5 minutes with our automated setup script.</p>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>This guide uses an automated script that sets up everything you need:</p>
-<ul>
-<li>Local Kind Kubernetes cluster</li>
-<li>Gateway API CRDs</li>
-<li>Istio service mesh</li>
-<li>MCP Gateway with Helm</li>
-<li>Example MCP servers</li>
-<li>Gateway routing configuration</li>
-<li>MCP Inspector for testing</li>
-</ul>
-<p>Perfect for evaluation, demos, and getting started quickly.</p>
+<p>Get MCP Gateway running locally in a Kind cluster.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://docs.docker.com/engine/install/">Docker</a> or <a href="https://podman.io/docs/installation">Podman</a> installed and running</li>
 <li><a href="https://kind.sigs.k8s.io/docs/user/quick-start/#installation">Kind</a> installed</li>
-<li><a href="https://helm.sh/docs/intro/install/">Helm</a> installed</li>
+<li><a href="https://helm.sh/docs/intro/install/">Helm</a> installed (for Istio)</li>
 <li><a href="https://kubernetes.io/docs/tasks/tools/">kubectl</a> installed</li>
-<li><a href="https://nodejs.org/en/download/">Node.js and npm</a> installed (for MCP Inspector)</li>
 </ul>
 <h2 id="quick-setup">Quick Setup<a class="headerlink" href="#quick-setup" title="Permanent link">&para;</a></h2>
-<p>Set the release version to install:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">MCP_GATEWAY_BRANCH</span><span class="o">=</span>release-0.5.1
+<p>Set the release version and run the setup script:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">MCP_GATEWAY_VERSION</span><span class="o">=</span><span class="m">0</span>.6.0
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.githubusercontent.com/Kuadrant/mcp-gateway/main/scripts/quick-start.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
 </span></code></pre></div>
-<p>Run the automated setup script:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Download and run the setup script</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.githubusercontent.com/Kuadrant/mcp-gateway/<span class="si">${</span><span class="nv">MCP_GATEWAY_BRANCH</span><span class="si">}</span>/charts/sample_local_helm_setup.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
-</span></code></pre></div>
-<p><strong>Or clone the repository and run locally:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Kuadrant/mcp-gateway.git
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">cd</span><span class="w"> </span>mcp-gateway
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>git<span class="w"> </span>checkout<span class="w"> </span><span class="nv">$MCP_GATEWAY_BRANCH</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nv">USE_LOCAL_CHART</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span>./charts/sample_local_helm_setup.sh
-</span></code></pre></div>
-<h2 id="what-the-script-does">What the Script Does<a class="headerlink" href="#what-the-script-does" title="Permanent link">&para;</a></h2>
-<p>The setup script automatically:</p>
+<p>The script checks prerequisites, then runs through each step automatically:</p>
 <ol>
-<li><strong>Creates Kind cluster</strong> with proper port mappings</li>
-<li><strong>Installs Gateway API CRDs</strong> for traffic routing</li>
-<li><strong>Deploys Istio</strong> service mesh with Helm</li>
-<li><strong>Sets up Istio Gateway</strong> for external traffic</li>
-<li><strong>Installs MCP Gateway</strong> using the Helm chart</li>
-<li><strong>Deploys test MCP servers</strong> for demonstration</li>
-<li><strong>Configures routing</strong> with HTTPRoute resources</li>
-<li><strong>Launches MCP Inspector</strong> for testing and exploration</li>
+<li><strong>Create Kind cluster</strong> with port mapping (<code>localhost:8001</code>)</li>
+<li><strong>Install Gateway API CRDs and Istio</strong> as the Gateway API provider</li>
+<li><strong>Create the Gateway</strong> with listeners and a NodePort service</li>
+<li><strong>Install MCP Gateway</strong> CRDs, controller, and MCPGatewayExtension (the controller automatically deploys the broker-router)</li>
+<li><strong>Deploy test MCP servers</strong> and register them with the gateway</li>
 </ol>
-<h2 id="testing-your-setup">Testing Your Setup<a class="headerlink" href="#testing-your-setup" title="Permanent link">&para;</a></h2>
-<p>Once the script completes, you'll have:</p>
-<h3 id="mcp-inspector-access">MCP Inspector Access<a class="headerlink" href="#mcp-inspector-access" title="Permanent link">&para;</a></h3>
+<h2 id="test-with-mcp-inspector">Test with MCP Inspector<a class="headerlink" href="#test-with-mcp-inspector" title="Permanent link">&para;</a></h2>
+<p>Once the script completes, you can use <a href="https://github.com/modelcontextprotocol/inspector">MCP Inspector</a> to interact with the gateway. This requires <a href="https://nodejs.org/en/download/">Node.js and npm</a>.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">DANGEROUSLY_OMIT_AUTH</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span>npx<span class="w"> </span>@modelcontextprotocol/inspector@0.21.1
+</span></code></pre></div>
+<p>Open the inspector at <a href="http://localhost:6274">http://localhost:6274</a> and configure:</p>
 <ul>
-<li><strong>URL</strong>: http://localhost:6274</li>
-<li><strong>Gateway URL</strong>: http://mcp.127-0-0-1.sslip.io:7001/mcp</li>
-<li><strong>Pre-configured</strong>: The inspector opens with the correct gateway URL</li>
+<li><strong>Transport</strong>: Streamable HTTP</li>
+<li><strong>URL</strong>: <code>http://mcp.127-0-0-1.sslip.io:8001/mcp</code></li>
 </ul>
-<h3 id="available-test-tools">Available Test Tools<a class="headerlink" href="#available-test-tools" title="Permanent link">&para;</a></h3>
-<p>The setup includes example MCP servers with tools like:</p>
-<ul>
-<li><code>test1_hello_world</code> - Simple greeting tool</li>
-<li><code>test1_headers</code> - HTTP header inspection</li>
-<li><code>test2_headers</code> - Additional header tool</li>
-</ul>
-<h3 id="try-it-out">Try It Out<a class="headerlink" href="#try-it-out" title="Permanent link">&para;</a></h3>
-<ol>
-<li><strong>Connect</strong>: MCP Inspector should open automatically</li>
-<li><strong>Initialize</strong>: Click "Connect" to initialize the MCP session</li>
-<li><strong>Explore Tools</strong>: Browse available tools in the left panel</li>
-<li><strong>Test Tools</strong>: Try calling <code>test1_hello_world</code> or <code>test1_headers</code></li>
-<li><strong>View Logs</strong>: Check the request/response flow</li>
-</ol>
+<p>Click <strong>Connect</strong>, then browse and test the available tools:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>test1_greet</code></td>
+<td>Simple greeting</td>
+</tr>
+<tr>
+<td><code>test1_time</code></td>
+<td>Current time</td>
+</tr>
+<tr>
+<td><code>test1_slow</code></td>
+<td>Delay N seconds</td>
+</tr>
+<tr>
+<td><code>test1_headers</code></td>
+<td>HTTP header inspection</td>
+</tr>
+<tr>
+<td><code>test1_add_tool</code></td>
+<td>Dynamically add a new tool</td>
+</tr>
+<tr>
+<td><code>test2_hello_world</code></td>
+<td>Greeting from server 2</td>
+</tr>
+<tr>
+<td><code>test2_time</code></td>
+<td>Current time from server 2</td>
+</tr>
+<tr>
+<td><code>test2_headers</code></td>
+<td>HTTP headers from server 2</td>
+</tr>
+<tr>
+<td><code>test2_auth1234</code></td>
+<td>Auth test from server 2</td>
+</tr>
+<tr>
+<td><code>test2_slow</code></td>
+<td>Delay from server 2</td>
+</tr>
+<tr>
+<td><code>test2_set_time</code></td>
+<td>Set time from server 2</td>
+</tr>
+<tr>
+<td><code>test2_pour_chocolate_into_mold</code></td>
+<td>Chocolate mold from server 2</td>
+</tr>
+</tbody>
+</table>
 <h2 id="cleanup">Cleanup<a class="headerlink" href="#cleanup" title="Permanent link">&para;</a></h2>
-<p>To stop the services and clean up:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Then delete the Kind cluster</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>kind<span class="w"> </span>delete<span class="w"> </span>cluster
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kind<span class="w"> </span>delete<span class="w"> </span>cluster
 </span></code></pre></div>
 <h2 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2780,10 +2873,9 @@
 <li><a href="../../reference/mcpvirtualserver/">MCPVirtualServer</a></li>
 </ul>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
-<p>Now that you have MCP Gateway running, explore other features:</p>
 <ul>
 <li><strong><a href="../authentication/">Authentication</a></strong> - Configure OAuth-based security with Keycloak</li>
-<li><strong><a href="../authorization/">Authorization</a></strong> - Set up fine-grained access</li>
+<li><strong><a href="../authorization/">Authorization</a></strong> - Set up fine-grained access control</li>
 <li><strong><a href="../virtual-mcp-servers/">Virtual MCP Servers</a></strong> - Create focused tool collections for specific use cases</li>
 <li><strong><a href="../external-mcp-server/">External MCP Servers</a></strong> - Connect to external APIs and services</li>
 </ul>

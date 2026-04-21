@@ -400,7 +400,7 @@
           <li class="md-nav__item">
   <a href="#verify-the-operators-are-installed" class="md-nav__link">
     <span class="md-ellipsis">
-      Verify the operators are installed:
+      Verify the operators are installed
     </span>
   </a>
   
@@ -2365,16 +2365,80 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../mcp-gateway/docs/guides/how-to-install-and-configure/" class="md-nav__link">
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_10_3" id="__nav_10_3_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
     Installation
   </span>
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_3">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mcp-gateway/docs/guides/how-to-install-and-configure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Helm
+  </span>
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mcp-gateway/docs/guides/olm-install/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OLM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -2448,6 +2512,27 @@
   
   <span class="md-ellipsis">
     Scaling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mcp-gateway/docs/guides/opentelemetry/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenTelemetry
   </span>
   
 
@@ -2669,6 +2754,48 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mcp-gateway/docs/guides/vault-token-exchange/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vault Token Exchange
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mcp-gateway/docs/guides/tool-revocation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tool Revocation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2796,7 +2923,7 @@
           <li class="md-nav__item">
   <a href="#verify-the-operators-are-installed" class="md-nav__link">
     <span class="md-ellipsis">
-      Verify the operators are installed:
+      Verify the operators are installed
     </span>
   </a>
   
@@ -2957,7 +3084,7 @@
 
 
 <h1 id="install-and-configure-kuadrant-and-sail-via-olm-using-the-kubectl-cli">Install and Configure Kuadrant and Sail via OLM using the kubectl CLI<a class="headerlink" href="#install-and-configure-kuadrant-and-sail-via-olm-using-the-kubectl-cli" title="Permanent link">&para;</a></h1>
-<p>This document will walk you through setting up the required configuration to install kaudrant using <a href="https://kustomize.io/">kustomize</a> or a tool that leverages kustomize such as kubectl along with OLM. It will also go through more advanced configuration options to enable building up a resilient configuration. You can view the full configuration built here: <a href="https://github.com/Kuadrant/kuadrant-operator/tree/main/config/install/full-example-aws">Full AWS Example</a>.</p>
+<p>This document will walk you through setting up the required configuration to install Kuadrant using <a href="https://kustomize.io/">kustomize</a> or a tool that leverages kustomize such as kubectl along with OLM. It will also go through more advanced configuration options to enable building up a resilient configuration. You can view the full configuration built here: <a href="https://github.com/Kuadrant/kuadrant-operator/tree/main/config/install/full-example-aws">Full AWS Example</a>.</p>
 <ol>
 <li>
 <p><a href="#basic-installation">Basic Install</a></p>
@@ -2995,11 +3122,12 @@
 <li>(Optional) Access to AWS, Azure or GCP with DNS service.</li>
 <li>(Optional) Access to a Redis instance, for persistent storage for your rate limit counters.</li>
 </ul>
-<blockquote>
-<p>Note: for multiple clusters, it would make sense to do the installation via a tool like <a href="https://argo-cd.readthedocs.io/en/stable/">argocd</a>. For other methods of addressing multiple clusters take a look at the <a href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/">kubectl docs</a></p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For multiple clusters, it would make sense to do the installation via a tool like <a href="https://argo-cd.readthedocs.io/en/stable/">argocd</a>. For other methods of addressing multiple clusters take a look at the <a href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/">kubectl docs</a>.</p>
+</div>
 <h2 id="basic-installation">Basic Installation<a class="headerlink" href="#basic-installation" title="Permanent link">&para;</a></h2>
-<p>This first step will install just Kuadrant at a given released version (post v1.x) in the <code>kuadrant-system</code> namespace and the Sail Operator. There will be no credentials/dns providers configured (This is the most basic setup but means TLSPolicy and DNSPolicy will not be able to be used). </p>
+<p>This first step will install Kuadrant at a given released version (post v1.x) in the <code>kuadrant-system</code> namespace and the Sail Operator. There will be no credentials/dns providers configured (This is the most basic setup but means TLSPolicy and DNSPolicy will not be able to be used). </p>
 <p>Start by creating the following <code>kustomization.yaml</code> in a directory locally. For the purpose of this doc, we will use: <code>~/kuadrant/</code> directory.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_DIR</span><span class="o">=</span>~/kuadrant
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$KUADRANT_DIR</span>/install
@@ -3031,13 +3159,14 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># change the location depending on where you created the kustomization.yaml</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span><span class="nv">$KUADRANT_DIR</span>/install
 </span></code></pre></div>
-<h4 id="verify-the-operators-are-installed">Verify the operators are installed:<a class="headerlink" href="#verify-the-operators-are-installed" title="Permanent link">&para;</a></h4>
+<h3 id="verify-the-operators-are-installed">Verify the operators are installed<a class="headerlink" href="#verify-the-operators-are-installed" title="Permanent link">&para;</a></h3>
 <p>OLM should begin installing the dependencies for Kuadrant. To wait for them to be ready, run:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>--timeout<span class="o">=</span>160s<span class="w"> </span>--for<span class="o">=</span><span class="nv">condition</span><span class="o">=</span>Available<span class="w"> </span>deployments<span class="w"> </span>--all
 </span></code></pre></div>
-<blockquote>
-<p>Note: you may see <code>no matching resources found</code> if the deployments are not yet present.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You may see <code>no matching resources found</code> if the deployments are not yet present.</p>
+</div>
 <p>Once OLM has finished installing the operators (this can take several minutes). You should see the following in the kuadrant-system namespace:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployments<span class="w"> </span>-n<span class="w"> </span>kuadrant-system
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
@@ -3065,7 +3194,7 @@
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
 </span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/Kuadrant/kuadrant-operator//config/install/configure/standard?ref=v1.0.1</span><span class="w"> </span><span class="c1">#change this version as needed (see https://github.com/Kuadrant/kuadrant-operator/releases)</span>
 </span></code></pre></div>
-<p>Lets apply this to your cluster:</p>
+<p>Apply this to your cluster:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span><span class="nv">$KUADRANT_DIR</span>/configure
 </span></code></pre></div>
 <h3 id="verify-kuadrant-is-installed-and-ready">Verify Kuadrant is installed and ready:<a class="headerlink" href="#verify-kuadrant-is-installed-and-ready" title="Permanent link">&para;</a></h3>
@@ -3085,15 +3214,16 @@
 </ul>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>subscription<span class="w"> </span>kuadrant<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;add&quot;,&quot;path&quot;:&quot;/spec/config&quot;,&quot;value&quot;:{&quot;env&quot;:[{&quot;name&quot;:&quot;ISTIO_GATEWAY_CONTROLLER_NAMES&quot;,&quot;value&quot;:&quot;openshift.io/gateway-controller/v1&quot;}]}}]&#39;</span>
 </span></code></pre></div>
-<blockquote>
-<p><strong>Note</strong>: For Envoy Gateway, use the same command but change the environment variable name to <code>ENVOY_GATEWAY_GATEWAY_CONTROLLER_NAMES</code>. The environment variables accept comma-separated lists of gateway controller names.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For Envoy Gateway, use the same command but change the environment variable name to <code>ENVOY_GATEWAY_GATEWAY_CONTROLLER_NAMES</code>. The environment variables accept comma-separated lists of gateway controller names.</p>
+</div>
 <h2 id="configure-dns-and-tls-integration">Configure DNS and TLS integration<a class="headerlink" href="#configure-dns-and-tls-integration" title="Permanent link">&para;</a></h2>
 <p>In this section will build on the previous steps and expand the <code>kustomization.yaml</code> we created in <code>$KUADRANT_DIR/configure</code>. </p>
 <p>In order for cert-manager and the Kuadrant DNS operator to be able to access and manage DNS records and setup TLS certificates and provide external connectivity for your endpoints, you need to setup a credential for these components. To do this, we will use a Kubernetes secret via a kustomize secret generator. You can find other example overlays for each supported cloud provider under the  <a href="https://github.com/Kuadrant/kuadrant-operator/tree/main/config/install/configure">configure directory</a>.</p>
 <p>An example lets-encrypt certificate issuer is provided, but for more information on certificate issuers take a look at the <a href="https://cert-manager.io/docs/configuration/acme/">cert-manager documentation</a>.</p>
-<p>Lets modify our existing local kustomize overlay to setup these secrets and the cluster certificate issuer:</p>
-<p>First you will need to setup the required <code>.env</code> file specified in the kuztomization.yaml file in the same directory as your existing configure kustomization. Below is an example for AWS:</p>
+<p>Modify your existing local kustomize overlay to setup these secrets and the cluster certificate issuer:</p>
+<p>First you will need to setup the required <code>.env</code> file specified in the kustomization.yaml file in the same directory as your existing configure kustomization. Below is an example for AWS:</p>
 <p><div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>touch<span class="w"> </span><span class="nv">$KUADRANT_DIR</span>/configure/aws-credentials.env
 </span></code></pre></div>
 Add the following to your new file</p>
@@ -3192,7 +3322,7 @@ Add the following to your new file</p>
 </span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="w">            </span><span class="no">configSecretRef:</span>
 </span><span id="__span-22-13"><a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a><span class="w">              </span><span class="no">name: redis-credentials</span>
 </span></code></pre></div>
-<p>Your full <code>kustomize.yaml</code> will now be:</p>
+<p>Your full <code>kustomization.yaml</code> will now be:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kustomize.config.k8s.io/v1beta1</span>
 </span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kustomization</span>
 </span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="nt">resources</span><span class="p">:</span>
@@ -3252,7 +3382,7 @@ Add the following to your new file</p>
 </span></code></pre></div>
 <h2 id="resilient-deployment-of-data-plane-components">Resilient Deployment of data plane components<a class="headerlink" href="#resilient-deployment-of-data-plane-components" title="Permanent link">&para;</a></h2>
 <h3 id="limitador-topologyconstraints-poddisruptionbudget-and-resource-limits">Limitador: TopologyConstraints, PodDisruptionBudget and Resource Limits<a class="headerlink" href="#limitador-topologyconstraints-poddisruptionbudget-and-resource-limits" title="Permanent link">&para;</a></h3>
-<p>To set limits, replicas and a <code>PodDisruptionBudget</code> for limitador you can add the following to the existing limitador patch in your local <code>limitador</code> in the <code>$KUADRANT_DIR/configure/kustomize.yaml</code> spec:</p>
+<p>To set limits, replicas and a <code>PodDisruptionBudget</code> for limitador you can add the following to the existing limitador patch in your local <code>limitador</code> in the <code>$KUADRANT_DIR/configure/kustomization.yaml</code> spec:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nt">pdb</span><span class="p">:</span>
 </span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="nt">maxUnavailable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 </span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
@@ -3265,9 +3395,9 @@ Add the following to your new file</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span><span class="nv">$KUADRANT_DIR</span>/configure/
 </span></code></pre></div>
 <p>For topology constraints, you will need to patch the limitador deployment directly:</p>
-<p>add the below <code>yaml</code> to a <code>limitador-topoloy-patch.yaml</code> file under a <code>$KUADRANT_DIR/configure/patches</code> directory:</p>
+<p>add the below <code>yaml</code> to a <code>limitador-topology-patch.yaml</code> file under a <code>$KUADRANT_DIR/configure/patches</code> directory:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$KUADRANT_DIR</span>/configure/patches
-</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>touch<span class="w"> </span><span class="nv">$KUADRANT_DIR</span>/configure/patches/limitador-topoloy-patch.yaml
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>touch<span class="w"> </span><span class="nv">$KUADRANT_DIR</span>/configure/patches/limitador-topology-patch.yaml
 </span></code></pre></div>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="nt">spec</span><span class="p">:</span>
 </span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
@@ -3288,7 +3418,7 @@ Add the following to your new file</p>
 </span><span id="__span-29-17"><a id="__codelineno-29-17" name="__codelineno-29-17" href="#__codelineno-29-17"></a><span class="w">              </span><span class="nt">limitador-resource</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">limitador</span>
 </span></code></pre></div>
 <p>Apply this to the existing limitador deployment</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>deployment<span class="w"> </span>limitador-limitador<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--patch-file<span class="w"> </span><span class="nv">$KUADRANT_DIR</span>/configure/patches/limitador-topoloy-patch.yaml
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>deployment<span class="w"> </span>limitador-limitador<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--patch-file<span class="w"> </span><span class="nv">$KUADRANT_DIR</span>/configure/patches/limitador-topology-patch.yaml
 </span></code></pre></div>
 <h3 id="authorino-topologyconstraints-poddisruptionbudget-and-resource-limits">Authorino: TopologyConstraints, PodDisruptionBudget and Resource Limits<a class="headerlink" href="#authorino-topologyconstraints-poddisruptionbudget-and-resource-limits" title="Permanent link">&para;</a></h3>
 <p>To increase the number of replicas for Authorino add a new patch to the <code>$KUADRANT_DIR/configure/kustomization.yaml</code></p>
@@ -3305,8 +3435,8 @@ Add the following to your new file</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span><span class="nv">$KUADRANT_DIR</span>/configure/
 </span></code></pre></div>
 <p>To add resource limits and or topology constraints to Authorino. You will need to patch the Authorino deployment directly:
-Add the below <code>yaml</code> to a <code>authorino-topoloy-patch.yaml</code> under the <code>$KUADRANT_DIR/configure/patches</code> directory:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>touch<span class="w"> </span><span class="nv">$KUADRANT_DIR</span>/configure/patches/authorino-topoloy-patch.yaml
+Add the below <code>yaml</code> to a <code>authorino-topology-patch.yaml</code> under the <code>$KUADRANT_DIR/configure/patches</code> directory:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>touch<span class="w"> </span><span class="nv">$KUADRANT_DIR</span>/configure/patches/authorino-topology-patch.yaml
 </span></code></pre></div>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="nt">spec</span><span class="p">:</span>
 </span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
@@ -3333,7 +3463,7 @@ Add the below <code>yaml</code> to a <code>authorino-topoloy-patch.yaml</code> u
 </span><span id="__span-34-23"><a id="__codelineno-34-23" name="__codelineno-34-23" href="#__codelineno-34-23"></a><span class="w">              </span><span class="nt">authorino-resource</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">authorino</span>
 </span></code></pre></div>
 <p>Apply the patch:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>deployment<span class="w"> </span>authorino<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--patch-file<span class="w"> </span><span class="nv">$KUADRANT_DIR</span>/configure/patches/authorino-topoloy-patch.yaml
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>deployment<span class="w"> </span>authorino<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--patch-file<span class="w"> </span><span class="nv">$KUADRANT_DIR</span>/configure/patches/authorino-topology-patch.yaml
 </span></code></pre></div>
 <p>Kuadrant is now installed and ready to use and the data plane components are configured to be distributed and resilient.</p>
 <p>For reference the full configure kustomization should look like:
@@ -3401,8 +3531,8 @@ The configure directory should contain the following:</p>
 </span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>├── cluster-issuer.yaml
 </span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>├── kustomization.yaml
 </span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>├── patches
-</span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a>│   ├── authorino-topoloy-patch.yaml
-</span><span id="__span-37-7"><a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a>│   └── limitador-topoloy-patch.yaml
+</span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a>│   ├── authorino-topology-patch.yaml
+</span><span id="__span-37-7"><a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a>│   └── limitador-topology-patch.yaml
 </span><span id="__span-37-8"><a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a>└── redis-credentials.env
 </span></code></pre></div>
 <h2 id="set-up-observability-openshift-only">Set up observability (OpenShift Only)<a class="headerlink" href="#set-up-observability-openshift-only" title="Permanent link">&para;</a></h2>
@@ -3428,7 +3558,7 @@ If it not enabled, check the <a href="https://docs.openshift.com/container-platf
 </span></code></pre></div>
 <p>Access the Grafana UI, using the default user/pass of root/secret.
 You should see the example dashboards in the 'monitoring' folder.
-For more information on the example dashboards, check out the <a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/observability/examples/">documentation</a>.</p>
+For more information on the example dashboards, check out the <a href="../kuadrant-operator/doc/observability/examples/">documentation</a>.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>monitoring<span class="w"> </span>get<span class="w"> </span>routes<span class="w"> </span>grafana-route<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s2">&quot;https://{.status.ingress[].host}&quot;</span>
 </span></code></pre></div>
 <h3 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h3>
