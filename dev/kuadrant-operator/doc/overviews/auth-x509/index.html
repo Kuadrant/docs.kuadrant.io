@@ -1,0 +1,4069 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://docs.kuadrant.io/dev/kuadrant-operator/doc/overviews/auth-x509/">
+      
+      
+        <link rel="prev" href="../auth/">
+      
+      
+        <link rel="next" href="../dns/">
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>X.509 Authentication - Kuadrant Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.0253249f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../../../assets/asciidoc.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#x509-client-certificate-authentication" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  These docs are not for the latest version.
+  <a href="../../../../.."> 
+    <strong>Click here to go to latest, stable docs.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="Kuadrant Documentation" class="md-header__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+      
+  <img src="../../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kuadrant Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              X.509 Authentication
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kuadrant/docs.kuadrant.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="Kuadrant Documentation" class="md-nav__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+      
+  <img src="../../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Kuadrant Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kuadrant/docs.kuadrant.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../install-helm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Install with Helm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../install-olm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Install with OLM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Concepts
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/docs/design/architectural-overview-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AuthPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    X.509 Authentication
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    X.509 Authentication
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#verify-cryptographic-identity-with-client-certificates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verify cryptographic identity with client certificates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verify cryptographic identity with client certificates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-x509-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to use X.509 authentication
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-x509-authentication-works-in-kuadrant" class="md-nav__link">
+    <span class="md-ellipsis">
+      How X.509 authentication works in Kuadrant
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-tiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration tiers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration tiers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tier-1-gateway-api-v15-frontend-tls-validation-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 1: Gateway API v1.5+ frontend TLS validation (Recommended)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-2-provider-specific-resources-alternative-for-older-gateway-api-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 2: Provider-specific resources (Alternative for older Gateway API versions)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-3-certificate-in-request-header-only-exceptional-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 3: Certificate in request header only (Exceptional cases)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#certificate-source-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Certificate source options
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-ca-trust-with-label-selectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-CA trust with label selectors
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#certificate-requirements-and-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Certificate requirements and constraints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Certificate requirements and constraints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required-certificate-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Required certificate attributes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#certificate-identity-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      Certificate identity object
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security considerations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xfcc-header-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      XFCC header security
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="XFCC header security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tier-1-2-xfcc-set-by-gateway-after-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 1 &amp; 2: XFCC set by gateway after validation ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-3-xfcc-forwarded-from-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 3: XFCC forwarded from client ⚠️
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ca-certificate-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      CA certificate management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CA certificate management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gateway-level-ca-configuration-tier-1-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway-level CA configuration (Tier 1 &amp; 2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authorino-level-ca-configuration-all-tiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authorino-level CA configuration (All tiers)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best practices
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authentication-fails-with-invalid-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authentication fails with "invalid certificate"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xfcc-header-not-populated" class="md-nav__link">
+    <span class="md-ellipsis">
+      XFCC header not populated
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-ca-trust-not-working" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-CA trust not working
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      See also
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TLSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../token-rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TokenRateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../telemetrypolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TelemetryPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../extensions/planpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PlanPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_10" id="__nav_4_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CEL
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_10">
+            <span class="md-nav__icon md-icon"></span>
+            CEL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cel/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cel/standard/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Standard library
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cel/extensions/optional/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Optional type
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cel/extensions/strings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    String extensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    APIs & Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            APIs & Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/authpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AuthPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/dnspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/ratelimitpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/tlspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TLSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/tokenratelimitpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TokenRateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/kuadrant/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kuadrant
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Observability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_7">
+            <span class="md-nav__icon md-icon"></span>
+            Observability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observability/metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Metrics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../authorino/docs/user-guides/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication and Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/telemetrypolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TelemetryPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Tutorials
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/full-walkthrough/secure-protect-connect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Secure, connect and protect
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/tls/gateway-tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway TLS for Cluster Operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/auth/auth-for-app-devs-and-platform-engineers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Enforcing authentication & authorization with Kuadrant AuthPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/auth/anonymous-access/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Anonymous Access
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/auth/x509-client-certificate-authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    X.509 Client Certificate Authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/ratelimiting/gateway-rl-for-cluster-operators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway Rate Limiting for Cluster Operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/ratelimiting/authenticated-rl-for-app-developers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limiting for Application Developers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/ratelimiting/authenticated-rl-with-jwt-and-k8s-authnz/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limiting with JWTs and Kubernetes RBAC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/ratelimiting/multi-auth-rlp-diff-section/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway Rate Limiting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/ratelimiting/multi-auth-rlp-same-section/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Multi authenticated Rate Limiting for an Application
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/tokenratelimitpolicy/authenticated-token-ratelimiting-tutorial/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Token Rate Limiting for Large Language Model APIs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/planpolicy/plan-based-rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Plan-based Rate Limiting with PlanPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DNS configuration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1">
+            <span class="md-nav__icon md-icon"></span>
+            DNS configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../dns-operator/docs/provider/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuring a DNS Provider
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/dns/gateway-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway DNS for ingress Gateway
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/dns/basic-dns-configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Basic DNS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/dns/load-balanced-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNS Load Balancing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/dns/dnshealthchecks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Health Checks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/dns/core-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CoreDNS Support
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/dns/understanding_dns_delegation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cluster Aware DNSRecord Delegation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_1_8" id="__nav_7_1_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DNS Fail-over
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_1_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1_8">
+            <span class="md-nav__icon md-icon"></span>
+            DNS Fail-over
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../dns-operator/docs/migrating_existing_clusters_to_use_groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Migrating Existing Clusters To Use Groups
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../dns-operator/docs/exercising_dns_failover_via_groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exercising DNS Fail-over via Groups
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../dns-operator/docs/migrating_away_from_dns_groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Migrating Away From DNS Groups
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Egress
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            Egress
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/egress/egress-gateway/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Egress Gateway Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/egress/dns-routing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNS Routing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/egress/credential-injection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Credential Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install/mtls-configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    mTLS Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_4" id="__nav_7_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Observability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_4">
+            <span class="md-nav__icon md-icon"></span>
+            Observability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/observability/monitors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configure Observability
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observability/examples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dashboards and Alerts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observability/tracing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tracing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observability/envoy-access-logs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Envoy Access Logs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/observability/limitador-metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring Limitador
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/observability/token-metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring AI Token Metrics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Console Plugin
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Console Plugin
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-console-plugin/docs/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-console-plugin/docs/rbac/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RBAC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Developer Portal
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Developer Portal
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-backstage-plugin/docs/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-backstage-plugin/docs/getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-backstage-plugin/docs/installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_4" id="__nav_9_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_4">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../developer-portal-controller/docs/references/apiproduct/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    APIProduct
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../developer-portal-controller/docs/references/apikey/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    APIKey
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    MCP Gateway
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            MCP Gateway
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_10_1" id="__nav_10_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_1">
+            <span class="md-nav__icon md-icon"></span>
+            About
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/design/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_10_3" id="__nav_10_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_3">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/how-to-install-and-configure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Helm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/olm-install/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OLM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_10_4" id="__nav_10_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_4">
+            <span class="md-nav__icon md-icon"></span>
+            Configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/configure-mcp-gateway-listener-and-router/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Listener and Router
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/opentelemetry/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenTelemetry
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_10_5" id="__nav_10_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    MCP Servers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_5">
+            <span class="md-nav__icon md-icon"></span>
+            MCP Servers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/register-mcp-servers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MCP Server Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/virtual-mcp-servers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Virtual MCP Servers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/external-mcp-server/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    External MCP Servers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_10_6" id="__nav_10_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_6">
+            <span class="md-nav__icon md-icon"></span>
+            Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/vault-integration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vault Integration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/vault-token-exchange/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vault Token Exchange
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/tool-revocation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tool Revocation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_10_7" id="__nav_10_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Support
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_7">
+            <span class="md-nav__icon md-icon"></span>
+            Support
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mcp-gateway/docs/guides/troubleshooting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#verify-cryptographic-identity-with-client-certificates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verify cryptographic identity with client certificates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verify cryptographic identity with client certificates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-x509-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to use X.509 authentication
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-x509-authentication-works-in-kuadrant" class="md-nav__link">
+    <span class="md-ellipsis">
+      How X.509 authentication works in Kuadrant
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-tiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration tiers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration tiers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tier-1-gateway-api-v15-frontend-tls-validation-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 1: Gateway API v1.5+ frontend TLS validation (Recommended)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-2-provider-specific-resources-alternative-for-older-gateway-api-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 2: Provider-specific resources (Alternative for older Gateway API versions)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-3-certificate-in-request-header-only-exceptional-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 3: Certificate in request header only (Exceptional cases)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#certificate-source-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Certificate source options
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-ca-trust-with-label-selectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-CA trust with label selectors
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#certificate-requirements-and-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Certificate requirements and constraints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Certificate requirements and constraints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required-certificate-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Required certificate attributes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#certificate-identity-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      Certificate identity object
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security considerations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xfcc-header-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      XFCC header security
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="XFCC header security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tier-1-2-xfcc-set-by-gateway-after-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 1 &amp; 2: XFCC set by gateway after validation ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-3-xfcc-forwarded-from-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 3: XFCC forwarded from client ⚠️
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ca-certificate-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      CA certificate management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CA certificate management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gateway-level-ca-configuration-tier-1-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway-level CA configuration (Tier 1 &amp; 2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authorino-level-ca-configuration-all-tiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authorino-level CA configuration (All tiers)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best practices
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authentication-fails-with-invalid-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authentication fails with "invalid certificate"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xfcc-header-not-populated" class="md-nav__link">
+    <span class="md-ellipsis">
+      XFCC header not populated
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-ca-trust-not-working" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-CA trust not working
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      See also
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/kuadrant/kuadrant-operator/blob/main/doc/overviews/auth-x509.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="x509-client-certificate-authentication">X.509 Client Certificate Authentication<a class="headerlink" href="#x509-client-certificate-authentication" title="Permanent link">&para;</a></h1>
+<h2 id="verify-cryptographic-identity-with-client-certificates">Verify cryptographic identity with client certificates<a class="headerlink" href="#verify-cryptographic-identity-with-client-certificates" title="Permanent link">&para;</a></h2>
+<p>When your organization requires strong cryptographic identity verification—such as for zero-trust architectures, compliance requirements, or machine-to-machine communication with PKI—X.509 client certificate authentication provides defense-in-depth security with validation at both the TLS layer and application layer.</p>
+<h3 id="when-to-use-x509-authentication">When to use X.509 authentication<a class="headerlink" href="#when-to-use-x509-authentication" title="Permanent link">&para;</a></h3>
+<p>Choose X.509 client certificate authentication when:</p>
+<ul>
+<li><strong>Zero-trust architecture</strong>: You need cryptographic proof of identity for every request</li>
+<li><strong>Compliance requirements</strong>: Security standards (PCI DSS, HIPAA, FedRAMP) mandate mutual TLS (mTLS)</li>
+<li><strong>Machine-to-machine communication</strong>: Services authenticate with long-lived certificates from your PKI</li>
+<li><strong>Multi-CA trust</strong>: Different clients are issued certificates by different CAs, and you need fine-grained control over which CAs are trusted for which routes</li>
+<li><strong>No shared secrets</strong>: You want to avoid the operational burden of rotating and distributing API keys or tokens</li>
+</ul>
+<h2 id="how-x509-authentication-works-in-kuadrant">How X.509 authentication works in Kuadrant<a class="headerlink" href="#how-x509-authentication-works-in-kuadrant" title="Permanent link">&para;</a></h2>
+<p>Kuadrant's X.509 authentication implements a two-layer validation model for defense-in-depth security:</p>
+<p><strong>Layer 1 (TLS/L4)</strong>: The Gateway validates client certificates during the TLS handshake against CA certificates configured in the Gateway resource. This cryptographically verifies that the client possesses the private key and that the certificate is trusted.</p>
+<p><strong>Layer 2 (Application/L7)</strong>: Authorino validates certificates extracted from the <code>X-Forwarded-Client-Cert</code> (XFCC) header using label selectors to support multi-CA trust and fine-grained validation rules.</p>
+<p>Both layers must succeed for the request to be authenticated. This defense-in-depth approach provides:</p>
+<ul>
+<li><strong>Security</strong>: Invalid, expired, or untrusted certificates are rejected at the TLS layer before reaching the application</li>
+<li><strong>Flexibility</strong>: Application-layer validation supports multi-CA trust scenarios where different CAs are trusted for different routes or services</li>
+<li><strong>Auditability</strong>: Certificate attributes (CN, Organization, etc.) are available for authorization decisions and request enrichment</li>
+</ul>
+<h2 id="configuration-tiers">Configuration tiers<a class="headerlink" href="#configuration-tiers" title="Permanent link">&para;</a></h2>
+<p>Kuadrant supports three configuration tiers for X.509 authentication, each with different security characteristics and requirements. Choose the tier that matches your Gateway API version, gateway provider, and security requirements.</p>
+<h3 id="tier-1-gateway-api-v15-frontend-tls-validation-recommended">Tier 1: Gateway API v1.5+ frontend TLS validation (Recommended)<a class="headerlink" href="#tier-1-gateway-api-v15-frontend-tls-validation-recommended" title="Permanent link">&para;</a></h3>
+<p><strong>Use Tier 1 when:</strong> You have Gateway API v1.5+ and a compatible gateway implementation (Istio v1.28+, Envoy Gateway with v1.5 support).</p>
+<p>Tier 1 uses the standard Gateway API <code>spec.tls.frontend.default.validation</code> field to configure client certificate validation at the Gateway level, providing automatic defense-in-depth security.</p>
+<p><strong>Security characteristics:</strong></p>
+<ul>
+<li>✅ Defense-in-depth: Both L4 (TLS) and L7 (Authorino) validation</li>
+<li>✅ Cryptographic proof of private key possession</li>
+<li>✅ Standard Gateway API configuration</li>
+<li>✅ XFCC header automatically set by gateway after successful TLS validation</li>
+<li>✅ Incoming XFCC headers automatically stripped to prevent spoofing</li>
+</ul>
+<p><strong>Gateway configuration:</strong></p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mtls-gateway</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway-system</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">istio</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPS</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;*.example.com&quot;</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="nt">tls</span><span class="p">:</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Terminate</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">      </span><span class="nt">certificateRefs</span><span class="p">:</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway-tls-cert</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">  </span><span class="c1"># Frontend TLS validation for client certificates</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="nt">tls</span><span class="p">:</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">    </span><span class="nt">frontend</span><span class="p">:</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">      </span><span class="nt">default</span><span class="p">:</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">        </span><span class="nt">validation</span><span class="p">:</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">          </span><span class="c1"># Reference ConfigMap(s) with trusted CA certificates</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">          </span><span class="nt">caCertificateRefs</span><span class="p">:</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">client-ca-bundle</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">            </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">          </span><span class="c1"># Require valid client certificates</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">          </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AllowValidOnly</span><span class="w">  </span><span class="c1"># or AllowInsecureFallback for optional mTLS</span>
+</span></code></pre></div>
+<p><strong>AuthPolicy configuration:</strong></p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant.io/v1</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AuthPolicy</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x509-auth</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">targetRef</span><span class="p">:</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPRoute</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">protected-api</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="nt">authentication</span><span class="p">:</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">      </span><span class="s">&quot;client-certificate&quot;</span><span class="p p-Indicator">:</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">        </span><span class="nt">x509</span><span class="p">:</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">          </span><span class="c1"># Extract certificate from XFCC header</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">          </span><span class="nt">source</span><span class="p">:</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">            </span><span class="nt">xfccHeader</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;x-forwarded-client-cert&quot;</span><span class="w"> </span><span class="c1"># cert in envoy XFCC text format, extracted from the header</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">          </span><span class="c1"># Select trusted CA certificates using labels</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">          </span><span class="nt">selector</span><span class="p">:</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">            </span><span class="nt">matchLabels</span><span class="p">:</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">              </span><span class="nt">app.kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trusted-client</span>
+</span></code></pre></div>
+<p>See the <a href="../../user-guides/auth/x509-client-certificate-authentication/">X.509 Client Certificate Authentication user guide</a> for a complete working example.</p>
+<h3 id="tier-2-provider-specific-resources-alternative-for-older-gateway-api-versions">Tier 2: Provider-specific resources (Alternative for older Gateway API versions)<a class="headerlink" href="#tier-2-provider-specific-resources-alternative-for-older-gateway-api-versions" title="Permanent link">&para;</a></h3>
+<p><strong>Use Tier 2 when:</strong> You don't have Gateway API v1.5+ but still want defense-in-depth security with L4 TLS validation.</p>
+<p>Tier 2 uses provider-specific resources to configure TLS validation at the gateway level:</p>
+<ul>
+<li><strong>Istio</strong>: EnvoyFilter resources</li>
+<li><strong>Envoy Gateway</strong>: EnvoyPatchPolicy resources</li>
+</ul>
+<p><strong>Security characteristics:</strong></p>
+<ul>
+<li>✅ Defense-in-depth: Both L4 (TLS) and L7 (Authorino) validation</li>
+<li>✅ Cryptographic proof of private key possession</li>
+<li>✅ XFCC header set by gateway after successful TLS validation</li>
+<li>⚠️ Requires provider-specific configuration knowledge</li>
+<li>⚠️ Configuration varies by gateway provider</li>
+</ul>
+<p><strong>Trade-offs:</strong></p>
+<ul>
+<li>More complex configuration compared to Tier 1</li>
+<li>Provider-specific knowledge required</li>
+<li>Same security guarantees as Tier 1</li>
+</ul>
+<p><strong>When to migrate to Tier 1:</strong> When you upgrade to Gateway API v1.5+ and your gateway provider supports frontend TLS validation, migrate from Tier 2 to Tier 1 for standardized configuration.</p>
+<h3 id="tier-3-certificate-in-request-header-only-exceptional-cases">Tier 3: Certificate in request header only (Exceptional cases)<a class="headerlink" href="#tier-3-certificate-in-request-header-only-exceptional-cases" title="Permanent link">&para;</a></h3>
+<p><strong>Use Tier 3 only when:</strong> Gateway-level TLS validation is not feasible, and you have a trusted upstream proxy that performs TLS validation and populates the XFCC or Client-Cert header.</p>
+<p>Tier 3 extracts certificates from request headers without gateway-level TLS validation. Authorino becomes the sole certificate validator.</p>
+<p><strong>Security characteristics:</strong></p>
+<ul>
+<li>❌ No defense-in-depth (single validation point at L7)</li>
+<li>❌ No cryptographic proof of private key possession</li>
+<li>❌ Potential spoofing risk if headers originate from untrusted sources</li>
+<li>✅ Still validates certificate chain against trusted CAs</li>
+<li>✅ Supports multi-CA trust via label selectors</li>
+</ul>
+<p><strong>When Tier 3 is acceptable:</strong></p>
+<ul>
+<li>Certificate header originates from a trusted upstream proxy that performed TLS validation</li>
+<li>Network topology prevents direct client access to the gateway</li>
+<li>You understand and accept the security trade-offs</li>
+</ul>
+<p><strong>AuthPolicy configuration with Client-Cert header (RFC 9440):</strong></p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant.io/v1</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AuthPolicy</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x509-header-only</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">targetRef</span><span class="p">:</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPRoute</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api-route</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="nt">authentication</span><span class="p">:</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">      </span><span class="s">&quot;client-cert-header&quot;</span><span class="p p-Indicator">:</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">        </span><span class="nt">x509</span><span class="p">:</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">          </span><span class="c1"># Extract certificate from RFC 9440 Client-Cert header</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">          </span><span class="nt">source</span><span class="p">:</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">            </span><span class="nt">clientCertHeader</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;client-cert&quot;</span><span class="w"> </span><span class="c1"># cert in der format, base64-encoded, extracted from the header</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">          </span><span class="nt">selector</span><span class="p">:</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">            </span><span class="nt">matchLabels</span><span class="p">:</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">              </span><span class="nt">tier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trusted-upstream</span>
+</span></code></pre></div>
+<p><strong>⚠️ Important:</strong> Use Tier 1 or Tier 2 whenever possible. Only use Tier 3 in exceptional cases where gateway-level TLS validation is not feasible and you have a trusted upstream proxy.</p>
+<h2 id="certificate-source-options">Certificate source options<a class="headerlink" href="#certificate-source-options" title="Permanent link">&para;</a></h2>
+<p>The <code>x509.source</code> field specifies where to extract the client certificate from:</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Value</th>
+<th>When to use</th>
+<th>Security</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>xfccHeader</code></strong></td>
+<td>Name of the Envoy <code>X-Forwarded-Client-Cert</code> header</td>
+<td>Istio, Envoy Gateway (Tier 1 or 2)</td>
+<td>✅ Set by gateway after TLS validation</td>
+</tr>
+<tr>
+<td><strong><code>clientCertHeader</code></strong></td>
+<td>Name of the RFC 9440 <code>Client-Cert</code> header</td>
+<td>Trusted upstream proxy implementing RFC 9440 (Tier 3)</td>
+<td>⚠️ Requires trusted source</td>
+</tr>
+<tr>
+<td><strong><code>expression</code></strong></td>
+<td>CEL expression that evaluates to a certificate</td>
+<td>Custom header names or attribute paths (Tier 3)</td>
+<td>⚠️ Requires trusted source</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example with custom CEL expression:</strong></p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">x509</span><span class="p">:</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;request.http.headers[&quot;x-custom-client-cert&quot;]&#39;</span><span class="w"> </span><span class="c1"># cert in pem format, URL-encoded, extracted from a custom header using CEL</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-service</span>
+</span></code></pre></div>
+<h2 id="multi-ca-trust-with-label-selectors">Multi-CA trust with label selectors<a class="headerlink" href="#multi-ca-trust-with-label-selectors" title="Permanent link">&para;</a></h2>
+<p>Unlike traditional proxy-based client certificate validation that supports only a single CA bundle, Kuadrant's X.509 authentication allows you to trust multiple CAs and select different CA sets for different routes using Kubernetes label selectors.</p>
+<p><strong>Example - Trust CA certificates labeled with specific environment:</strong></p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">x509</span><span class="p">:</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">      </span><span class="nt">environment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">production</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">      </span><span class="nt">tier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customer-facing</span>
+</span></code></pre></div>
+<p><strong>Example - More complex selectors:</strong></p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">x509</span><span class="p">:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nt">matchExpressions</span><span class="p">:</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ca-tier</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">In</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">      </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;tier-1&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;tier-2&quot;</span><span class="p p-Indicator">]</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deprecated</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">      </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DoesNotExist</span>
+</span></code></pre></div>
+<p>This enables sophisticated trust models such as:</p>
+<ul>
+<li>Different CAs for production vs. staging environments</li>
+<li>Separate CAs for different business units or customers</li>
+<li>Gradual CA rotation by trusting both old and new CAs during migration</li>
+<li>Per-route CA trust policies for multi-tenant scenarios</li>
+</ul>
+<p><strong>CA Secret requirements:</strong></p>
+<p>Trusted CA certificates must be stored in Kubernetes TLS secrets in the Kuadrant namespace with appropriate labels:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>tls<span class="w"> </span>customer-a-ca<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span>--cert<span class="o">=</span>customer-a-ca.crt<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span>--key<span class="o">=</span>customer-a-ca.key
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>kubectl<span class="w"> </span>label<span class="w"> </span>secret<span class="w"> </span>customer-a-ca<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">  </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">  </span>authorino.kuadrant.io/managed-by<span class="o">=</span>authorino<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">  </span><span class="nv">customer</span><span class="o">=</span>customer-a<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">  </span><span class="nv">environment</span><span class="o">=</span>production
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Cross-namespace trust</p>
+<p>By default, Authorino only trusts CA secrets in the Kuadrant namespace. To allow cross-namespace references, set <code>allNamespaces: true</code> in the AuthPolicy, but use this with caution as it expands the trust scope.</p>
+</div>
+<h2 id="certificate-requirements-and-constraints">Certificate requirements and constraints<a class="headerlink" href="#certificate-requirements-and-constraints" title="Permanent link">&para;</a></h2>
+<h3 id="required-certificate-attributes">Required certificate attributes<a class="headerlink" href="#required-certificate-attributes" title="Permanent link">&para;</a></h3>
+<p>Client certificates must meet these requirements for Authorino validation to succeed:</p>
+<ol>
+<li><strong>Extended Key Usage (EKU)</strong>: Certificates must include the x509 v3 extension specifying <strong>Client Authentication</strong> (<code>1.3.6.1.5.5.7.3.2</code>) extended key usage</li>
+</ol>
+<p><strong>Example certificate generation with Client Auth EKU:</strong>
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Create X.509 v3 extensions file</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>client-cert-ext.cnf<span class="w"> </span><span class="s">&lt;&lt; EOF</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="s">authorityKeyIdentifier=keyid,issuer</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="s">basicConstraints=CA:FALSE</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="s">keyUsage=digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="s">extendedKeyUsage=clientAuth</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="s">EOF</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="c1"># Generate certificate with Client Auth EKU</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>openssl<span class="w"> </span>x509<span class="w"> </span>-req<span class="w"> </span>-sha256<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">  </span>-days<span class="w"> </span><span class="m">365</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">  </span>-CA<span class="w"> </span>ca.crt<span class="w"> </span>-CAkey<span class="w"> </span>ca.key<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">  </span>-extfile<span class="w"> </span>client-cert-ext.cnf<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">  </span>-in<span class="w"> </span>client.csr<span class="w"> </span>-out<span class="w"> </span>client.crt
+</span></code></pre></div></p>
+<ol>
+<li>
+<p><strong>Valid certificate chain</strong>: Certificate must chain to a trusted CA configured in Authorino secrets</p>
+</li>
+<li>
+<p><strong>Not expired</strong>: Certificate must be within its validity period</p>
+</li>
+<li>
+<p><strong>Proper encoding</strong>:</p>
+</li>
+<li>XFCC header: <a href="https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_conn_man/headers#text-format">Envoy XFCC text format</a></li>
+<li>Client-Cert header (<a href="https://datatracker.ietf.org/doc/rfc9440/">RFC 9440</a>): DER format, base64-encoded</li>
+<li>CEL Expression: PEM-encoded, URL-encoded</li>
+</ol>
+<h3 id="certificate-identity-object">Certificate identity object<a class="headerlink" href="#certificate-identity-object" title="Permanent link">&para;</a></h3>
+<p>When X.509 authentication succeeds, the identity object (<code>auth.identity</code>) contains the certificate subject fields available for use in authorization rules and response transformations:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>OID</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CommonName</code></td>
+<td>string</td>
+<td>2.5.4.3</td>
+<td>Common Name (CN)</td>
+<td><code>"api-client.example.com"</code></td>
+</tr>
+<tr>
+<td><code>Country</code></td>
+<td>array of strings</td>
+<td>2.5.4.6</td>
+<td>Country (C)</td>
+<td><code>["US"]</code></td>
+</tr>
+<tr>
+<td><code>Organization</code></td>
+<td>array of strings</td>
+<td>2.5.4.10</td>
+<td>Organization (O)</td>
+<td><code>["ACME Corp"]</code></td>
+</tr>
+<tr>
+<td><code>OrganizationalUnit</code></td>
+<td>array of strings</td>
+<td>2.5.4.11</td>
+<td>Organizational Unit (OU)</td>
+<td><code>["Engineering", "Platform"]</code></td>
+</tr>
+<tr>
+<td><code>Locality</code></td>
+<td>array of strings</td>
+<td>2.5.4.7</td>
+<td>Locality (L)</td>
+<td><code>["San Francisco"]</code></td>
+</tr>
+<tr>
+<td><code>Province</code></td>
+<td>array of strings</td>
+<td>2.5.4.8</td>
+<td>Province/State (ST)</td>
+<td><code>["California"]</code></td>
+</tr>
+<tr>
+<td><code>StreetAddress</code></td>
+<td>array of strings</td>
+<td>2.5.4.9</td>
+<td>Street Address</td>
+<td><code>["123 Main St"]</code></td>
+</tr>
+<tr>
+<td><code>PostalCode</code></td>
+<td>array of strings</td>
+<td>2.5.4.17</td>
+<td>Postal Code</td>
+<td><code>["94105"]</code></td>
+</tr>
+<tr>
+<td><code>SerialNumber</code></td>
+<td>string</td>
+<td>2.5.4.5</td>
+<td>Subject serial number</td>
+<td><code>"01:23:45:67:89:AB:CD:EF"</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example - Use certificate attributes in authorization:</strong></p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">authorization</span><span class="p">:</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="s">&quot;verify-organization&quot;</span><span class="p p-Indicator">:</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="nt">patternMatching</span><span class="p">:</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">      </span><span class="nt">patterns</span><span class="p">:</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">predicate</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;auth.identity.Organization[0]</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;ACME</span><span class="nv"> </span><span class="s">Corp&#39;&quot;</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">predicate</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&#39;Engineering&#39;</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">auth.identity.OrganizationalUnit&quot;</span>
+</span></code></pre></div>
+<p><strong>Example - Inject certificate attributes into request headers:</strong></p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">response</span><span class="p">:</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">success</span><span class="p">:</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">headers</span><span class="p">:</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">      </span><span class="s">&quot;x-client-cn&quot;</span><span class="p p-Indicator">:</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">        </span><span class="nt">plain</span><span class="p">:</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">          </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auth.identity.CommonName</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">      </span><span class="s">&quot;x-client-org&quot;</span><span class="p p-Indicator">:</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">        </span><span class="nt">plain</span><span class="p">:</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">          </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auth.identity.Organization[0]</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">      </span><span class="s">&quot;x-client-subject&quot;</span><span class="p p-Indicator">:</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">        </span><span class="nt">json</span><span class="p">:</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">          </span><span class="nt">properties</span><span class="p">:</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">            </span><span class="nt">cn</span><span class="p">:</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="w">              </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auth.identity.CommonName</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="w">            </span><span class="nt">org</span><span class="p">:</span>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="w">              </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auth.identity.Organization[0]</span>
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">            </span><span class="nt">ou</span><span class="p">:</span>
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="w">              </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auth.identity.OrganizationalUnit</span>
+</span></code></pre></div>
+<h2 id="security-considerations">Security considerations<a class="headerlink" href="#security-considerations" title="Permanent link">&para;</a></h2>
+<h3 id="xfcc-header-security">XFCC header security<a class="headerlink" href="#xfcc-header-security" title="Permanent link">&para;</a></h3>
+<p><strong>Critical requirement:</strong> The XFCC header must originate from a trusted source to prevent spoofing.</p>
+<h4 id="tier-1-2-xfcc-set-by-gateway-after-validation">Tier 1 &amp; 2: XFCC set by gateway after validation ✅<a class="headerlink" href="#tier-1-2-xfcc-set-by-gateway-after-validation" title="Permanent link">&para;</a></h4>
+<p>With gateway-level TLS validation, the proxy must be configured to:</p>
+<ol>
+<li><strong>Strip incoming XFCC headers</strong>: Any XFCC from incoming requests must be removed to prevent client spoofing</li>
+<li><strong>Set XFCC only after validation</strong>: The proxy sets the XFCC header exclusively after successful TLS validation</li>
+</ol>
+<p>Envoy behavior with <code>forward_client_cert_details: SANITIZE_SET</code> (recommended):</p>
+<ul>
+<li>Strips any incoming XFCC headers from untrusted clients</li>
+<li>Sets the XFCC header only after TLS validation succeeds</li>
+<li>Provides cryptographic proof that the client possesses the private key</li>
+</ul>
+<p><strong>Verification:</strong> Ensure your Gateway configuration uses the recommended Envoy settings. For Tier 1 (Gateway API v1.5+), this is automatic. For Tier 2, verify your EnvoyFilter or provider-specific resource configuration.</p>
+<h4 id="tier-3-xfcc-forwarded-from-client">Tier 3: XFCC forwarded from client ⚠️<a class="headerlink" href="#tier-3-xfcc-forwarded-from-client" title="Permanent link">&para;</a></h4>
+<p>With Tier 3 configuration, the proxy forwards the XFCC or Client-Cert header from the incoming request without validation.</p>
+<p><strong>Risks:</strong></p>
+<ul>
+<li>Potential client spoofing of the certificate header</li>
+<li>No cryptographic proof of private key possession</li>
+<li>Single validation point (Authorino only)</li>
+</ul>
+<p><strong>Acceptable scenarios:</strong></p>
+<ul>
+<li>Certificate header originates from a trusted upstream proxy that performed TLS validation</li>
+<li>Network topology prevents direct client access to the gateway</li>
+<li>You understand and accept the L7-only validation trade-offs</li>
+</ul>
+<p><strong>⚠️ Warning:</strong> Do not use Tier 3 configuration unless you trust the source of the certificate header and understand the security implications. When in doubt, use Tier 1 or Tier 2.</p>
+<h3 id="ca-certificate-management">CA certificate management<a class="headerlink" href="#ca-certificate-management" title="Permanent link">&para;</a></h3>
+<p>Proper CA certificate management is critical for maintaining security:</p>
+<h4 id="gateway-level-ca-configuration-tier-1-2">Gateway-level CA configuration (Tier 1 &amp; 2)<a class="headerlink" href="#gateway-level-ca-configuration-tier-1-2" title="Permanent link">&para;</a></h4>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Securely manage CA certificates for gateway validation</li>
+<li><strong>Tier 1</strong>: ConfigMaps referenced in Gateway <code>spec.tls.frontend.default.validation.caCertificateRefs</code></li>
+<li><strong>Tier 2</strong>: CA certificates in EnvoyFilter or provider-specific resources</li>
+<li>Certificate rotation requires ConfigMap updates and potential gateway pod restarts</li>
+<li>Namespace isolation through ReferenceGrant controls cross-namespace references</li>
+</ul>
+<h4 id="authorino-level-ca-configuration-all-tiers">Authorino-level CA configuration (All tiers)<a class="headerlink" href="#authorino-level-ca-configuration-all-tiers" title="Permanent link">&para;</a></h4>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Manage CA certificates in Kubernetes TLS secrets with appropriate labels</li>
+<li>Rotation requires updating secrets (Authorino watches for changes)</li>
+<li>Multi-CA trust via label selectors enables fine-grained revocation control</li>
+<li>Secrets must be in the Kuadrant namespace preferably (or use <code>allNamespaces: true</code> with caution)</li>
+</ul>
+<p><strong>Key distinction:</strong> Gateway CAs typically represent a single root CA validated at TLS handshake, while Authorino CAs can represent multiple intermediate CAs selected via labels, enabling granular trust management.</p>
+<h3 id="best-practices">Best practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>Use Tier 1 whenever possible</strong>: Gateway API v1.5+ frontend TLS validation provides standardized, secure configuration</p>
+</li>
+<li>
+<p><strong>Automate certificate management</strong>: Use <a href="https://cert-manager.io/">cert-manager</a> for automatic CA certificate provisioning and rotation at both gateway and Authorino levels</p>
+</li>
+<li>
+<p><strong>Implement certificate rotation strategies</strong>:</p>
+</li>
+<li>Overlap periods where both old and new CAs are trusted</li>
+<li>Use label selectors to gradually phase out old CAs</li>
+<li>
+<p>Monitor certificate expiration with alerting</p>
+</li>
+<li>
+<p><strong>Monitor certificate health</strong>:</p>
+</li>
+<li>Track certificate expiration timelines</li>
+<li>Alert on approaching expiration (30, 14, 7 days)</li>
+<li>
+<p>Monitor authentication failure rates</p>
+</li>
+<li>
+<p><strong>Consider separate CAs for different trust levels</strong>:</p>
+</li>
+<li>Gateway-level: Broad trust (all certificates from organizational CA)</li>
+<li>
+<p>Authorino-level: Granular trust (specific CAs per route/service)</p>
+</li>
+<li>
+<p><strong>Validate Client Auth EKU</strong>: Ensure all client certificates include the <code>extendedKeyUsage=clientAuth</code> extension</p>
+</li>
+<li>
+<p><strong>Header size considerations</strong>:</p>
+</li>
+<li>Certificate chains in XFCC headers can exceed typical header limits</li>
+<li>Consider using shorter certificate chains when possible</li>
+<li>
+<p>Monitor for header size-related failures</p>
+</li>
+<li>
+<p><strong>Network segmentation</strong>: For Tier 3 configurations, ensure network topology prevents direct client access to the gateway</p>
+</li>
+</ol>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h3 id="authentication-fails-with-invalid-certificate">Authentication fails with "invalid certificate"<a class="headerlink" href="#authentication-fails-with-invalid-certificate" title="Permanent link">&para;</a></h3>
+<p><strong>Possible causes:</strong></p>
+<ul>
+<li>Certificate doesn't chain to a trusted CA</li>
+<li>Certificate is expired</li>
+<li>Certificate doesn't have Client Authentication EKU</li>
+<li>CA secret not labeled correctly or not in Kuadrant namespace</li>
+</ul>
+<p><strong>Resolution:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Verify certificate has Client Auth EKU</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>openssl<span class="w"> </span>x509<span class="w"> </span>-in<span class="w"> </span>client.crt<span class="w"> </span>-noout<span class="w"> </span>-text<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;TLS Web Client Authentication&quot;</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Check certificate validity</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>openssl<span class="w"> </span>x509<span class="w"> </span>-in<span class="w"> </span>client.crt<span class="w"> </span>-noout<span class="w"> </span>-dates
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># Verify CA secret exists and has correct labels</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>-l<span class="w"> </span>authorino.kuadrant.io/managed-by<span class="o">=</span>authorino
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="c1"># Check Authorino logs</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>-l<span class="w"> </span>authorino-resource-uid<span class="o">=</span>&lt;uid&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>x509
+</span></code></pre></div></p>
+<h3 id="xfcc-header-not-populated">XFCC header not populated<a class="headerlink" href="#xfcc-header-not-populated" title="Permanent link">&para;</a></h3>
+<p><strong>Possible causes:</strong></p>
+<ul>
+<li>Gateway not configured for frontend TLS validation (Tier 1)</li>
+<li>EnvoyFilter not applied correctly (Tier 2)</li>
+<li>Client didn't present certificate during TLS handshake</li>
+</ul>
+<p><strong>Resolution:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># For Tier 1: Check Gateway configuration</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span>&lt;gateway-name&gt;<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A<span class="w"> </span><span class="m">10</span><span class="w"> </span>frontend
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># Check if XFCC is in request (from Authorino perspective)</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>-l<span class="w"> </span>authorino-resource-uid<span class="o">=</span>&lt;uid&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>xfcc
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="c1"># Test TLS handshake</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>openssl<span class="w"> </span>s_client<span class="w"> </span>-connect<span class="w"> </span>gateway.example.com:443<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">  </span>-cert<span class="w"> </span>client.crt<span class="w"> </span>-key<span class="w"> </span>client.key<span class="w"> </span>-CAfile<span class="w"> </span>ca.crt
+</span></code></pre></div></p>
+<h3 id="multi-ca-trust-not-working">Multi-CA trust not working<a class="headerlink" href="#multi-ca-trust-not-working" title="Permanent link">&para;</a></h3>
+<p><strong>Possible causes:</strong></p>
+<ul>
+<li>CA secrets don't have required labels</li>
+<li>Label selectors don't match any CA secrets</li>
+<li>Secrets in wrong namespace</li>
+</ul>
+<p><strong>Resolution:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># List CA secrets with labels</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>secrets<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span>-l<span class="w"> </span>authorino.kuadrant.io/managed-by<span class="o">=</span>authorino<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span>--show-labels
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="c1"># Verify selector matches secrets</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>kubectl<span class="w"> </span>get<span class="w"> </span>secrets<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">  </span>-l<span class="w"> </span>app.kubernetes.io/name<span class="o">=</span>trusted-client
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="c1"># Check AuthPolicy selector configuration</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>kubectl<span class="w"> </span>get<span class="w"> </span>authpolicy<span class="w"> </span>&lt;policy-name&gt;<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A<span class="w"> </span><span class="m">5</span><span class="w"> </span>selector
+</span></code></pre></div></p>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../user-guides/auth/x509-client-certificate-authentication/">X.509 Client Certificate Authentication user guide</a> - Complete working example with certificate generation and testing</li>
+<li><a href="../auth/#choosing-the-right-authentication-method">Authentication overview</a> - Comparison of all authentication methods</li>
+<li><a href="../../reference/authpolicy/">AuthPolicy API reference</a> - Complete AuthPolicy CRD specification</li>
+<li><a href="https://github.com/Kuadrant/architecture/blob/main/rfcs/0015-x509-client-cert-authpolicy.md">RFC 0015: X.509 Client Certificate Authentication</a> - Design document and architectural decisions</li>
+<li><a href="https://docs.kuadrant.io/latest/authorino/docs/features/#x509-client-certificate-authentication-authenticationx509">Authorino X.509 authentication</a> - Detailed Authorino feature documentation</li>
+<li><a href="https://gateway-api.sigs.k8s.io/api-types/gateway/#gateway-api-v1-TLSFrontendValidation">Gateway API v1.5 TLS Frontend Validation</a> - Gateway API specification</li>
+<li><a href="https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_conn_man/headers#x-forwarded-client-cert">Envoy XFCC header specification</a> - Envoy documentation on XFCC header format and usage</li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc9440.html">RFC 9440: Client-Cert HTTP Header Field</a> - Client-Cert header specification</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer id="footer" class="footer">
+  <div class="copyright">
+    <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+    <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks.</p> 
+    <p>For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+  </div>
+
+  <div class="sponsored-by">
+    <p>
+      <a href="https://www.cncf.io/sandbox-projects/"><img src="../../../../assets/images/cncf-color.png" class="logo" alt="CNCF logo"></a>
+    </p>
+    <p>
+      We are a Cloud Native Computing Foundation sandbox project.
+    </p>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["1.3.x", "latest"], "provider": "mike"}}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="../../../../assets/strip_callouts.js"></script>
+      
+    
+  </body>
+</html>
