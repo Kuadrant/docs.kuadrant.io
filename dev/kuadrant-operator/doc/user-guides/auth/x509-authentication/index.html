@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.kuadrant.io/dev/kuadrant-operator/doc/user-guides/auth/x509-client-certificate-authentication/">
+        <link rel="canonical" href="https://docs.kuadrant.io/dev/kuadrant-operator/doc/user-guides/auth/x509-authentication/">
       
       
         <link rel="prev" href="../anonymous-access/">
       
       
-        <link rel="next" href="../../ratelimiting/gateway-rl-for-cluster-operators/">
+        <link rel="next" href="../x509-tier1-gateway-api-validation/">
       
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>X.509 Client Certificate Authentication - Kuadrant Documentation</title>
+        <title>Overview - Kuadrant Documentation</title>
       
     
     
@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#x509-client-certificate-authentication" class="md-skip">
+        <a href="#authenticate-api-clients-with-x509-certificates" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +119,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              X.509 Client Certificate Authentication
+              Overview
             
           </span>
         </div>
@@ -1113,6 +1113,43 @@
   
   
   
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    X.509 Client Certificate Authentication
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            X.509 Client Certificate Authentication
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
     <li class="md-nav__item md-nav__item--active">
       
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
@@ -1125,7 +1162,7 @@
           
   
   <span class="md-ellipsis">
-    X.509 Client Certificate Authentication
+    Overview
   </span>
   
 
@@ -1136,7 +1173,7 @@
         
   
   <span class="md-ellipsis">
-    X.509 Client Certificate Authentication
+    Overview
   </span>
   
 
@@ -1158,19 +1195,37 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#choose-your-configuration-approach" class="md-nav__link">
     <span class="md-ellipsis">
-      Overview
+      Choose your configuration approach
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Overview">
+    <nav class="md-nav" aria-label="Choose your configuration approach">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#request-flow" class="md-nav__link">
+  <a href="#tier-1-gateway-api-v15-recommended" class="md-nav__link">
     <span class="md-ellipsis">
-      Request Flow
+      Tier 1: Gateway API v1.5+ (Recommended)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-2-provider-specific-resources-alternative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 2: Provider-specific resources (Alternative)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-3-certificate-in-request-header-only-exceptional-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 3: Certificate in request header only (Exceptional cases)
     </span>
   </a>
   
@@ -1182,144 +1237,36 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#decision-tree" class="md-nav__link">
     <span class="md-ellipsis">
-      Prerequisites
+      Decision tree
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
+  <a href="#understanding-the-tiers" class="md-nav__link">
     <span class="md-ellipsis">
-      Setup
+      Understanding the tiers
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Setup">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#step-1-generate-test-certificates" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 1: Generate Test Certificates
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#step-2-deploy-resources" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 2: Deploy Resources
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuration-details" class="md-nav__link">
+  <a href="#whats-next" class="md-nav__link">
     <span class="md-ellipsis">
-      Configuration Details
+      What's next
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Configuration Details">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#topology-overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Topology Overview
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#gateway-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Gateway Configuration
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#authpolicy-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      AuthPolicy Configuration
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#testing" class="md-nav__link">
+  <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
-      Testing
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Testing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#test-with-valid-certificate" class="md-nav__link">
-    <span class="md-ellipsis">
-      Test with Valid Certificate
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#test-without-certificate" class="md-nav__link">
-    <span class="md-ellipsis">
-      Test without Certificate
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#test-with-invalid-certificate" class="md-nav__link">
-    <span class="md-ellipsis">
-      Test with Invalid Certificate
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#test-with-unauthorized-certificate" class="md-nav__link">
-    <span class="md-ellipsis">
-      Test with Unauthorized Certificate
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      References
+      See also
     </span>
   </a>
   
@@ -1328,6 +1275,77 @@
     </ul>
   
 </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../x509-tier1-gateway-api-validation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tier 1: Gateway API Validation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../x509-tier2-provider-specific/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tier 2: Provider-Specific
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../x509-tier3-header-only/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tier 3: Header-Only
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
       
     </li>
   
@@ -1388,6 +1406,27 @@
   
   <span class="md-ellipsis">
     Authenticated Rate Limiting with JWTs and Kubernetes RBAC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ratelimiting/authenticated-rl-for-app-developers-grpc-services/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authenticated Rate Limiting for gRPC Services
   </span>
   
 
@@ -3080,19 +3119,37 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#choose-your-configuration-approach" class="md-nav__link">
     <span class="md-ellipsis">
-      Overview
+      Choose your configuration approach
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Overview">
+    <nav class="md-nav" aria-label="Choose your configuration approach">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#request-flow" class="md-nav__link">
+  <a href="#tier-1-gateway-api-v15-recommended" class="md-nav__link">
     <span class="md-ellipsis">
-      Request Flow
+      Tier 1: Gateway API v1.5+ (Recommended)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-2-provider-specific-resources-alternative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 2: Provider-specific resources (Alternative)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-3-certificate-in-request-header-only-exceptional-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 3: Certificate in request header only (Exceptional cases)
     </span>
   </a>
   
@@ -3104,144 +3161,36 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#decision-tree" class="md-nav__link">
     <span class="md-ellipsis">
-      Prerequisites
+      Decision tree
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
+  <a href="#understanding-the-tiers" class="md-nav__link">
     <span class="md-ellipsis">
-      Setup
+      Understanding the tiers
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Setup">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#step-1-generate-test-certificates" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 1: Generate Test Certificates
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#step-2-deploy-resources" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 2: Deploy Resources
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuration-details" class="md-nav__link">
+  <a href="#whats-next" class="md-nav__link">
     <span class="md-ellipsis">
-      Configuration Details
+      What's next
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Configuration Details">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#topology-overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Topology Overview
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#gateway-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Gateway Configuration
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#authpolicy-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      AuthPolicy Configuration
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#testing" class="md-nav__link">
+  <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
-      Testing
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Testing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#test-with-valid-certificate" class="md-nav__link">
-    <span class="md-ellipsis">
-      Test with Valid Certificate
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#test-without-certificate" class="md-nav__link">
-    <span class="md-ellipsis">
-      Test without Certificate
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#test-with-invalid-certificate" class="md-nav__link">
-    <span class="md-ellipsis">
-      Test with Invalid Certificate
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#test-with-unauthorized-certificate" class="md-nav__link">
-    <span class="md-ellipsis">
-      Test with Unauthorized Certificate
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      References
+      See also
     </span>
   </a>
   
@@ -3262,7 +3211,7 @@
                   
 
   
-    <a href="https://github.com/kuadrant/kuadrant-operator/blob/main/doc/user-guides/auth/x509-client-certificate-authentication.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/kuadrant/kuadrant-operator/blob/main/doc/user-guides/auth/x509-authentication.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -3270,307 +3219,127 @@
   
 
 
-<h1 id="x509-client-certificate-authentication">X.509 Client Certificate Authentication<a class="headerlink" href="#x509-client-certificate-authentication" title="Permanent link">&para;</a></h1>
-<p>This guide demonstrates X.509 client certificate authentication using Gateway API v1.5+ with frontend TLS validation (<a href="https://github.com/Kuadrant/architecture/blob/main/rfcs/0015-x509-client-cert-authpolicy.md">RFC 0015</a> / Tier 1).</p>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>Tier 1 of <a href="https://github.com/Kuadrant/architecture/blob/main/rfcs/0015-x509-client-cert-authpolicy.md">RFC 0015</a> implements defense-in-depth security with two validation layers:</p>
-<ol>
-<li><strong>Layer 1 (TLS/L4)</strong>: Gateway validates client certificates during the TLS handshake</li>
-<li><strong>Layer 2 (Application/L7)</strong>: Authorino validates certificates using label selectors for multi-CA trust</li>
-</ol>
-<h3 id="request-flow">Request Flow<a class="headerlink" href="#request-flow" title="Permanent link">&para;</a></h3>
-<ol>
-<li>Client initiates HTTPS connection with client certificate</li>
-<li>Gateway validates certificate against <code>caCertificateRefs</code> during TLS handshake</li>
-<li>Invalid/expired/untrusted certificates are rejected at the TLS layer</li>
-<li>For valid certificates, gateway terminates TLS and populates the <code>x-forwarded-client-cert</code> (XFCC) header</li>
-<li>Wasm-shim forwards XFCC header to Authorino in CheckRequest</li>
-<li>Authorino extracts and validates the certificate from the XFCC header</li>
-<li>Authorino applies fine-grained validation using label selectors on CA Secrets</li>
-<li>Request proceeds only if both layers succeed</li>
-</ol>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<h1 id="authenticate-api-clients-with-x509-certificates">Authenticate API clients with X.509 certificates<a class="headerlink" href="#authenticate-api-clients-with-x509-certificates" title="Permanent link">&para;</a></h1>
+<p>This guide helps you choose and implement the right X.509 client certificate authentication approach for your Gateway API version and security requirements.</p>
+<p>For background on when to use X.509 authentication and how Kuadrant's two-layer validation model works, see the <a href="../../../overviews/auth-x509/">X.509 Authentication Overview</a>.</p>
+<h2 id="choose-your-configuration-approach">Choose your configuration approach<a class="headerlink" href="#choose-your-configuration-approach" title="Permanent link">&para;</a></h2>
+<p>Kuadrant supports three configuration tiers. Choose the one that matches your Gateway API version and security requirements:</p>
+<h3 id="tier-1-gateway-api-v15-recommended">Tier 1: Gateway API v1.5+ (Recommended)<a class="headerlink" href="#tier-1-gateway-api-v15-recommended" title="Permanent link">&para;</a></h3>
+<p><strong>Use this when:</strong> You have Gateway API v1.5+ and a compatible gateway (Istio v1.28+, Envoy Gateway with v1.5 support)</p>
+<p><strong>Security</strong>: ✅ Defense-in-depth (TLS + Application validation) | ✅ Standard Gateway API configuration | ✅ Automatic XFCC header protection</p>
+<p><strong>What you get:</strong></p>
 <ul>
-<li>Kubernetes 1.31+ (required for Gateway API v1.5 CEL validation rules in CRDs)</li>
-<li>Gateway API v1.5+ with <code>spec.tls.frontend.default.validation</code> support</li>
-<li>Istio v1.28+ or compatible Gateway implementation supporting XFCC header forwarding and frontend TLS validation (GEP-91)</li>
-<li><strong>Sail Operator</strong>: Requires Sail v1.28.0+ with Istio v1.28.0+ configured in the Istio CR</li>
-<li><strong>Upstream Istio</strong>: Requires Istio v1.28.0+ installed via <code>istioctl</code></li>
-<li><strong>Note</strong>: Istio 1.27.x and earlier do NOT support Gateway API v1.5's <code>spec.tls.frontend</code> field</li>
-<li>Kuadrant Operator installed</li>
-<li>Kuadrant instance deployed</li>
+<li>Standards-based configuration using Gateway API <code>spec.tls.frontend.default.validation</code></li>
+<li>Automatic header sanitization prevents spoofing</li>
+<li>Cryptographic proof of private key possession</li>
 </ul>
-<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
-<h3 id="step-1-generate-test-certificates">Step 1: Generate Test Certificates<a class="headerlink" href="#step-1-generate-test-certificates" title="Permanent link">&para;</a></h3>
-<p>For testing purposes, generate self-signed certificates:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Generate CA private key and certificate</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>openssl<span class="w"> </span>req<span class="w"> </span>-x509<span class="w"> </span>-sha512<span class="w"> </span>-nodes<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span>-days<span class="w"> </span><span class="m">365</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span>-newkey<span class="w"> </span>rsa:4096<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span>-subj<span class="w"> </span><span class="s2">&quot;/CN=Test CA/O=Kuadrant/C=US&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span>-addext<span class="w"> </span><span class="nv">basicConstraints</span><span class="o">=</span>CA:TRUE<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span>-addext<span class="w"> </span><span class="nv">keyUsage</span><span class="o">=</span>digitalSignature,keyCertSign<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span>-keyout<span class="w"> </span>/tmp/ca.key<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span>-out<span class="w"> </span>/tmp/ca.crt
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># Create X.509 v3 extensions file for client certificate</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>/tmp/x509v3.ext<span class="w"> </span><span class="s">&lt;&lt; EOF</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="s">authorityKeyIdentifier=keyid,issuer</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="s">basicConstraints=CA:FALSE</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="s">keyUsage=digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="s">extendedKeyUsage=clientAuth</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="s">EOF</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="c1"># Generate client private key and certificate signed by the CA</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>openssl<span class="w"> </span>genrsa<span class="w"> </span>-out<span class="w"> </span>/tmp/client.key<span class="w"> </span><span class="m">4096</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>openssl<span class="w"> </span>req<span class="w"> </span>-new<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">  </span>-subj<span class="w"> </span><span class="s2">&quot;/CN=test-client/O=Kuadrant/C=US&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">  </span>-key<span class="w"> </span>/tmp/client.key<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">  </span>-out<span class="w"> </span>/tmp/client.csr
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>openssl<span class="w"> </span>x509<span class="w"> </span>-req<span class="w"> </span>-sha512<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">  </span>-days<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">  </span>-CA<span class="w"> </span>/tmp/ca.crt<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">  </span>-CAkey<span class="w"> </span>/tmp/ca.key<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">  </span>-CAcreateserial<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">  </span>-extfile<span class="w"> </span>/tmp/x509v3.ext<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">  </span>-in<span class="w"> </span>/tmp/client.csr<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">  </span>-out<span class="w"> </span>/tmp/client.crt
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="c1"># Update the ConfigMap and Secret with the generated CA certificate</span>
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>kubectl<span class="w"> </span>create<span class="w"> </span>configmap<span class="w"> </span>client-ca-bundle<span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w">  </span>--from-file<span class="o">=</span>ca.crt<span class="o">=</span>/tmp/ca.crt
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>
-</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>tls<span class="w"> </span>trusted-client-ca<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="w">  </span>--cert<span class="o">=</span>/tmp/ca.crt<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="w">  </span>--key<span class="o">=</span>/tmp/ca.key
-</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>kubectl<span class="w"> </span>label<span class="w"> </span>secret<span class="w"> </span>trusted-client-ca<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w">  </span>authorino.kuadrant.io/managed-by<span class="o">=</span>authorino<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="w">  </span>app.kubernetes.io/name<span class="o">=</span>trusted-client
-</span></code></pre></div>
-<blockquote>
-<p><strong>Note</strong>: For production, use certificates from your PKI infrastructure and consider using cert-manager for automated certificate management.</p>
-</blockquote>
-<h3 id="step-2-deploy-resources">Step 2: Deploy Resources<a class="headerlink" href="#step-2-deploy-resources" title="Permanent link">&para;</a></h3>
-<p>Deploy the example resources:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>examples/x509-authentication/
-</span></code></pre></div>
-<p>This creates:</p>
+<p><strong>→ <a href="../x509-tier1-gateway-api-validation/">Follow the Tier 1 guide</a></strong></p>
+<h3 id="tier-2-provider-specific-resources-alternative">Tier 2: Provider-specific resources (Alternative)<a class="headerlink" href="#tier-2-provider-specific-resources-alternative" title="Permanent link">&para;</a></h3>
+<p><strong>Use this when:</strong> You need defense-in-depth but don't have Gateway API v1.5+ yet</p>
+<p><strong>Security</strong>: ✅ Defense-in-depth (TLS + Application validation) | ⚠️ Provider-specific configuration required</p>
+<p><strong>What you get:</strong></p>
 <ul>
-<li><strong>Gateway</strong> (<code>mtls-gateway</code>): Gateway with mTLS configured</li>
-<li><strong>Deployment/Service</strong> (<code>httpbin</code>): Test application</li>
-<li><strong>HTTPRoute</strong> (<code>httpbin-route</code>): Routes traffic to the protected service</li>
-<li><strong>AuthPolicy</strong> (<code>x509-auth-policy</code>): X.509 authentication using XFCC header</li>
+<li>Same security guarantees as Tier 1</li>
+<li>Uses EnvoyFilter (Istio) or EnvoyPatchPolicy (Envoy Gateway)</li>
+<li>Clear migration path to Tier 1 when you upgrade</li>
 </ul>
-<h2 id="configuration-details">Configuration Details<a class="headerlink" href="#configuration-details" title="Permanent link">&para;</a></h2>
-<h3 id="topology-overview">Topology Overview<a class="headerlink" href="#topology-overview" title="Permanent link">&para;</a></h3>
-<p>The following diagram illustrates the architecture and relationships between components:</p>
-<pre class="mermaid"><code>%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#fff','primaryTextColor':'#000','primaryBorderColor':'#000','lineColor':'#000','secondaryColor':'#fff','tertiaryColor':'#fff','clusterBkg':'#fff','clusterBorder':'#000','edgeLabelBackground':'#fff'}}}%%
-graph TB
-    Client([Client with&lt;br/&gt;X.509 Certificate])
-
-    subgraph "gateway-system namespace"
-        GW[Gateway&lt;br/&gt;mtls-gateway]
-        TP[TLSPolicy&lt;br/&gt;mtls-gateway-tls]
-        CACM[(ConfigMap&lt;br/&gt;client-ca-bundle)]
-        TLSCERT[(Secret&lt;br/&gt;gateway-tls-cert)]
-    end
-
-    subgraph "default namespace"
-        HR[HTTPRoute&lt;br/&gt;httpbin-route]
-        AP[AuthPolicy&lt;br/&gt;x509-auth-policy]
-        SVC[Service&lt;br/&gt;httpbin]
-        POD[Deployment&lt;br/&gt;httpbin]
-    end
-
-    subgraph "kuadrant-system namespace"
-        CASEC[(Secret&lt;br/&gt;trusted-client-ca)]
-    end
-
-    Client --&gt;|"1. mTLS handshake&lt;br/&gt;(client cert)"| GW
-    TP -.-&gt;|attached to| GW
-    TP -.-&gt;|manages cert| TLSCERT
-    GW -.-&gt;|validates against| CACM
-    GW -.-&gt;|server cert| TLSCERT
-    GW --&gt;|"2. XFCC header"| HR
-    HR --&gt;|routes to| SVC
-    SVC --&gt; POD
-    AP -.-&gt;|attached to| HR
-    AP -.-&gt;|validates cert via&lt;br/&gt;label selector| CASEC
-
-    style GW fill:none,stroke:#000,color:#000
-    style TP fill:none,stroke:#000,color:#000
-    style HR fill:none,stroke:#000,color:#000
-    style AP fill:none,stroke:#000,color:#000
-    style CACM fill:none,stroke:#000,color:#000
-    style CASEC fill:none,stroke:#000,color:#000
-    style TLSCERT fill:none,stroke:#000,color:#000
-    style SVC fill:none,stroke:#000,color:#000
-    style POD fill:none,stroke:#000,color:#000
-    style Client fill:none,stroke:#000,color:#000</code></pre>
-<p><strong>Component Interactions:</strong></p>
-<ol>
-<li><strong>TLS Layer (L4)</strong>: Client presents certificate → Gateway validates against <code>client-ca-bundle</code> ConfigMap</li>
-<li><strong>Application Layer (L7)</strong>: Gateway forwards XFCC header → AuthPolicy validates against <code>trusted-client-ca</code> Secret using label selectors</li>
-<li><strong>Routing</strong>: HTTPRoute connects the Gateway listener to the httpbin Service</li>
-<li><strong>Policy Attachment</strong>: AuthPolicy attaches to HTTPRoute for fine-grained certificate validation</li>
-</ol>
-<h3 id="gateway-configuration">Gateway Configuration<a class="headerlink" href="#gateway-configuration" title="Permanent link">&para;</a></h3>
-<p>The Gateway uses <code>spec.tls.frontend.default.validation</code> for client certificate validation:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">metadata</span><span class="p">:</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mtls-gateway</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway-system</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nt">spec</span><span class="p">:</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">istio</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPS</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;*.nip.io&quot;</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="nt">tls</span><span class="p">:</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Terminate</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">      </span><span class="nt">certificateRefs</span><span class="p">:</span>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway-tls-cert</span>
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">        </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">  </span><span class="nt">tls</span><span class="p">:</span>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">    </span><span class="nt">frontend</span><span class="p">:</span>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">      </span><span class="nt">default</span><span class="p">:</span>
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">        </span><span class="nt">validation</span><span class="p">:</span>
-</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">          </span><span class="nt">caCertificateRefs</span><span class="p">:</span>
-</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">client-ca-bundle</span>
-</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">            </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
-</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">            </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">          </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AllowValidOnly</span><span class="w">  </span><span class="c1"># Requires valid client certificates</span>
-</span></code></pre></div>
-<p><strong>Key fields:</strong></p>
+<p><strong>→ <a href="../x509-tier2-provider-specific/">Follow the Tier 2 guide</a></strong></p>
+<h3 id="tier-3-certificate-in-request-header-only-exceptional-cases">Tier 3: Certificate in request header only (Exceptional cases)<a class="headerlink" href="#tier-3-certificate-in-request-header-only-exceptional-cases" title="Permanent link">&para;</a></h3>
+<p><strong>Use this when:</strong> Gateway-level validation is not feasible and you accept L7-only validation</p>
+<p><strong>Security</strong>: ❌ Single validation point (L7 only) | ❌ No cryptographic proof of key possession | ⚠️ Understand the trade-offs</p>
+<p><strong>What you get:</strong></p>
 <ul>
-<li><code>caCertificateRefs</code>: References ConfigMap(s) containing trusted CA certificates in PEM format</li>
-<li><code>mode: AllowValidOnly</code>: Requires valid certificates; use <code>AllowInsecureFallback</code> for optional mTLS</li>
+<li>L7-only validation through Authorino</li>
+<li>Supports Client-Cert header (RFC 9440) and custom headers</li>
+<li>Works with trusted upstream proxies or when network controls prevent direct access</li>
 </ul>
-<h3 id="authpolicy-configuration">AuthPolicy Configuration<a class="headerlink" href="#authpolicy-configuration" title="Permanent link">&para;</a></h3>
-<p>The AuthPolicy configures X.509 authentication using the XFCC header:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant.io/v1</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AuthPolicy</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nt">metadata</span><span class="p">:</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x509-auth-policy</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="nt">spec</span><span class="p">:</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="nt">targetRef</span><span class="p">:</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPRoute</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">httpbin-route</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="c1"># Authentication based on client certificate</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="nt">authentication</span><span class="p">:</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">      </span><span class="s">&quot;x509-client-cert&quot;</span><span class="p p-Indicator">:</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">        </span><span class="nt">x509</span><span class="p">:</span>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">          </span><span class="c1"># Extract certificate from XFCC header</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">          </span><span class="nt">source</span><span class="p">:</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">            </span><span class="nt">xfccHeader</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;x-forwarded-client-cert&quot;</span>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">          </span><span class="c1"># Label selector for trusted CA certificates</span>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">          </span><span class="nt">selector</span><span class="p">:</span>
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">            </span><span class="nt">matchLabels</span><span class="p">:</span>
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">              </span><span class="nt">app.kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trusted-client</span>
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>
-</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">    </span><span class="c1"># Additional rules to enforce authorization based on certificate attributes</span>
-</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="w">    </span><span class="c1"># and propagate client certificate information into request headers</span>
-</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="w">    </span><span class="nt">authorization</span><span class="p">:</span>
-</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="w">      </span><span class="s">&quot;certificate-attributes&quot;</span><span class="p p-Indicator">:</span>
-</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="w">        </span><span class="nt">patternMatching</span><span class="p">:</span>
-</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="w">          </span><span class="nt">patterns</span><span class="p">:</span>
-</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>
-</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">predicate</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;size(auth.identity.Organization)</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">auth.identity.Organization[0]</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;Kuadrant&#39;&quot;</span>
-</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a><span class="w">    </span><span class="nt">response</span><span class="p">:</span>
-</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="w">      </span><span class="nt">success</span><span class="p">:</span>
-</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a><span class="w">        </span><span class="nt">headers</span><span class="p">:</span>
-</span><span id="__span-3-36"><a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a><span class="w">          </span><span class="c1"># Extract the Common Name (CN) from the certificate</span>
-</span><span id="__span-3-37"><a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a><span class="w">          </span><span class="s">&quot;x-client-cn&quot;</span><span class="p p-Indicator">:</span>
-</span><span id="__span-3-38"><a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a><span class="w">            </span><span class="nt">plain</span><span class="p">:</span>
-</span><span id="__span-3-39"><a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a><span class="w">              </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auth.identity.CommonName</span>
-</span><span id="__span-3-40"><a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a><span class="w">          </span><span class="c1"># Extract the Organization (O) from the certificate</span>
-</span><span id="__span-3-41"><a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a><span class="w">          </span><span class="s">&quot;x-client-org&quot;</span><span class="p p-Indicator">:</span>
-</span><span id="__span-3-42"><a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a><span class="w">            </span><span class="nt">plain</span><span class="p">:</span>
-</span><span id="__span-3-43"><a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a><span class="w">              </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auth.identity.Organization[0]</span>
-</span></code></pre></div>
-<p><strong>Certificate Source Options:</strong></p>
-<p>The <code>x509.source</code> field supports three options:</p>
+<div class="admonition warning">
+<p class="admonition-title">Security warning</p>
+<p>Tier 3 makes Authorino the only layer of protection. Use Tier 1 or Tier 2 whenever possible. If you use Tier 3, ensure you understand the security implications.</p>
+</div>
+<p><strong>→ <a href="../x509-tier3-header-only/">Follow the Tier 3 guide</a></strong></p>
+<h2 id="decision-tree">Decision tree<a class="headerlink" href="#decision-tree" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>%%{init: {'theme':'neutral'}}%%
+graph TD
+    Start[Need X.509 client authentication?]
+    Start --&gt; GatewayAPI{Gateway API v1.5+?}
+
+    GatewayAPI --&gt;|Yes| Tier1[Tier 1: Gateway API validation]
+    GatewayAPI --&gt;|No| DefenseDepth{Want defense-in-depth?}
+
+    DefenseDepth --&gt;|Yes| Tier2[Tier 2: Provider-specific]
+    DefenseDepth --&gt;|No| AcceptL7{Accept L7-only validation?}
+
+    AcceptL7 --&gt;|Yes| Tier3[Tier 3: Header-only]
+    AcceptL7 --&gt;|No| Reconsider[Reconsider: Use Tier 2 or upgrade to v1.5]
+
+    Tier1 --&gt; Tier1Link[Follow Tier 1 guide]
+    Tier2 --&gt; Tier2Link[Follow Tier 2 guide]
+    Tier3 --&gt; Tier3Link[Follow Tier 3 guide]</code></pre>
+<h2 id="understanding-the-tiers">Understanding the tiers<a class="headerlink" href="#understanding-the-tiers" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Tier 1</th>
+<th>Tier 2</th>
+<th>Tier 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Defense-in-depth</strong></td>
+<td>✅ L4 + L7</td>
+<td>✅ L4 + L7</td>
+<td>❌ L7 only</td>
+</tr>
+<tr>
+<td><strong>Private key proof</strong></td>
+<td>✅ Yes</td>
+<td>✅ Yes</td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td><strong>XFCC protection</strong></td>
+<td>✅ Automatic</td>
+<td>✅ Manual config</td>
+<td>❌ Depends on deployment</td>
+</tr>
+<tr>
+<td><strong>Configuration</strong></td>
+<td>Standard Gateway API</td>
+<td>Provider-specific</td>
+<td>AuthPolicy only</td>
+</tr>
+<tr>
+<td><strong>Prerequisites</strong></td>
+<td>Gateway API v1.5+, Istio v1.28+</td>
+<td>Gateway API any version</td>
+<td>Understand security trade-offs</td>
+</tr>
+<tr>
+<td><strong>Security level</strong></td>
+<td>Highest</td>
+<td>Highest</td>
+<td>Lower (single validation point)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
+<p>After choosing your tier:</p>
 <ol>
-<li>
-<p><strong><code>xfccHeader</code></strong>: Extract from Envoy's X-Forwarded-Client-Cert header
-   <div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">source</span><span class="p">:</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">xfccHeader</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;x-forwarded-client-cert&quot;</span>
-</span></code></pre></div></p>
-</li>
-<li>
-<p><strong><code>clientCertHeader</code></strong>: Extract from RFC 9440 Client-Cert header
-   <div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">source</span><span class="p">:</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">clientCertHeader</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;client-cert&quot;</span>
-</span></code></pre></div></p>
-</li>
-<li>
-<p><strong><code>expression</code></strong>: Extract using CEL expression for custom attribute paths
-   <div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">source</span><span class="p">:</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;request.http.headers[&quot;x-custom-client-cert&quot;]&#39;</span>
-</span></code></pre></div></p>
-</li>
+<li><strong>Follow the guide</strong>: Each tier has a complete step-by-step walkthrough</li>
+<li><strong>Test thoroughly</strong>: Verify both successful and failed authentication scenarios</li>
+<li><strong>Add authorization</strong>: Use certificate attributes in authorization rules</li>
+<li><strong>Enrich requests</strong>: Inject certificate claims into request headers</li>
+<li><strong>Plan CA rotation</strong>: Implement certificate lifecycle management</li>
 </ol>
-<h2 id="testing">Testing<a class="headerlink" href="#testing" title="Permanent link">&para;</a></h2>
-<h3 id="test-with-valid-certificate">Test with Valid Certificate<a class="headerlink" href="#test-with-valid-certificate" title="Permanent link">&para;</a></h3>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nv">GATEWAY_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span>mtls-gateway<span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.addresses[0].value}&#39;</span><span class="k">)</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1"># Make request with client certificate</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>curl<span class="w"> </span>-ik<span class="w"> </span>https://httpbin.<span class="nv">$GATEWAY_IP</span>.nip.io/get<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span>--cert<span class="w"> </span>/tmp/client.crt<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span>--key<span class="w"> </span>/tmp/client.key
-</span></code></pre></div>
-<p><strong>Expected Result</strong>: Request succeeds (HTTP 200) because both gateway and Authorino validation pass.</p>
-<h3 id="test-without-certificate">Test without Certificate<a class="headerlink" href="#test-without-certificate" title="Permanent link">&para;</a></h3>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>curl<span class="w"> </span>-ik<span class="w"> </span>https://httpbin.<span class="nv">$GATEWAY_IP</span>.nip.io/get
-</span></code></pre></div>
-<p><strong>Expected Result</strong>: TLS handshake fails. Gateway rejects connection because no client certificate was provided.</p>
-<h3 id="test-with-invalid-certificate">Test with Invalid Certificate<a class="headerlink" href="#test-with-invalid-certificate" title="Permanent link">&para;</a></h3>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Generate a self-signed certificate not trusted by the CA</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>openssl<span class="w"> </span>req<span class="w"> </span>-x509<span class="w"> </span>-newkey<span class="w"> </span>rsa:2048<span class="w"> </span>-nodes<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span>-keyout<span class="w"> </span>/tmp/untrusted.key<span class="w"> </span>-out<span class="w"> </span>/tmp/untrusted.crt<span class="w"> </span>-days<span class="w"> </span><span class="m">365</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span>-subj<span class="w"> </span><span class="s2">&quot;/CN=untrusted-client/O=Untrusted/C=US&quot;</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="c1"># Try to connect with untrusted certificate</span>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>curl<span class="w"> </span>-ik<span class="w"> </span>https://httpbin.<span class="nv">$GATEWAY_IP</span>.nip.io/get<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">  </span>--cert<span class="w"> </span>/tmp/untrusted.crt<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">  </span>--key<span class="w"> </span>/tmp/untrusted.key
-</span></code></pre></div>
-<p><strong>Expected Result</strong>: TLS handshake fails. Gateway rejects connection because the certificate is not signed by a trusted CA.</p>
-<h3 id="test-with-unauthorized-certificate">Test with Unauthorized Certificate<a class="headerlink" href="#test-with-unauthorized-certificate" title="Permanent link">&para;</a></h3>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Generate a CA-signed certificate with different attributes that do not match the AuthPolicy rules</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>openssl<span class="w"> </span>genrsa<span class="w"> </span>-out<span class="w"> </span>/tmp/unauthorized-client.key<span class="w"> </span><span class="m">4096</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>openssl<span class="w"> </span>req<span class="w"> </span>-new<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span>-subj<span class="w"> </span><span class="s2">&quot;/CN=unauthorized-client/O=Unauthorized/C=US&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">  </span>-key<span class="w"> </span>/tmp/unauthorized-client.key<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">  </span>-out<span class="w"> </span>/tmp/unauthorized-client.csr
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>openssl<span class="w"> </span>x509<span class="w"> </span>-req<span class="w"> </span>-sha512<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">  </span>-days<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">  </span>-CA<span class="w"> </span>/tmp/ca.crt<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">  </span>-CAkey<span class="w"> </span>/tmp/ca.key<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">  </span>-CAcreateserial<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">  </span>-extfile<span class="w"> </span>/tmp/x509v3.ext<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="w">  </span>-in<span class="w"> </span>/tmp/unauthorized-client.csr<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="w">  </span>-out<span class="w"> </span>/tmp/unauthorized-client.crt
-</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>
-</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="c1"># Try to connect with unauthorized certificate</span>
-</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>curl<span class="w"> </span>-ik<span class="w"> </span>https://httpbin.<span class="nv">$GATEWAY_IP</span>.nip.io/get<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="w">  </span>--cert<span class="w"> </span>/tmp/unauthorized-client.crt<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="w">  </span>--key<span class="w"> </span>/tmp/unauthorized-client.key
-</span></code></pre></div>
-<p><strong>Expected Result</strong>: Request fails (HTTP 403) because Authorino rejects the certificate based on unauthorized attribute (Organization).</p>
-<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="https://github.com/Kuadrant/architecture/blob/main/rfcs/0015-x509-client-cert-authpolicy.md">RFC 0015: X.509 Client Certificate Authentication</a></li>
-<li><a href="https://gateway-api.sigs.k8s.io/api-types/gateway/#gateway-api-v1-TLSFrontendValidation">Gateway API v1.5 TLS Frontend Validation</a></li>
-<li><a href="https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_conn_man/headers#x-forwarded-client-cert">Envoy XFCC Header Documentation</a></li>
-<li><a href="https://docs.kuadrant.io/authorino/docs/features/#x509-client-certificate-authentication-authenticationx509">Authorino X.509 Authentication</a></li>
+<li><a href="../../../overviews/auth-x509/">X.509 Authentication Overview</a> - Deep dive into architecture and security</li>
+<li><a href="../../../reference/authpolicy/">AuthPolicy API Reference</a> - Complete API specification</li>
+<li><a href="../../../overviews/auth/">Authentication Overview</a> - Compare all authentication methods</li>
+<li><a href="https://github.com/Kuadrant/architecture/blob/main/rfcs/0015-x509-client-cert-authpolicy.md">RFC 0015</a> - Design rationale and decisions</li>
 </ul>
 
 
