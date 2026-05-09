@@ -2644,6 +2644,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#localobjectreference" class="md-nav__link">
+    <span class="md-ellipsis">
+      LocalObjectReference
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#requestedby" class="md-nav__link">
     <span class="md-ellipsis">
       RequestedBy
@@ -2677,9 +2686,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#secretreference" class="md-nav__link">
+  <a href="#authscheme" class="md-nav__link">
     <span class="md-ellipsis">
-      SecretReference
+      AuthScheme
     </span>
   </a>
   
@@ -2718,13 +2727,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#relationship-to-apiproduct-and-authpolicy" class="md-nav__link">
+  <a href="#relationship-to-apiproduct-authpolicy-and-apikeyrequest" class="md-nav__link">
     <span class="md-ellipsis">
-      Relationship to APIProduct and AuthPolicy
+      Relationship to APIProduct, AuthPolicy, and APIKeyRequest
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Relationship to APIProduct and AuthPolicy">
+    <nav class="md-nav" aria-label="Relationship to APIProduct, AuthPolicy, and APIKeyRequest">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2749,6 +2758,15 @@
   <a href="#planpolicy" class="md-nav__link">
     <span class="md-ellipsis">
       PlanPolicy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apikeyrequest" class="md-nav__link">
+    <span class="md-ellipsis">
+      APIKeyRequest
     </span>
   </a>
   
@@ -3513,6 +3531,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#localobjectreference" class="md-nav__link">
+    <span class="md-ellipsis">
+      LocalObjectReference
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#requestedby" class="md-nav__link">
     <span class="md-ellipsis">
       RequestedBy
@@ -3546,9 +3573,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#secretreference" class="md-nav__link">
+  <a href="#authscheme" class="md-nav__link">
     <span class="md-ellipsis">
-      SecretReference
+      AuthScheme
     </span>
   </a>
   
@@ -3587,13 +3614,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#relationship-to-apiproduct-and-authpolicy" class="md-nav__link">
+  <a href="#relationship-to-apiproduct-authpolicy-and-apikeyrequest" class="md-nav__link">
     <span class="md-ellipsis">
-      Relationship to APIProduct and AuthPolicy
+      Relationship to APIProduct, AuthPolicy, and APIKeyRequest
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Relationship to APIProduct and AuthPolicy">
+    <nav class="md-nav" aria-label="Relationship to APIProduct, AuthPolicy, and APIKeyRequest">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -3618,6 +3645,15 @@
   <a href="#planpolicy" class="md-nav__link">
     <span class="md-ellipsis">
       PlanPolicy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apikeyrequest" class="md-nav__link">
+    <span class="md-ellipsis">
+      APIKeyRequest
     </span>
   </a>
   
@@ -3653,7 +3689,7 @@
 
 <h1 id="the-apikey-custom-resource-definition-crd">The APIKey Custom Resource Definition (CRD)<a class="headerlink" href="#the-apikey-custom-resource-definition-crd" title="Permanent link">&para;</a></h1>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>The APIKey CRD is part of the Developer Portal extension for Kuadrant. It represents a request for API access credentials by a developer for a specific APIProduct and plan tier. When approved, the APIKey creates a Kubernetes Secret containing the actual API key that can be used to authenticate requests. The APIKey resource manages the entire lifecycle of API access requests, from initial submission through approval/rejection to credential generation.</p>
+<p>The APIKey CRD is part of the Developer Portal extension for Kuadrant. It represents a request for API access credentials by a developer for a specific APIProduct and plan tier. The developer creates a Kubernetes Secret containing their API key in their own namespace, then creates an APIKey resource referencing that secret. When approved, the controller validates and registers the API key for use with the specified APIProduct. The APIKey resource manages the entire lifecycle of API access requests, from initial submission through approval/rejection to credential activation.</p>
 <h2 id="apikey">APIKey<a class="headerlink" href="#apikey" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3697,22 +3733,28 @@
 <td>Reference to the APIProduct this API key provides access to</td>
 </tr>
 <tr>
+<td><code>secretRef</code></td>
+<td><a href="#localobjectreference">LocalObjectReference</a></td>
+<td style="text-align: center;">Yes</td>
+<td>Reference to the secret containing the API key in the consumer's namespace</td>
+</tr>
+<tr>
 <td><code>planTier</code></td>
 <td>String</td>
 <td style="text-align: center;">Yes</td>
 <td>Tier of the plan (e.g., "premium", "basic", "enterprise")</td>
 </tr>
 <tr>
-<td><code>requestedBy</code></td>
-<td><a href="#requestedby">RequestedBy</a></td>
-<td style="text-align: center;">Yes</td>
-<td>Information about who requested the API key</td>
-</tr>
-<tr>
 <td><code>useCase</code></td>
 <td>String</td>
 <td style="text-align: center;">Yes</td>
 <td>Description of how the API key will be used</td>
+</tr>
+<tr>
+<td><code>requestedBy</code></td>
+<td><a href="#requestedby">RequestedBy</a></td>
+<td style="text-align: center;">Yes</td>
+<td>Information about who requested the API key</td>
 </tr>
 </tbody>
 </table>
@@ -3731,7 +3773,32 @@
 <td><code>name</code></td>
 <td>String</td>
 <td style="text-align: center;">Yes</td>
-<td>Name of the APIProduct in the same namespace</td>
+<td>Name of the APIProduct</td>
+</tr>
+<tr>
+<td><code>namespace</code></td>
+<td>String</td>
+<td style="text-align: center;">Yes</td>
+<td>Namespace of the APIProduct</td>
+</tr>
+</tbody>
+</table>
+<h3 id="localobjectreference">LocalObjectReference<a class="headerlink" href="#localobjectreference" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th><strong>Field</strong></th>
+<th><strong>Type</strong></th>
+<th style="text-align: center;"><strong>Required</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>String</td>
+<td style="text-align: center;">Yes</td>
+<td>Name of the secret in the same namespace containing the API key (must have an "api_key" entry)</td>
 </tr>
 </tbody>
 </table>
@@ -3771,19 +3838,9 @@
 </thead>
 <tbody>
 <tr>
-<td><code>phase</code></td>
+<td><code>apiHostname</code></td>
 <td>String</td>
-<td>Current phase of the APIKey. Valid values: <code>Pending</code>, <code>Approved</code>, <code>Rejected</code></td>
-</tr>
-<tr>
-<td><code>conditions</code></td>
-<td>[]<a href="#conditionspec">ConditionSpec</a></td>
-<td>Represents the observations of the APIKey's current state</td>
-</tr>
-<tr>
-<td><code>secretRef</code></td>
-<td><a href="#secretreference">SecretReference</a></td>
-<td>Reference to the created Secret containing the API key (only when Approved)</td>
+<td>Hostname from the HTTPRoute that the APIProduct references</td>
 </tr>
 <tr>
 <td><code>limits</code></td>
@@ -3791,24 +3848,14 @@
 <td>Rate limits for the plan</td>
 </tr>
 <tr>
-<td><code>apiHostname</code></td>
-<td>String</td>
-<td>Hostname from the HTTPRoute that the APIProduct references</td>
+<td><code>authScheme</code></td>
+<td><a href="#authscheme">AuthScheme</a></td>
+<td>Authentication scheme discovered from the APIProduct's AuthPolicy</td>
 </tr>
 <tr>
-<td><code>reviewedBy</code></td>
-<td>String</td>
-<td>Who approved or rejected the request</td>
-</tr>
-<tr>
-<td><code>reviewedAt</code></td>
-<td>Timestamp</td>
-<td>When the request was reviewed</td>
-</tr>
-<tr>
-<td><code>canReadSecret</code></td>
-<td>Boolean</td>
-<td>Permission to read the APIKey's secret. Default: <code>true</code></td>
+<td><code>conditions</code></td>
+<td>[]<a href="#conditionspec">ConditionSpec</a></td>
+<td>Represents the observations of the APIKey's current state</td>
 </tr>
 </tbody>
 </table>
@@ -3826,7 +3873,7 @@
 <tr>
 <td><code>type</code></td>
 <td>String</td>
-<td>Condition type (e.g., <code>Ready</code>)</td>
+<td>Condition type. Valid types: <code>Pending</code>, <code>Approved</code>, <code>Denied</code>, <code>Failed</code></td>
 </tr>
 <tr>
 <td><code>status</code></td>
@@ -3855,28 +3902,25 @@
 </tr>
 </tbody>
 </table>
-<h3 id="secretreference">SecretReference<a class="headerlink" href="#secretreference" title="Permanent link">&para;</a></h3>
+<h3 id="authscheme">AuthScheme<a class="headerlink" href="#authscheme" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
 <th><strong>Field</strong></th>
 <th><strong>Type</strong></th>
-<th style="text-align: center;"><strong>Required</strong></th>
 <th><strong>Description</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>name</code></td>
-<td>String</td>
-<td style="text-align: center;">Yes</td>
-<td>Name of the secret in the Authorino's namespace</td>
+<td><code>authenticationSpec</code></td>
+<td>AuthenticationSpec</td>
+<td>API key authentication specification from the AuthPolicy</td>
 </tr>
 <tr>
-<td><code>key</code></td>
-<td>String</td>
-<td style="text-align: center;">Yes</td>
-<td>The key of the secret to select from</td>
+<td><code>credentials</code></td>
+<td>Credentials</td>
+<td>Credentials configuration (where to extract the API key from requests)</td>
 </tr>
 </tbody>
 </table>
@@ -3949,27 +3993,43 @@
 </tbody>
 </table>
 <h2 id="high-level-example">High level example<a class="headerlink" href="#high-level-example" title="Permanent link">&para;</a></h2>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">devportal.kuadrant.io/v1alpha1</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">APIKey</span>
+<p>First, the developer creates a secret in their namespace with the API key:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">developer-john-premium</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">payment-services</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nt">spec</span><span class="p">:</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">apiProductRef</span><span class="p">:</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">payment-api</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="nt">planTier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">premium</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="nt">requestedBy</span><span class="p">:</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="nt">userId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">john-doe-123</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">john.doe@example.com</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="nt">useCase</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Building a mobile payment application for retail customers</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-payment-api-key</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">developer-apps</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Opaque</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nt">stringData</span><span class="p">:</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;api-key&gt;&quot;</span>
 </span></code></pre></div>
-<h2 id="relationship-to-apiproduct-and-authpolicy">Relationship to APIProduct and AuthPolicy<a class="headerlink" href="#relationship-to-apiproduct-and-authpolicy" title="Permanent link">&para;</a></h2>
+<p>Then, the developer creates an APIKey resource:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">devportal.kuadrant.io/v1alpha1</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">APIKey</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">developer-john-premium</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">developer-apps</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">apiProductRef</span><span class="p">:</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">payment-api</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">payment-services</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="nt">secretRef</span><span class="p">:</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-payment-api-key</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">  </span><span class="nt">planTier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">premium</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="nt">useCase</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Building a mobile payment application for retail customers</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="nt">requestedBy</span><span class="p">:</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span><span class="nt">userId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">john-doe-123</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">john.doe@example.com</span>
+</span></code></pre></div>
+<h2 id="relationship-to-apiproduct-authpolicy-and-apikeyrequest">Relationship to APIProduct, AuthPolicy, and APIKeyRequest<a class="headerlink" href="#relationship-to-apiproduct-authpolicy-and-apikeyrequest" title="Permanent link">&para;</a></h2>
 <h3 id="apiproduct">APIProduct<a class="headerlink" href="#apiproduct" title="Permanent link">&para;</a></h3>
-<p>APIKey <strong>must</strong> reference an existing APIProduct via <code>apiProductRef</code>. The APIProduct defines the API being accessed.</p>
+<p>APIKey <strong>must</strong> reference an existing APIProduct via <code>apiProductRef</code>. The APIProduct defines the API being accessed and contains approval workflow configuration.</p>
 <h3 id="authpolicy">AuthPolicy<a class="headerlink" href="#authpolicy" title="Permanent link">&para;</a></h3>
-<p>AuthPolicy is applied to the HTTPRoute that the APIProduct references. When an APIKey is approved, a Kubernetes Secret is created with an annotation <code>secret.kuadrant.io/plan-id</code> value. The AuthPolicy validates incoming API requests by checking the API key against secrets that match specific label selectors.</p>
+<p>AuthPolicy is applied to the HTTPRoute that the APIProduct references. The APIKey controller discovers the authentication scheme from the AuthPolicy and populates it in the <code>status.authScheme</code> field. The AuthPolicy validates incoming API requests by checking the API key from the consumer's secret against configured selectors.</p>
 <h3 id="planpolicy">PlanPolicy<a class="headerlink" href="#planpolicy" title="Permanent link">&para;</a></h3>
-<p>PlanPolicy defines the available tiers and their corresponding rate limits. When an APIKey specifies a <code>planTier</code>, the controller validates that this tier exists in the PlanPolicy attached to the HTTPRoute. If the tier is valid and the APIKey is approved, the Secret is annotated with <code>secret.kuadrant.io/plan-id: &lt;planTier&gt;</code>, allowing PlanPolicy's CEL predicates to match the request to the appropriate rate limits.</p>
+<p>PlanPolicy defines the available tiers and their corresponding rate limits. When an APIKey specifies a <code>planTier</code>, the controller validates that this tier exists in the PlanPolicy attached to the HTTPRoute. The discovered rate limits are populated in the <code>status.limits</code> field.</p>
+<h3 id="apikeyrequest">APIKeyRequest<a class="headerlink" href="#apikeyrequest" title="Permanent link">&para;</a></h3>
+<p>When an APIKey is created, the controller creates a shadow APIKeyRequest resource that represents the approval workflow. The APIKeyRequest is used to track the approval status and connect to APIKeyApproval resources when manual approval is required. Once approved, the controller updates the APIKey conditions to indicate approval status.</p>
 
 
 
