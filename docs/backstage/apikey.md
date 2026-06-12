@@ -1,0 +1,1 @@
+--8<-- "developer-portal-controller/docs/references/apikey.md"
