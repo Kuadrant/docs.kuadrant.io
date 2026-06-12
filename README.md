@@ -68,6 +68,7 @@ Docs will be at [http://127.0.0.1:8000](http://127.0.0.1:8000).
 
 ```bash
 docker run \
+  --rm \
   --user $(id -u):$(id -g) \
   -v "$(pwd):/docs" \
   -v "$HOME/.gitconfig:/opt/app-root/src/.gitconfig:ro" \
