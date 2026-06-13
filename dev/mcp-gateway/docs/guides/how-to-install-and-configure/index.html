@@ -2884,6 +2884,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="What the Controller Configures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#https-listeners-and-gateway-ca-cert" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTPS Listeners and --gateway-ca-cert
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -3782,6 +3797,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="What the Controller Configures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#https-listeners-and-gateway-ca-cert" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTPS Listeners and --gateway-ca-cert
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -3864,7 +3894,7 @@
 </ul>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
 <h3 id="step-1-install-crds">Step 1: Install CRDs<a class="headerlink" href="#step-1-install-crds" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">MCP_GATEWAY_VERSION</span><span class="o">=</span><span class="m">0</span>.7.0
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">MCP_GATEWAY_VERSION</span><span class="o">=</span><span class="m">0</span>.7.1
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;https://github.com/kuadrant/mcp-gateway/config/crd?ref=v</span><span class="si">${</span><span class="nv">MCP_GATEWAY_VERSION</span><span class="si">}</span><span class="s2">&quot;</span>
 </span></code></pre></div>
 <p>Verify CRDs are installed:</p>
@@ -3937,6 +3967,31 @@
 <p><strong>Note:</strong> The router authenticates its own hairpin backend-init requests with a short-lived JWT signed by the same HMAC key as client session JWTs (<code>GATEWAY_SIGNING_KEY</code>). There is no separate router-key secret to manage; the previous <code>--mcp-router-key</code> flag has been removed.</p>
 </blockquote>
 <p>The <code>--mcp-gateway-private-host</code> flag enables hair-pinning: when a <code>tools/call</code> request arrives, the router sends an <code>initialize</code> request back through the gateway to establish a backend session. The port in this address matches the listener port from the Gateway spec.</p>
+<h4 id="https-listeners-and-gateway-ca-cert">HTTPS Listeners and <code>--gateway-ca-cert</code><a class="headerlink" href="#https-listeners-and-gateway-ca-cert" title="Permanent link">&para;</a></h4>
+<p>When the targeted Gateway listener uses HTTPS, the controller automatically prepends <code>https://</code> to the private host. The broker-router's hairpin request connects to the internal service address but verifies the TLS certificate against the public hostname (<code>--mcp-gateway-public-host</code>).</p>
+<p>For listeners using a <strong>private CA</strong> (e.g. cert-manager with a self-signed CA), the broker-router also needs the CA certificate to trust the gateway's TLS cert. Add the <code>--gateway-ca-cert</code> flag pointing to the CA cert file:</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--gateway-ca-cert</code></td>
+<td>Path to a PEM CA certificate file for the gateway's TLS listener. Only needed when the listener uses a private CA.</td>
+</tr>
+</tbody>
+</table>
+<p>The operator does not set this flag automatically. To configure it, mount the CA certificate as a volume and add the flag to the broker-router deployment:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>deployment<span class="w"> </span>mcp-gateway<span class="w"> </span>-n<span class="w"> </span>mcp-system<span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;[</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="s1">  {&quot;op&quot;:&quot;add&quot;,&quot;path&quot;:&quot;/spec/template/spec/volumes/-&quot;,&quot;value&quot;:{&quot;name&quot;:&quot;gateway-ca&quot;,&quot;secret&quot;:{&quot;secretName&quot;:&quot;my-ca-bundle&quot;}}},</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="s1">  {&quot;op&quot;:&quot;add&quot;,&quot;path&quot;:&quot;/spec/template/spec/containers/0/volumeMounts/-&quot;,&quot;value&quot;:{&quot;name&quot;:&quot;gateway-ca&quot;,&quot;mountPath&quot;:&quot;/certs/gateway-ca.crt&quot;,&quot;subPath&quot;:&quot;ca.crt&quot;,&quot;readOnly&quot;:true}},</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="s1">  {&quot;op&quot;:&quot;add&quot;,&quot;path&quot;:&quot;/spec/template/spec/containers/0/command/-&quot;,&quot;value&quot;:&quot;--gateway-ca-cert=/certs/gateway-ca.crt&quot;}</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="s1">]&#39;</span>
+</span></code></pre></div>
+<p>The operator preserves user-added volumes, volume mounts, and command flags across reconciliations.</p>
 <p>The <code>--mcp-gateway-public-host</code> flag tells the router which <code>Host</code> header to expect on incoming requests, so it avoids rewriting it during routing.</p>
 <p>The <strong>EnvoyFilter</strong> is configured to intercept traffic on the listener's port and route it through the ext_proc (external processor) running on port 50051.</p>
 <p>The <strong>configuration secret</strong> only contains MCP server entries for MCPServerRegistrations whose HTTPRoutes attach to the same listener. This ensures team isolation when multiple teams share a single Gateway with different listeners.</p>
