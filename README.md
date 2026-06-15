@@ -68,6 +68,8 @@ Docs will be at [http://127.0.0.1:8000](http://127.0.0.1:8000).
 
 ```bash
 docker run \
+  --rm \
+  --user $(id -u):$(id -g) \
   -v "$(pwd):/docs" \
   -v "$HOME/.gitconfig:/opt/app-root/src/.gitconfig:ro" \
   -v "$HOME/.ssh:/opt/app-root/src/.ssh:ro" \
@@ -98,6 +100,7 @@ To add an AsciiDoc page, create a `.adoc` file in `docs/` and add it to the `nav
    - Change each `import_url` to point at the correct release branch or tag for that component (see table above).
    - Update the `edit_uri` to match the release ref where appropriate.
 3. Update the version default in `mkdocs.yml`:
+
    ```yaml
    extra:
      version:
@@ -106,12 +109,16 @@ To add an AsciiDoc page, create a `.adoc` file in `docs/` and add it to the `nav
          - 1.4.x
          - latest
    ```
+
 4. Build and verify: `mkdocs build -s`
 5. Deploy with the `latest` alias:
+
    ```bash
    mike deploy --update-aliases 1.4.x latest --push
    ```
+
 6. Set as default:
+
    ```bash
    mike set-default 1.4.x --push
    ```
