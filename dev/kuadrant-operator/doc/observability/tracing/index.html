@@ -4950,30 +4950,35 @@ This linking requires Kuadrant operator control plane tracing to also be enabled
 </span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>├─ Envoy Gateway Span (34.7ms)
 </span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>│  └─ kuadrant_filter (29.4ms)
 </span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>│     │
-</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>│     ├─ auth (6.8ms)
-</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>│     │  ├─ auth_request (1.2ms)
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>│     ├─ grpc [action=auth] (6.8ms)
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>│     │  ├─ grpc_request (1.2ms) [grpc_service=..., grpc_method=...]
 </span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>│     │  │  └─ Authorino gRPC Call
 </span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>│     │  │     └─ envoy.service.auth.v3.Authorization/Check (2.0ms)
 </span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>│     │  │        └─ Check (1.7ms)
-</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>│     │  └─ auth_response (56μs)
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>│     │  └─ grpc_response (56μs) [grpc_service=..., grpc_method=...]
 </span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>│     │
-</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>│     └─ ratelimit (6.0ms)
-</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>│        ├─ ratelimit_request (576μs)
-</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>│        │  └─ Limitador gRPC Call
-</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>│        │     └─ should_rate_limit (309μs)
-</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>│        │        └─ check_and_update (36μs)
-</span><span id="__span-17-18"><a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>│        └─ ratelimit_response (38μs)
-</span><span id="__span-17-19"><a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>│
-</span><span id="__span-17-20"><a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>└─ Backend Service: httpbin (34.7ms)
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>│     ├─ grpc [action=ratelimit] (6.0ms)
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>│     │  ├─ grpc_request (576μs) [grpc_service=..., grpc_method=...]
+</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>│     │  │  └─ Limitador gRPC Call
+</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>│     │  │     └─ should_rate_limit (309μs)
+</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>│     │  │        └─ check_and_update (36μs)
+</span><span id="__span-17-18"><a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>│     │  └─ grpc_response (38μs) [grpc_service=..., grpc_method=...]
+</span><span id="__span-17-19"><a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>│     │
+</span><span id="__span-17-20"><a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>│     ├─ headers [target=HttpRequestHeaders|HttpResponseHeaders]
+</span><span id="__span-17-21"><a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>│     └─ send_reply [status_code=...]
+</span><span id="__span-17-22"><a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a>│
+</span><span id="__span-17-23"><a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a>└─ Backend Service: httpbin (34.7ms)
 </span></code></pre></div>
 <h3 id="trace-attributes-youll-see">Trace Attributes You'll See<a class="headerlink" href="#trace-attributes-youll-see" title="Permanent link">&para;</a></h3>
 <p>Data plane traces include rich context from multiple services:</p>
 <p><strong>Wasm-shim Spans</strong> (service: <code>wasm-shim</code>):</p>
 <ul>
+<li><code>grpc</code>: Outer span wrapping a gRPC action, with <code>action</code> attribute (e.g., <code>auth</code>, <code>ratelimit</code>) and <code>sources</code> identifying the originating policy</li>
+<li><code>grpc_request</code> / <code>grpc_response</code>: Inner spans for gRPC call lifecycle, with <code>grpc_service</code> and <code>grpc_method</code> attributes identifying the upstream service</li>
+<li><code>headers</code>: Span for HTTP header modifications, with <code>target</code> attribute (<code>HttpRequestHeaders</code> or <code>HttpResponseHeaders</code>)</li>
+<li><code>send_reply</code>: Span for direct responses (e.g., deny actions), with <code>status_code</code> attribute</li>
 <li>Request correlation IDs from <code>httpHeaderIdentifier</code> configuration</li>
-<li>Matched hostname and route configuration details</li>
-<li>Policy attribution showing which AuthPolicy/RateLimitPolicy rules were evaluated</li>
-<li>At DEBUG level: Detailed gRPC call information, property updates, and header manipulations</li>
+<li>Policy attribution via the <code>sources</code> attribute showing which AuthPolicy/RateLimitPolicy rules were evaluated</li>
 </ul>
 <p><strong>Authorino Spans</strong> (service: <code>authorino</code>):</p>
 <ul>
@@ -4993,12 +4998,14 @@ This linking requires Kuadrant operator control plane tracing to also be enabled
 </span></code></pre></div></p>
 <p><strong>Filter by Operation:</strong>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>Service: wasm-shim
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>Operation: kuadrant_filter
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>Min Duration: 10ms
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>Operation: grpc
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>Tags: action=auth
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>Min Duration: 10ms
 </span></code></pre></div></p>
 <p><strong>Examine Specific Policy:</strong>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>Service: wasm-shim
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>Tags: sources=authpolicy.kuadrant.io:kuadrant/my-auth-policy
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>Operation: grpc
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>Tags: sources=authpolicy.kuadrant.io:kuadrant/my-auth-policy
 </span></code></pre></div></p>
 <h3 id="what-this-shows-you">What This Shows You<a class="headerlink" href="#what-this-shows-you" title="Permanent link">&para;</a></h3>
 <ol>
@@ -5015,22 +5022,22 @@ This linking requires Kuadrant operator control plane tracing to also be enabled
 <p><strong>Policy Attribution</strong>: Trace attributes identify which policies (AuthPolicy, RateLimitPolicy) were evaluated for each request</p>
 </li>
 <li>
-<p><strong>gRPC Call Details</strong>: At DEBUG level, traces include detailed information about calls to Authorino and Limitador services</p>
+<p><strong>gRPC Call Details</strong>: At DEBUG level, traces include <code>grpc_service</code> and <code>grpc_method</code> attributes on request/response spans, identifying the exact upstream service and method called</p>
 </li>
 </ol>
 <h3 id="troubleshooting-scenarios-with-traces">Troubleshooting Scenarios with Traces<a class="headerlink" href="#troubleshooting-scenarios-with-traces" title="Permanent link">&para;</a></h3>
 <p><strong>Scenario: Auth is slow</strong></p>
 <ol>
 <li>Find the trace in Jaeger by <code>request_id</code></li>
-<li>Expand the <code>auth</code> span</li>
-<li>Check the <code>auth_request</code> → <code>Check</code> span duration</li>
+<li>Expand the <code>grpc</code> span with <code>action=auth</code></li>
+<li>Check the <code>grpc_request</code> → <code>Check</code> span duration</li>
 <li>Check Authorino pod logs for detailed errors or retries:
    <div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>authorino<span class="w"> </span>--tail<span class="o">=</span><span class="m">100</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>&lt;request_id&gt;
 </span></code></pre></div></li>
 </ol>
 <p><strong>Scenario: Rate limit not working</strong></p>
 <ol>
-<li>Search for traces with <code>operation: ratelimit</code></li>
+<li>Search for traces with <code>operation: grpc</code> and <code>action=ratelimit</code></li>
 <li>Check the <code>sources</code> tag - is your RateLimitPolicy listed?</li>
 <li>Check Limitador's <code>should_rate_limit</code> span for the decision</li>
 <li>Check Limitador pod logs for the limit descriptors sent:
