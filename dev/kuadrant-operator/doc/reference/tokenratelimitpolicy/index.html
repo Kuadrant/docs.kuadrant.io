@@ -4640,6 +4640,8 @@
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">}</span>
 </span></code></pre></div></p>
 <p>This is compatible with OpenAI-style API responses and similar AI/LLM services.</p>
+<p><strong>What's actually checked</strong>: Token extraction looks for a single JSON pointer, <code>/usage/total_tokens</code>, in the response body. Any backend that returns that exact field works out of the box, including OpenAI Chat Completions (<code>/v1/chat/completions</code>), OpenAI legacy Completions (<code>/v1/completions</code>), OpenAI Embeddings, and OpenAI-compatible backends like vLLM, kServe, Ollama, Azure OpenAI, and Gemini's OpenAI-compatibility endpoint.</p>
+<p><strong>Not currently supported</strong>: Providers that return token usage under a different field name — Anthropic's <code>/v1/messages</code> (<code>usage.input_tokens</code> / <code>usage.output_tokens</code>, no <code>total_tokens</code>) or Google Gemini's native endpoint (<code>usageMetadata.totalTokenCount</code>) — are not parsed. Multi-provider support is tracked in <a href="https://github.com/Kuadrant/kuadrant-operator/issues/1864">#1864</a>.</p>
 <p><strong>Streaming Support</strong>: Both streaming and non-streaming responses are supported:</p>
 <ul>
 <li><strong>Non-streaming</strong>: Works with <code>stream: false</code> or when <code>stream</code> is omitted</li>

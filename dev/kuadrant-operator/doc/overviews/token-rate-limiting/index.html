@@ -4277,7 +4277,7 @@
 <li>Limitador tracks the cumulative token usage and responds with either <code>OK</code> or <code>OVER_LIMIT</code></li>
 </ol>
 <p>This approach ensures accurate usage-based rate limiting where limits are enforced based on actual AI/LLM token consumption rather than simple request counts.</p>
-<p><strong>Important</strong>: Currently, TokenRateLimitPolicy only supports non-streaming OpenAI-style API responses (where <code>stream: false</code> or is omitted in the request). Support for streaming responses is planned for future releases.</p>
+<p><strong>Important</strong>: TokenRateLimitPolicy supports both non-streaming and streaming OpenAI-style API responses. For streaming, the request must include <code>"stream": true</code> and <code>"stream_options": { "include_usage": true }</code> for usage to be extracted from the final stream event. Only OpenAI-style completions responses are supported today — this includes <code>/v1/chat/completions</code> and <code>/v1/completions</code>, and any backend implementing the OpenAI-compatible API such as vLLM and kServe. Other provider formats (e.g. Anthropic, Google Gemini) are not yet parsed; see <a href="https://github.com/Kuadrant/kuadrant-operator/issues/1864">#1864</a>.</p>
 <h3 id="the-tokenratelimitpolicy-custom-resource">The TokenRateLimitPolicy custom resource<a class="headerlink" href="#the-tokenratelimitpolicy-custom-resource" title="Permanent link">&para;</a></h3>
 <h4 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h4>
 <p>The <code>TokenRateLimitPolicy</code> spec includes, basically, two parts:</p>
@@ -4307,6 +4307,7 @@
 <ul>
 <li><strong>Zero configuration</strong>: Works out-of-the-box with OpenAI-compatible APIs</li>
 <li><strong>Response parsing</strong>: Automatically extracts <code>usage.total_tokens</code> from response bodies</li>
+<li><strong>Provider scope</strong>: Supports any backend returning that field, e.g. OpenAI <code>/v1/chat/completions</code> and <code>/v1/completions</code>, and OpenAI-compatible backends like vLLM, kServe, Ollama, Azure OpenAI, and Gemini's OpenAI-compat endpoint. Anthropic and Gemini's native response formats aren't supported yet — see <a href="https://github.com/Kuadrant/kuadrant-operator/issues/1864">#1864</a></li>
 <li><strong>Accurate accounting</strong>: Tracks actual token consumption, not estimates</li>
 <li><strong>Graceful fallback</strong>: If token parsing fails, falls back to request counting</li>
 </ul>
