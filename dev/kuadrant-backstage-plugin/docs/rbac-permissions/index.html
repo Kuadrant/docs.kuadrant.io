@@ -1516,6 +1516,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/egress/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring and Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1824,6 +1845,27 @@
   
   <span class="md-ellipsis">
     Enabling mTLS for Gateway-to-Kuadrant Services Traffic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/overviews/openshift-tls-profile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Propagating the OpenShift TLS Security Profile
   </span>
   
 
@@ -4704,6 +4746,27 @@
 <li>API Owner: list (for reference)</li>
 <li>API Consumer: none</li>
 </ul>
+<p><strong>MCP Management (Gateways, MCPGatewayExtensions, MCPServerRegistrations):</strong></p>
+<p>The interactive Tools view additionally requires
+<code>kuadrant.mcp.inspector.use</code>. Its backend service account needs <code>get</code> access to
+MCPGatewayExtensions and Gateways. See <a href="../mcp-inspector/">MCP Inspector</a>.</p>
+<p>MCP resources are <strong>read-only</strong> in the portal: the overview page lists them for
+visibility, and access is gated purely by RBAC (hold the list permission → see the
+table). Create/update/delete are managed on-cluster (via kubectl/GitOps), not from
+the portal.</p>
+<p>List permissions: <code>kuadrant.gateway.list</code>, <code>kuadrant.mcpgatewayextension.list</code>,
+<code>kuadrant.mcpserverregistration.list</code> (all <code>action: read</code>).
+None use <code>.own</code>/<code>.all</code> scope — these are cluster infrastructure with no per-user
+ownership model.</p>
+<ul>
+<li>Platform Engineer: manages the underlying resources on-cluster (via kubectl/GitOps)</li>
+<li>API Admin: list</li>
+<li>API Owner: list</li>
+<li>API Consumer: none</li>
+</ul>
+<p>The RHDH Kubernetes service account only needs read verbs (<code>get</code>, <code>list</code>, <code>watch</code>)
+on <code>gateways</code> (gateway.networking.k8s.io) and
+<code>mcpgatewayextensions</code>/<code>mcpserverregistrations</code> (mcp.kuadrant.io).</p>
 <h3 id="role-hierarchy">Role Hierarchy<a class="headerlink" href="#role-hierarchy" title="Permanent link">&para;</a></h3>
 <p>The four personas form a clear hierarchy:</p>
 <ol>
@@ -4718,7 +4781,7 @@
 <p>APIProducts track ownership via the standard Backstage annotation:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">metadata</span><span class="p">:</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">backstage.io/owner</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;user:default/jmadigan&quot;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">backstage.io/owner</span><span class="p">:</span><span class="w"> </span><span class="s">"user:default/jmadigan"</span>
 </span></code></pre></div>
 <p>The owner reference uses Backstage's entity reference format: <code>kind:namespace/name</code></p>
 <p><strong>Immutability</strong>: The ownership annotation is set on creation and cannot be modified. This prevents ownership hijacking and maintains clear accountability.</p>
@@ -4739,16 +4802,16 @@
 </span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">  </span><span class="p">);</span>
 </span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
 </span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">ownDecision</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">result</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="nx">AuthorizeResult</span><span class="p">.</span><span class="nx">ALLOW</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">NotAllowedError</span><span class="p">(</span><span class="s1">&#39;unauthorised&#39;</span><span class="p">);</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">NotAllowedError</span><span class="p">(</span><span class="s1">'unauthorised'</span><span class="p">);</span>
 </span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>
 </span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">  </span><span class="c1">// 3. verify ownership</span>
 </span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">apiProduct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">k8sClient</span><span class="p">.</span><span class="nx">getCustomResource</span><span class="p">(...);</span>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">apiProduct</span><span class="p">.</span><span class="nx">metadata</span><span class="o">?</span><span class="p">.</span><span class="nx">annotations</span><span class="o">?</span><span class="p">.[</span><span class="s1">&#39;backstage.io/owner&#39;</span><span class="p">];</span>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">ownerUserId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">extractUserIdFromOwner</span><span class="p">(</span><span class="nx">owner</span><span class="p">);</span><span class="w"> </span><span class="c1">// extracts &quot;jmadigan&quot; from &quot;user:default/jmadigan&quot;</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">apiProduct</span><span class="p">.</span><span class="nx">metadata</span><span class="o">?</span><span class="p">.</span><span class="nx">annotations</span><span class="o">?</span><span class="p">.[</span><span class="s1">'backstage.io/owner'</span><span class="p">];</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">ownerUserId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">extractUserIdFromOwner</span><span class="p">(</span><span class="nx">owner</span><span class="p">);</span><span class="w"> </span><span class="c1">// extracts "jmadigan" from "user:default/jmadigan"</span>
 </span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>
 </span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">ownerUserId</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="nx">userId</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">NotAllowedError</span><span class="p">(</span><span class="s1">&#39;you can only update your own api products&#39;</span><span class="p">);</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">NotAllowedError</span><span class="p">(</span><span class="s1">'you can only update your own api products'</span><span class="p">);</span>
 </span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="p">}</span>
 </span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>
@@ -4761,12 +4824,12 @@
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">allApiProducts</span><span class="p">;</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">hasReadOwnPermission</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">allApiProducts</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">metadata</span><span class="o">?</span><span class="p">.</span><span class="nx">annotations</span><span class="o">?</span><span class="p">.[</span><span class="s1">&#39;backstage.io/owner&#39;</span><span class="p">];</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">metadata</span><span class="o">?</span><span class="p">.</span><span class="nx">annotations</span><span class="o">?</span><span class="p">.[</span><span class="s1">'backstage.io/owner'</span><span class="p">];</span>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">ownerUserId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">extractUserIdFromOwner</span><span class="p">(</span><span class="nx">owner</span><span class="p">);</span>
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">ownerUserId</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">userId</span><span class="p">;</span>
 </span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span><span class="p">});</span>
 </span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">  </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">NotAllowedError</span><span class="p">(</span><span class="s1">&#39;unauthorised&#39;</span><span class="p">);</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">  </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">NotAllowedError</span><span class="p">(</span><span class="s1">'unauthorised'</span><span class="p">);</span>
 </span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="p">}</span>
 </span></code></pre></div>
 <h2 id="approval-workflow">Approval Workflow<a class="headerlink" href="#approval-workflow" title="Permanent link">&para;</a></h2>
@@ -4797,11 +4860,11 @@
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">updateAllDecision</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">result</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="nx">AuthorizeResult</span><span class="p">.</span><span class="nx">ALLOW</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">  </span><span class="c1">// not an admin - verify ownership of the APIProduct</span>
 </span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">apiProduct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">k8sClient</span><span class="p">.</span><span class="nx">getCustomResource</span><span class="p">(...);</span>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">apiProduct</span><span class="p">.</span><span class="nx">metadata</span><span class="o">?</span><span class="p">.</span><span class="nx">annotations</span><span class="o">?</span><span class="p">.[</span><span class="s1">&#39;backstage.io/owner&#39;</span><span class="p">];</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">apiProduct</span><span class="p">.</span><span class="nx">metadata</span><span class="o">?</span><span class="p">.</span><span class="nx">annotations</span><span class="o">?</span><span class="p">.[</span><span class="s1">'backstage.io/owner'</span><span class="p">];</span>
 </span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">ownerUserId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">extractUserIdFromOwner</span><span class="p">(</span><span class="nx">owner</span><span class="p">);</span>
 </span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
 </span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">ownerUserId</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="nx">userId</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">NotAllowedError</span><span class="p">(</span><span class="s1">&#39;you can only approve requests for your own api products&#39;</span><span class="p">);</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">NotAllowedError</span><span class="p">(</span><span class="s1">'you can only approve requests for your own api products'</span><span class="p">);</span>
 </span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="p">}</span>
 </span></code></pre></div>
@@ -4824,7 +4887,7 @@
 </span></code></pre></div>
 <h2 id="catalog-integration">Catalog Integration<a class="headerlink" href="#catalog-integration" title="Permanent link">&para;</a></h2>
 <p>The APIProduct entity provider only syncs products with ownership annotations to the Backstage catalog:</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">product</span><span class="p">.</span><span class="nx">metadata</span><span class="p">.</span><span class="nx">annotations</span><span class="o">?</span><span class="p">.[</span><span class="s1">&#39;backstage.io/owner&#39;</span><span class="p">];</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">product</span><span class="p">.</span><span class="nx">metadata</span><span class="p">.</span><span class="nx">annotations</span><span class="o">?</span><span class="p">.[</span><span class="s1">'backstage.io/owner'</span><span class="p">];</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">owner</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="sb">`skipping apiproduct </span><span class="si">${</span><span class="nx">namespace</span><span class="si">}</span><span class="sb">/</span><span class="si">${</span><span class="nx">name</span><span class="si">}</span><span class="sb"> - no ownership annotation`</span><span class="p">);</span>
 </span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
@@ -4832,7 +4895,7 @@
 </span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
 </span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="kd">const</span><span class="w"> </span><span class="nx">entity</span><span class="o">:</span><span class="w"> </span><span class="kt">ApiEntity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">  </span><span class="nx">spec</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="nx">owner</span><span class="p">,</span><span class="w">  </span><span class="c1">// &quot;user:default/jmadigan&quot;</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="nx">owner</span><span class="p">,</span><span class="w">  </span><span class="c1">// "user:default/jmadigan"</span>
 </span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">    </span><span class="c1">// ...</span>
 </span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="p">};</span>
@@ -4846,62 +4909,59 @@
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">permission</span><span class="p">:</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">rbac</span><span class="p">:</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="nt">policies-csv-file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./rbac-policy.csv</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="nt">policies-csv-file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">../../rbac-policy.csv</span>
 </span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="nt">policyFileReload</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span></code></pre></div>
 <h3 id="testing-different-roles">Testing Different Roles<a class="headerlink" href="#testing-different-roles" title="Permanent link">&para;</a></h3>
-<p>Use the included helper scripts:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>yarn<span class="w"> </span>user:consumer<span class="w">  </span><span class="c1"># switch to API Consumer role</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>yarn<span class="w"> </span>user:owner<span class="w">     </span><span class="c1"># switch to API Owner role</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>yarn<span class="w"> </span>user:default<span class="w">   </span><span class="c1"># restore default permissions</span>
-</span></code></pre></div>
-<p>After switching roles, restart with <code>yarn dev</code>.</p>
+<p><code>yarn dev</code> runs a local dex container on <code>:5556</code>. Sign in through the dex quick-login picker as one of five personas: <code>admin@kuadrant.local</code>, <code>owner1@</code>, <code>owner2@</code>, <code>consumer1@</code>, <code>consumer2@</code>. Sign out and back in to switch.</p>
+<p>Dex credentials are defined in <code>kuadrant-dev-setup/dex/config.yaml</code>. The matching catalog users and their group membership (<code>api-admins</code>, <code>api-owners</code>, <code>api-consumers</code>) live in <code>catalog-entities/kuadrant-users.yaml</code>, and <code>rbac-policy.csv</code> maps those groups to roles.</p>
+<p>The Kubernetes permissions used by both kind and oinc are defined once in <code>kuadrant-dev-setup/rbac/rhdh-cluster-role.yaml</code>; each environment supplies only its service account and binding.</p>
 <h2 id="security-considerations">Security Considerations<a class="headerlink" href="#security-considerations" title="Permanent link">&para;</a></h2>
 <h3 id="input-validation">Input Validation<a class="headerlink" href="#input-validation" title="Permanent link">&para;</a></h3>
 <p>All mutating endpoints use Zod schemas to validate request bodies with explicit whitelists:</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">patchSchema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">z</span><span class="p">.</span><span class="nx">object</span><span class="p">({</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nx">spec</span><span class="o">:</span><span class="w"> </span><span class="kt">z.object</span><span class="p">({</span>
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="nx">displayName</span><span class="o">:</span><span class="w"> </span><span class="kt">z.string</span><span class="p">().</span><span class="nx">optional</span><span class="p">(),</span>
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="nx">description</span><span class="o">:</span><span class="w"> </span><span class="kt">z.string</span><span class="p">().</span><span class="nx">optional</span><span class="p">(),</span>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">    </span><span class="c1">// only allowed fields - targetRef, namespace, etc. excluded</span>
-</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">  </span><span class="p">}).</span><span class="nx">partial</span><span class="p">(),</span>
-</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="p">});</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">patchSchema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">z</span><span class="p">.</span><span class="nx">object</span><span class="p">({</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nx">spec</span><span class="o">:</span><span class="w"> </span><span class="kt">z.object</span><span class="p">({</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="nx">displayName</span><span class="o">:</span><span class="w"> </span><span class="kt">z.string</span><span class="p">().</span><span class="nx">optional</span><span class="p">(),</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="nx">description</span><span class="o">:</span><span class="w"> </span><span class="kt">z.string</span><span class="p">().</span><span class="nx">optional</span><span class="p">(),</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="c1">// only allowed fields - targetRef, namespace, etc. excluded</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">  </span><span class="p">}).</span><span class="nx">partial</span><span class="p">(),</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="p">});</span>
 </span></code></pre></div>
 <h3 id="ownership-immutability">Ownership Immutability<a class="headerlink" href="#ownership-immutability" title="Permanent link">&para;</a></h3>
 <p>PATCH endpoints explicitly prevent modification of ownership annotation:</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1">// prevent ownership hijacking</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">metadata</span><span class="o">?</span><span class="p">.</span><span class="nx">annotations</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span><span class="ow">delete</span><span class="w"> </span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">metadata</span><span class="p">.</span><span class="nx">annotations</span><span class="p">[</span><span class="s1">&#39;backstage.io/owner&#39;</span><span class="p">];</span>
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="p">}</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1">// prevent ownership hijacking</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">metadata</span><span class="o">?</span><span class="p">.</span><span class="nx">annotations</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="ow">delete</span><span class="w"> </span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">metadata</span><span class="p">.</span><span class="nx">annotations</span><span class="p">[</span><span class="s1">'backstage.io/owner'</span><span class="p">];</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="p">}</span>
 </span></code></pre></div>
 <h3 id="authentication-required">Authentication Required<a class="headerlink" href="#authentication-required" title="Permanent link">&para;</a></h3>
 <p>All endpoints require valid authentication with no guest fallbacks:</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">credentials</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">httpAuth</span><span class="p">.</span><span class="nx">credentials</span><span class="p">(</span><span class="nx">req</span><span class="p">);</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">credentials</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="nx">credentials</span><span class="p">.</span><span class="nx">principal</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">NotAllowedError</span><span class="p">(</span><span class="s1">&#39;authentication required&#39;</span><span class="p">);</span>
-</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="p">}</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">credentials</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">httpAuth</span><span class="p">.</span><span class="nx">credentials</span><span class="p">(</span><span class="nx">req</span><span class="p">);</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">credentials</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="nx">credentials</span><span class="p">.</span><span class="nx">principal</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">NotAllowedError</span><span class="p">(</span><span class="s1">'authentication required'</span><span class="p">);</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="p">}</span>
 </span></code></pre></div>
 <h2 id="frontend-permission-checks">Frontend Permission Checks<a class="headerlink" href="#frontend-permission-checks" title="Permanent link">&para;</a></h2>
 <p>Use the custom <code>useKuadrantPermission</code> hook for permission-aware UI:</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useKuadrantPermission</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;../../utils/permissions&#39;</span><span class="p">;</span>
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">allowed</span><span class="p">,</span><span class="w"> </span><span class="nx">loading</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useKuadrantPermission</span><span class="p">(</span>
-</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span><span class="nx">kuadrantApiProductCreatePermission</span>
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="p">);</span>
-</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
-</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">loading</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="o">&lt;</span><span class="nx">Progress</span><span class="w"> </span><span class="o">/&gt;</span><span class="p">;</span>
-</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">allowed</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w"> </span><span class="c1">// hide button</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useKuadrantPermission</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'../../utils/permissions'</span><span class="p">;</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">allowed</span><span class="p">,</span><span class="w"> </span><span class="nx">loading</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useKuadrantPermission</span><span class="p">(</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span><span class="nx">kuadrantApiProductCreatePermission</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="p">);</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">loading</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="o">&lt;</span><span class="nx">Progress</span><span class="w"> </span><span class="o">/&gt;</span><span class="p">;</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">allowed</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w"> </span><span class="c1">// hide button</span>
 </span></code></pre></div>
 <p>For ownership-aware actions:</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">canDeleteResource</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;../../utils/permissions&#39;</span><span class="p">;</span>
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
-</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="kd">const</span><span class="w"> </span><span class="nx">canDelete</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">canDeleteResource</span><span class="p">(</span>
-</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span><span class="nx">resource</span><span class="p">.</span><span class="nx">spec</span><span class="p">.</span><span class="nx">requestedBy</span><span class="p">.</span><span class="nx">userId</span><span class="p">,</span><span class="w">  </span><span class="c1">// owner</span>
-</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">  </span><span class="nx">currentUserId</span><span class="p">,</span><span class="w">                      </span><span class="c1">// current user</span>
-</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">  </span><span class="nx">canDeleteOwnPermission</span><span class="p">,</span><span class="w">             </span><span class="c1">// permission to delete own</span>
-</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">  </span><span class="nx">canDeleteAllPermission</span><span class="w">              </span><span class="c1">// permission to delete all</span>
-</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="p">);</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">canDeleteResource</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'../../utils/permissions'</span><span class="p">;</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="kd">const</span><span class="w"> </span><span class="nx">canDelete</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">canDeleteResource</span><span class="p">(</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span><span class="nx">resource</span><span class="p">.</span><span class="nx">spec</span><span class="p">.</span><span class="nx">requestedBy</span><span class="p">.</span><span class="nx">userId</span><span class="p">,</span><span class="w">  </span><span class="c1">// owner</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">  </span><span class="nx">currentUserId</span><span class="p">,</span><span class="w">                      </span><span class="c1">// current user</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">  </span><span class="nx">canDeleteOwnPermission</span><span class="p">,</span><span class="w">             </span><span class="c1">// permission to delete own</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">  </span><span class="nx">canDeleteAllPermission</span><span class="w">              </span><span class="c1">// permission to delete all</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="p">);</span>
 </span></code></pre></div>
 <h2 id="two-layer-rbac-model">Two-Layer RBAC Model<a class="headerlink" href="#two-layer-rbac-model" title="Permanent link">&para;</a></h2>
 <p>The Kuadrant plugin uses separate RBAC layers with clear separation:</p>

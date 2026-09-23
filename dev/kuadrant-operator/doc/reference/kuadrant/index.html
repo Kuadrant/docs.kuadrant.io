@@ -1520,6 +1520,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/egress/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring and Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1844,6 +1865,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../overviews/openshift-tls-profile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Propagating the OpenShift TLS Security Profile
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../user-guides/rbac/gateway-api-personas/" class="md-nav__link">
         
   
@@ -1981,6 +2023,15 @@
   
     <nav class="md-nav" aria-label="KuadrantSpec">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tokenratelimiting" class="md-nav__link">
+    <span class="md-ellipsis">
+      TokenRateLimiting
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#mtls" class="md-nav__link">
@@ -4009,6 +4060,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#tokenratelimiting" class="md-nav__link">
+    <span class="md-ellipsis">
+      TokenRateLimiting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#mtls" class="md-nav__link">
     <span class="md-ellipsis">
       mTLS
@@ -4181,13 +4241,44 @@
 <td>Two way authentication between kuadrant components.</td>
 </tr>
 <tr>
+<td><code>tokenRateLimiting</code></td>
+<td><a href="#tokenratelimiting">TokenRateLimiting</a></td>
+<td style="text-align: center;">No</td>
+<td>Cluster-wide behavior for TokenRateLimitPolicy enforcement.</td>
+</tr>
+<tr>
 <td><code>components</code></td>
 <td><a href="#components">Components</a></td>
 <td style="text-align: center;">No</td>
-<td>Optional Kuadrant components configuration.</td>
+<td><strong>Deprecated:</strong> ignored. Kept only for backwards compatibility.</td>
 </tr>
 </tbody>
 </table>
+<h4 id="tokenratelimiting">TokenRateLimiting<a class="headerlink" href="#tokenratelimiting" title="Permanent link">&para;</a></h4>
+<p>Configures cluster-wide behavior for every <code>TokenRateLimitPolicy</code> in the cluster.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Field</strong></th>
+<th><strong>Type</strong></th>
+<th style="text-align: center;"><strong>Required</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mode</code></td>
+<td>String</td>
+<td style="text-align: center;">No</td>
+<td>Enforcement mode for token limits. One of <code>Reservation</code> (default) or <code>Optimistic</code>.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong><code>Reservation</code></strong> (default): On request arrival the gateway <em>reserves</em> an estimated token amount from Limitador and, once the upstream responds, <em>commits</em> the actual usage (releasing the difference). This closes the race window that exists between checking and reporting under concurrency. See <a href="https://github.com/Kuadrant/architecture/blob/main/rfcs/0021-token-rate-limit-reservations.md">RFC 0021</a>. Reservation behavior per limit is tuned with <a href="../tokenratelimitpolicy/#reservation"><code>spec.limits.&lt;name&gt;.reservation</code></a> on the <code>TokenRateLimitPolicy</code>. <strong>The reserved amount defaults to <code>0</code> (no capacity held) when not set explicitly</strong> — this makes Reservation mode behave like Optimistic for policies that don't opt in, so upgrading is behavior-neutral; see <a href="../tokenratelimitpolicy/#reservation"><code>reservation</code></a> for details.</li>
+<li><strong><code>Optimistic</code></strong>: On request arrival the gateway checks the limit with <code>hits_addend=0</code> and, once the upstream responds, reports the actual usage. Simpler, but two concurrent requests can both pass the check before either reports, so the limit can be briefly overshot.</li>
+</ul>
+<p>The mode is cluster-wide: it is not settable per policy. When <code>spec.tokenRateLimiting</code> is omitted, <code>Reservation</code> is used.</p>
 <h4 id="mtls">mTLS<a class="headerlink" href="#mtls" title="Permanent link">&para;</a></h4>
 <table>
 <thead>
@@ -4389,7 +4480,7 @@
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">dataPlane</span><span class="p">:</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">defaultLevels</span><span class="p">:</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w">  </span><span class="c1"># Enable DEBUG level trace filtering</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span><span class="w">  </span><span class="c1"># Enable DEBUG level trace filtering</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">httpHeaderIdentifier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x-request-id</span>
 </span></code></pre></div></p>
 <h5 id="tracing">Tracing<a class="headerlink" href="#tracing" title="Permanent link">&para;</a></h5>
@@ -4419,6 +4510,9 @@
 </tbody>
 </table>
 <h4 id="components">Components<a class="headerlink" href="#components" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p><strong>Deprecated:</strong> This section is kept only for backwards compatibility and is ignored by the operator. The developer portal is now enabled by default (GA) and cannot be turned off.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -4433,11 +4527,14 @@
 <td><code>developerPortal</code></td>
 <td><a href="#developerportal">DeveloperPortal</a></td>
 <td style="text-align: center;">No</td>
-<td>Developer portal integration configuration.</td>
+<td><strong>Deprecated:</strong> ignored no-op, kept only for backwards compatibility.</td>
 </tr>
 </tbody>
 </table>
 <h5 id="developerportal">DeveloperPortal<a class="headerlink" href="#developerportal" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p><strong>Deprecated:</strong> This field is ignored. The developer portal (including the APIProduct and APIKeyRequest CRDs) is always enabled as of GA. The field is retained only for backwards compatibility and has no effect regardless of its value.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -4452,7 +4549,7 @@
 <td><code>enabled</code></td>
 <td>Boolean</td>
 <td style="text-align: center;">No</td>
-<td>Enable the developer portal integration including APIProduct and APIKeyRequest CRDs. Default: <code>false</code></td>
+<td><strong>Deprecated:</strong> ignored. The developer portal is always enabled; setting this to <code>true</code> or <code>false</code> has no effect.</td>
 </tr>
 </tbody>
 </table>

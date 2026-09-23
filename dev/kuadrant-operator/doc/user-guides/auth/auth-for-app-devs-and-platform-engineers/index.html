@@ -1624,6 +1624,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../egress/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring and Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1932,6 +1953,27 @@
   
   <span class="md-ellipsis">
     Enabling mTLS for Gateway-to-Kuadrant Services Traffic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../overviews/openshift-tls-profile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Propagating the OpenShift TLS Security Profile
   </span>
   
 
@@ -4080,7 +4122,7 @@
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="s">  name: ${KUADRANT_GATEWAY_NAME}</span>
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="s">  namespace: ${KUADRANT_GATEWAY_NS}</span>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="s">  labels:</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="s">    kuadrant.io/gateway: &quot;true&quot;</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="s">    kuadrant.io/gateway: "true"</span>
 </span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="s">spec:</span>
 </span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="s">  gatewayClassName: istio</span>
 </span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="s">  listeners:</span>
@@ -4094,7 +4136,7 @@
 </span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <p>Check the status of the <code>Gateway</code> ensuring the gateway is Accepted and Programmed:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.conditions[?(@.type==&quot;Accepted&quot;)].message}{&quot;\n&quot;}{.status.conditions[?(@.type==&quot;Programmed&quot;)].message}{&quot;\n&quot;}&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Programmed")].message}{"\n"}'</span>
 </span></code></pre></div>
 <h3 id="deploy-the-toy-store-sample-application-persona-app-developer">Deploy the Toy Store sample application (Persona: <em>App developer</em>)<a class="headerlink" href="#deploy-the-toy-store-sample-application-persona-app-developer" title="Permanent link">&para;</a></h3>
 <p>Create the namespace for the toystore API:</p>
@@ -4125,11 +4167,11 @@ Deploy the Toy store
 </span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="s">    - method: GET</span>
 </span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="s">      path:</span>
 </span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="s">        type: PathPrefix</span>
-</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="s">        value: &quot;/cars&quot;</span>
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="s">        value: "/cars"</span>
 </span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="s">    - method: GET</span>
 </span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="s">      path:</span>
 </span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="s">        type: PathPrefix</span>
-</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="s">        value: &quot;/dolls&quot;</span>
+</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="s">        value: "/dolls"</span>
 </span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="s">    backendRefs:</span>
 </span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a><span class="s">    - name: toystore</span>
 </span><span id="__span-7-29"><a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a><span class="s">      port: 80</span>
@@ -4137,25 +4179,25 @@ Deploy the Toy store
 </span><span id="__span-7-31"><a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a><span class="s">    matches:</span>
 </span><span id="__span-7-32"><a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a><span class="s">    - path:</span>
 </span><span id="__span-7-33"><a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a><span class="s">        type: PathPrefix</span>
-</span><span id="__span-7-34"><a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a><span class="s">        value: &quot;/admin&quot;</span>
+</span><span id="__span-7-34"><a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a><span class="s">        value: "/admin"</span>
 </span><span id="__span-7-35"><a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a><span class="s">    backendRefs:</span>
 </span><span id="__span-7-36"><a id="__codelineno-7-36" name="__codelineno-7-36" href="#__codelineno-7-36"></a><span class="s">    - name: toystore</span>
 </span><span id="__span-7-37"><a id="__codelineno-7-37" name="__codelineno-7-37" href="#__codelineno-7-37"></a><span class="s">      port: 80</span>
 </span><span id="__span-7-38"><a id="__codelineno-7-38" name="__codelineno-7-38" href="#__codelineno-7-38"></a><span class="s">EOF</span>
 </span></code></pre></div></p>
 <p>Export the gateway hostname and port:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_INGRESS_HOST</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.addresses[0].value}&#39;</span><span class="k">)</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_INGRESS_PORT</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.listeners[?(@.name==&quot;http&quot;)].port}&#39;</span><span class="k">)</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_INGRESS_HOST</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.addresses[0].value}'</span><span class="k">)</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_INGRESS_PORT</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.listeners[?(@.name=="http")].port}'</span><span class="k">)</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_GATEWAY_URL</span><span class="o">=</span><span class="si">${</span><span class="nv">KUADRANT_INGRESS_HOST</span><span class="si">}</span>:<span class="si">${</span><span class="nv">KUADRANT_INGRESS_PORT</span><span class="si">}</span>
 </span></code></pre></div>
 <p>Send requests to the application unprotected:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/cars<span class="w"> </span>-i
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/cars<span class="w"> </span>-i
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1"># HTTP/1.1 200 OK</span>
 </span></code></pre></div>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/dolls<span class="w"> </span>-i
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/dolls<span class="w"> </span>-i
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="c1"># HTTP/1.1 200 OK</span>
 </span></code></pre></div>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/admin<span class="w"> </span>-i
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/admin<span class="w"> </span>-i
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="c1"># HTTP/1.1 200 OK</span>
 </span></code></pre></div>
 <h3 id="protect-the-toy-store-application-persona-app-developer">Protect the Toy Store application (Persona: <em>App developer</em>)<a class="headerlink" href="#protect-the-toy-store-application-persona-app-developer" title="Permanent link">&para;</a></h3>
@@ -4181,7 +4223,7 @@ Deploy the Toy store
 </span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="s">    strategy: merge</span>
 </span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="s">    rules:</span>
 </span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="s">      authentication:</span>
-</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="s">        &quot;api-key-authn&quot;:</span>
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="s">        "api-key-authn":</span>
 </span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="s">          apiKey:</span>
 </span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="s">            allNamespaces: true</span>
 </span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="s">            selector:</span>
@@ -4204,11 +4246,11 @@ Deploy the Toy store
 </span><span id="__span-12-36"><a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a><span class="s">    sectionName: admins</span>
 </span><span id="__span-12-37"><a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a><span class="s">  rules:</span>
 </span><span id="__span-12-38"><a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a><span class="s">    authorization:</span>
-</span><span id="__span-12-39"><a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a><span class="s">      &quot;only-admins&quot;:</span>
+</span><span id="__span-12-39"><a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a><span class="s">      "only-admins":</span>
 </span><span id="__span-12-40"><a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a><span class="s">        opa:</span>
 </span><span id="__span-12-41"><a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a><span class="s">          rego: |</span>
-</span><span id="__span-12-42"><a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a><span class="s">            groups := split(object.get(input.auth.identity.metadata.annotations, &quot;kuadrant.io/groups&quot;, &quot;&quot;), &quot;,&quot;)</span>
-</span><span id="__span-12-43"><a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a><span class="s">            allow { groups[_] == &quot;admins&quot; }</span>
+</span><span id="__span-12-42"><a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a><span class="s">            groups := split(object.get(input.auth.identity.metadata.annotations, "kuadrant.io/groups", ""), ",")</span>
+</span><span id="__span-12-43"><a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a><span class="s">            allow { groups[_] == "admins" }</span>
 </span><span id="__span-12-44"><a id="__codelineno-12-44" name="__codelineno-12-44" href="#__codelineno-12-44"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <p>Create the API keys (must be created in the same namespace as the Kuadrant CR):</p>
@@ -4239,19 +4281,19 @@ Deploy the Toy store
 </span><span id="__span-13-25"><a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <p>Send requests to the application protected by Kuadrant:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/cars<span class="w"> </span>-i
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/cars<span class="w"> </span>-i
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="c1"># HTTP/1.1 401 Unauthorized</span>
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="c1"># www-authenticate: APIKEY realm=&quot;api-key-authn&quot;</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="c1"># www-authenticate: APIKEY realm="api-key-authn"</span>
 </span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="c1"># x-ext-auth-reason: credential not found</span>
 </span></code></pre></div>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Authorization: APIKEY iamaregularuser&#39;</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/cars<span class="w"> </span>-i
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">'Authorization: APIKEY iamaregularuser'</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/cars<span class="w"> </span>-i
 </span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="c1"># HTTP/1.1 200 OK</span>
 </span></code></pre></div>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Authorization: APIKEY iamaregularuser&#39;</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/admin<span class="w"> </span>-i
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">'Authorization: APIKEY iamaregularuser'</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/admin<span class="w"> </span>-i
 </span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="c1"># HTTP/1.1 403 Forbidden</span>
 </span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="c1"># x-ext-auth-reason: Unauthorized</span>
 </span></code></pre></div>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Authorization: APIKEY iamanadmin&#39;</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/admin<span class="w"> </span>-i
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">'Authorization: APIKEY iamanadmin'</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/admin<span class="w"> </span>-i
 </span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="c1"># HTTP/1.1 200 OK</span>
 </span></code></pre></div>
 <h3 id="create-a-default-deny-all-policy-at-the-level-of-the-gateway-persona-platform-engineer">Create a default "deny-all" policy at the level of the gateway (Persona: <em>Platform engineer</em>)<a class="headerlink" href="#create-a-default-deny-all-policy-at-the-level-of-the-gateway-persona-platform-engineer" title="Permanent link">&para;</a></h3>
@@ -4273,17 +4315,17 @@ Deploy the Toy store
 </span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="s">      authorization:</span>
 </span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="s">        deny-all:</span>
 </span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="s">          opa:</span>
-</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="s">            rego: &quot;allow = false&quot;</span>
+</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="s">            rego: "allow = false"</span>
 </span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="s">      response:</span>
 </span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="s">        unauthorized:</span>
 </span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="s">          headers:</span>
-</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="s">            &quot;content-type&quot;:</span>
+</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="s">            "content-type":</span>
 </span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="s">              value: application/json</span>
 </span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a><span class="s">          body:</span>
 </span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="s">            value: |</span>
 </span><span id="__span-18-26"><a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a><span class="s">              {</span>
-</span><span id="__span-18-27"><a id="__codelineno-18-27" name="__codelineno-18-27" href="#__codelineno-18-27"></a><span class="s">                &quot;error&quot;: &quot;Forbidden&quot;,</span>
-</span><span id="__span-18-28"><a id="__codelineno-18-28" name="__codelineno-18-28" href="#__codelineno-18-28"></a><span class="s">                &quot;message&quot;: &quot;Access denied by default by the gateway operator. If you are the administrator of the service, create a specific auth policy for the route.&quot;</span>
+</span><span id="__span-18-27"><a id="__codelineno-18-27" name="__codelineno-18-27" href="#__codelineno-18-27"></a><span class="s">                "error": "Forbidden",</span>
+</span><span id="__span-18-28"><a id="__codelineno-18-28" name="__codelineno-18-28" href="#__codelineno-18-28"></a><span class="s">                "message": "Access denied by default by the gateway operator. If you are the administrator of the service, create a specific auth policy for the route."</span>
 </span><span id="__span-18-29"><a id="__codelineno-18-29" name="__codelineno-18-29" href="#__codelineno-18-29"></a><span class="s">              }</span>
 </span><span id="__span-18-30"><a id="__codelineno-18-30" name="__codelineno-18-30" href="#__codelineno-18-30"></a><span class="s">EOF</span>
 </span></code></pre></div>
@@ -4301,19 +4343,19 @@ Deploy the Toy store
 </span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="s">  - name: ${KUADRANT_GATEWAY_NAME}</span>
 </span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="s">    namespace: ${KUADRANT_GATEWAY_NS}</span>
 </span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="s">  hostnames:</span>
-</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="s">  - &quot;*.other-apps.com&quot;</span>
+</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="s">  - "*.other-apps.com"</span>
 </span><span id="__span-19-14"><a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <p>Send requests to the route protected by the default policy set at the level of the gateway:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: foo.other-apps.com&#39;</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/<span class="w"> </span>-i
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: foo.other-apps.com'</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/<span class="w"> </span>-i
 </span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="c1"># HTTP/1.1 403 Forbidden</span>
 </span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="c1"># content-type: application/json</span>
 </span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="c1"># x-ext-auth-reason: Unauthorized</span>
 </span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="c1"># […]</span>
 </span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="c1">#</span>
 </span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="c1"># {</span>
-</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="c1">#   &quot;error&quot;: &quot;Forbidden&quot;,</span>
-</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="c1">#   &quot;message&quot;: &quot;Access denied by default by the gateway operator. If you are the administrator of the service, create a specific auth policy for the route.&quot;</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="c1">#   "error": "Forbidden",</span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="c1">#   "message": "Access denied by default by the gateway operator. If you are the administrator of the service, create a specific auth policy for the route."</span>
 </span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="c1"># }</span>
 </span></code></pre></div>
 

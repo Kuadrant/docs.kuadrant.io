@@ -1,0 +1,5598 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://docs.kuadrant.io/dev/kuadrant-operator/doc/user-guides/egress/observability/">
+      
+      
+        <link rel="prev" href="../credential-injection/">
+      
+      
+        <link rel="next" href="../../../observability/">
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Monitoring and Troubleshooting - Kuadrant Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.0253249f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../../../../assets/asciidoc.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#monitoring-and-troubleshooting-egress-traffic" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  These docs are not for the latest version.
+  <a href="../../../../../.."> 
+    <strong>Click here to go to latest, stable docs.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Kuadrant Documentation" class="md-header__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+      
+  <img src="../../../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kuadrant Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Monitoring and Troubleshooting
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kuadrant/docs.kuadrant.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Kuadrant Documentation" class="md-nav__button md-logo" aria-label="Kuadrant Documentation" data-md-component="logo">
+      
+  <img src="../../../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Kuadrant Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kuadrant/docs.kuadrant.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../install-helm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Install with Helm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../install-olm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Install with OLM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Concepts
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../architecture/docs/design/architectural-overview-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../overviews/dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNS Management
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../overviews/tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway TLS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../overviews/auth/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication & Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../overviews/rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rate Limiting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../overviews/token-rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token-Based Rate Limiting (for AI Workloads)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../extensions/planpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Plan-Based Rate Limiting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../overviews/telemetrypolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Telemetry
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Guides & Tutorials
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Guides & Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../full-walkthrough/secure-protect-connect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Secure, connect and protect
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DNS configuration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            DNS configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../dns-operator/docs/provider/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuring a DNS Provider
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dns/gateway-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway DNS for ingress Gateway
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dns/basic-dns-configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Basic DNS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dns/load-balanced-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNS Load Balancing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dns/dnshealthchecks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Health Checks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dns/core-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CoreDNS Support
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dns/understanding_dns_delegation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cluster Aware DNSRecord Delegation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2_8" id="__nav_5_2_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DNS Fail-over
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            DNS Fail-over
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../dns-operator/docs/migrating_existing_clusters_to_use_groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Migrating Existing Clusters To Use Groups
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../dns-operator/docs/exercising_dns_failover_via_groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exercising DNS Fail-over via Groups
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../dns-operator/docs/migrating_away_from_dns_groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Migrating Away From DNS Groups
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TLS
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            TLS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tls/gateway-tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Enabling TLS on the Gateway (for Cluster Operators)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Authentication & Authorization
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            Authentication & Authorization
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../auth/auth-for-app-devs-and-platform-engineers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Enforcing authentication & authorization with Kuadrant AuthPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4_2" id="__nav_5_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    X.509 Authentication
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            X.509 Authentication
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../overviews/auth-x509/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../auth/x509-authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tutorial: Authenticate API clients with X.509 certificates
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../auth/x509-tier1-gateway-api-validation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tier 1: Authenticate clients with Gateway API frontend TLS validation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../auth/x509-tier2-provider-specific/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tier 2: Authenticate clients with provider-specific TLS validation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../auth/x509-tier3-header-only/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tier 3: Authenticate clients with certificate in request header only
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../auth/anonymous-access/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Anonymous Access
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Rate Limiting
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            Rate Limiting
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ratelimiting/gateway-rl-for-cluster-operators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway Rate Limiting (for Cluster Operators)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ratelimiting/authenticated-rl-for-app-developers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rate Limiting Authenticated Requests (for Application Developers)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ratelimiting/authenticated-rl-with-jwt-and-k8s-authnz/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rate Limiting JWT-Authenticated and Kubernetes RBAC-Authorized Requests
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ratelimiting/authenticated-rl-for-app-developers-grpc-services/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rate Limiting gRPC Services
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ratelimiting/multi-auth-rlp-diff-section/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rate Limiting Specific Listeners of the Gateway
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ratelimiting/multi-auth-rlp-same-section/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blending Policies together for Multi-user Rate Limit Scenarios
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tokenratelimitpolicy/authenticated-token-ratelimiting-tutorial/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rate Limiting Large Language Model (LLM) Requests Based on Tokens
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../planpolicy/plan-based-rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rate Limiting Based on Plans
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Egress Gateway
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_6">
+            <span class="md-nav__icon md-icon"></span>
+            Egress Gateway
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../egress-gateway/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Egress Gateway Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dns-routing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNS Routing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../credential-injection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Credential Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Monitoring and Troubleshooting
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring and Troubleshooting
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Tasks
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#egress-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Egress Metrics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Egress Metrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#available-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Available Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#egress-specific-label-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Egress-Specific Label Values
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#querying-egress-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Querying Egress Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#promql-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      PromQL Examples
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#identifying-the-egress-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      Identifying the Egress Gateway
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#custom-metric-labels-with-telemetrypolicy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Metric Labels with TelemetryPolicy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Custom Metric Labels with TelemetryPolicy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#which-metrics-get-labeled" class="md-nav__link">
+    <span class="md-ellipsis">
+      Which Metrics Get Labeled
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requirements-for-emitting-labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Requirements for Emitting Labels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attributing-egress-traffic-to-the-calling-workload" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attributing Egress Traffic to the Calling Workload
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cel-attributes-available-on-egress" class="md-nav__link">
+    <span class="md-ellipsis">
+      CEL Attributes Available on Egress
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#label-cardinality" class="md-nav__link">
+    <span class="md-ellipsis">
+      Label Cardinality
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#promql-with-custom-labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      PromQL with Custom Labels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Known Limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#access-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Access Logging
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Access Logging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enabling-access-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enabling Access Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reading-egress-access-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reading Egress Access Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#troubleshooting-with-access-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting with Access Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-flags-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Response Flags Reference
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filtering-access-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filtering Access Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#json-formatted-access-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON-Formatted Access Logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#distributed-tracing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Distributed Tracing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Distributed Tracing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tracing-prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tracing Prerequisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-tracing-works-on-egress" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Tracing Works on Egress
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#egress-span-chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Egress Span Chain
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#two-trace-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two Trace Boundaries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#preventing-trace-header-leaking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Preventing Trace Header Leaking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tracing-without-a-sidecar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tracing Without a Sidecar
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tracing-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tracing Troubleshooting
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ensuring-prometheus-scrapes-the-egress-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ensuring Prometheus Scrapes the Egress Gateway
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Observability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_7">
+            <span class="md-nav__icon md-icon"></span>
+            Observability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../observability/metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Metrics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../observability/tracing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tracing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../observability/envoy-access-logs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Envoy Access Logs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../observability/examples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dashboards and Alerts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observability/monitors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring the Gateway and the Kuadrant Components with Prometheus
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../examples/otel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring the Policy Controller with OpenTelemetry
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../authorino/docs/user-guides/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring the External Authorization Service
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observability/limitador-metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring the Rate Limiting Service
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observability/token-metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring AI Token Metrics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_8" id="__nav_5_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Operational Security
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_8">
+            <span class="md-nav__icon md-icon"></span>
+            Operational Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../install/mtls-configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Enabling mTLS for Gateway-to-Kuadrant Services Traffic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../overviews/openshift-tls-profile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Propagating the OpenShift TLS Security Profile
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rbac/gateway-api-personas/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Setting RBAC rules for the Gateway API Personas
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/kuadrant/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kuadrant
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/dnspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/tlspolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TLSPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/authpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AuthPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/ratelimitpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/tokenratelimitpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TokenRateLimitPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/telemetrypolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TelemetryPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_8" id="__nav_6_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Common Expression Language (CEL) in Kuadrant
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_8">
+            <span class="md-nav__icon md-icon"></span>
+            Common Expression Language (CEL) in Kuadrant
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cel/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cel/standard/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Standard library
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cel/extensions/optional/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Optional type
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cel/extensions/strings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    String extensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Extensions
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Extensions
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Policy Extension SDK
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1">
+            <span class="md-nav__icon md-icon"></span>
+            Policy Extension SDK
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../extensions/authoring-extensions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authoring Extensions with the Kuadrant Extensions Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../extensions/extension-sdk-developer-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Console Plugin
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            Console Plugin
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../kuadrant-console-plugin/docs/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../kuadrant-console-plugin/docs/rbac/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RBAC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2_3" id="__nav_7_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Developer Portal
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Developer Portal
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../kuadrant-console-plugin/docs/api-management/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../kuadrant-console-plugin/docs/api-management/rbac/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RBAC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2_3_3" id="__nav_7_2_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_7_2_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../developer-portal-controller/docs/references/apiproduct/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    APIProduct
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../developer-portal-controller/docs/references/apikey/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    APIKey
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../developer-portal-controller/docs/references/apikeyapproval/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    APIKeyApproval
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_3" id="__nav_7_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Backstage Plugin
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_3">
+            <span class="md-nav__icon md-icon"></span>
+            Backstage Plugin
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../kuadrant-backstage-plugin/docs/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../kuadrant-backstage-plugin/docs/getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../kuadrant-backstage-plugin/docs/installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_3_4" id="__nav_7_3_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../backstage/apiproduct/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    APIProduct
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../backstage/apikey/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    APIKey
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../backstage/apikeyapproval/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    APIKeyApproval
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_4" id="__nav_7_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    MCP Gateway
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_4">
+            <span class="md-nav__icon md-icon"></span>
+            MCP Gateway
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_4_1" id="__nav_7_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            About
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/design/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/understanding-mcp-gateway-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Understanding the Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_4_3" id="__nav_7_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/how-to-install-and-configure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Helm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/olm-install/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OLM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/kind-cluster-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kind Cluster Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_4_4" id="__nav_7_4_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/configure-mcp-gateway-listener-and-router/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Listener and Router
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/opentelemetry/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenTelemetry
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/custom-ca-certificates/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Custom CA Certificates
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_4_5" id="__nav_7_4_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    MCP Servers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            MCP Servers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/register-mcp-servers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MCP Server Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/virtual-mcp-servers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Virtual MCP Servers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/external-mcp-server/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    External MCP Servers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/kubernetes-mcp-server/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes MCP Server
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/tool-discovery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tool Discovery
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/user-specific-tools/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    User-Specific Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_4_6" id="__nav_7_4_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/vault-integration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vault Integration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/vault-token-exchange/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vault Token Exchange
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/url-elicitation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    URL Elicitation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/tool-revocation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tool Revocation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/auditing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Auditing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_4_7" id="__nav_7_4_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Migration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            Migration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/migrating-mcpgatewayextension/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Migrating MCPGatewayExtension
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_4_8" id="__nav_7_4_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/reference/mcpgatewayextension/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MCPGatewayExtension
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/reference/mcpserverregistration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MCPServerRegistration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/reference/mcpvirtualserver/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MCPVirtualServer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_4_9" id="__nav_7_4_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Support
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            Support
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mcp-gateway/docs/guides/troubleshooting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Tasks
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#egress-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Egress Metrics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Egress Metrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#available-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Available Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#egress-specific-label-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Egress-Specific Label Values
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#querying-egress-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Querying Egress Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#promql-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      PromQL Examples
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#identifying-the-egress-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      Identifying the Egress Gateway
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#custom-metric-labels-with-telemetrypolicy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Metric Labels with TelemetryPolicy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Custom Metric Labels with TelemetryPolicy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#which-metrics-get-labeled" class="md-nav__link">
+    <span class="md-ellipsis">
+      Which Metrics Get Labeled
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requirements-for-emitting-labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Requirements for Emitting Labels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attributing-egress-traffic-to-the-calling-workload" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attributing Egress Traffic to the Calling Workload
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cel-attributes-available-on-egress" class="md-nav__link">
+    <span class="md-ellipsis">
+      CEL Attributes Available on Egress
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#label-cardinality" class="md-nav__link">
+    <span class="md-ellipsis">
+      Label Cardinality
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#promql-with-custom-labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      PromQL with Custom Labels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Known Limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#access-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Access Logging
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Access Logging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enabling-access-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enabling Access Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reading-egress-access-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reading Egress Access Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#troubleshooting-with-access-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting with Access Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-flags-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Response Flags Reference
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filtering-access-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filtering Access Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#json-formatted-access-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON-Formatted Access Logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#distributed-tracing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Distributed Tracing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Distributed Tracing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tracing-prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tracing Prerequisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-tracing-works-on-egress" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Tracing Works on Egress
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#egress-span-chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Egress Span Chain
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#two-trace-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two Trace Boundaries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#preventing-trace-header-leaking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Preventing Trace Header Leaking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tracing-without-a-sidecar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tracing Without a Sidecar
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tracing-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tracing Troubleshooting
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ensuring-prometheus-scrapes-the-egress-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ensuring Prometheus Scrapes the Egress Gateway
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/kuadrant/kuadrant-operator/blob/main/doc/user-guides/egress/observability.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="monitoring-and-troubleshooting-egress-traffic">Monitoring and Troubleshooting Egress Traffic<a class="headerlink" href="#monitoring-and-troubleshooting-egress-traffic" title="Permanent link">&para;</a></h1>
+<p>The same metrics, access logs, and tracing infrastructure that works on ingress gateways also works on egress. This guide covers the label values, troubleshooting patterns, and security considerations specific to outbound traffic through an Istio egress gateway.</p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Kubernetes cluster with Kuadrant operator and Istio installed. See the <a href="/latest/getting-started">Getting Started</a> guide.</li>
+<li>Egress gateway environment deployed. See the <a href="../egress-gateway/">Egress Gateway Setup</a> guide.</li>
+<li>Prometheus configured to scrape Istio proxy metrics (included in the <a href="../../../observability/">observability stack</a>).</li>
+</ul>
+<p>The examples in this guide use:</p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gateway namespace</td>
+<td><code>gateway-system</code></td>
+</tr>
+<tr>
+<td>Gateway name</td>
+<td><code>kuadrant-egressgateway</code></td>
+</tr>
+<tr>
+<td>External service</td>
+<td><code>httpbin.org</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-tasks">Common Tasks<a class="headerlink" href="#common-tasks" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Verify traffic is flowing to external services</td>
+<td><a href="#querying-egress-metrics">Querying Egress Metrics</a></td>
+</tr>
+<tr>
+<td>Identify error patterns by destination</td>
+<td><a href="#promql-examples">PromQL Examples</a></td>
+</tr>
+<tr>
+<td>Diagnose a specific failing request</td>
+<td><a href="#troubleshooting-with-access-logs">Troubleshooting with Access Logs</a></td>
+</tr>
+<tr>
+<td>Measure gateway overhead vs. external service latency</td>
+<td><a href="#troubleshooting-with-access-logs">Troubleshooting with Access Logs</a></td>
+</tr>
+<tr>
+<td>Trace request flow through policies</td>
+<td><a href="#egress-span-chain">Egress Span Chain</a></td>
+</tr>
+<tr>
+<td>Prevent trace headers from reaching external services</td>
+<td><a href="#preventing-trace-header-leaking">Preventing Trace Header Leaking</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="egress-metrics">Egress Metrics<a class="headerlink" href="#egress-metrics" title="Permanent link">&para;</a></h2>
+<h3 id="available-metrics">Available Metrics<a class="headerlink" href="#available-metrics" title="Permanent link">&para;</a></h3>
+<p>The egress gateway emits the same standard Istio proxy metrics as an ingress gateway. Because the egress gateway terminates HTTP from the workload and originates TLS to the external service, full L7 metrics are available:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>istio_requests_total</code></td>
+<td>Counter</td>
+<td>Total requests by response code, method, destination</td>
+</tr>
+<tr>
+<td><code>istio_request_duration_milliseconds</code></td>
+<td>Histogram</td>
+<td>Request latency distribution</td>
+</tr>
+<tr>
+<td><code>istio_request_bytes</code></td>
+<td>Histogram</td>
+<td>Request body size distribution</td>
+</tr>
+<tr>
+<td><code>istio_response_bytes</code></td>
+<td>Histogram</td>
+<td>Response body size distribution</td>
+</tr>
+</tbody>
+</table>
+<h3 id="egress-specific-label-values">Egress-Specific Label Values<a class="headerlink" href="#egress-specific-label-values" title="Permanent link">&para;</a></h3>
+<p>The same labels appear on egress metrics as on ingress, but their values differ in important ways:</p>
+<table>
+<thead>
+<tr>
+<th>Label</th>
+<th>Egress Value</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>destination_service</code></td>
+<td>External hostname (for example, <code>httpbin.org</code>)</td>
+<td>From the ServiceEntry</td>
+</tr>
+<tr>
+<td><code>destination_service_name</code></td>
+<td>External hostname (for example, <code>httpbin.org</code>)</td>
+<td>Same as <code>destination_service</code></td>
+</tr>
+<tr>
+<td><code>destination_service_namespace</code></td>
+<td>Gateway namespace (for example, <code>gateway-system</code>)</td>
+<td>Namespace where ServiceEntry is deployed</td>
+</tr>
+<tr>
+<td><code>destination_workload</code></td>
+<td><code>unknown</code></td>
+<td>External services have no workload identity</td>
+</tr>
+<tr>
+<td><code>source_workload</code></td>
+<td>Gateway deployment name</td>
+<td>The egress gateway, NOT the calling workload</td>
+</tr>
+<tr>
+<td><code>source_workload_namespace</code></td>
+<td><code>gateway-system</code></td>
+<td>Gateway namespace</td>
+</tr>
+<tr>
+<td><code>reporter</code></td>
+<td><code>source</code></td>
+<td>Always (no destination-side proxy exists)</td>
+</tr>
+<tr>
+<td><code>response_code</code></td>
+<td>HTTP status code</td>
+<td>Works the same as ingress</td>
+</tr>
+<tr>
+<td><code>response_flags</code></td>
+<td>Envoy response flags</td>
+<td>Key for diagnosing egress failures</td>
+</tr>
+<tr>
+<td><code>connection_security_policy</code></td>
+<td><code>unknown</code></td>
+<td>Security policy of incoming connection (workload to gateway)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Understanding <code>source_workload</code>:</strong> On the egress gateway, <code>source_workload</code> identifies the gateway itself, not the workload that initiated the request. To attribute egress traffic to specific workloads, use <a href="../egress-gateway/#workload-identity">workload identity via AuthPolicy</a> and correlate using access logs or traces. Alternatively, if the route is rate limited, <a href="#custom-metric-labels-with-telemetrypolicy">TelemetryPolicy</a> can record the calling workload directly as a label on the Kuadrant data plane metrics.</p>
+<h3 id="querying-egress-metrics">Querying Egress Metrics<a class="headerlink" href="#querying-egress-metrics" title="Permanent link">&para;</a></h3>
+<p>You can verify that metrics are being emitted by querying the egress gateway pod Prometheus endpoint directly:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">EGRESS_POD</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span>-l<span class="w"> </span>gateway.networking.k8s.io/gateway-name<span class="o">=</span>kuadrant-egressgateway<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.items[0].metadata.name}'</span><span class="k">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span><span class="nv">$EGRESS_POD</span><span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span>pilot-agent<span class="w"> </span>request<span class="w"> </span>GET<span class="w"> </span>/stats/prometheus<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"^istio_requests_total"</span>
+</span></code></pre></div>
+<p>Example output:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>istio_requests_total{...,destination_service="httpbin.org",...,response_code="200",response_flags="-",...} 8
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>istio_requests_total{...,destination_service="httpbin.org",...,response_code="503",response_flags="-",...} 24
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>istio_requests_total{...,destination_service="unknown",...,response_code="404",response_flags="NR",...} 4
+</span></code></pre></div>
+<h3 id="promql-examples">PromQL Examples<a class="headerlink" href="#promql-examples" title="Permanent link">&para;</a></h3>
+<p>These queries work when Prometheus is scraping the egress gateway pod.</p>
+<p><strong>Request rate by external destination:</strong></p>
+<div class="language-promql highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">istio_requests_total</span><span class="p">{</span><span class="nl">source_workload</span><span class="o">=</span><span class="p">"</span><span class="s">kuadrant-egressgateway-istio</span><span class="p">"}[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="o">(</span><span class="nv">destination_service</span><span class="o">)</span>
+</span></code></pre></div>
+<p><strong>HTTP error rate for egress traffic (4xx and 5xx responses):</strong></p>
+<div class="language-promql highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">istio_requests_total</span><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="nl">source_workload</span><span class="o">=</span><span class="p">"</span><span class="s">kuadrant-egressgateway-istio</span><span class="p">",</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nl">response_code</span><span class="o">=~</span><span class="p">"</span><span class="s">[45]..</span><span class="p">"</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">}[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="o">/</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">istio_requests_total</span><span class="p">{</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="nl">source_workload</span><span class="o">=</span><span class="p">"</span><span class="s">kuadrant-egressgateway-istio</span><span class="p">"</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="p">}[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span>
+</span></code></pre></div>
+<p>This query counts HTTP-level errors only. Upstream connection failures (<code>UF</code>) and timeouts (<code>UT</code>) typically produce HTTP 503 or 504 responses and are included. Requests where no HTTP response was sent (for example, downstream disconnects) appear with <code>response_code="0"</code> and are not included. To count those:</p>
+<div class="language-promql highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">istio_requests_total</span><span class="p">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="nl">source_workload</span><span class="o">=</span><span class="p">"</span><span class="s">kuadrant-egressgateway-istio</span><span class="p">",</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nl">response_code</span><span class="o">=</span><span class="p">"</span><span class="s">0</span><span class="p">"</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">}[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span>
+</span></code></pre></div>
+<p><strong>P99 latency to external services:</strong></p>
+<div class="language-promql highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kr">histogram_quantile</span><span class="o">(</span><span class="mf">0.99</span><span class="p">,</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">istio_request_duration_milliseconds_bucket</span><span class="p">{</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">        </span><span class="nl">source_workload</span><span class="o">=</span><span class="p">"</span><span class="s">kuadrant-egressgateway-istio</span><span class="p">"</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="p">}[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="o">(</span><span class="nv">destination_service</span><span class="p">,</span><span class="w"> </span><span class="nv">le</span><span class="o">)</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="o">)</span>
+</span></code></pre></div>
+<p><strong>Bytes transferred by destination:</strong></p>
+<div class="language-promql highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">istio_response_bytes_sum</span><span class="p">{</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="nl">source_workload</span><span class="o">=</span><span class="p">"</span><span class="s">kuadrant-egressgateway-istio</span><span class="p">"</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="p">}[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="o">(</span><span class="nv">destination_service</span><span class="o">)</span>
+</span></code></pre></div>
+<p><strong>Requests with no matching route (misconfigured clients):</strong></p>
+<div class="language-promql highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">istio_requests_total</span><span class="p">{</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="nl">source_workload</span><span class="o">=</span><span class="p">"</span><span class="s">kuadrant-egressgateway-istio</span><span class="p">",</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nl">response_flags</span><span class="o">=</span><span class="p">"</span><span class="s">NR</span><span class="p">"</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="p">}[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="o">(</span><span class="nv">destination_service</span><span class="o">)</span>
+</span></code></pre></div>
+<h3 id="identifying-the-egress-gateway">Identifying the Egress Gateway<a class="headerlink" href="#identifying-the-egress-gateway" title="Permanent link">&para;</a></h3>
+<p>For Kubernetes queries (kubectl, log filtering), use the pod label <code>gateway.networking.k8s.io/gateway-name=kuadrant-egressgateway</code>.</p>
+<p>For PromQL queries, filter by <code>source_workload="kuadrant-egressgateway-istio"</code> to isolate egress traffic from ingress traffic on the same Prometheus instance. This is the Istio proxy workload name, which appears as a label on all <code>istio_*</code> metrics.</p>
+<h2 id="custom-metric-labels-with-telemetrypolicy">Custom Metric Labels with TelemetryPolicy<a class="headerlink" href="#custom-metric-labels-with-telemetrypolicy" title="Permanent link">&para;</a></h2>
+<p>The <code>istio_*</code> metrics above cannot tell you which workload made an outbound call: on an egress gateway, <code>source_workload</code> is always the gateway itself. <a href="../../../overviews/telemetrypolicy/">TelemetryPolicy</a> closes that gap by adding custom labels, derived from CEL expressions, to the metrics Kuadrant's own data plane emits. The policy itself has no egress-specific fields, so a policy written for an egress gateway looks identical to one written for an ingress gateway.</p>
+<h3 id="which-metrics-get-labeled">Which Metrics Get Labeled<a class="headerlink" href="#which-metrics-get-labeled" title="Permanent link">&para;</a></h3>
+<p>TelemetryPolicy labels the metrics Kuadrant's own components emit; it does not touch the <code>istio_*</code> metrics. Two components consume the labels.</p>
+<p>The <strong>Limitador</strong> counters carry the complete label set:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>authorized_calls</code></td>
+<td>Requests allowed by a rate limit check</td>
+</tr>
+<tr>
+<td><code>limited_calls</code></td>
+<td>Requests rejected by a rate limit check</td>
+</tr>
+<tr>
+<td><code>authorized_hits</code></td>
+<td>Hits counted against a limit (for TokenRateLimitPolicy, token consumption)</td>
+</tr>
+<tr>
+<td><code>report_calls</code></td>
+<td>Calls to the Limitador <code>Report</code> method, which TokenRateLimitPolicy uses to report token usage after the response</td>
+</tr>
+</tbody>
+</table>
+<p>Each series also carries Limitador's own <code>limitador_namespace</code> label, which identifies the targeted route (for example, <code>gateway-system/ai-mock-external</code>). For the full set of Limitador counters and their built-in labels, see the <a href="../../observability/limitador-metrics/">Limitador metrics guide</a>.</p>
+<p><strong>Authorino</strong> receives the same labels on any route that carries an AuthPolicy, and applies them to its own per-AuthConfig metrics, which it serves on <code>/server-metrics</code> rather than <code>/metrics</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Labels applied</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>auth_server_authconfig_total</code></td>
+<td>All labels except those derived from <code>auth.*</code></td>
+</tr>
+<tr>
+<td><code>auth_server_authconfig_response_status</code></td>
+<td>All labels except those derived from <code>auth.*</code></td>
+</tr>
+<tr>
+<td><code>auth_server_authconfig_duration_seconds</code></td>
+<td>All labels except those derived from <code>auth.*</code></td>
+</tr>
+<tr>
+<td><code>auth_server_evaluator_*</code></td>
+<td>All labels except those derived from <code>auth.*</code></td>
+</tr>
+</tbody>
+</table>
+<p>The <code>auth_server_evaluator_*</code> metrics are only exported for evaluators that set <code>metrics: true</code>, or when Authorino runs with deep metrics enabled.</p>
+<p>An <code>auth.*</code> label reaches Limitador but never Authorino, because the two resolve the expression against differently shaped data. The wasm-shim resolves Limitador's copy against the flattened dynamic metadata an AuthPolicy exports, where a TokenReview identity is <code>auth.identity.username</code>. Authorino resolves its own copy against its internal authorization JSON, where the same identity is <code>auth.identity.user.username</code>. The expression this guide uses is the one Limitador needs, so Authorino cannot resolve it and logs a <code>failed to evaluate CEL expression</code> error for every request. Those errors are expected and have no bearing on the Limitador labels.</p>
+<p>Writing the label the way Authorino expects is not a workaround. The wasm-shim then cannot resolve it, and a single unresolvable attribute discards the whole descriptor, so the route stops producing Limitador metrics entirely while still returning 200 (see <a href="#known-limitations">Known Limitations</a>). Write <code>auth.*</code> labels for Limitador and treat their absence from the Authorino metrics as expected.</p>
+<p>For the labels Authorino does apply, a single metric can hold series with different label sets: Authorino allocates one counter per distinct label combination and never reaps them, so every edit to the TelemetryPolicy leaves the earlier series behind. Aggregate with an explicit <code>sum by (...)</code> rather than summing the metric as a whole, and note that a high-cardinality expression is paid for twice, in Limitador and in Authorino.</p>
+<p>Adding a TelemetryPolicy does not change <code>istio_requests_total</code> in any way.</p>
+<h3 id="requirements-for-emitting-labels">Requirements for Emitting Labels<a class="headerlink" href="#requirements-for-emitting-labels" title="Permanent link">&para;</a></h3>
+<p>Neither of the following requirements is specific to egress, but both are commonly missed when the target is an egress gateway:</p>
+<ol>
+<li><strong>A rate limit policy must be in effect on the route.</strong> Custom labels are attached to the descriptor the wasm-shim sends to Limitador, so a route with no <code>RateLimitPolicy</code> or <code>TokenRateLimitPolicy</code> produces no Limitador metrics and therefore no labels. A TelemetryPolicy attached to a gateway whose routes are not rate limited is accepted and enforced, but emits nothing.</li>
+<li><strong><code>targetRef</code> must be a Gateway.</strong> The API rejects any other kind, so a TelemetryPolicy cannot be scoped to an individual HTTPRoute. Labels apply to every rate limited route on the gateway.</li>
+</ol>
+<p>A label that references <code>auth.identity.*</code> adds a third requirement. Besides an <a href="../egress-gateway/#workload-identity">AuthPolicy</a> establishing workload identity, the rate limit policy on the route must itself reference <code>auth.*</code>, typically through a counter:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">limits</span><span class="p">:</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">per-workload</span><span class="p">:</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="nt">rates</span><span class="p">:</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">        </span><span class="nt">window</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1m</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="nt">counters</span><span class="p">:</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auth.identity.username</span>
+</span></code></pre></div>
+<p>Kuadrant runs the rate limit check <em>before</em> authentication whenever the rate limit policy has no need for an identity, and a label cannot reference an identity that has not been resolved yet. Under that ordering the <code>auth.*</code> label is dropped from the Limitador descriptor with no error and no change in policy status: the other labels keep working, so the symptom is a single missing label rather than missing metrics.</p>
+<p>The examples below use the resources from the <a href="../egress-gateway/">Egress Gateway Setup</a> guide, plus an AI service route that carries both an AuthPolicy and a TokenRateLimitPolicy counting tokens per <code>auth.identity.username</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Route</td>
+<td><code>ai-mock-external</code></td>
+</tr>
+<tr>
+<td>External service</td>
+<td><code>api.ai-mock.local</code></td>
+</tr>
+<tr>
+<td>Calling workload</td>
+<td><code>team-gold</code> service account in <code>egress-test</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="attributing-egress-traffic-to-the-calling-workload">Attributing Egress Traffic to the Calling Workload<a class="headerlink" href="#attributing-egress-traffic-to-the-calling-workload" title="Permanent link">&para;</a></h3>
+<p>Attach a TelemetryPolicy to the egress gateway, labeling each metric with the authenticated identity of the calling workload and the external destination:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;'EOF'</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="s">apiVersion: extensions.kuadrant.io/v1alpha1</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="s">kind: TelemetryPolicy</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="s">metadata:</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="s">  name: egress-telemetry</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="s">  namespace: gateway-system</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="s">spec:</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="s">  targetRef:</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="s">    group: gateway.networking.k8s.io</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="s">    kind: Gateway</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="s">    name: kuadrant-egressgateway</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="s">  metrics:</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="s">    default:</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="s">      labels:</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="s">        workload: auth.identity.username</span>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="s">        destination: request.host</span>
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="s">        source_ip: source.address.substring(0, source.address.lastIndexOf(":")).replace("[", "").replace("]", "")</span>
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="s">EOF</span>
+</span></code></pre></div>
+<p>Confirm the policy was accepted and enforced:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>telemetrypolicy<span class="w"> </span>egress-telemetry<span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .status.conditions[*]}{.type}={.status}{"\n"}{end}'</span>
+</span></code></pre></div>
+<p>Expected output:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Accepted=True
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>Enforced=True
+</span></code></pre></div>
+<p>Send some authenticated traffic through the egress gateway, then read the Limitador metrics. The <code>kuadrant-limitador</code> NetworkPolicy only admits traffic to Limitador from namespaces that contain a Gateway, so port-forward to it rather than calling the service from the workload namespace:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>kubectl<span class="w"> </span>port-forward<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>svc/limitador-limitador<span class="w"> </span><span class="m">8080</span>:8080<span class="w"> </span>&gt;/dev/null<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">&amp;</span>
+</span></code></pre></div>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>curl<span class="w"> </span>-sS<span class="w"> </span>--max-time<span class="w"> </span><span class="m">15</span><span class="w"> </span>http://localhost:8080/metrics<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span><span class="s1">'^#'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>authorized_calls
+</span></code></pre></div>
+<p>Expected output:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>authorized_calls{destination="api.ai-mock.local",source_ip="10.244.0.25",workload="system:serviceaccount:egress-test:team-gold",limitador_namespace="gateway-system/ai-mock-external"} 2
+</span></code></pre></div>
+<p>The <code>workload</code> label now identifies the service account that originated the outbound request.</p>
+<p>The same labels appear on <code>limited_calls</code> when a workload exceeds its limit, so you can see exactly who is being throttled and on which destination:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>limited_calls{source_ip="10.244.0.24",workload="system:serviceaccount:egress-test:default",destination="api.ai-mock.local",limitador_namespace="gateway-system/ai-mock-external"} 12
+</span></code></pre></div>
+<h3 id="cel-attributes-available-on-egress">CEL Attributes Available on Egress<a class="headerlink" href="#cel-attributes-available-on-egress" title="Permanent link">&para;</a></h3>
+<p>Each label is attached to both the rate limit check descriptor and the report descriptor. The check runs in the <strong>request</strong> phase, before the external service responds, so every expression must resolve at that point. This is the single most important constraint on egress: response attributes are not available, even for labels that only appear on <code>report_calls</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Available</th>
+<th>Example value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>auth.identity.username</code></td>
+<td>Yes, with an AuthPolicy and an auth-aware rate limit policy (see <a href="#requirements-for-emitting-labels">requirements</a>)</td>
+<td><code>system:serviceaccount:egress-test:team-gold</code></td>
+</tr>
+<tr>
+<td><code>request.host</code></td>
+<td>Yes</td>
+<td><code>api.ai-mock.local</code></td>
+</tr>
+<tr>
+<td><code>request.path</code></td>
+<td>Yes</td>
+<td><code>/v1/chat/completions</code></td>
+</tr>
+<tr>
+<td><code>request.method</code></td>
+<td>Yes</td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td><code>request.scheme</code></td>
+<td>Yes</td>
+<td><code>http</code></td>
+</tr>
+<tr>
+<td><code>source.address</code></td>
+<td>Yes</td>
+<td><code>10.244.0.25:54146</code>, includes the port (see <a href="#label-cardinality">cardinality</a>)</td>
+</tr>
+<tr>
+<td>A literal, for example <code>"egress"</code></td>
+<td>Yes</td>
+<td><code>egress</code></td>
+</tr>
+<tr>
+<td><code>response.code</code></td>
+<td><strong>No</strong></td>
+<td>Breaks the metrics for the route, see <a href="#known-limitations">known limitations</a></td>
+</tr>
+</tbody>
+</table>
+<p>Note that <code>request.scheme</code> describes the workload-to-gateway leg, not the gateway-to-external-service leg. A workload calling the gateway over plain HTTP reports <code>http</code> even when the gateway originates TLS to the external service.</p>
+<p>To label by response status, use the <code>istio_requests_total</code> metric and its <code>response_code</code> label instead, as shown in <a href="#promql-examples">PromQL examples</a>.</p>
+<h3 id="label-cardinality">Label Cardinality<a class="headerlink" href="#label-cardinality" title="Permanent link">&para;</a></h3>
+<p>Every distinct combination of label values creates a new Prometheus time series, so a high-cardinality expression on a busy egress gateway is expensive.</p>
+<p><code>source.address</code> is the common trap: it includes the ephemeral source port, so <strong>every connection produces a new series</strong>. The same caveat applies when using it as a <a href="../egress-gateway/#rate-limiting">rate limit counter</a>.</p>
+<p>Envoy renders the address as <code>10.244.0.24:54146</code> for IPv4 and <code>[2001:db8:85a3::8a2e:370:7334]:41235</code> for IPv6, so strip everything after the last colon rather than splitting on the first one:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nt">source_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source.address.substring(0, source.address.lastIndexOf(":")).replace("[", "").replace("]", "")</span>
+</span></code></pre></div>
+<p><code>lastIndexOf</code> finds the colon that precedes the port, so the colons inside an IPv6 address are left alone, and the two <code>replace</code> calls remove the brackets Envoy puts around it. The expression is plain string manipulation, so the address is passed through unchanged: the examples above yield <code>10.244.0.24</code> and <code>2001:db8:85a3::8a2e:370:7334</code>. Avoid <code>source.address.split(":")[0]</code>: it works for IPv4 but truncates an IPv6 address to <code>[2001</code>.</p>
+<p>Prefer bounded dimensions such as the workload identity, the destination host, or the request method. Avoid <code>request.path</code> unless the path set is small and known; on an API with per-resource paths the series count grows without limit.</p>
+<h3 id="promql-with-custom-labels">PromQL with Custom Labels<a class="headerlink" href="#promql-with-custom-labels" title="Permanent link">&para;</a></h3>
+<p>After the labels exist, egress traffic can be broken down by workload and destination.</p>
+<p><strong>Request rate by calling workload:</strong></p>
+<div class="language-promql highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">authorized_calls</span><span class="p">[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="o">(</span><span class="nv">workload</span><span class="o">)</span>
+</span></code></pre></div>
+<p><strong>Rate limited requests by workload and destination:</strong></p>
+<div class="language-promql highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">limited_calls</span><span class="p">[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="o">(</span><span class="nv">workload</span><span class="p">,</span><span class="w"> </span><span class="nv">destination</span><span class="o">)</span>
+</span></code></pre></div>
+<p><strong>Token consumption per workload (with TokenRateLimitPolicy):</strong></p>
+<div class="language-promql highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">authorized_hits</span><span class="p">[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="o">(</span><span class="nv">workload</span><span class="o">)</span>
+</span></code></pre></div>
+<p><strong>Which workloads are calling which external services:</strong></p>
+<div class="language-promql highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">authorized_calls</span><span class="p">[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="o">(</span><span class="nv">workload</span><span class="p">,</span><span class="w"> </span><span class="nv">destination</span><span class="o">)</span>
+</span></code></pre></div>
+<h3 id="known-limitations">Known Limitations<a class="headerlink" href="#known-limitations" title="Permanent link">&para;</a></h3>
+<p><strong>A label expression referencing an unavailable attribute silently stops the metrics.</strong> An expression such as <code>response.code</code> is not dropped. Evaluating the Limitador descriptor fails, the gateway logs the following for every request, and no metrics are recorded for the affected route:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>Failed to evaluate message builder: CelError::Resolve { UndeclaredReference("response") }
+</span></code></pre></div>
+<p>Whether the request itself still succeeds depends on the failure mode of the services on the route. The rate limit services default to <code>failureMode: allow</code>, so a route carrying only a <code>RateLimitPolicy</code> keeps returning 200 while quietly losing its metrics. A route that also carries an AuthPolicy, which defaults to <code>failureMode: deny</code>, can instead fail with HTTP 500. Routes with no rate limit policy build no descriptor and are unaffected either way.</p>
+<p>The policy still reports <code>Accepted=True</code> and <code>Enforced=True</code>, so check both traffic and metrics after applying a new label. Tracked in <a href="https://github.com/Kuadrant/kuadrant-operator/issues/2242">#2242</a>.</p>
+<p><strong>Removing or renaming a label in the spec does not remove it.</strong> Editing a TelemetryPolicy leaves the old binding in the generated configuration, so editing cannot undo a bad label. Bindings accumulate across every edit, and because a single failing expression discards the whole descriptor, one stale label is enough to stop all the metrics for the route. Delete the policy and reapply it instead:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>telemetrypolicy<span class="w"> </span>egress-telemetry<span class="w"> </span>-n<span class="w"> </span>gateway-system
+</span></code></pre></div>
+<p>Then reapply the policy as shown in <a href="#attributing-egress-traffic-to-the-calling-workload">Attributing Egress Traffic to the Calling Workload</a>. Tracked in <a href="https://github.com/Kuadrant/kuadrant-operator/issues/2243">#2243</a>.</p>
+<h2 id="access-logging">Access Logging<a class="headerlink" href="#access-logging" title="Permanent link">&para;</a></h2>
+<h3 id="enabling-access-logs">Enabling Access Logs<a class="headerlink" href="#enabling-access-logs" title="Permanent link">&para;</a></h3>
+<p>Enable access logs on the egress gateway using the Istio Telemetry API. Use a <code>selector</code> to scope the configuration to the egress gateway pods, avoiding conflicts with other Telemetry resources in the namespace:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">telemetry.istio.io/v1</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Telemetry</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">egress-access-logs</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway-system</span>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
+</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
+</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">      </span><span class="nt">gateway.networking.k8s.io/gateway-name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant-egressgateway</span>
+</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="w">  </span><span class="nt">accessLogging</span><span class="p">:</span>
+</span><span id="__span-23-11"><a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a>
+</span><span id="__span-23-12"><a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">providers</span><span class="p">:</span>
+</span><span id="__span-23-13"><a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">envoy</span>
+</span></code></pre></div>
+<p>Access logs appear in the egress gateway pod stdout:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span>-l<span class="w"> </span>gateway.networking.k8s.io/gateway-name<span class="o">=</span>kuadrant-egressgateway<span class="w"> </span>-f
+</span></code></pre></div>
+<h3 id="reading-egress-access-logs">Reading Egress Access Logs<a class="headerlink" href="#reading-egress-access-logs" title="Permanent link">&para;</a></h3>
+<p>The Envoy default log format includes fields that are particularly useful for egress troubleshooting:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>[2026-07-07T14:33:57.697Z] "GET /get HTTP/1.1" 200 - via_upstream - "-" 0 1172 1879 1879
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>  "10.244.0.18" "curl/8.21.0" "4fe1434d-fd3b-4c68-92ac-c15700dfccc7" "httpbin.org"
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>  "100.59.144.143:443" outbound|443||httpbin.org 10.244.0.17:40974 10.244.0.17:80
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>  10.244.0.18:43722 - gateway-system.httpbin-external.0
+</span></code></pre></div>
+<p>Each access log entry captures both connection legs of the egress path: the incoming connection from the workload pod to the gateway (downstream), and the outgoing connection from the gateway to the external service (upstream). Key fields for egress:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Format Variable</th>
+<th>Example Value</th>
+<th>Egress Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Response code</td>
+<td><code>%RESPONSE_CODE%</code></td>
+<td><code>200</code></td>
+<td>External service response status</td>
+</tr>
+<tr>
+<td>Response flags</td>
+<td><code>%RESPONSE_FLAGS%</code></td>
+<td><code>-</code></td>
+<td>Envoy-level error indicators</td>
+</tr>
+<tr>
+<td>Response code details</td>
+<td><code>%RESPONSE_CODE_DETAILS%</code></td>
+<td><code>via_upstream</code></td>
+<td>Where the response came from</td>
+</tr>
+<tr>
+<td>Duration (ms)</td>
+<td><code>%DURATION%</code></td>
+<td><code>1879</code></td>
+<td>Total request time including external service</td>
+</tr>
+<tr>
+<td>Upstream service time (ms)</td>
+<td><code>%RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)%</code></td>
+<td><code>1879</code></td>
+<td>External service response time</td>
+</tr>
+<tr>
+<td>X-Forwarded-For</td>
+<td><code>%REQ(X-FORWARDED-FOR)%</code></td>
+<td><code>10.244.0.18</code></td>
+<td>Client IP (same as downstream for egress)</td>
+</tr>
+<tr>
+<td>Request ID</td>
+<td><code>%REQ(X-REQUEST-ID)%</code></td>
+<td><code>4fe1434d-...</code></td>
+<td>Correlation across components</td>
+</tr>
+<tr>
+<td>Authority (Host)</td>
+<td><code>%REQ(:AUTHORITY)%</code></td>
+<td><code>httpbin.org</code></td>
+<td>Destination hostname after rewrite</td>
+</tr>
+<tr>
+<td>Upstream host</td>
+<td><code>%UPSTREAM_HOST%</code></td>
+<td><code>100.59.144.143:443</code></td>
+<td>Resolved external IP address</td>
+</tr>
+<tr>
+<td>Upstream cluster</td>
+<td><code>%UPSTREAM_CLUSTER_RAW%</code></td>
+<td><code>outbound\|443\|\|httpbin.org</code></td>
+<td>Routing destination (Istio 1.23+; use <code>%UPSTREAM_CLUSTER%</code> on older versions)</td>
+</tr>
+<tr>
+<td>Downstream remote address</td>
+<td><code>%DOWNSTREAM_REMOTE_ADDRESS%</code></td>
+<td><code>10.244.0.18:43722</code></td>
+<td>Source workload pod IP and port</td>
+</tr>
+<tr>
+<td>Route name</td>
+<td><code>%ROUTE_NAME%</code></td>
+<td><code>gateway-system.httpbin-external.0</code></td>
+<td>Which HTTPRoute matched</td>
+</tr>
+</tbody>
+</table>
+<h3 id="troubleshooting-with-access-logs">Troubleshooting with Access Logs<a class="headerlink" href="#troubleshooting-with-access-logs" title="Permanent link">&para;</a></h3>
+<p><strong>External service errors</strong></p>
+<p>When the external service returns an error (for example, 503), the access log shows:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>[...] "GET /get HTTP/1.1" 503 - via_upstream - "-" 0 162 326 326
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>  "10.244.0.18" "curl/8.21.0" "e0d56588-..." "httpbin.org"
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>  "32.193.74.35:443" outbound|443||httpbin.org ...
+</span></code></pre></div>
+<ul>
+<li><code>response_code=503</code> with <code>response_flags=-</code> and <code>response_code_details=via_upstream</code> means the 503 came from the external service, not the gateway.</li>
+<li><code>upstream_host=32.193.74.35:443</code> shows which IP served the response, which is useful when the external service has multiple backends.</li>
+</ul>
+<p>To dig deeper, query the Envoy admin endpoint to see per-endpoint connection and request statistics for the upstream cluster:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="nv">EGRESS_POD</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">    </span>-l<span class="w"> </span>gateway.networking.k8s.io/gateway-name<span class="o">=</span>kuadrant-egressgateway<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="w">    </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.items[0].metadata.name}'</span><span class="k">)</span>
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span><span class="nv">$EGRESS_POD</span><span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="w">    </span>pilot-agent<span class="w"> </span>request<span class="w"> </span>GET<span class="w"> </span>/clusters<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"outbound|443||httpbin.org::"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-27-7"><a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="w">    </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">"(cx_total|cx_connect_fail|rq_total|rq_error|rq_success|rq_timeout|health_flags)"</span>
+</span></code></pre></div>
+<p>Example output:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>outbound|443||httpbin.org::54.156.228.155:443::cx_total::1
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>outbound|443||httpbin.org::54.156.228.155:443::cx_connect_fail::0
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>outbound|443||httpbin.org::54.156.228.155:443::rq_total::1
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>outbound|443||httpbin.org::54.156.228.155:443::rq_error::1
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>outbound|443||httpbin.org::54.156.228.155:443::rq_success::0
+</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>outbound|443||httpbin.org::54.156.228.155:443::health_flags::healthy
+</span><span id="__span-28-7"><a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>outbound|443||httpbin.org::54.205.27.0:443::cx_total::1
+</span><span id="__span-28-8"><a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>outbound|443||httpbin.org::54.205.27.0:443::cx_connect_fail::0
+</span><span id="__span-28-9"><a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a>outbound|443||httpbin.org::54.205.27.0:443::rq_total::1
+</span><span id="__span-28-10"><a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a>outbound|443||httpbin.org::54.205.27.0:443::rq_error::1
+</span><span id="__span-28-11"><a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a>outbound|443||httpbin.org::54.205.27.0:443::rq_success::0
+</span><span id="__span-28-12"><a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a>outbound|443||httpbin.org::54.205.27.0:443::health_flags::healthy
+</span></code></pre></div>
+<p>This shows each resolved IP for the external service with its connection count (<code>cx_total</code>), connection failures (<code>cx_connect_fail</code>), request totals (<code>rq_total</code>), and health status. In this example, both IPs accepted connections (<code>cx_connect_fail::0</code>) but had no successful requests (<code>rq_success::0</code>). To determine whether the errors came from the external service or from proxy-level failures, check the access logs for the corresponding requests: <code>response_flags=-</code> with an HTTP error code indicates the external service returned the error, while flags like <code>UF</code> or <code>UT</code> indicate a proxy-level failure.</p>
+<p><strong>No route configured for a destination</strong></p>
+<p>When a workload sends traffic to a hostname with no matching HTTPRoute:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>[...] "GET /get HTTP/1.1" 404 NR route_not_found - "-" 0 0 0 -
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>  "10.244.0.18" "curl/8.21.0" "a326cb9d-..." "unknown-api.example.com"
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>  "-" - - 10.244.0.17:80 10.244.0.18:41290 - -
+</span></code></pre></div>
+<ul>
+<li><code>response_flags=NR</code> (No Route): no HTTPRoute matched the request.</li>
+<li><code>response_code_details=route_not_found</code>: confirms the issue is routing, not the external service.</li>
+<li><code>upstream_host=-</code>: no upstream was selected.</li>
+<li><code>authority=unknown-api.example.com</code>: shows which hostname the workload tried to reach.</li>
+</ul>
+<p>This indicates that no HTTPRoute matched the requested hostname. Check that an HTTPRoute exists for this destination, and if the external hostname also needs a ServiceEntry to be routable.</p>
+<p><strong>Isolating gateway latency from external service latency</strong></p>
+<p>The access log contains two timing fields that together show where time is being spent:</p>
+<ul>
+<li><strong>Duration</strong> (position 10): total time from when the gateway received the request to when the response was sent back to the workload.</li>
+<li><strong>Upstream service time</strong> (position 11): time the external service took to respond.</li>
+</ul>
+<p>The difference between these two values approximates non-upstream latency, which includes proxy processing, TLS handshake, policy evaluation, network transit, and queueing. For example:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>[...] "GET /get HTTP/1.1" 200 - via_upstream - "-" 0 1172 1879 1650 ...
+</span></code></pre></div>
+<p>Here the total duration is 1,879 ms and the upstream service time is 1,650 ms, so approximately 229 ms was spent outside the external service (TLS origination, proxy processing, network). A large and persistent gap may indicate gateway-side issues such as policy evaluation latency, connection pool exhaustion, or network problems. When both values are close, most of the time is spent waiting for the external service to respond.</p>
+<p><strong>Client timeout (downstream disconnect)</strong></p>
+<p>When the calling workload times out before receiving a response:</p>
+<ul>
+<li><code>response_code=0</code> with <code>response_flags=DC</code> (Downstream Connection termination).</li>
+<li>This means the client gave up before the external service responded. Investigate whether the external service is slow or the client timeout is too short.</li>
+</ul>
+<h3 id="response-flags-reference">Response Flags Reference<a class="headerlink" href="#response-flags-reference" title="Permanent link">&para;</a></h3>
+<p>Response flags in access logs indicate where and why a request failed. Flags most relevant to egress:</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Meaning</th>
+<th>Egress Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-</code></td>
+<td>No flags</td>
+<td>Request completed normally (success or external service error)</td>
+</tr>
+<tr>
+<td><code>NR</code></td>
+<td>No route found</td>
+<td>No HTTPRoute matches the destination hostname</td>
+</tr>
+<tr>
+<td><code>UH</code></td>
+<td>No healthy upstream</td>
+<td>DNS resolution succeeded but no healthy endpoints</td>
+</tr>
+<tr>
+<td><code>UF</code></td>
+<td>Upstream connection failure</td>
+<td>Gateway could not connect to the external service</td>
+</tr>
+<tr>
+<td><code>UT</code></td>
+<td>Upstream request timeout</td>
+<td>External service did not respond within the configured timeout</td>
+</tr>
+<tr>
+<td><code>DC</code></td>
+<td>Downstream connection termination</td>
+<td>Calling workload disconnected before response arrived</td>
+</tr>
+<tr>
+<td><code>URX</code></td>
+<td>Upstream retry limit exceeded</td>
+<td>All retry attempts to the external service failed</td>
+</tr>
+<tr>
+<td><code>UPE</code></td>
+<td>Upstream protocol error</td>
+<td>Protocol mismatch (for example, expecting HTTP/2 but got HTTP/1.1)</td>
+</tr>
+</tbody>
+</table>
+<p>The distinction between <code>response_flags=-</code> and other flags is critical: a 503 with flags <code>-</code> means the external service returned 503. A 503 with <code>UF</code> means the gateway could not reach the external service at all.</p>
+<h3 id="filtering-access-logs">Filtering Access Logs<a class="headerlink" href="#filtering-access-logs" title="Permanent link">&para;</a></h3>
+<p>To reduce log volume, filter access logs to only capture errors. Use <code>!has(response.code)</code> to also capture connection failures where no HTTP response code is generated (for example, <code>UF</code>, <code>UH</code>, <code>UT</code> flags):</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">telemetry.istio.io/v1</span>
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Telemetry</span>
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">egress-access-logs</span>
+</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway-system</span>
+</span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-31-7"><a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
+</span><span id="__span-31-8"><a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
+</span><span id="__span-31-9"><a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a><span class="w">      </span><span class="nt">gateway.networking.k8s.io/gateway-name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant-egressgateway</span>
+</span><span id="__span-31-10"><a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a><span class="w">  </span><span class="nt">accessLogging</span><span class="p">:</span>
+</span><span id="__span-31-11"><a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a>
+</span><span id="__span-31-12"><a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">providers</span><span class="p">:</span>
+</span><span id="__span-31-13"><a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">envoy</span>
+</span><span id="__span-31-14"><a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a><span class="w">      </span><span class="nt">filter</span><span class="p">:</span>
+</span><span id="__span-31-15"><a id="__codelineno-31-15" name="__codelineno-31-15" href="#__codelineno-31-15"></a><span class="w">        </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="s">"!has(response.code)</span><span class="nv"> </span><span class="s">||</span><span class="nv"> </span><span class="s">response.code</span><span class="nv"> </span><span class="s">&gt;=</span><span class="nv"> </span><span class="s">400"</span>
+</span></code></pre></div>
+<p>Other useful filters:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="c1"># Only log requests to a specific destination</span>
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="nt">filter</span><span class="p">:</span>
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="w">  </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="s">'request.host</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">"api.openai.com"'</span>
+</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>
+</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="c1"># Exclude health checks</span>
+</span><span id="__span-32-6"><a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="nt">filter</span><span class="p">:</span>
+</span><span id="__span-32-7"><a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="w">  </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="s">'!request.url_path.startsWith("/healthz")'</span>
+</span></code></pre></div>
+<h3 id="json-formatted-access-logs">JSON-Formatted Access Logs<a class="headerlink" href="#json-formatted-access-logs" title="Permanent link">&para;</a></h3>
+<p>For integration with log aggregation systems (Loki, Elasticsearch), configure JSON access logs via the Istio mesh configuration. See the <a href="../../../observability/envoy-access-logs/#structured-logging-json-format">Envoy Access Logs guide</a> for setup instructions.</p>
+<p>A recommended JSON format for egress includes these egress-relevant fields:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="p">{</span>
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="w">  </span><span class="nt">"start_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%START_TIME%"</span><span class="p">,</span>
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="w">  </span><span class="nt">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%REQ(:METHOD)%"</span><span class="p">,</span>
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="w">  </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%REQ(X-ENVOY-ORIGINAL-PATH?:PATH)%"</span><span class="p">,</span>
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="w">  </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%PROTOCOL%"</span><span class="p">,</span>
+</span><span id="__span-33-6"><a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="w">  </span><span class="nt">"response_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%RESPONSE_CODE%"</span><span class="p">,</span>
+</span><span id="__span-33-7"><a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a><span class="w">  </span><span class="nt">"response_flags"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%RESPONSE_FLAGS%"</span><span class="p">,</span>
+</span><span id="__span-33-8"><a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a><span class="w">  </span><span class="nt">"response_code_details"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%RESPONSE_CODE_DETAILS%"</span><span class="p">,</span>
+</span><span id="__span-33-9"><a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a><span class="w">  </span><span class="nt">"bytes_received"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%BYTES_RECEIVED%"</span><span class="p">,</span>
+</span><span id="__span-33-10"><a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a><span class="w">  </span><span class="nt">"bytes_sent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%BYTES_SENT%"</span><span class="p">,</span>
+</span><span id="__span-33-11"><a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a><span class="w">  </span><span class="nt">"duration"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%DURATION%"</span><span class="p">,</span>
+</span><span id="__span-33-12"><a id="__codelineno-33-12" name="__codelineno-33-12" href="#__codelineno-33-12"></a><span class="w">  </span><span class="nt">"upstream_service_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)%"</span><span class="p">,</span>
+</span><span id="__span-33-13"><a id="__codelineno-33-13" name="__codelineno-33-13" href="#__codelineno-33-13"></a><span class="w">  </span><span class="nt">"downstream_remote_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%DOWNSTREAM_REMOTE_ADDRESS%"</span><span class="p">,</span>
+</span><span id="__span-33-14"><a id="__codelineno-33-14" name="__codelineno-33-14" href="#__codelineno-33-14"></a><span class="w">  </span><span class="nt">"request_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%REQ(X-REQUEST-ID)%"</span><span class="p">,</span>
+</span><span id="__span-33-15"><a id="__codelineno-33-15" name="__codelineno-33-15" href="#__codelineno-33-15"></a><span class="w">  </span><span class="nt">"authority"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%REQ(:AUTHORITY)%"</span><span class="p">,</span>
+</span><span id="__span-33-16"><a id="__codelineno-33-16" name="__codelineno-33-16" href="#__codelineno-33-16"></a><span class="w">  </span><span class="nt">"upstream_host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%UPSTREAM_HOST%"</span><span class="p">,</span>
+</span><span id="__span-33-17"><a id="__codelineno-33-17" name="__codelineno-33-17" href="#__codelineno-33-17"></a><span class="w">  </span><span class="nt">"upstream_cluster"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%UPSTREAM_CLUSTER_RAW%"</span><span class="p">,</span>
+</span><span id="__span-33-18"><a id="__codelineno-33-18" name="__codelineno-33-18" href="#__codelineno-33-18"></a><span class="w">  </span><span class="nt">"route_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"%ROUTE_NAME%"</span>
+</span><span id="__span-33-19"><a id="__codelineno-33-19" name="__codelineno-33-19" href="#__codelineno-33-19"></a><span class="p">}</span>
+</span></code></pre></div>
+<h2 id="distributed-tracing">Distributed Tracing<a class="headerlink" href="#distributed-tracing" title="Permanent link">&para;</a></h2>
+<p>Distributed tracing shows the complete request flow through the egress gateway, including policy evaluation by the wasm-shim, authentication checks in Authorino, and rate limit checks in Limitador. This section covers egress-specific tracing behavior. For general tracing setup, see the <a href="../../../observability/tracing/">tracing guide</a>.</p>
+<h3 id="tracing-prerequisites">Tracing Prerequisites<a class="headerlink" href="#tracing-prerequisites" title="Permanent link">&para;</a></h3>
+<p>In addition to the <a href="#prerequisites">general prerequisites</a>, tracing requires two layers of configuration that work together:</p>
+<ol>
+<li><strong>Istio proxy tracing</strong> (Istio <code>Telemetry</code> CR + extension provider): tells Envoy proxies to generate gateway-level spans. Without this, no Envoy spans appear.</li>
+<li><strong>Kuadrant component tracing</strong> (Kuadrant CR <code>spec.observability.tracing</code>): tells the wasm-shim, Authorino, and Limitador where to send their policy evaluation spans. Without this, no Kuadrant spans appear.</li>
+</ol>
+<p>Both are required for the full span chain. Example Kuadrant CR configuration:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant.io/v1beta1</span>
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kuadrant</span>
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant</span>
+</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant-system</span>
+</span><span id="__span-34-6"><a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-34-7"><a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a><span class="w">  </span><span class="nt">observability</span><span class="p">:</span>
+</span><span id="__span-34-8"><a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a><span class="w">    </span><span class="nt">dataPlane</span><span class="p">:</span>
+</span><span id="__span-34-9"><a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a><span class="w">      </span><span class="nt">defaultLevels</span><span class="p">:</span>
+</span><span id="__span-34-10"><a id="__codelineno-34-10" name="__codelineno-34-10" href="#__codelineno-34-10"></a>
+</span><span id="__span-34-11"><a id="__codelineno-34-11" name="__codelineno-34-11" href="#__codelineno-34-11"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+</span><span id="__span-34-12"><a id="__codelineno-34-12" name="__codelineno-34-12" href="#__codelineno-34-12"></a><span class="w">      </span><span class="nt">httpHeaderIdentifier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x-request-id</span>
+</span><span id="__span-34-13"><a id="__codelineno-34-13" name="__codelineno-34-13" href="#__codelineno-34-13"></a><span class="w">    </span><span class="nt">tracing</span><span class="p">:</span>
+</span><span id="__span-34-14"><a id="__codelineno-34-14" name="__codelineno-34-14" href="#__codelineno-34-14"></a><span class="w">      </span><span class="nt">defaultEndpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpc://jaeger.observability.svc.cluster.local:4317</span>
+</span><span id="__span-34-15"><a id="__codelineno-34-15" name="__codelineno-34-15" href="#__codelineno-34-15"></a><span class="w">      </span><span class="nt">insecure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span><span class="c1"># development only; use false with TLS in production</span>
+</span></code></pre></div>
+<p>You also need at least one Kuadrant policy (AuthPolicy, RateLimitPolicy, or TokenRateLimitPolicy) attached to the egress gateway or its HTTPRoutes.</p>
+<h3 id="how-tracing-works-on-egress">How Tracing Works on Egress<a class="headerlink" href="#how-tracing-works-on-egress" title="Permanent link">&para;</a></h3>
+<p>The tracing infrastructure is gateway-agnostic. When the Kuadrant CR has a tracing endpoint configured and a policy is attached to the egress gateway, the operator automatically:</p>
+<ol>
+<li>Creates a tracing <code>EnvoyFilter</code> (<code>kuadrant-tracing-&lt;gateway-name&gt;</code>) that defines an upstream cluster pointing to the trace collector.</li>
+<li>Includes a <code>tracing-service</code> in the wasm-shim configuration, enabling the wasm-shim to export spans.</li>
+</ol>
+<p>No egress-specific configuration is needed. Verify that the tracing EnvoyFilter was created:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>envoyfilter<span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span>-l<span class="w"> </span>kuadrant.io/tracing<span class="o">=</span><span class="nb">true</span>
+</span></code></pre></div>
+<p>Expected output:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>NAME                                      AGE
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>kuadrant-tracing-kuadrant-egressgateway   10s
+</span></code></pre></div>
+<h3 id="egress-span-chain">Egress Span Chain<a class="headerlink" href="#egress-span-chain" title="Permanent link">&para;</a></h3>
+<p>A request flowing through the egress gateway with both AuthPolicy and RateLimitPolicy produces the following span hierarchy. The wasm-shim creates a root span and child spans for each policy evaluation, propagating trace context to Authorino and Limitador via gRPC metadata:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>[kuadrant-filter] kuadrant_filter (~330ms)
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>├─ [kuadrant-filter] grpc (action=ratelimit)
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>│  ├─ [kuadrant-filter] grpc_request (ShouldRateLimit)
+</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>│  │  └─ [limitador] should_rate_limit
+</span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>│  │     └─ [limitador] check_and_update
+</span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a>│  └─ [kuadrant-filter] grpc_response
+</span><span id="__span-37-7"><a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a>├─ [kuadrant-filter] grpc (action=auth)
+</span><span id="__span-37-8"><a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a>│  ├─ [kuadrant-filter] grpc_request (Check)
+</span><span id="__span-37-9"><a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a>│  │  └─ [authorino] envoy.service.auth.v3.Authorization/Check
+</span><span id="__span-37-10"><a id="__codelineno-37-10" name="__codelineno-37-10" href="#__codelineno-37-10"></a>│  │     └─ [authorino] Check
+</span><span id="__span-37-11"><a id="__codelineno-37-11" name="__codelineno-37-11" href="#__codelineno-37-11"></a>│  └─ [kuadrant-filter] grpc_response
+</span><span id="__span-37-12"><a id="__codelineno-37-12" name="__codelineno-37-12" href="#__codelineno-37-12"></a>└─ [kuadrant-filter] headers (HttpResponseHeaders)
+</span></code></pre></div>
+<p>To verify that spans are being generated, send a request through the egress gateway and query Jaeger:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="nv">EGRESS_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span>kuadrant-egressgateway<span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w">    </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.addresses[0].value}'</span><span class="k">)</span>
+</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a>
+</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-n<span class="w"> </span>egress-test<span class="w"> </span>test-client<span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="w">    </span>curl<span class="w"> </span>-sS<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-w<span class="w"> </span><span class="s1">'%{http_code}'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-38-6"><a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a><span class="w">    </span><span class="s2">"http://</span><span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span><span class="s2">/get"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Host: httpbin.org"</span><span class="w"> </span>--max-time<span class="w"> </span><span class="m">10</span>
+</span></code></pre></div>
+<p>Then port-forward to the Jaeger UI and search for traces:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>kubectl<span class="w"> </span>port-forward<span class="w"> </span>-n<span class="w"> </span>observability<span class="w"> </span>svc/jaeger<span class="w"> </span><span class="m">16686</span>:16686<span class="w"> </span><span class="p">&amp;</span>
+</span></code></pre></div>
+<p>Open <code>http://localhost:16686</code>, select service <code>kuadrant-filter</code>, and search. Each trace shows the span hierarchy above, with <code>kuadrant-filter</code>, <code>authorino</code>, and <code>limitador</code> as participating services.</p>
+<p>Key span attributes for troubleshooting:</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Span</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>request_id</code></td>
+<td><code>kuadrant_filter</code></td>
+<td>Correlates with Envoy access logs and the Envoy gateway trace</td>
+</tr>
+<tr>
+<td><code>action</code></td>
+<td><code>grpc</code></td>
+<td>Which policy type was evaluated (<code>auth</code>, <code>ratelimit</code>)</td>
+</tr>
+<tr>
+<td><code>sources</code></td>
+<td><code>grpc</code></td>
+<td>Which policy resource triggered this action (for example, <code>ratelimitpolicy.kuadrant.io:gateway-system/my-policy</code>)</td>
+</tr>
+<tr>
+<td><code>grpc_service</code></td>
+<td><code>grpc_request</code></td>
+<td>The upstream service called (for example, <code>envoy.service.auth.v3.Authorization</code>)</td>
+</tr>
+<tr>
+<td><code>grpc_method</code></td>
+<td><code>grpc_request</code></td>
+<td>The gRPC method called (for example, <code>Check</code>, <code>ShouldRateLimit</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="two-trace-boundaries">Two Trace Boundaries<a class="headerlink" href="#two-trace-boundaries" title="Permanent link">&para;</a></h3>
+<p>Envoy does not propagate trace context to wasm filters (<a href="https://github.com/envoyproxy/envoy/issues/22028">envoyproxy/envoy#22028</a>). This means each request produces two independent traces:</p>
+<ol>
+<li>
+<p><strong>Envoy gateway trace</strong> — Istio proxy spans showing the overall request through the egress gateway:
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>[egress-gateway] httpbin.org:443/* (~330ms)
+</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>└─ [egress-gateway] router outbound|443||httpbin.org; egress
+</span></code></pre></div></p>
+</li>
+<li>
+<p><strong>Kuadrant filter trace</strong> — policy evaluation spans across the kuadrant-filter (wasm-shim), Authorino, and Limitador (shown in the span chain above).</p>
+</li>
+</ol>
+<p>These two traces share the same <code>x-request-id</code> header value. To correlate them in Jaeger:</p>
+<ol>
+<li>Find a <code>kuadrant-filter</code> trace and note the <code>request_id</code> attribute on the <code>kuadrant_filter</code> span.</li>
+<li>Search the <code>kuadrant-egressgateway-istio.gateway-system</code> service for traces with tag <code>guid:x-request-id=&lt;that value&gt;</code>.</li>
+</ol>
+<p>Verify that both traces exist for the same request:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-n<span class="w"> </span>egress-test<span class="w"> </span>test-client<span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="w">    </span>curl<span class="w"> </span>-sS<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-w<span class="w"> </span><span class="s1">'%{http_code}'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="w">    </span><span class="s2">"http://</span><span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span><span class="s2">/get"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Host: httpbin.org"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="w">    </span>-H<span class="w"> </span><span class="s2">"x-request-id: egress-trace-test"</span><span class="w"> </span>--max-time<span class="w"> </span><span class="m">10</span>
+</span></code></pre></div>
+<p>In Jaeger, search <code>kuadrant-filter</code> for tag <code>request_id=egress-trace-test</code>, then search <code>kuadrant-egressgateway-istio.gateway-system</code> for tag <code>guid:x-request-id=egress-trace-test</code>. Both traces correspond to the same request.</p>
+<h3 id="preventing-trace-header-leaking">Preventing Trace Header Leaking<a class="headerlink" href="#preventing-trace-header-leaking" title="Permanent link">&para;</a></h3>
+<p>By default, Istio propagates <code>traceparent</code>, <code>tracestate</code>, and <code>baggage</code> headers to upstream services. On an egress gateway, this means trace headers reach external services, which is a security concern: the headers reveal internal infrastructure details (trace IDs, span IDs, internal state).</p>
+<p>To verify whether trace headers are reaching the external service, use an endpoint that echoes request headers (such as <code>httpbin.org/headers</code>):</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-n<span class="w"> </span>egress-test<span class="w"> </span>test-client<span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="w">    </span>curl<span class="w"> </span>-sS<span class="w"> </span><span class="s2">"http://</span><span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span><span class="s2">/headers"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Host: httpbin.org"</span><span class="w"> </span>--max-time<span class="w"> </span><span class="m">10</span>
+</span></code></pre></div>
+<p>In the response, look for <code>traceparent</code>, <code>tracestate</code>, and <code>baggage</code> headers. If they appear, trace context is leaking to the external service.</p>
+<p><strong>Istio 1.30+ (recommended):</strong> Use <code>disableContextPropagation</code> in a <code>Telemetry</code> resource scoped to the egress gateway:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">telemetry.istio.io/v1</span>
+</span><span id="__span-43-2"><a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Telemetry</span>
+</span><span id="__span-43-3"><a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-43-4"><a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">egress-no-trace-propagation</span>
+</span><span id="__span-43-5"><a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway-system</span>
+</span><span id="__span-43-6"><a id="__codelineno-43-6" name="__codelineno-43-6" href="#__codelineno-43-6"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-43-7"><a id="__codelineno-43-7" name="__codelineno-43-7" href="#__codelineno-43-7"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
+</span><span id="__span-43-8"><a id="__codelineno-43-8" name="__codelineno-43-8" href="#__codelineno-43-8"></a><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
+</span><span id="__span-43-9"><a id="__codelineno-43-9" name="__codelineno-43-9" href="#__codelineno-43-9"></a><span class="w">      </span><span class="nt">gateway.networking.k8s.io/gateway-name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant-egressgateway</span>
+</span><span id="__span-43-10"><a id="__codelineno-43-10" name="__codelineno-43-10" href="#__codelineno-43-10"></a><span class="w">  </span><span class="nt">tracing</span><span class="p">:</span>
+</span><span id="__span-43-11"><a id="__codelineno-43-11" name="__codelineno-43-11" href="#__codelineno-43-11"></a>
+</span><span id="__span-43-12"><a id="__codelineno-43-12" name="__codelineno-43-12" href="#__codelineno-43-12"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">disableContextPropagation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span></code></pre></div>
+<p>The <code>selector</code> scopes this to the egress gateway pods only. Without it, the setting would apply to all proxies in the namespace, including any ingress gateways.</p>
+<p>This prevents <code>traceparent</code>, <code>tracestate</code>, and <code>X-B3-*</code> headers from reaching external services while preserving span reporting. The wasm-shim's internal trace propagation to Authorino and Limitador is unaffected because the wasm-shim injects trace context into internal gRPC calls, not into the outbound request to the external service.</p>
+<p><code>disableContextPropagation</code> does not remove the W3C <code>baggage</code> header. To strip <code>baggage</code>, add a <code>RequestHeaderModifier</code> filter to egress HTTPRoutes:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="nt">filters</span><span class="p">:</span>
+</span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>
+</span><span id="__span-44-3"><a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RequestHeaderModifier</span>
+</span><span id="__span-44-4"><a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="w">    </span><span class="nt">requestHeaderModifier</span><span class="p">:</span>
+</span><span id="__span-44-5"><a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a><span class="w">      </span><span class="nt">remove</span><span class="p">:</span>
+</span><span id="__span-44-6"><a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">baggage</span>
+</span></code></pre></div>
+<p><strong>Istio &lt; 1.30:</strong> The <code>disableContextPropagation</code> field is not available. Header removal via <code>RequestHeaderModifier</code> in HTTPRoute does not work for <code>traceparent</code> and <code>tracestate</code> because Istio re-injects these headers after the filter processes the request. Only <code>baggage</code> can be stripped this way. Consider upgrading to Istio 1.30+ for egress tracing security.</p>
+<h3 id="tracing-without-a-sidecar">Tracing Without a Sidecar<a class="headerlink" href="#tracing-without-a-sidecar" title="Permanent link">&para;</a></h3>
+<p>When the calling workload does not have an Istio sidecar (for example, reaching the egress gateway via its ClusterIP service), the first Envoy span starts at the egress gateway. No workload sidecar outbound span exists.</p>
+<p>Wasm-shim traces work identically regardless of sidecar presence. For trace continuity, workloads must propagate <code>x-request-id</code> headers in their requests so the wasm-shim can correlate traces.</p>
+<h3 id="tracing-troubleshooting">Tracing Troubleshooting<a class="headerlink" href="#tracing-troubleshooting" title="Permanent link">&para;</a></h3>
+<p><strong>No <code>kuadrant-filter</code> service in Jaeger</strong></p>
+<ul>
+<li>Verify the Kuadrant CR has <code>spec.observability.dataPlane.defaultLevels</code> set to at least <code>debug: "true"</code>. The default level (<code>ERROR</code>) only exports spans for error cases.</li>
+<li>Verify the tracing EnvoyFilter exists: <code>kubectl get envoyfilter -n gateway-system -l kuadrant.io/tracing=true</code></li>
+<li>Verify at least one policy is attached to the egress gateway or its HTTPRoutes.</li>
+</ul>
+<p><strong>Kuadrant filter and Envoy traces have different trace IDs</strong></p>
+<p>This is expected behavior due to the Envoy/wasm trace context limitation (<a href="https://github.com/envoyproxy/envoy/issues/22028">envoyproxy/envoy#22028</a>). Use <code>x-request-id</code> to correlate across the two traces.</p>
+<p><strong>Limitador or Authorino spans appear in separate traces</strong></p>
+<p>If Limitador or Authorino spans are in their own traces (not linked to the kuadrant-filter trace), verify that the tracing endpoint is correctly configured. The wasm-shim propagates trace context via gRPC metadata, so Authorino and Limitador appear as child spans within the kuadrant-filter trace when configuration is correct.</p>
+<h2 id="ensuring-prometheus-scrapes-the-egress-gateway">Ensuring Prometheus Scrapes the Egress Gateway<a class="headerlink" href="#ensuring-prometheus-scrapes-the-egress-gateway" title="Permanent link">&para;</a></h2>
+<p>Istio gateway pods expose metrics on port 15020 (<code>/stats/prometheus</code>). If you deployed the observability stack using the <a href="../../../observability/">observability guide</a> and applied the Istio service monitors, Prometheus is already scraping the egress gateway pod.</p>
+<p>Verify that the egress gateway pod annotations include Prometheus scrape configuration:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-45-2"><a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="w">    </span>-l<span class="w"> </span>gateway.networking.k8s.io/gateway-name<span class="o">=</span>kuadrant-egressgateway<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-45-3"><a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="w">    </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.items[0].metadata.annotations}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>json.tool
+</span></code></pre></div>
+<p>If Prometheus uses annotation-based discovery, verify that the pod has <code>prometheus.io/scrape: "true"</code> and <code>prometheus.io/port: "15020"</code>. If it uses ServiceMonitor-based discovery, ensure that a ServiceMonitor selects the egress gateway Kubernetes Service.</p>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../../overviews/telemetrypolicy/">TelemetryPolicy</a>: the full policy API behind the <a href="#custom-metric-labels-with-telemetrypolicy">custom metric labels</a> described above</li>
+<li><a href="../../../overviews/rate-limiting/">TokenRateLimitPolicy</a>: cap AI inference costs by token consumption per workload</li>
+</ul>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../egress-gateway/">Egress Gateway Setup</a></li>
+<li><a href="../../../observability/tracing/">Kuadrant Tracing Guide</a></li>
+<li><a href="https://istio.io/latest/docs/reference/config/metrics/">Istio Standard Metrics</a></li>
+<li><a href="https://istio.io/latest/docs/reference/config/telemetry/">Istio Telemetry API</a></li>
+<li><a href="https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#format-strings">Envoy Access Log Format</a></li>
+<li><a href="../../../observability/">Kuadrant Observability Stack</a></li>
+<li><a href="../../../observability/metrics/">Kuadrant Metrics Reference</a></li>
+<li><a href="../../observability/limitador-metrics/">Limitador Metrics User Guide</a></li>
+<li><a href="../../../reference/telemetrypolicy/">TelemetryPolicy CRD Reference</a></li>
+<li><a href="../../observability/token-metrics/">Token Metrics User Guide</a></li>
+<li><a href="../../../observability/envoy-access-logs/">Envoy Access Logs and Request Correlation</a></li>
+<li><a href="https://github.com/envoyproxy/envoy/issues/22028">Envoy Wasm Trace Context Limitation</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer id="footer" class="footer">
+  <div class="copyright">
+    <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+    <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks.</p> 
+    <p>For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+  </div>
+
+  <div class="sponsored-by">
+    <p>
+      <a href="https://www.cncf.io/sandbox-projects/"><img src="../../../../../assets/images/cncf-color.png" class="logo" alt="CNCF logo"></a>
+    </p>
+    <p>
+      We are a Cloud Native Computing Foundation sandbox project.
+    </p>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../../..", "features": ["content.action.edit", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": ["1.3.x", "latest"], "provider": "mike"}}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="../../../../../assets/strip_callouts.js"></script>
+      
+    
+  </body>
+</html>

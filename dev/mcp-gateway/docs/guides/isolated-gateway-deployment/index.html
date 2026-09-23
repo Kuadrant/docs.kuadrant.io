@@ -1516,6 +1516,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/egress/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring and Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1824,6 +1845,27 @@
   
   <span class="md-ellipsis">
     Enabling mTLS for Gateway-to-Kuadrant Services Traffic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/overviews/openshift-tls-profile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Propagating the OpenShift TLS Security Profile
   </span>
   
 
@@ -4161,7 +4203,7 @@
 </span></code></pre></div>
 <h2 id="step-1-install-mcp-gateway-crds">Step 1: Install MCP Gateway CRDs<a class="headerlink" href="#step-1-install-mcp-gateway-crds" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">MCP_GATEWAY_VERSION</span><span class="o">=</span><span class="m">0</span>.7.1
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;https://github.com/kuadrant/mcp-gateway/config/crd?ref=v</span><span class="si">${</span><span class="nv">MCP_GATEWAY_VERSION</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span><span class="s2">"https://github.com/kuadrant/mcp-gateway/config/crd?ref=v</span><span class="si">${</span><span class="nv">MCP_GATEWAY_VERSION</span><span class="si">}</span><span class="s2">"</span>
 </span></code></pre></div>
 <p>Verify the CRDs are installed:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>crd<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>mcp.kuadrant.io
@@ -4190,13 +4232,13 @@
 <p>For cross-namespace Gateway references with a MCPGatewayExtension, a ReferenceGrant must exist in the target Gateway's namespace.</p>
 <h2 id="step-2-set-environment-variables">Step 2: Set Environment Variables<a class="headerlink" href="#step-2-set-environment-variables" title="Permanent link">&para;</a></h2>
 <h3 id="openshift">OpenShift<a class="headerlink" href="#openshift" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">TEAM_A_HOST</span><span class="o">=</span><span class="s2">&quot;team-a.apps.</span><span class="k">$(</span>oc<span class="w"> </span>get<span class="w"> </span>dns<span class="w"> </span>cluster<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.baseDomain}&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">TEAM_B_HOST</span><span class="o">=</span><span class="s2">&quot;team-b.apps.</span><span class="k">$(</span>oc<span class="w"> </span>get<span class="w"> </span>dns<span class="w"> </span>cluster<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.baseDomain}&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">TEAM_A_HOST</span><span class="o">=</span><span class="s2">"team-a.apps.</span><span class="k">$(</span>oc<span class="w"> </span>get<span class="w"> </span>dns<span class="w"> </span>cluster<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.baseDomain}'</span><span class="k">)</span><span class="s2">"</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">TEAM_B_HOST</span><span class="o">=</span><span class="s2">"team-b.apps.</span><span class="k">$(</span>oc<span class="w"> </span>get<span class="w"> </span>dns<span class="w"> </span>cluster<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.baseDomain}'</span><span class="k">)</span><span class="s2">"</span>
 </span></code></pre></div>
 <h3 id="kindkubernetes">Kind/Kubernetes<a class="headerlink" href="#kindkubernetes" title="Permanent link">&para;</a></h3>
 <p>What is shown below is just an example and what is used locally via Kind.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">TEAM_A_HOST</span><span class="o">=</span><span class="s2">&quot;team-a.127-0-0-1.sslip.io&quot;</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">TEAM_B_HOST</span><span class="o">=</span><span class="s2">&quot;team-b.127-0-0-1.sslip.io&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">TEAM_A_HOST</span><span class="o">=</span><span class="s2">"team-a.127-0-0-1.sslip.io"</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">TEAM_B_HOST</span><span class="o">=</span><span class="s2">"team-b.127-0-0-1.sslip.io"</span>
 </span></code></pre></div>
 <h2 id="step-3-deploy-the-mcp-gateway-controller">Step 3: Deploy the MCP Gateway Controller<a class="headerlink" href="#step-3-deploy-the-mcp-gateway-controller" title="Permanent link">&para;</a></h2>
 <p>The MCP Gateway Controller runs cluster-wide and reconciles MCPGatewayExtension and MCPServerRegistration resources. Deploy it once in a central namespace:</p>
@@ -4219,8 +4261,8 @@
 </span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span>--set<span class="w"> </span>gateway.create<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">  </span>--set<span class="w"> </span>gateway.name<span class="o">=</span>team-a-gateway<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span>--set<span class="w"> </span>gateway.namespace<span class="o">=</span>gateway-system<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">  </span>--set<span class="w"> </span>gateway.publicHost<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$TEAM_A_HOST</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">  </span>--set<span class="w"> </span>gateway.internalHostPattern<span class="o">=</span><span class="s2">&quot;*.team-a.mcp.local&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">  </span>--set<span class="w"> </span>gateway.publicHost<span class="o">=</span><span class="s2">"</span><span class="nv">$TEAM_A_HOST</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">  </span>--set<span class="w"> </span>gateway.internalHostPattern<span class="o">=</span><span class="s2">"*.team-a.mcp.local"</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.create<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.gatewayRef.name<span class="o">=</span>team-a-gateway<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.gatewayRef.namespace<span class="o">=</span>gateway-system
@@ -4258,8 +4300,8 @@
 </span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">  </span>--set<span class="w"> </span>gateway.create<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">  </span>--set<span class="w"> </span>gateway.name<span class="o">=</span>team-b-gateway<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">  </span>--set<span class="w"> </span>gateway.namespace<span class="o">=</span>gateway-system<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">  </span>--set<span class="w"> </span>gateway.publicHost<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$TEAM_B_HOST</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">  </span>--set<span class="w"> </span>gateway.internalHostPattern<span class="o">=</span><span class="s2">&quot;*.team-b.mcp.local&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">  </span>--set<span class="w"> </span>gateway.publicHost<span class="o">=</span><span class="s2">"</span><span class="nv">$TEAM_B_HOST</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">  </span>--set<span class="w"> </span>gateway.internalHostPattern<span class="o">=</span><span class="s2">"*.team-b.mcp.local"</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.create<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.gatewayRef.name<span class="o">=</span>team-b-gateway<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.gatewayRef.namespace<span class="o">=</span>gateway-system
@@ -4330,8 +4372,8 @@
 </span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span>--set<span class="w"> </span>gateway.create<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">  </span>--set<span class="w"> </span>gateway.name<span class="o">=</span>team-a-gateway<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">  </span>--set<span class="w"> </span>gateway.namespace<span class="o">=</span>gateway-system<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">  </span>--set<span class="w"> </span>gateway.publicHost<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$TEAM_A_HOST</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">  </span>--set<span class="w"> </span>gateway.internalHostPattern<span class="o">=</span><span class="s2">&quot;*.team-a.mcp.local&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">  </span>--set<span class="w"> </span>gateway.publicHost<span class="o">=</span><span class="s2">"</span><span class="nv">$TEAM_A_HOST</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">  </span>--set<span class="w"> </span>gateway.internalHostPattern<span class="o">=</span><span class="s2">"*.team-a.mcp.local"</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.create<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.gatewayRef.name<span class="o">=</span>team-a-gateway<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.gatewayRef.namespace<span class="o">=</span>gateway-system<span class="w"> </span><span class="se">\</span>
@@ -4344,8 +4386,8 @@
 </span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span>--set<span class="w"> </span>gateway.create<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">  </span>--set<span class="w"> </span>gateway.name<span class="o">=</span>team-b-gateway<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="w">  </span>--set<span class="w"> </span>gateway.namespace<span class="o">=</span>gateway-system<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">  </span>--set<span class="w"> </span>gateway.publicHost<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$TEAM_B_HOST</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="w">  </span>--set<span class="w"> </span>gateway.internalHostPattern<span class="o">=</span><span class="s2">&quot;*.team-b.mcp.local&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">  </span>--set<span class="w"> </span>gateway.publicHost<span class="o">=</span><span class="s2">"</span><span class="nv">$TEAM_B_HOST</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="w">  </span>--set<span class="w"> </span>gateway.internalHostPattern<span class="o">=</span><span class="s2">"*.team-b.mcp.local"</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.create<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.gatewayRef.name<span class="o">=</span>team-b-gateway<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.gatewayRef.namespace<span class="o">=</span>gateway-system<span class="w"> </span><span class="se">\</span>
@@ -4375,9 +4417,9 @@
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">conditions</span><span class="p">:</span>
 </span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>
 </span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ready</span>
-</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">    </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;False&quot;</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">    </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">"False"</span>
 </span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">    </span><span class="nt">reason</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ReferenceGrantRequired</span>
-</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">    </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ReferenceGrant</span><span class="nv"> </span><span class="s">required</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">namespace</span><span class="nv"> </span><span class="s">gateway-system</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">allow</span><span class="nv"> </span><span class="s">cross-namespace</span><span class="nv"> </span><span class="s">reference&quot;</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">    </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="s">"ReferenceGrant</span><span class="nv"> </span><span class="s">required</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">namespace</span><span class="nv"> </span><span class="s">gateway-system</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">allow</span><span class="nv"> </span><span class="s">cross-namespace</span><span class="nv"> </span><span class="s">reference"</span>
 </span></code></pre></div></p>
 <p>The Helm chart should create the ReferenceGrant automatically. If not, create it manually as shown in the <a href="#manual-resource-creation">Manual Resource Creation</a> section.</p>
 <h3 id="mcpgatewayextension-shows-invalidmcpgatewayextension">MCPGatewayExtension shows InvalidMCPGatewayExtension<a class="headerlink" href="#mcpgatewayextension-shows-invalidmcpgatewayextension" title="Permanent link">&para;</a></h3>
@@ -4396,7 +4438,7 @@
 </ol>
 <h3 id="no-configuration-in-secret">No configuration in secret<a class="headerlink" href="#no-configuration-in-secret" title="Permanent link">&para;</a></h3>
 <p>The config secret exists but has no servers:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>mcp-gateway-config<span class="w"> </span>-n<span class="w"> </span>team-a<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.config\.yaml}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>mcp-gateway-config<span class="w"> </span>-n<span class="w"> </span>team-a<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.config\.yaml}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d
 </span></code></pre></div>
 <p>Check that MCPServerRegistration resources exist and are Ready:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>mcpserverregistration<span class="w"> </span>-n<span class="w"> </span>team-a
@@ -4477,7 +4519,7 @@
 </span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">  </span>--set<span class="w"> </span>gateway.create<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">  </span>--set<span class="w"> </span>gateway.name<span class="o">=</span>team-a-gateway<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="w">  </span>--set<span class="w"> </span>gateway.namespace<span class="o">=</span>gateway-system<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="w">  </span>--set<span class="w"> </span>gateway.publicHost<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$TEAM_A_HOST</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="w">  </span>--set<span class="w"> </span>gateway.publicHost<span class="o">=</span><span class="s2">"</span><span class="nv">$TEAM_A_HOST</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-26-8"><a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="w">  </span>--set<span class="w"> </span>mcpGatewayExtension.create<span class="o">=</span><span class="nb">false</span>
 </span></code></pre></div>
 

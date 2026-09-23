@@ -1759,6 +1759,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring and Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2067,6 +2088,27 @@
   
   <span class="md-ellipsis">
     Enabling mTLS for Gateway-to-Kuadrant Services Traffic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../overviews/openshift-tls-profile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Propagating the OpenShift TLS Security Profile
   </span>
   
 
@@ -4317,7 +4359,7 @@
 </table>
 <p>Export the gateway address for use in examples:</p>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">EGRESS_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span>kuadrant-egressgateway<span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.addresses[0].value}&#39;</span><span class="k">)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.addresses[0].value}'</span><span class="k">)</span>
 </span></code></pre></div>
 <h2 id="egress-gateway-resources">Egress Gateway Resources<a class="headerlink" href="#egress-gateway-resources" title="Permanent link">&para;</a></h2>
 <p>The setup script deployed the following resources.</p>
@@ -4402,7 +4444,7 @@
 <p>RateLimitPolicy works on egress using the same attachment model as ingress - the same <code>targetRef</code>, the same Limitador limits, the same WasmPlugin enforcement. One caveat: <code>source.address</code> cannot be used as a counter expression because it includes the ephemeral port, giving each connection its own bucket. Use <a href="#workload-identity">workload identity</a> with <code>auth.identity.username</code> for per-workload limiting instead.</p>
 <h3 id="basic-egress-rate-limiting">Basic Egress Rate Limiting<a class="headerlink" href="#basic-egress-rate-limiting" title="Permanent link">&para;</a></h3>
 <p>A simple rate limit on all egress traffic through a route:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;'EOF'</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="s">apiVersion: kuadrant.io/v1</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="s">kind: RateLimitPolicy</span>
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="s">metadata:</span>
@@ -4425,7 +4467,7 @@
 <p>Verify:</p>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Send requests until rate limited</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>test-client<span class="w"> </span>-n<span class="w"> </span>egress-test<span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span>curl<span class="w"> </span>-s<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-w<span class="w"> </span><span class="s2">&quot;%{http_code}&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: httpbin.org&quot;</span><span class="w"> </span>http://<span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span>/get
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span>curl<span class="w"> </span>-s<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-w<span class="w"> </span><span class="s2">"%{http_code}"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Host: httpbin.org"</span><span class="w"> </span>http://<span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span>/get
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># 200 (until limit reached, then 429)</span>
 </span></code></pre></div>
 <h3 id="other-rate-limiting-patterns">Other Rate Limiting Patterns<a class="headerlink" href="#other-rate-limiting-patterns" title="Permanent link">&para;</a></h3>
@@ -4459,12 +4501,12 @@
 <h2 id="workload-identity">Workload Identity<a class="headerlink" href="#workload-identity" title="Permanent link">&para;</a></h2>
 <p>In egress, the clients are internal workloads. To identify which workload is making a request, use Kubernetes <a href="https://kubernetes.io/docs/reference/kubernetes-api/authentication-resources/token-review-v1/">TokenReview</a> via AuthPolicy. By default, every pod has a ServiceAccount token mounted automatically - no API keys to distribute.</p>
 <p>The workload sends its SA token in the <code>Authorization</code> header:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="k">$(</span>cat<span class="w"> </span>/var/run/secrets/kubernetes.io/serviceaccount/token<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">     </span>-H<span class="w"> </span><span class="s2">&quot;Host: httpbin.org&quot;</span><span class="w"> </span>http://<span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span>/get
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="k">$(</span>cat<span class="w"> </span>/var/run/secrets/kubernetes.io/serviceaccount/token<span class="k">)</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">     </span>-H<span class="w"> </span><span class="s2">"Host: httpbin.org"</span><span class="w"> </span>http://<span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span>/get
 </span></code></pre></div>
 <p>AuthPolicy validates the token and exposes the workload's identity (namespace, service account name) for use by other policies. Requests without a valid SA token are rejected with 401.</p>
 <p>The following AuthPolicy authenticates workloads and restricts egress access to specific namespaces:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;'EOF'</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="s">apiVersion: kuadrant.io/v1</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="s">kind: AuthPolicy</span>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="s">metadata:</span>
@@ -4477,49 +4519,58 @@
 </span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="s">    name: httpbin-external</span>
 </span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="s">  rules:</span>
 </span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="s">    authentication:</span>
-</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="s">      &quot;workload-sa&quot;:</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="s">      "workload-sa":</span>
 </span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="s">        kubernetesTokenReview:</span>
 </span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="s">          audiences:</span>
 </span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>
-</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="s">            - &quot;https://kubernetes.default.svc.cluster.local&quot;</span>
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="s">            - "https://kubernetes.default.svc.cluster.local"</span>
 </span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="s">    authorization:</span>
-</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="s">      &quot;allowed-namespaces&quot;:</span>
+</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="s">      "allowed-namespaces":</span>
 </span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="s">        patternMatching:</span>
 </span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="s">          patterns:</span>
-</span><span id="__span-9-23"><a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="s">            - predicate: auth.identity.user.username.startsWith(&#39;system:serviceaccount:egress-test:&#39;)</span>
-</span><span id="__span-9-24"><a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="s">EOF</span>
+</span><span id="__span-9-23"><a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="s">            - predicate: auth.identity.user.username.startsWith('system:serviceaccount:egress-test:')</span>
+</span><span id="__span-9-24"><a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="s">    response:</span>
+</span><span id="__span-9-25"><a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a><span class="s">      success:</span>
+</span><span id="__span-9-26"><a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a><span class="s">        filters:</span>
+</span><span id="__span-9-27"><a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a><span class="s">          "identity":</span>
+</span><span id="__span-9-28"><a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a><span class="s">            json:</span>
+</span><span id="__span-9-29"><a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a><span class="s">              properties:</span>
+</span><span id="__span-9-30"><a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a><span class="s">                username:</span>
+</span><span id="__span-9-31"><a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a><span class="s">                  selector: auth.identity.user.username</span>
+</span><span id="__span-9-32"><a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <ul>
 <li><code>authentication.workload-sa</code> - validates the SA token via TokenReview. Unauthenticated requests are rejected (401).</li>
 <li><code>authorization.allowed-namespaces</code> - restricts access to workloads from the <code>egress-test</code> namespace. Workloads from other namespaces are rejected (403). Add additional patterns with <code>||</code> to allow more namespaces.</li>
+<li><code>response.success.filters.identity</code> - exposes the resolved identity (username) as dynamic metadata. This is required for policies that reference <code>auth.identity.*</code> expressions, such as per-workload rate limiting.</li>
 </ul>
 <p>Verify access control:</p>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Authorized workload - 200</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>test-client<span class="w"> </span>-n<span class="w"> </span>egress-test<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="s1">curl -s -o /dev/null -w &quot;%{http_code}&quot; \</span>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="s1">    -H &quot;Host: httpbin.org&quot; \</span>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="s1">    -H &quot;Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)&quot; \</span>
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="s1">    http://&#39;</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span><span class="s2">&quot;</span><span class="s1">&#39;/get</span>
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="s1">&#39;</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>test-client<span class="w"> </span>-n<span class="w"> </span>egress-test<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="s1">curl -s -o /dev/null -w "%{http_code}" \</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="s1">    -H "Host: httpbin.org" \</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="s1">    -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="s1">    http://'</span><span class="s2">"</span><span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span><span class="s2">"</span><span class="s1">'/get</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="s1">'</span>
 </span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>
 </span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="c1"># No token - 401</span>
 </span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>test-client<span class="w"> </span>-n<span class="w"> </span>egress-test<span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">    </span>curl<span class="w"> </span>-s<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-w<span class="w"> </span><span class="s2">&quot;%{http_code}&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: httpbin.org&quot;</span><span class="w"> </span>http://<span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span>/get
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">    </span>curl<span class="w"> </span>-s<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-w<span class="w"> </span><span class="s2">"%{http_code}"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Host: httpbin.org"</span><span class="w"> </span>http://<span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span>/get
 </span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>
 </span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="c1"># Unauthorized namespace - 403</span>
 </span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>kubectl<span class="w"> </span>run<span class="w"> </span>bad-client<span class="w"> </span>--image<span class="o">=</span>curlimages/curl:latest<span class="w"> </span>-n<span class="w"> </span>default<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="w">    </span>--command<span class="w"> </span>--<span class="w"> </span>sleep<span class="w"> </span>infinity
 </span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>--for<span class="o">=</span><span class="nv">condition</span><span class="o">=</span>Ready<span class="w"> </span>pod/bad-client<span class="w"> </span>-n<span class="w"> </span>default<span class="w"> </span>--timeout<span class="o">=</span>30s
-</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>bad-client<span class="w"> </span>-n<span class="w"> </span>default<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;</span>
-</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="s1">curl -s -o /dev/null -w &quot;%{http_code}&quot; -H &quot;Host: httpbin.org&quot; \</span>
-</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="s1">    -H &quot;Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)&quot; \</span>
-</span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="s1">    http://&#39;</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span><span class="s2">&quot;</span><span class="s1">&#39;/get</span>
-</span><span id="__span-10-21"><a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="s1">&#39;</span>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>bad-client<span class="w"> </span>-n<span class="w"> </span>default<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'</span>
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="s1">curl -s -o /dev/null -w "%{http_code}" -H "Host: httpbin.org" \</span>
+</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="s1">    -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \</span>
+</span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="s1">    http://'</span><span class="s2">"</span><span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span><span class="s2">"</span><span class="s1">'/get</span>
+</span><span id="__span-10-21"><a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="s1">'</span>
 </span><span id="__span-10-22"><a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>bad-client<span class="w"> </span>-n<span class="w"> </span>default
 </span></code></pre></div>
 <h3 id="per-workload-rate-limiting">Per-Workload Rate Limiting<a class="headerlink" href="#per-workload-rate-limiting" title="Permanent link">&para;</a></h3>
 <p>With workload identity established, you can give each workload its own rate limit bucket by adding an RLP that uses the SA username as a counter:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;'EOF'</span>
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="s">apiVersion: kuadrant.io/v1</span>
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="s">kind: RateLimitPolicy</span>
 </span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="s">metadata:</span>
@@ -4537,17 +4588,17 @@
 </span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="s">        - limit: 10</span>
 </span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="s">          window: 1m</span>
 </span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="s">      counters:</span>
-</span><span id="__span-11-19"><a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="s">        - expression: &quot;auth.identity.username&quot;</span>
+</span><span id="__span-11-19"><a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="s">        - expression: "auth.identity.username"</span>
 </span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <p>Each ServiceAccount gets an independent 10 req/min bucket. <code>system:serviceaccount:team-a:default</code> and <code>system:serviceaccount:team-b:default</code> are tracked separately. The identity is stable across pod restarts and reschedules.</p>
 <p>Workloads must include their SA token in requests:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>test-client<span class="w"> </span>-n<span class="w"> </span>egress-test<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="s1">curl -s -o /dev/null -w &quot;%{http_code}&quot; \</span>
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="s1">    -H &quot;Host: httpbin.org&quot; \</span>
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="s1">    -H &quot;Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)&quot; \</span>
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="s1">    http://&#39;</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span><span class="s2">&quot;</span><span class="s1">&#39;/get</span>
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="s1">&#39;</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>test-client<span class="w"> </span>-n<span class="w"> </span>egress-test<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="s1">curl -s -o /dev/null -w "%{http_code}" \</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="s1">    -H "Host: httpbin.org" \</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="s1">    -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="s1">    http://'</span><span class="s2">"</span><span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span><span class="s2">"</span><span class="s1">'/get</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="s1">'</span>
 </span></code></pre></div>
 <p>The resolved identity contains:</p>
 <table>
@@ -4650,6 +4701,7 @@
 </ul>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <ul>
+<li><a href="../observability/">Observability</a> - monitor egress traffic with Prometheus metrics, access logs, and distributed tracing</li>
 <li><a href="../dns-routing/">DNS Routing</a> - configure how pods reach the egress gateway (internal hostname, CoreDNS)</li>
 <li><a href="../credential-injection/">Credential Injection</a> - inject external API credentials (e.g., from Vault) into outbound requests</li>
 </ul>

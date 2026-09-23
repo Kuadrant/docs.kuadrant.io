@@ -1705,6 +1705,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../egress/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring and Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2013,6 +2034,27 @@
   
   <span class="md-ellipsis">
     Enabling mTLS for Gateway-to-Kuadrant Services Traffic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../overviews/openshift-tls-profile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Propagating the OpenShift TLS Security Profile
   </span>
   
 
@@ -4206,7 +4248,7 @@
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="s">  name: ${KUADRANT_GATEWAY_NAME}</span>
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="s">  namespace: ${KUADRANT_GATEWAY_NS}</span>
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="s">  labels:</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="s">    kuadrant.io/gateway: &quot;true&quot;</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="s">    kuadrant.io/gateway: "true"</span>
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="s">spec:</span>
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="s">  gatewayClassName: istio</span>
 </span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="s">  listeners:</span>
@@ -4223,7 +4265,7 @@
 <p><strong>Note:</strong> The <code>Gateway</code> resource created above uses Istio as the gateway provider. For Envoy Gateway, use the Envoy Gateway <code>GatewayClass</code> as the <code>gatewayClassName</code>.</p>
 </blockquote>
 <p>Check the status of the <code>Gateway</code> ensuring the gateway is Accepted and Programmed:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.conditions[?(@.type==&quot;Accepted&quot;)].message}{&quot;\n&quot;}{.status.conditions[?(@.type==&quot;Programmed&quot;)].message}{&quot;\n&quot;}&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Programmed")].message}{"\n"}'</span>
 </span></code></pre></div>
 <h3 id="deploy-the-grpc-backend">Deploy the gRPC backend<a class="headerlink" href="#deploy-the-grpc-backend" title="Permanent link">&para;</a></h3>
 <p>Create the namespace for the gRPC application:</p>
@@ -4248,7 +4290,7 @@
 </span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>
 </span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="s">    - name: ${KUADRANT_GATEWAY_NAME}</span>
 </span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="s">      namespace: ${KUADRANT_GATEWAY_NS}</span>
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="s">  hostnames: [&quot;grpcbin.local&quot;]</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="s">  hostnames: ["grpcbin.local"]</span>
 </span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="s">  rules:</span>
 </span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="s">    - name: unary-methods</span>
 </span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="s">      matches:</span>
@@ -4281,8 +4323,8 @@
 <p>The named sections can be referenced by policies for fine-grained targeting.</p>
 <h3 id="verify-the-route">Verify the route<a class="headerlink" href="#verify-the-route" title="Permanent link">&para;</a></h3>
 <p>Export the gateway address and test both methods:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_INGRESS_HOST</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.addresses[0].value}&#39;</span><span class="k">)</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_INGRESS_PORT</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.listeners[?(@.name==&quot;http&quot;)].port}&#39;</span><span class="k">)</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_INGRESS_HOST</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.addresses[0].value}'</span><span class="k">)</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_INGRESS_PORT</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.listeners[?(@.name=="http")].port}'</span><span class="k">)</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_GATEWAY_URL</span><span class="o">=</span><span class="si">${</span><span class="nv">KUADRANT_INGRESS_HOST</span><span class="si">}</span>:<span class="si">${</span><span class="nv">KUADRANT_INGRESS_PORT</span><span class="si">}</span>
 </span></code></pre></div>
 <blockquote>
@@ -4292,11 +4334,11 @@
 </span></code></pre></div>
 </blockquote>
 <p>Test DummyUnary:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>grpcurl<span class="w"> </span>-plaintext<span class="w"> </span>-authority<span class="w"> </span>grpcbin.local<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;f_string&quot;:&quot;hello&quot;}&#39;</span><span class="w"> </span><span class="nv">$KUADRANT_GATEWAY_URL</span><span class="w"> </span>grpcbin.GRPCBin/DummyUnary
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>grpcurl<span class="w"> </span>-plaintext<span class="w"> </span>-authority<span class="w"> </span>grpcbin.local<span class="w"> </span>-d<span class="w"> </span><span class="s1">'{"f_string":"hello"}'</span><span class="w"> </span><span class="nv">$KUADRANT_GATEWAY_URL</span><span class="w"> </span>grpcbin.GRPCBin/DummyUnary
 </span></code></pre></div>
 <p>Expected:
 <div class="language-json highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">&quot;fString&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">"fString"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hello"</span>
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="p">}</span>
 </span></code></pre></div></p>
 <p>Test HeadersUnary:</p>
@@ -4318,13 +4360,13 @@
 </span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="s">    name: grpcbin</span>
 </span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="s">  defaults:</span>
 </span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="s">    limits:</span>
-</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="s">      &quot;grpcbin-service&quot;:</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="s">      "grpcbin-service":</span>
 </span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="s">        rates:</span>
 </span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>
 </span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="s">        - limit: 10</span>
 </span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="s">          window: 10s</span>
 </span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="s">        when:</span>
-</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a><span class="s">        - predicate: &quot;request.url_path.startsWith(&#39;/grpcbin.GRPCBin/&#39;)&quot;</span>
+</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a><span class="s">        - predicate: "request.url_path.startsWith('/grpcbin.GRPCBin/')"</span>
 </span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <p>The <code>when</code> predicate ensures only calls to the <code>grpcbin.GRPCBin</code> service are rate limited. gRPC reflection calls (used by tools like <code>grpcurl</code>) are excluded, making test results predictable.</p>
@@ -4338,9 +4380,9 @@
 <h3 id="test-the-service-level-limit">Test the service-level limit<a class="headerlink" href="#test-the-service-level-limit" title="Permanent link">&para;</a></h3>
 <p>Both methods share the same 10 requests per 10 second limit:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>..12<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Request </span><span class="nv">$i</span><span class="s2">:&quot;</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"Request </span><span class="nv">$i</span><span class="s2">:"</span>
 </span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span>grpcurl<span class="w"> </span>-plaintext<span class="w"> </span>-authority<span class="w"> </span>grpcbin.local<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;f_string&quot;: &quot;hello&quot;}&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span>-d<span class="w"> </span><span class="s1">'{"f_string": "hello"}'</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">    </span><span class="nv">$KUADRANT_GATEWAY_URL</span><span class="w"> </span>grpcbin.GRPCBin/DummyUnary
 </span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">  </span>sleep<span class="w"> </span><span class="m">0</span>.5
 </span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="k">done</span>
@@ -4361,7 +4403,7 @@
 </span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="s">    name: grpcbin</span>
 </span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="s">    sectionName: unary-methods</span>
 </span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="s">  limits:</span>
-</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="s">    &quot;unary-limit&quot;:</span>
+</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="s">    "unary-limit":</span>
 </span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="s">      rates:</span>
 </span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>
 </span><span id="__span-16-17"><a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="s">      - limit: 5</span>
@@ -4393,9 +4435,9 @@
 <h3 id="test-the-override">Test the override<a class="headerlink" href="#test-the-override" title="Permanent link">&para;</a></h3>
 <p><strong>Test DummyUnary (5rp10s override):</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>..8<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Request </span><span class="nv">$i</span><span class="s2">:&quot;</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"Request </span><span class="nv">$i</span><span class="s2">:"</span>
 </span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span>grpcurl<span class="w"> </span>-plaintext<span class="w"> </span>-authority<span class="w"> </span>grpcbin.local<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">    </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;f_string&quot;: &quot;hello&quot;}&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">    </span>-d<span class="w"> </span><span class="s1">'{"f_string": "hello"}'</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">    </span><span class="nv">$KUADRANT_GATEWAY_URL</span><span class="w"> </span>grpcbin.GRPCBin/DummyUnary
 </span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">  </span>sleep<span class="w"> </span><span class="m">1</span>
 </span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="k">done</span>
@@ -4403,7 +4445,7 @@
 <p>Expected: 5 successful responses, then <code>Code: Unavailable</code> from request 6 onwards.</p>
 <p><strong>Test HeadersUnary (10rp10s default):</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>..12<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Request </span><span class="nv">$i</span><span class="s2">:&quot;</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"Request </span><span class="nv">$i</span><span class="s2">:"</span>
 </span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span>grpcurl<span class="w"> </span>-plaintext<span class="w"> </span>-authority<span class="w"> </span>grpcbin.local<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">    </span><span class="nv">$KUADRANT_GATEWAY_URL</span><span class="w"> </span>grpcbin.GRPCBin/HeadersUnary
 </span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">  </span>sleep<span class="w"> </span><span class="m">0</span>.5
@@ -4440,7 +4482,7 @@
 </span><span id="__span-19-26"><a id="__codelineno-19-26" name="__codelineno-19-26" href="#__codelineno-19-26"></a><span class="s">    sectionName: unary-methods</span>
 </span><span id="__span-19-27"><a id="__codelineno-19-27" name="__codelineno-19-27" href="#__codelineno-19-27"></a><span class="s">  rules:</span>
 </span><span id="__span-19-28"><a id="__codelineno-19-28" name="__codelineno-19-28" href="#__codelineno-19-28"></a><span class="s">    authentication:</span>
-</span><span id="__span-19-29"><a id="__codelineno-19-29" name="__codelineno-19-29" href="#__codelineno-19-29"></a><span class="s">      &quot;api-key&quot;:</span>
+</span><span id="__span-19-29"><a id="__codelineno-19-29" name="__codelineno-19-29" href="#__codelineno-19-29"></a><span class="s">      "api-key":</span>
 </span><span id="__span-19-30"><a id="__codelineno-19-30" name="__codelineno-19-30" href="#__codelineno-19-30"></a><span class="s">        apiKey:</span>
 </span><span id="__span-19-31"><a id="__codelineno-19-31" name="__codelineno-19-31" href="#__codelineno-19-31"></a><span class="s">          selector:</span>
 </span><span id="__span-19-32"><a id="__codelineno-19-32" name="__codelineno-19-32" href="#__codelineno-19-32"></a><span class="s">            matchLabels:</span>
@@ -4476,7 +4518,7 @@
 <h3 id="test-the-combined-setup">Test the combined setup<a class="headerlink" href="#test-the-combined-setup" title="Permanent link">&para;</a></h3>
 <p><strong>DummyUnary without API key — rejected (401):</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>grpcurl<span class="w"> </span>-plaintext<span class="w"> </span>-authority<span class="w"> </span>grpcbin.local<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;f_string&quot;: &quot;hello&quot;}&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"f_string": "hello"}'</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">  </span><span class="nv">$KUADRANT_GATEWAY_URL</span><span class="w"> </span>grpcbin.GRPCBin/DummyUnary
 </span></code></pre></div>
 <p>Expected:
@@ -4488,10 +4530,10 @@
 </blockquote>
 <p><strong>DummyUnary with API key — accepted and rate limited (5rp10s):</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>..8<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
-</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Request </span><span class="nv">$i</span><span class="s2">:&quot;</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"Request </span><span class="nv">$i</span><span class="s2">:"</span>
 </span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span>grpcurl<span class="w"> </span>-plaintext<span class="w"> </span>-authority<span class="w"> </span>grpcbin.local<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span>-H<span class="w"> </span><span class="s1">&#39;Authorization: APIKEY GRPCBINKEY123&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;f_string&quot;: &quot;hello&quot;}&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span>-H<span class="w"> </span><span class="s1">'Authorization: APIKEY GRPCBINKEY123'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span>-d<span class="w"> </span><span class="s1">'{"f_string": "hello"}'</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">    </span><span class="nv">$KUADRANT_GATEWAY_URL</span><span class="w"> </span>grpcbin.GRPCBin/DummyUnary
 </span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="w">  </span>sleep<span class="w"> </span><span class="m">1</span>
 </span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="k">done</span>
@@ -4499,7 +4541,7 @@
 <p>Expected: 5 successful responses, then <code>Code: Unavailable</code> from request 6 onwards.</p>
 <p><strong>HeadersUnary without API key — accepted and rate limited (10rp10s):</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>..12<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
-</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Request </span><span class="nv">$i</span><span class="s2">:&quot;</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"Request </span><span class="nv">$i</span><span class="s2">:"</span>
 </span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">  </span>grpcurl<span class="w"> </span>-plaintext<span class="w"> </span>-authority<span class="w"> </span>grpcbin.local<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">    </span><span class="nv">$KUADRANT_GATEWAY_URL</span><span class="w"> </span>grpcbin.GRPCBin/HeadersUnary
 </span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">  </span>sleep<span class="w"> </span><span class="m">0</span>.5

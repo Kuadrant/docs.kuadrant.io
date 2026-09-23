@@ -1522,6 +1522,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../egress/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring and Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2127,6 +2148,27 @@
   
   <span class="md-ellipsis">
     Enabling mTLS for Gateway-to-Kuadrant Services Traffic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../overviews/openshift-tls-profile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Propagating the OpenShift TLS Security Profile
   </span>
   
 
@@ -4472,7 +4514,7 @@
 <h2 id="enabling-limit_name-labels">Enabling <code>limit_name</code> Labels<a class="headerlink" href="#enabling-limit_name-labels" title="Permanent link">&para;</a></h2>
 <p>To include <code>limit_name</code> labels in your Limitador metrics, you need to configure the Limitador instance to use exhaustive telemetry.
 Set the <code>telemetry</code> field to <code>exhaustive</code> in your Limitador CR:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>limitador<span class="w"> </span>limitador<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--type<span class="o">=</span><span class="s1">&#39;merge&#39;</span><span class="w"> </span>-p<span class="o">=</span><span class="s1">&#39;{&quot;spec&quot;:{&quot;telemetry&quot;:&quot;exhaustive&quot;}}&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>limitador<span class="w"> </span>limitador<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--type<span class="o">=</span><span class="s1">'merge'</span><span class="w"> </span>-p<span class="o">=</span><span class="s1">'{"spec":{"telemetry":"exhaustive"}}'</span>
 </span></code></pre></div>
 <h2 id="setting-up-the-development-environment">Setting Up the Development Environment<a class="headerlink" href="#setting-up-the-development-environment" title="Permanent link">&para;</a></h2>
 <h3 id="step-1-create-a-local-kubernetes-cluster-with-kuadrant">Step 1: Create a Local Kubernetes Cluster with Kuadrant<a class="headerlink" href="#step-1-create-a-local-kubernetes-cluster-with-kuadrant" title="Permanent link">&para;</a></h3>
@@ -4541,22 +4583,22 @@ Set the <code>telemetry</code> field to <code>exhaustive</code> in your Limitado
 <li>Look for: "kuadrant-system/limitador-metrics" with state "UP"</li>
 </ol>
 <p><strong>Using the API:</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:9090/api/v1/targets<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.data.activeTargets[] | select(.labels.job | contains(&quot;limitador&quot;)) | {job: .labels.job, health: .health, scrapeUrl: .scrapeUrl}&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:9090/api/v1/targets<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">'.data.activeTargets[] | select(.labels.job | contains("limitador")) | {job: .labels.job, health: .health, scrapeUrl: .scrapeUrl}'</span>
 </span></code></pre></div></p>
 <p>Expected output:
 <div class="language-json highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">&quot;job&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;kuadrant-system/limitador-metrics&quot;</span><span class="p">,</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">&quot;health&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;up&quot;</span><span class="p">,</span><span class="w"> </span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">&quot;scrapeUrl&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://10.244.0.29:8080/metrics&quot;</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">"job"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kuadrant-system/limitador-metrics"</span><span class="p">,</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">"health"</span><span class="p">:</span><span class="w"> </span><span class="s2">"up"</span><span class="p">,</span><span class="w"> </span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">"scrapeUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://10.244.0.29:8080/metrics"</span>
 </span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="p">}</span>
 </span></code></pre></div></p>
 <h3 id="query-basic-metrics">Query Basic Metrics<a class="headerlink" href="#query-basic-metrics" title="Permanent link">&para;</a></h3>
 <p>Test that metrics are being collected:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Check limitador health</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;http://localhost:9090/api/v1/query?query=limitador_up&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.data.result&#39;</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">"http://localhost:9090/api/v1/query?query=limitador_up"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">'.data.result'</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># Check datastore connectivity</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;http://localhost:9090/api/v1/query?query=datastore_partitioned&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.data.result&#39;</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">"http://localhost:9090/api/v1/query?query=datastore_partitioned"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">'.data.result'</span>
 </span></code></pre></div>
 <h2 id="generating-traffic-to-populate-rate-limiting-metrics">Generating Traffic to Populate Rate Limiting Metrics<a class="headerlink" href="#generating-traffic-to-populate-rate-limiting-metrics" title="Permanent link">&para;</a></h2>
 <p>The <code>authorized_hits</code>, <code>authorized_calls</code> and <code>limited_calls</code> metrics only appear after processing requests. Follow this section to generate traffic using the <a href="../../ratelimiting/authenticated-rl-for-app-developers/">authenticated rate limiting user guide</a>.</p>
@@ -4577,7 +4619,7 @@ Set the <code>telemetry</code> field to <code>exhaustive</code> in your Limitado
 </span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="s">  name: ${KUADRANT_GATEWAY_NAME}</span>
 </span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="s">  namespace: ${KUADRANT_GATEWAY_NS}</span>
 </span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="s">  labels:</span>
-</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="s">    kuadrant.io/gateway: &quot;true&quot;</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="s">    kuadrant.io/gateway: "true"</span>
 </span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="s">spec:</span>
 </span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="s">  gatewayClassName: istio</span>
 </span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="s">  listeners:</span>
@@ -4595,7 +4637,7 @@ Set the <code>telemetry</code> field to <code>exhaustive</code> in your Limitado
 </span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span>yaml
 </span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
 </span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Verify Gateway is Accepted and Programmed</span>
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.conditions[?(@.type==&quot;Accepted&quot;)].message}{&quot;\n&quot;}{.status.conditions[?(@.type==&quot;Programmed&quot;)].message}{&quot;\n&quot;}&#39;</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Programmed")].message}{"\n"}'</span>
 </span></code></pre></div>
 <p>Deploy the toystore application:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>ns<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_DEVELOPER_NS</span><span class="si">}</span>
@@ -4619,7 +4661,7 @@ Set the <code>telemetry</code> field to <code>exhaustive</code> in your Limitado
 </span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="s">  - matches:</span>
 </span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="s">    - path:</span>
 </span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="s">        type: Exact</span>
-</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="s">        value: &quot;/toy&quot;</span>
+</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="s">        value: "/toy"</span>
 </span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="s">      method: GET</span>
 </span><span id="__span-14-20"><a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="s">    backendRefs:</span>
 </span><span id="__span-14-21"><a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="s">    - name: toystore</span>
@@ -4627,8 +4669,8 @@ Set the <code>telemetry</code> field to <code>exhaustive</code> in your Limitado
 </span><span id="__span-14-23"><a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <p>Get the gateway URL:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_INGRESS_HOST</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.addresses[0].value}&#39;</span><span class="k">)</span>
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_INGRESS_PORT</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.listeners[?(@.name==&quot;http&quot;)].port}&#39;</span><span class="k">)</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_INGRESS_HOST</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.addresses[0].value}'</span><span class="k">)</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_INGRESS_PORT</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.listeners[?(@.name=="http")].port}'</span><span class="k">)</span>
 </span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_GATEWAY_URL</span><span class="o">=</span><span class="si">${</span><span class="nv">KUADRANT_INGRESS_HOST</span><span class="si">}</span>:<span class="si">${</span><span class="nv">KUADRANT_INGRESS_PORT</span><span class="si">}</span>
 </span></code></pre></div>
 <h3 id="step-3-configure-authentication">Step 3: Configure Authentication<a class="headerlink" href="#step-3-configure-authentication" title="Permanent link">&para;</a></h3>
@@ -4646,7 +4688,7 @@ Set the <code>telemetry</code> field to <code>exhaustive</code> in your Limitado
 </span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="s">    name: toystore</span>
 </span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="s">  rules:</span>
 </span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="s">    authentication:</span>
-</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="s">      &quot;api-key-users&quot;:</span>
+</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="s">      "api-key-users":</span>
 </span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="s">        apiKey:</span>
 </span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="s">          selector:</span>
 </span><span id="__span-16-17"><a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="s">            matchLabels:</span>
@@ -4658,10 +4700,10 @@ Set the <code>telemetry</code> field to <code>exhaustive</code> in your Limitado
 </span><span id="__span-16-23"><a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a><span class="s">    response:</span>
 </span><span id="__span-16-24"><a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a><span class="s">      success:</span>
 </span><span id="__span-16-25"><a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a><span class="s">        filters:</span>
-</span><span id="__span-16-26"><a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a><span class="s">          &quot;identity&quot;:</span>
+</span><span id="__span-16-26"><a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a><span class="s">          "identity":</span>
 </span><span id="__span-16-27"><a id="__codelineno-16-27" name="__codelineno-16-27" href="#__codelineno-16-27"></a><span class="s">            json:</span>
 </span><span id="__span-16-28"><a id="__codelineno-16-28" name="__codelineno-16-28" href="#__codelineno-16-28"></a><span class="s">              properties:</span>
-</span><span id="__span-16-29"><a id="__codelineno-16-29" name="__codelineno-16-29" href="#__codelineno-16-29"></a><span class="s">                &quot;userid&quot;:</span>
+</span><span id="__span-16-29"><a id="__codelineno-16-29" name="__codelineno-16-29" href="#__codelineno-16-29"></a><span class="s">                "userid":</span>
 </span><span id="__span-16-30"><a id="__codelineno-16-30" name="__codelineno-16-30" href="#__codelineno-16-30"></a><span class="s">                  selector: auth.identity.metadata.annotations.secret\.kuadrant\.io/user-id</span>
 </span><span id="__span-16-31"><a id="__codelineno-16-31" name="__codelineno-16-31" href="#__codelineno-16-31"></a><span class="s">EOF</span>
 </span></code></pre></div>
@@ -4710,19 +4752,19 @@ Set the <code>telemetry</code> field to <code>exhaustive</code> in your Limitado
 </span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="s">    kind: HTTPRoute</span>
 </span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="s">    name: toystore</span>
 </span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="s">  limits:</span>
-</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="s">    &quot;alice-limit&quot;:</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="s">    "alice-limit":</span>
 </span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="s">      rates:</span>
 </span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>
 </span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="s">      - limit: 5</span>
 </span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="s">        window: 10s</span>
 </span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="s">      when:</span>
-</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="s">      - predicate: &quot;auth.identity.userid == &#39;alice&#39;&quot;</span>
-</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="s">    &quot;bob-limit&quot;:</span>
+</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="s">      - predicate: "auth.identity.userid == 'alice'"</span>
+</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="s">    "bob-limit":</span>
 </span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="s">      rates:</span>
 </span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="s">      - limit: 2</span>
 </span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="s">        window: 10s</span>
 </span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a><span class="s">      when:</span>
-</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="s">      - predicate: &quot;auth.identity.userid == &#39;bob&#39;&quot;</span>
+</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="s">      - predicate: "auth.identity.userid == 'bob'"</span>
 </span><span id="__span-18-26"><a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <h3 id="step-5-generate-traffic-to-populate-metrics">Step 5: Generate Traffic to Populate Metrics<a class="headerlink" href="#step-5-generate-traffic-to-populate-metrics" title="Permanent link">&para;</a></h3>
@@ -4730,36 +4772,36 @@ Set the <code>telemetry</code> field to <code>exhaustive</code> in your Limitado
 <h4 id="generate-authorized-requests-alice-within-limits">Generate Authorized Requests (Alice - within limits)<a class="headerlink" href="#generate-authorized-requests-alice-within-limits" title="Permanent link">&para;</a></h4>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Send 3 requests as Alice (under her 5/10s limit)</span>
 </span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>..3<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Request </span><span class="nv">$i</span><span class="s2">:&quot;</span>
-</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span>curl<span class="w"> </span>--write-out<span class="w"> </span><span class="s1">&#39;Status: %{http_code}\n&#39;</span><span class="w"> </span>--silent<span class="w"> </span>--output<span class="w"> </span>/dev/null<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">    </span>-H<span class="w"> </span><span class="s1">&#39;Authorization: APIKEY IAMALICE&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">    </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"Request </span><span class="nv">$i</span><span class="s2">:"</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span>curl<span class="w"> </span>--write-out<span class="w"> </span><span class="s1">'Status: %{http_code}\n'</span><span class="w"> </span>--silent<span class="w"> </span>--output<span class="w"> </span>/dev/null<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">    </span>-H<span class="w"> </span><span class="s1">'Authorization: APIKEY IAMALICE'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">    </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">    </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy
 </span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w">  </span>sleep<span class="w"> </span><span class="m">1</span>
 </span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="k">done</span>
 </span></code></pre></div>
 <h4 id="generate-rate-limited-requests-alice-exceed-limits">Generate Rate Limited Requests (Alice - exceed limits)<a class="headerlink" href="#generate-rate-limited-requests-alice-exceed-limits" title="Permanent link">&para;</a></h4>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># Send 8 rapid requests as Alice to trigger rate limiting</span>
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Rapid requests (triggering rate limits):&quot;</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"Rapid requests (triggering rate limits):"</span>
 </span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>..8<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>
-</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">  </span>curl<span class="w"> </span>--write-out<span class="w"> </span><span class="s1">&#39;%{http_code} &#39;</span><span class="w"> </span>--silent<span class="w"> </span>--output<span class="w"> </span>/dev/null<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">    </span>-H<span class="w"> </span><span class="s1">&#39;Authorization: APIKEY IAMALICE&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">    </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">  </span>curl<span class="w"> </span>--write-out<span class="w"> </span><span class="s1">'%{http_code} '</span><span class="w"> </span>--silent<span class="w"> </span>--output<span class="w"> </span>/dev/null<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">    </span>-H<span class="w"> </span><span class="s1">'Authorization: APIKEY IAMALICE'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">    </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">    </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy
 </span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="k">done</span>
-</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">""</span>
 </span></code></pre></div>
 <h4 id="generate-traffic-for-bob">Generate Traffic for Bob<a class="headerlink" href="#generate-traffic-for-bob" title="Permanent link">&para;</a></h4>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># Send requests as Bob (2/10s limit)</span>
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Bob&#39;s requests:&quot;</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"Bob's requests:"</span>
 </span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>..5<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>
-</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">  </span>curl<span class="w"> </span>--write-out<span class="w"> </span><span class="s1">&#39;%{http_code} &#39;</span><span class="w"> </span>--silent<span class="w"> </span>--output<span class="w"> </span>/dev/null<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">    </span>-H<span class="w"> </span><span class="s1">&#39;Authorization: APIKEY IAMBOB&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">    </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">  </span>curl<span class="w"> </span>--write-out<span class="w"> </span><span class="s1">'%{http_code} '</span><span class="w"> </span>--silent<span class="w"> </span>--output<span class="w"> </span>/dev/null<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">    </span>-H<span class="w"> </span><span class="s1">'Authorization: APIKEY IAMBOB'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">    </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="w">    </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy
 </span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="w">  </span>sleep<span class="w"> </span><span class="m">1</span>
 </span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="k">done</span>
-</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">""</span>
 </span></code></pre></div>
 <h3 id="step-6-monitor-metrics-in-prometheus">Step 6: Monitor Metrics in Prometheus<a class="headerlink" href="#step-6-monitor-metrics-in-prometheus" title="Permanent link">&para;</a></h3>
 <p>After generating traffic, check the metrics in Prometheus:</p>
@@ -4786,10 +4828,10 @@ Set the <code>telemetry</code> field to <code>exhaustive</code> in your Limitado
 </span></code></pre></div>
 <h4 id="metrics-by-namespace">Metrics by Namespace<a class="headerlink" href="#metrics-by-namespace" title="Permanent link">&para;</a></h4>
 <div class="language-promql highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># Authorized calls by namespace/route</span>
-</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="nv">authorized_calls</span><span class="p">{</span><span class="nl">limitador_namespace</span><span class="o">=~</span><span class="p">&quot;</span><span class="s">.*toystore.*</span><span class="p">&quot;}</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="nv">authorized_calls</span><span class="p">{</span><span class="nl">limitador_namespace</span><span class="o">=~</span><span class="p">"</span><span class="s">.*toystore.*</span><span class="p">"}</span>
 </span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>
 </span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="c1"># Limited calls by namespace/route</span>
-</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="nv">limited_calls</span><span class="p">{</span><span class="nl">limitador_namespace</span><span class="o">=~</span><span class="p">&quot;</span><span class="s">.*toystore.*</span><span class="p">&quot;}</span>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="nv">limited_calls</span><span class="p">{</span><span class="nl">limitador_namespace</span><span class="o">=~</span><span class="p">"</span><span class="s">.*toystore.*</span><span class="p">"}</span>
 </span></code></pre></div>
 
 

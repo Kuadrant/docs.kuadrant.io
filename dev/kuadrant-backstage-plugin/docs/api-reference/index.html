@@ -1516,6 +1516,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/egress/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring and Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1824,6 +1845,27 @@
   
   <span class="md-ellipsis">
     Enabling mTLS for Gateway-to-Kuadrant Services Traffic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/overviews/openshift-tls-profile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Propagating the OpenShift TLS Security Profile
   </span>
   
 
@@ -3841,6 +3883,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mcp-management-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      MCP Management Endpoints
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#planpolicy-endpoints" class="md-nav__link">
     <span class="md-ellipsis">
       PlanPolicy Endpoints
@@ -3977,10 +4028,67 @@
 <td>GET</td>
 <td><code>/api/kuadrant/httproutes</code></td>
 <td>List all HTTPRoutes</td>
-<td><code>kuadrant.apiproduct.list</code></td>
+<td><code>kuadrant.httproute.list</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/kuadrant/httproutes/:namespace/:name</code></td>
+<td>Get a single HTTPRoute (full resource)</td>
+<td><code>kuadrant.httproute.list</code></td>
 </tr>
 </tbody>
 </table>
+<h2 id="mcp-management-endpoints">MCP Management Endpoints<a class="headerlink" href="#mcp-management-endpoints" title="Permanent link">&para;</a></h2>
+<p>Read-only endpoints backing the MCP Management overview and resource detail views.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/api/kuadrant/gateways</code></td>
+<td>List Gateways (minimal projection)</td>
+<td><code>kuadrant.gateway.list</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/kuadrant/mcp/gatewayextensions</code></td>
+<td>List MCPGatewayExtensions (minimal projection)</td>
+<td><code>kuadrant.mcpgatewayextension.list</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/kuadrant/mcp/gatewayextensions/:namespace/:name</code></td>
+<td>Get a single MCPGatewayExtension (full resource)</td>
+<td><code>kuadrant.mcpgatewayextension.list</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/kuadrant/mcp/serverregistrations</code></td>
+<td>List MCPServerRegistrations (minimal projection)</td>
+<td><code>kuadrant.mcpserverregistration.list</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/kuadrant/mcp/serverregistrations/:namespace/:name</code></td>
+<td>Get a single MCPServerRegistration (full resource)</td>
+<td><code>kuadrant.mcpserverregistration.list</code></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/kuadrant/mcp/inspector/:namespace/:name</code></td>
+<td>Relay an MCP Inspector JSON-RPC request</td>
+<td><code>kuadrant.mcp.inspector.use</code></td>
+</tr>
+</tbody>
+</table>
+<p>The list endpoints return only the fields the overview needs (name, namespace, targetRef, conditions). The detail endpoints return the full resource manifest — including labels, annotations, owner references and creation timestamp — because the read-only detail views render both a Details tab and a raw YAML tab. They respond <code>403</code> when the permission is denied and <code>500</code> on a Kubernetes client error.</p>
 <h2 id="planpolicy-endpoints">PlanPolicy Endpoints<a class="headerlink" href="#planpolicy-endpoints" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

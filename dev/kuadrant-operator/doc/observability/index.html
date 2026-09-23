@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://docs.kuadrant.io/dev/kuadrant-operator/doc/observability/">
       
       
-        <link rel="prev" href="../user-guides/egress/credential-injection/">
+        <link rel="prev" href="../user-guides/egress/observability/">
       
       
         <link rel="next" href="metrics/">
@@ -1522,6 +1522,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-guides/egress/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring and Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1926,6 +1947,27 @@
   
   <span class="md-ellipsis">
     Enabling mTLS for Gateway-to-Kuadrant Services Traffic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overviews/openshift-tls-profile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Propagating the OpenShift TLS Security Profile
   </span>
   
 
@@ -4009,6 +4051,7 @@
 <li><strong><a href="tracing/">Tracing</a></strong>: Distributed tracing with OpenTelemetry support for request flows</li>
 <li><strong><a href="envoy-access-logs/">Access Logs</a></strong>: Envoy access logs with request correlation and structured logging</li>
 <li><strong><a href="examples/">Dashboards</a></strong>: Pre-built Grafana dashboards for visualization</li>
+<li><strong><a href="../user-guides/egress/observability/">Egress Observability</a></strong>: Metrics, access logging, and distributed tracing specific to egress gateway traffic</li>
 </ul>
 <h2 id="deploying-the-observabilty">Deploying the observabilty<a class="headerlink" href="#deploying-the-observabilty" title="Permanent link">&para;</a></h2>
 <p>Make sure to enable the observability reconciler in your Kuadrant CR, this will create service monitors for the kuadrant, dns, limitador and authorino operators:
@@ -4026,8 +4069,8 @@
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>./bin/kustomize<span class="w"> </span>build<span class="w"> </span>./config/thanos<span class="w"> </span><span class="p">|</span><span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>./bin/kustomize<span class="w"> </span>build<span class="w"> </span>./examples/dashboards<span class="w"> </span><span class="p">|</span><span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>./bin/kustomize<span class="w"> </span>build<span class="w"> </span>./examples/alerts<span class="w"> </span><span class="p">|</span><span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nv">THANOS_RECEIVE_ROUTER_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>-n<span class="w"> </span>monitoring<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>thanos-receive-router-lb<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.loadBalancer.ingress[0].ip}&#39;</span><span class="k">)</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>monitoring<span class="w"> </span>patch<span class="w"> </span>prometheus<span class="w"> </span>k8s<span class="w"> </span>--type<span class="o">=</span><span class="s1">&#39;merge&#39;</span><span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;remoteWrite&quot;:[{&quot;url&quot;:&quot;http://&#39;</span><span class="s2">&quot;</span><span class="nv">$THANOS_RECEIVE_ROUTER_IP</span><span class="s2">&quot;</span><span class="s1">&#39;:19291/api/v1/receive&quot;, &quot;writeRelabelConfigs&quot;:[{&quot;action&quot;:&quot;replace&quot;, &quot;replacement&quot;:&quot;&#39;</span><span class="s2">&quot;</span><span class="nv">$KUADRANT_CLUSTER_NAME</span><span class="s2">&quot;</span><span class="s1">&#39;&quot;, &quot;targetLabel&quot;:&quot;cluster_id&quot;}]}]}}&#39;</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nv">THANOS_RECEIVE_ROUTER_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>-n<span class="w"> </span>monitoring<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>thanos-receive-router-lb<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.loadBalancer.ingress[0].ip}'</span><span class="k">)</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>monitoring<span class="w"> </span>patch<span class="w"> </span>prometheus<span class="w"> </span>k8s<span class="w"> </span>--type<span class="o">=</span><span class="s1">'merge'</span><span class="w"> </span>-p<span class="w"> </span><span class="s1">'{"spec":{"remoteWrite":[{"url":"http://'</span><span class="s2">"</span><span class="nv">$THANOS_RECEIVE_ROUTER_IP</span><span class="s2">"</span><span class="s1">':19291/api/v1/receive", "writeRelabelConfigs":[{"action":"replace", "replacement":"'</span><span class="s2">"</span><span class="nv">$KUADRANT_CLUSTER_NAME</span><span class="s2">"</span><span class="s1">'", "targetLabel":"cluster_id"}]}]}}'</span>
 </span></code></pre></div>
 <p>This will deploy prometheus, alertmanager and grafana into the <code>monitoring</code> namespace,
 along with metrics scrape configuration for Istio and Envoy.

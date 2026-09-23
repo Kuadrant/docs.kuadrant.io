@@ -1720,6 +1720,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../egress/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring and Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2028,6 +2049,27 @@
   
   <span class="md-ellipsis">
     Enabling mTLS for Gateway-to-Kuadrant Services Traffic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../overviews/openshift-tls-profile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Propagating the OpenShift TLS Security Profile
   </span>
   
 
@@ -4267,7 +4309,7 @@
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="s">  name: ${KUADRANT_GATEWAY_NAME}</span>
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="s">  namespace: ${KUADRANT_GATEWAY_NS}</span>
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="s">  labels:</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="s">    kuadrant.io/gateway: &quot;true&quot;</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="s">    kuadrant.io/gateway: "true"</span>
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="s">spec:</span>
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="s">  gatewayClassName: istio</span>
 </span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="s">  listeners:</span>
@@ -4281,7 +4323,7 @@
 </span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <p>Check the status of the <code>Gateway</code> ensuring the gateway is Accepted and Programmed:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.conditions[?(@.type==&quot;Accepted&quot;)].message}{&quot;\n&quot;}{.status.conditions[?(@.type==&quot;Programmed&quot;)].message}{&quot;\n&quot;}&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Programmed")].message}{"\n"}'</span>
 </span></code></pre></div>
 <h3 id="deploy-the-toy-store-api">Deploy the Toy Store API<a class="headerlink" href="#deploy-the-toy-store-api" title="Permanent link">&para;</a></h3>
 <p>Create the namespace for the Toystore application:</p>
@@ -4308,7 +4350,7 @@ Create a HTTPRoute to route traffic to the service via Istio Ingress Gateway:</p
 </span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="s">  - matches:</span>
 </span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="s">    - path:</span>
 </span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="s">        type: Exact</span>
-</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="s">        value: &quot;/toy&quot;</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="s">        value: "/toy"</span>
 </span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="s">      method: GET</span>
 </span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="s">    backendRefs:</span>
 </span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="s">    - name: toystore</span>
@@ -4319,11 +4361,11 @@ Create a HTTPRoute to route traffic to the service via Istio Ingress Gateway:</p
 <p><img alt="Lifecycle" src="http://www.plantuml.com/plantuml/png/hP7DIWD1383l-nHXJ_PGtFuSIsaH1F5WGRtjPJgJjg6pcPB9WFNf7LrXV_Ickp0Gyf5yIJPHZMXgV17Fn1SZfW671vEylk2RRZqTkK5MiFb1wL4I4hkx88m2iwee1AqQFdg4ShLVprQt-tNDszq3K8J45mcQ0NGrj_yqVpNFgmgU7aim0sPKQzxMUaQRXFGAqPwmGJW40JqXv1urHpMA3eZ1C9JbDkbf5ppPQrdMV9CY2XmC-GWQmEGaif8rYfFEPLdDu9K_aq7e7TstLPyUcot-RERnI0fVVjxOSuGBIaCnKk21sWBkW-p9EUJMgnCTIot_Prs3kJFceEiu-VM2uLmKlIl2TFrZVQCu8yD9kg1Dvf8RP9SQ_m40" /></p>
 <h4 id="try-the-api-unprotected">Try the API unprotected<a class="headerlink" href="#try-the-api-unprotected" title="Permanent link">&para;</a></h4>
 <p>Export the gateway hostname and port:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_INGRESS_HOST</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.addresses[0].value}&#39;</span><span class="k">)</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_INGRESS_PORT</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.listeners[?(@.name==&quot;http&quot;)].port}&#39;</span><span class="k">)</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_INGRESS_HOST</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.addresses[0].value}'</span><span class="k">)</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_INGRESS_PORT</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NAME</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.listeners[?(@.name=="http")].port}'</span><span class="k">)</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_GATEWAY_URL</span><span class="o">=</span><span class="si">${</span><span class="nv">KUADRANT_INGRESS_HOST</span><span class="si">}</span>:<span class="si">${</span><span class="nv">KUADRANT_INGRESS_PORT</span><span class="si">}</span>
 </span></code></pre></div>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span>-i
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span>-i
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="c1"># HTTP/1.1 200 OK</span>
 </span></code></pre></div>
 <p>It should return <code>200 OK</code>.</p>
@@ -4332,7 +4374,7 @@ Create a HTTPRoute to route traffic to the service via Istio Ingress Gateway:</p
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>port-forward<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span><span class="w"> </span>service/<span class="si">${</span><span class="nv">KUADRANT_GATEWAY_NS</span><span class="si">}</span>-istio<span class="w"> </span><span class="m">9080</span>:80<span class="w"> </span>&gt;/dev/null<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">&amp;</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KUADRANT_GATEWAY_URL</span><span class="o">=</span>localhost:9080
 </span></code></pre></div>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span>-i
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span>-i
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="c1"># HTTP/1.1 200 OK</span>
 </span></code></pre></div>
 </blockquote>
@@ -4361,45 +4403,45 @@ Create a HTTPRoute to route traffic to the service via Istio Ingress Gateway:</p
 </span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="s">    name: toystore</span>
 </span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="s">  rules:</span>
 </span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="s">    authentication:</span>
-</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="s">      &quot;keycloak-users&quot;:</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="s">      "keycloak-users":</span>
 </span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="s">        jwt:</span>
 </span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="s">          issuerUrl: http://keycloak.keycloak.svc.cluster.local:8080/realms/kuadrant</span>
-</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="s">      &quot;k8s-service-accounts&quot;:</span>
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="s">      "k8s-service-accounts":</span>
 </span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="s">        kubernetesTokenReview:</span>
 </span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="s">          audiences:</span>
 </span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>
 </span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a><span class="s">          - https://kubernetes.default.svc.cluster.local</span>
 </span><span id="__span-13-22"><a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a><span class="s">        overrides:</span>
-</span><span id="__span-13-23"><a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="s">          &quot;sub&quot;:</span>
+</span><span id="__span-13-23"><a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="s">          "sub":</span>
 </span><span id="__span-13-24"><a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a><span class="s">            selector: auth.identity.user.username</span>
 </span><span id="__span-13-25"><a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a><span class="s">    authorization:</span>
-</span><span id="__span-13-26"><a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a><span class="s">      &quot;k8s-rbac&quot;:</span>
+</span><span id="__span-13-26"><a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a><span class="s">      "k8s-rbac":</span>
 </span><span id="__span-13-27"><a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a><span class="s">        kubernetesSubjectAccessReview:</span>
 </span><span id="__span-13-28"><a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a><span class="s">          user:</span>
 </span><span id="__span-13-29"><a id="__codelineno-13-29" name="__codelineno-13-29" href="#__codelineno-13-29"></a><span class="s">            selector: auth.identity.sub</span>
 </span><span id="__span-13-30"><a id="__codelineno-13-30" name="__codelineno-13-30" href="#__codelineno-13-30"></a><span class="s">    response:</span>
 </span><span id="__span-13-31"><a id="__codelineno-13-31" name="__codelineno-13-31" href="#__codelineno-13-31"></a><span class="s">      success:</span>
 </span><span id="__span-13-32"><a id="__codelineno-13-32" name="__codelineno-13-32" href="#__codelineno-13-32"></a><span class="s">        filters:</span>
-</span><span id="__span-13-33"><a id="__codelineno-13-33" name="__codelineno-13-33" href="#__codelineno-13-33"></a><span class="s">          &quot;identity&quot;:</span>
+</span><span id="__span-13-33"><a id="__codelineno-13-33" name="__codelineno-13-33" href="#__codelineno-13-33"></a><span class="s">          "identity":</span>
 </span><span id="__span-13-34"><a id="__codelineno-13-34" name="__codelineno-13-34" href="#__codelineno-13-34"></a><span class="s">            json:</span>
 </span><span id="__span-13-35"><a id="__codelineno-13-35" name="__codelineno-13-35" href="#__codelineno-13-35"></a><span class="s">              properties:</span>
-</span><span id="__span-13-36"><a id="__codelineno-13-36" name="__codelineno-13-36" href="#__codelineno-13-36"></a><span class="s">                &quot;userid&quot;:</span>
+</span><span id="__span-13-36"><a id="__codelineno-13-36" name="__codelineno-13-36" href="#__codelineno-13-36"></a><span class="s">                "userid":</span>
 </span><span id="__span-13-37"><a id="__codelineno-13-37" name="__codelineno-13-37" href="#__codelineno-13-37"></a><span class="s">                  selector: auth.identity.sub</span>
 </span><span id="__span-13-38"><a id="__codelineno-13-38" name="__codelineno-13-38" href="#__codelineno-13-38"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <h4 id="try-the-api-missing-authentication">Try the API missing authentication<a class="headerlink" href="#try-the-api-missing-authentication" title="Permanent link">&para;</a></h4>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span>-i
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span>-i
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="c1"># HTTP/1.1 401 Unauthorized</span>
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="c1"># www-authenticate: Bearer realm=&quot;keycloak-users&quot;</span>
-</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="c1"># www-authenticate: Bearer realm=&quot;k8s-service-accounts&quot;</span>
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="c1"># x-ext-auth-reason: {&quot;k8s-service-accounts&quot;:&quot;credential not found&quot;,&quot;keycloak-users&quot;:&quot;credential not found&quot;}</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="c1"># www-authenticate: Bearer realm="keycloak-users"</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="c1"># www-authenticate: Bearer realm="k8s-service-accounts"</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="c1"># x-ext-auth-reason: {"k8s-service-accounts":"credential not found","keycloak-users":"credential not found"}</span>
 </span></code></pre></div>
 <h4 id="try-the-api-without-permission">Try the API without permission<a class="headerlink" href="#try-the-api-without-permission" title="Permanent link">&para;</a></h4>
 <p>Obtain an access token with the Keycloak server:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nv">KUADRANT_ACCESS_TOKEN</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>run<span class="w"> </span>token<span class="w"> </span>--attach<span class="w"> </span>--rm<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>-q<span class="w"> </span>--image<span class="o">=</span>curlimages/curl<span class="w"> </span>--<span class="w"> </span>http://keycloak.keycloak.svc.cluster.local:8080/realms/kuadrant/protocol/openid-connect/token<span class="w"> </span>-s<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;grant_type=password&#39;</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;client_id=demo&#39;</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;username=john&#39;</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;password=p&#39;</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;scope=openid&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span>.KUADRANT_ACCESS_TOKEN<span class="k">)</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nv">KUADRANT_ACCESS_TOKEN</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>run<span class="w"> </span>token<span class="w"> </span>--attach<span class="w"> </span>--rm<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>-q<span class="w"> </span>--image<span class="o">=</span>curlimages/curl<span class="w"> </span>--<span class="w"> </span>http://keycloak.keycloak.svc.cluster.local:8080/realms/kuadrant/protocol/openid-connect/token<span class="w"> </span>-s<span class="w"> </span>-d<span class="w"> </span><span class="s1">'grant_type=password'</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">'client_id=demo'</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">'username=john'</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">'password=p'</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">'scope=openid'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span>.KUADRANT_ACCESS_TOKEN<span class="k">)</span>
 </span></code></pre></div>
 <p>Send a request to the API as the Keycloak-authenticated user while still missing permissions:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUADRANT_ACCESS_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span>-i
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUADRANT_ACCESS_TOKEN</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span>-i
 </span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="c1"># HTTP/1.1 403 Forbidden</span>
 </span></code></pre></div>
 <p>Create a Kubernetes Service Account to represent a consumer of the API associated with the alternative source of identities <code>k8s-service-accounts</code>:</p>
@@ -4414,7 +4456,7 @@ Create a HTTPRoute to route traffic to the service via Istio Ingress Gateway:</p
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nv">KUADRANT_SA_TOKEN</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>create<span class="w"> </span>token<span class="w"> </span>client-app-1<span class="k">)</span>
 </span></code></pre></div>
 <p>Send a request to the API as the service account while still missing permissions:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUADRANT_SA_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span>-i
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUADRANT_SA_TOKEN</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span>-i
 </span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="c1"># HTTP/1.1 403 Forbidden</span>
 </span></code></pre></div>
 <h3 id="grant-access-to-the-toy-store-api-for-user-and-service-account">Grant access to the Toy Store API for user and service account<a class="headerlink" href="#grant-access-to-the-toy-store-api-for-user-and-service-account" title="Permanent link">&para;</a></h3>
@@ -4426,16 +4468,16 @@ Create a HTTPRoute to route traffic to the service via Istio Ingress Gateway:</p
 </span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="s">  name: toystore-reader</span>
 </span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="s">rules:</span>
 </span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>
-</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="s">- nonResourceURLs: [&quot;/toy*&quot;]</span>
-</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="s">  verbs: [&quot;get&quot;]</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="s">- nonResourceURLs: ["/toy*"]</span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="s">  verbs: ["get"]</span>
 </span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="s">---</span>
 </span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="s">apiVersion: rbac.authorization.k8s.io/v1</span>
 </span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="s">kind: ClusterRole</span>
 </span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="s">metadata:</span>
 </span><span id="__span-20-14"><a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="s">  name: toystore-writer</span>
 </span><span id="__span-20-15"><a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="s">rules:</span>
-</span><span id="__span-20-16"><a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="s">- nonResourceURLs: [&quot;/admin/toy&quot;]</span>
-</span><span id="__span-20-17"><a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a><span class="s">  verbs: [&quot;post&quot;, &quot;delete&quot;]</span>
+</span><span id="__span-20-16"><a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="s">- nonResourceURLs: ["/admin/toy"]</span>
+</span><span id="__span-20-17"><a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a><span class="s">  verbs: ["post", "delete"]</span>
 </span><span id="__span-20-18"><a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <p>Add permissions to the user and service account:</p>
@@ -4472,7 +4514,7 @@ Create a HTTPRoute to route traffic to the service via Istio Ingress Gateway:</p
 </span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="s">subjects:</span>
 </span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>
 </span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="s">- kind: User</span>
-</span><span id="__span-21-13"><a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="s">  name: $(jq -R -r &#39;split(&quot;.&quot;) | .[1] | @base64d | fromjson | .sub&#39; &lt;&lt;&lt; &quot;$KUADRANT_ACCESS_TOKEN&quot;)</span>
+</span><span id="__span-21-13"><a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="s">  name: $(jq -R -r 'split(".") | .[1] | @base64d | fromjson | .sub' &lt;&lt;&lt; "$KUADRANT_ACCESS_TOKEN")</span>
 </span><span id="__span-21-14"><a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="s">- kind: ServiceAccount</span>
 </span><span id="__span-21-15"><a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a><span class="s">  name: client-app-1</span>
 </span><span id="__span-21-16"><a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a><span class="s">  namespace: default</span>
@@ -4487,7 +4529,7 @@ Create a HTTPRoute to route traffic to the service via Istio Ingress Gateway:</p
 </span><span id="__span-21-25"><a id="__codelineno-21-25" name="__codelineno-21-25" href="#__codelineno-21-25"></a><span class="s">  name: toystore-writer</span>
 </span><span id="__span-21-26"><a id="__codelineno-21-26" name="__codelineno-21-26" href="#__codelineno-21-26"></a><span class="s">subjects:</span>
 </span><span id="__span-21-27"><a id="__codelineno-21-27" name="__codelineno-21-27" href="#__codelineno-21-27"></a><span class="s">- kind: User</span>
-</span><span id="__span-21-28"><a id="__codelineno-21-28" name="__codelineno-21-28" href="#__codelineno-21-28"></a><span class="s">  name: $(jq -R -r &#39;split(&quot;.&quot;) | .[1] | @base64d | fromjson | .sub&#39; &lt;&lt;&lt; &quot;$KUADRANT_ACCESS_TOKEN&quot;)</span>
+</span><span id="__span-21-28"><a id="__codelineno-21-28" name="__codelineno-21-28" href="#__codelineno-21-28"></a><span class="s">  name: $(jq -R -r 'split(".") | .[1] | @base64d | fromjson | .sub' &lt;&lt;&lt; "$KUADRANT_ACCESS_TOKEN")</span>
 </span><span id="__span-21-29"><a id="__codelineno-21-29" name="__codelineno-21-29" href="#__codelineno-21-29"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <details>
@@ -4500,17 +4542,17 @@ in the Authorino docs.</p>
 </details>
 <h4 id="try-the-api-with-permission">Try the API with permission<a class="headerlink" href="#try-the-api-with-permission" title="Permanent link">&para;</a></h4>
 <p>Send requests to the API as the Keycloak-authenticated user:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUADRANT_ACCESS_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span>-i
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUADRANT_ACCESS_TOKEN</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span>-i
 </span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="c1"># HTTP/1.1 200 OK</span>
 </span></code></pre></div>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUADRANT_ACCESS_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/admin/toy<span class="w"> </span>-i
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUADRANT_ACCESS_TOKEN</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/admin/toy<span class="w"> </span>-i
 </span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="c1"># HTTP/1.1 200 OK</span>
 </span></code></pre></div>
 <p>Send requests to the API as the Kubernetes service account:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUADRANT_SA_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span>-i
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUADRANT_SA_TOKEN</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span>-i
 </span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="c1"># HTTP/1.1 200 OK</span>
 </span></code></pre></div>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUADRANT_SA_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/admin/toy<span class="w"> </span>-i
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUADRANT_SA_TOKEN</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/admin/toy<span class="w"> </span>-i
 </span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="c1"># HTTP/1.1 403 Forbidden</span>
 </span></code></pre></div>
 <h3 id="enforce-rate-limiting-on-requests-to-the-toy-store-api">Enforce rate limiting on requests to the Toy Store API<a class="headerlink" href="#enforce-rate-limiting-on-requests-to-the-toy-store-api" title="Permanent link">&para;</a></h3>
@@ -4526,7 +4568,7 @@ in the Authorino docs.</p>
 </span><span id="__span-26-9"><a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="s">    kind: HTTPRoute</span>
 </span><span id="__span-26-10"><a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="s">    name: toystore</span>
 </span><span id="__span-26-11"><a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a><span class="s">  limits:</span>
-</span><span id="__span-26-12"><a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a><span class="s">    &quot;per-user&quot;:</span>
+</span><span id="__span-26-12"><a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a><span class="s">    "per-user":</span>
 </span><span id="__span-26-13"><a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a><span class="s">      rates:</span>
 </span><span id="__span-26-14"><a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a>
 </span><span id="__span-26-15"><a id="__codelineno-26-15" name="__codelineno-26-15" href="#__codelineno-26-15"></a><span class="s">      - limit: 5</span>
@@ -4544,10 +4586,10 @@ in the Authorino docs.</p>
 <p><strong>Note:</strong> If the tokens have expired, you may need to refresh them first.</p>
 </blockquote>
 <p>Send requests as the Keycloak-authenticated user:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="k">while</span><span class="w"> </span>:<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>curl<span class="w"> </span>--write-out<span class="w"> </span><span class="s1">&#39;%{http_code}\n&#39;</span><span class="w"> </span>--silent<span class="w"> </span>--output<span class="w"> </span>/dev/null<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUADRANT_ACCESS_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span>--color<span class="w"> </span><span class="s2">&quot;\b(429)\b|</span>$<span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">1</span><span class="p">;</span><span class="w"> </span><span class="k">done</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="k">while</span><span class="w"> </span>:<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>curl<span class="w"> </span>--write-out<span class="w"> </span><span class="s1">'%{http_code}\n'</span><span class="w"> </span>--silent<span class="w"> </span>--output<span class="w"> </span>/dev/null<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUADRANT_ACCESS_TOKEN</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span>--color<span class="w"> </span><span class="s2">"\b(429)\b|</span>$<span class="s2">"</span><span class="p">;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">1</span><span class="p">;</span><span class="w"> </span><span class="k">done</span>
 </span></code></pre></div>
 <p>Send requests as the Kubernetes service account:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="k">while</span><span class="w"> </span>:<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>curl<span class="w"> </span>--write-out<span class="w"> </span><span class="s1">&#39;%{http_code}\n&#39;</span><span class="w"> </span>--silent<span class="w"> </span>--output<span class="w"> </span>/dev/null<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUADRANT_SA_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Host: api.toystore.com&#39;</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span>--color<span class="w"> </span><span class="s2">&quot;\b(429)\b|</span>$<span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">1</span><span class="p">;</span><span class="w"> </span><span class="k">done</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="k">while</span><span class="w"> </span>:<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>curl<span class="w"> </span>--write-out<span class="w"> </span><span class="s1">'%{http_code}\n'</span><span class="w"> </span>--silent<span class="w"> </span>--output<span class="w"> </span>/dev/null<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUADRANT_SA_TOKEN</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">'Host: api.toystore.com'</span><span class="w"> </span>http://<span class="nv">$KUADRANT_GATEWAY_URL</span>/toy<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span>--color<span class="w"> </span><span class="s2">"\b(429)\b|</span>$<span class="s2">"</span><span class="p">;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">1</span><span class="p">;</span><span class="w"> </span><span class="k">done</span>
 </span></code></pre></div>
 
 

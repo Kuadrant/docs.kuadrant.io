@@ -1516,6 +1516,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/user-guides/egress/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring and Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1824,6 +1845,27 @@
   
   <span class="md-ellipsis">
     Enabling mTLS for Gateway-to-Kuadrant Services Traffic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kuadrant-operator/doc/overviews/openshift-tls-profile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Propagating the OpenShift TLS Security Profile
   </span>
   
 
@@ -4028,26 +4070,29 @@
 </span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
 </span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="s">  - talker-api.127.0.0.1.nip.io</span>
 </span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="s">  authentication:</span>
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="s">    &quot;keycloak-kuadrant-realm&quot;:</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="s">    "keycloak-kuadrant-realm":</span>
 </span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="s">      jwt:</span>
 </span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="s">        issuerUrl: http://keycloak.keycloak.svc.cluster.local:8080/realms/kuadrant</span>
-</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="s">EOF</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="s">        audiences:</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="s">        - account</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="s">EOF</span>
 </span></code></pre></div>
+<p><code>audiences</code> makes Authorino reject tokens whose <code>aud</code> claim does not name this API. The tokens issued by the demo realm carry <code>account</code> in <code>aud</code>; in your own setup, list the audience the token issuer stamps into tokens meant for this API. Omit the field to accept any audience (see <a href="../../features/#jwt-verification-authenticationjwt">JWT verification</a>).</p>
 <h2 id="obtain-an-access-token-with-the-keycloak-server">❻ Obtain an access token with the Keycloak server<a class="headerlink" href="#obtain-an-access-token-with-the-keycloak-server" title="Permanent link">&para;</a></h2>
 <p>The <code>AuthConfig</code> deployed in the previous step is suitable for validating access tokens requested inside the cluster. This is because Keycloak's <code>iss</code> claim added to the JWTs matches always the host used to request the token and Authorino will later try to match this host to the host that provides the OpenID Connect configuration.</p>
 <p>Obtain an access token from within the cluster:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nv">ACCESS_TOKEN</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>run<span class="w"> </span>token<span class="w"> </span>--attach<span class="w"> </span>--rm<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>-q<span class="w"> </span>--image<span class="o">=</span>curlimages/curl<span class="w"> </span>--<span class="w"> </span>http://keycloak.keycloak.svc.cluster.local:8080/realms/kuadrant/protocol/openid-connect/token<span class="w"> </span>-s<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;grant_type=password&#39;</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;client_id=demo&#39;</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;username=john&#39;</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;password=p&#39;</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;scope=openid&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span>.access_token<span class="k">)</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nv">ACCESS_TOKEN</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>run<span class="w"> </span>token<span class="w"> </span>--attach<span class="w"> </span>--rm<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>-q<span class="w"> </span>--image<span class="o">=</span>curlimages/curl<span class="w"> </span>--<span class="w"> </span>http://keycloak.keycloak.svc.cluster.local:8080/realms/kuadrant/protocol/openid-connect/token<span class="w"> </span>-s<span class="w"> </span>-d<span class="w"> </span><span class="s1">'grant_type=password'</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">'client_id=demo'</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">'username=john'</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">'password=p'</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">'scope=openid'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span>.access_token<span class="k">)</span>
 </span></code></pre></div>
 <p>If your Keycloak server is reachable from outside the cluster, feel free to obtain the token directly. Make sure the host name set in the OIDC issuer endpoint in the <code>AuthConfig</code> matches the one used to obtain the token and is as well reachable from within the cluster.</p>
 <h2 id="consume-the-api">❼ Consume the API<a class="headerlink" href="#consume-the-api" title="Permanent link">&para;</a></h2>
 <p>With a valid access token:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$ACCESS_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>http://talker-api.127.0.0.1.nip.io:8000/hello
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$ACCESS_TOKEN</span><span class="s2">"</span><span class="w"> </span>http://talker-api.127.0.0.1.nip.io:8000/hello
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1"># HTTP/1.1 200 OK</span>
 </span></code></pre></div>
 <p>With missing or invalid access token:</p>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>curl<span class="w"> </span>http://talker-api.127.0.0.1.nip.io:8000/hello<span class="w"> </span>-i
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="c1"># HTTP/1.1 401 Unauthorized</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="c1"># www-authenticate: Bearer realm=&quot;keycloak-kuadrant-realm&quot;</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="c1"># www-authenticate: Bearer realm="keycloak-kuadrant-realm"</span>
 </span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># x-ext-auth-reason: credential not found</span>
 </span></code></pre></div>
 <h2 id="cleanup">Cleanup<a class="headerlink" href="#cleanup" title="Permanent link">&para;</a></h2>

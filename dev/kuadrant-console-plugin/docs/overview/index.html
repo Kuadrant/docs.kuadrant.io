@@ -1520,6 +1520,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/egress/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring and Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1828,6 +1849,27 @@
   
   <span class="md-ellipsis">
     Enabling mTLS for Gateway-to-Kuadrant Services Traffic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/overviews/openshift-tls-profile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Propagating the OpenShift TLS Security Profile
   </span>
   
 
@@ -2414,6 +2456,15 @@
   <a href="#kuadrant-section" class="md-nav__link">
     <span class="md-ellipsis">
       Kuadrant section
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcp-management-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      MCP management section
     </span>
   </a>
   
@@ -3941,6 +3992,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#mcp-management-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      MCP management section
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#kuadrant-api-catalog-section" class="md-nav__link">
     <span class="md-ellipsis">
       Kuadrant API Catalog section
@@ -3998,7 +4058,7 @@
 <h1 id="kuadrant-openshift-console-plugin">Kuadrant OpenShift Console Plugin<a class="headerlink" href="#kuadrant-openshift-console-plugin" title="Permanent link">&para;</a></h1>
 <p>The Kuadrant OpenShift Console Plugin extends the OpenShift web console with UI for managing Kuadrant resources. It is deployed automatically as part of the <a href="https://docs.kuadrant.io/1.2.x/install-olm/">Kuadrant Operator installation</a>.</p>
 <h2 id="what-the-plugin-provides">What the plugin provides<a class="headerlink" href="#what-the-plugin-provides" title="Permanent link">&para;</a></h2>
-<p>The plugin adds two main sections to the OpenShift console:</p>
+<p>The plugin adds three main sections to the OpenShift console:</p>
 <h3 id="kuadrant-section">Kuadrant section<a class="headerlink" href="#kuadrant-section" title="Permanent link">&para;</a></h3>
 <p>The <strong>Kuadrant</strong> section provides gateway and policy management with the following pages:</p>
 <ul>
@@ -4008,6 +4068,41 @@
 <li><strong>Policy Topology</strong> - visual graph of the relationships between Gateways, HTTPRoutes, and the Kuadrant policies attached to them</li>
 <li><strong>Policy creation forms</strong> - guided forms for creating AuthPolicy, RateLimitPolicy, DNSPolicy, and TLSPolicy resources, with a toggle to switch between form and YAML views</li>
 </ul>
+<h3 id="mcp-management-section">MCP management section<a class="headerlink" href="#mcp-management-section" title="Permanent link">&para;</a></h3>
+<p>The <strong>MCP management</strong> section provides setup and management for MCP (Model Context Protocol) gateway infrastructure:</p>
+<ul>
+<li><strong>Overview</strong> - when no MCPGatewayExtensions exist, shows a guided setup wizard for creating MCP infrastructure. Once extensions are created, shows a dashboard with summary cards for MCP Gateways (Total, Healthy, Unhealthy) and MCP Servers (Types, Total, Online, Offline). Includes tables for MCP Gateway Extensions, MCP Servers, Reference Grants, and Policies attached to MCP gateways or servers. Each table has toolbar filters and RBAC-aware create actions.</li>
+<li><strong>MCP Gateway Setup Wizard</strong> - 4-step wizard that walks through selecting or creating a Gateway, HTTPRoute, and MCPGatewayExtension resource. Supports both existing resource selection and inline creation of new resources. Resources are created sequentially in the final verification step, with live status watching for the MCPGatewayExtension Ready condition.</li>
+<li><strong>MCP Inspector</strong> - connects to a Ready MCPGatewayExtension through the Console plugin backend, lists and refreshes tools, creates inputs from each tool's JSON schema, and displays tool results with JSON-RPC request telemetry. See the <a href="../mcp-inspector/">MCP Inspector guide</a>.</li>
+</ul>
+<p>Key resources managed on this page:</p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>API Group</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MCPGatewayExtension</code></td>
+<td><code>mcp.kuadrant.io/v1</code></td>
+<td>Extends a Gateway with MCP capabilities (public host, OAuth, session store)</td>
+</tr>
+<tr>
+<td><code>MCPServerRegistration</code></td>
+<td><code>mcp.kuadrant.io/v1</code></td>
+<td>Registers an MCP server behind an HTTPRoute with prefix routing</td>
+</tr>
+<tr>
+<td><code>ReferenceGrant</code></td>
+<td><code>gateway.networking.k8s.io/v1beta1</code></td>
+<td>Allows cross-namespace references between MCPGatewayExtensions and Gateways</td>
+</tr>
+</tbody>
+</table>
+<p>MCP Gateways are identified by finding Gateway resources that have an MCPGatewayExtension targeting them via <code>spec.targetRef</code>. The summary cards compute health based on the Gateway's <code>Accepted</code> and <code>Programmed</code> conditions, and server readiness based on the <code>Ready</code> condition.</p>
 <h3 id="kuadrant-api-catalog-section">Kuadrant API Catalog section<a class="headerlink" href="#kuadrant-api-catalog-section" title="Permanent link">&para;</a></h3>
 <p>The <strong>Kuadrant API Catalog</strong> section provides developer portal functionality for API management:</p>
 <ul>
@@ -4022,7 +4117,7 @@
 </span></code></pre></div>
 <p>The plugin registers itself with the OpenShift console via a <code>ConsolePlugin</code> resource. The console will prompt you to enable it, or you can enable it directly:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>consoles.operator.openshift.io<span class="w"> </span>cluster<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>--patch<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;plugins&quot;:[&quot;kuadrant-console-plugin&quot;]}}&#39;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>--patch<span class="w"> </span><span class="s1">'{"spec":{"plugins":["kuadrant-console-plugin"]}}'</span>
 </span></code></pre></div>
 <p>Refresh the console and the <strong>Kuadrant</strong> section should appear in the navigation.</p>
 <h2 id="post-install-rbac">Post-install: RBAC<a class="headerlink" href="#post-install-rbac" title="Permanent link">&para;</a></h2>

@@ -1516,6 +1516,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/user-guides/egress/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring and Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1824,6 +1845,27 @@
   
   <span class="md-ellipsis">
     Enabling mTLS for Gateway-to-Kuadrant Services Traffic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kuadrant-operator/doc/overviews/openshift-tls-profile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Propagating the OpenShift TLS Security Profile
   </span>
   
 
@@ -3948,12 +3990,20 @@ Use Authorino as a generic Kubernetes ValidatingWebhook service where the rules 
 Have multiple instances of Authorino running in the same space (Kubernetes namespace or cluster-scoped), yet watching particular sets of resources.</p>
 </li>
 <li>
+<p><strong><a href="restrict-outbound-http-routes/">Restricting the outbound HTTP routes Authorino can reach</a></strong><br/>
+Harden shared, cluster-wide Authorino against SSRF: use ValidatingAdmissionPolicies to gate every outbound destination an AuthConfig can name (JWKS, issuer, introspection, UserInfo, UMA, metadata/callback HTTP, OPA external policy, SpiceDB), inline Rego <code>http.send</code>, and externally-sourced OPA policies behind RBAC allowlists.</p>
+</li>
+<li>
 <p><strong><a href="caching/">Caching</a></strong><br/>
 Cache auth objects resolved at runtime for any configuration bit of an AuthConfig, for easy access in subsequent requests whenever an arbitrary cache key repeats, until the cache entry expires.</p>
 </li>
 <li>
 <p><strong><a href="observability/">Observability</a></strong><br/>
 Prometheus metrics exported by Authorino, readiness probe, logging, tracing, etc.</p>
+</li>
+<li>
+<p><strong><a href="preventing-privilege-escalation/">Preventing namespace to cluster privilege escalation (AuthConfigs)</a></strong><br/>
+Restrict the <code>apiKey.allNamespaces</code> and <code>x509.allNamespaces</code> fields — which trigger cluster-wide secret lookups — to authorized subjects using a ValidatingAdmissionPolicy.</p>
 </li>
 </ul>
 
