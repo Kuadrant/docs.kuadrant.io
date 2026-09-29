@@ -1734,6 +1734,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../user-guides/egress/token-rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Rate Limiting on Egress
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../user-guides/egress/dns-routing/" class="md-nav__link">
         
   
@@ -1804,6 +1825,27 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../user-guides/misc/external-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Kuadrant with an API outside the cluster
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
     
@@ -1812,10 +1854,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_8" >
         
           
-          <label class="md-nav__link" for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_8" id="__nav_5_8_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1826,8 +1868,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_7">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_8">
             <span class="md-nav__icon md-icon"></span>
             Observability
           </label>
@@ -2065,10 +2107,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_9" >
         
           
-          <label class="md-nav__link" for="__nav_5_8" id="__nav_5_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_9" id="__nav_5_9_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -2079,8 +2121,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_8">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_9">
             <span class="md-nav__icon md-icon"></span>
             Operational Security
           </label>
@@ -4362,16 +4404,16 @@
 <ol>
 <li>On incoming request, the gateway evaluates matching rules and predicates from TokenRateLimitPolicy resources</li>
 <li>If the request matches, the gateway prepares rate limit descriptors and monitors the response</li>
-<li>After receiving the response, the gateway extracts <code>usage.total_tokens</code> from the response body</li>
+<li>After receiving the response, the gateway extracts total token usage from the response body by trying an ordered list of JSON Pointer candidates until one resolves (see <a href="../../reference/tokenratelimitpolicy/#dataextraction">Data Extraction</a>)</li>
 <li>The gateway sends a <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v3/service/ratelimit/v3/rls.proto#service-ratelimit-v3-ratelimitrequest">RateLimitRequest</a> to Limitador with the actual token count as <code>hits_addend</code></li>
 <li>Limitador tracks the cumulative token usage and responds with either <code>OK</code> or <code>OVER_LIMIT</code></li>
 </ol>
 <p>This approach ensures accurate usage-based rate limiting where limits are enforced based on actual AI/LLM token consumption rather than simple request counts.</p>
-<p><strong>Important</strong>: TokenRateLimitPolicy supports both non-streaming and streaming OpenAI-style API responses. For streaming, the request must include <code>"stream": true</code> and <code>"stream_options": { "include_usage": true }</code> for usage to be extracted from the final stream event. Only OpenAI-style completions responses are supported today — this includes <code>/v1/chat/completions</code> and <code>/v1/completions</code>, and any backend implementing the OpenAI-compatible API such as vLLM and kServe. Other provider formats (e.g. Anthropic, Google Gemini) are not yet parsed; see <a href="https://github.com/Kuadrant/kuadrant-operator/issues/1864">#1864</a>.</p>
+<p><strong>Important</strong>: TokenRateLimitPolicy supports both non-streaming and streaming API responses. Out of the box, the built-in candidate list covers OpenAI, Azure OpenAI, OpenAI-compatible servers (vLLM, kServe, Ollama, etc.), the OpenAI Responses API (streaming and non-streaming), Google Gemini, and AWS Bedrock Converse API (non-streaming) response shapes. <code>spec.dataExtraction.response.totalTokens</code> lets you customize or extend this list for other providers — see the <a href="../../reference/tokenratelimitpolicy/#dataextraction">API reference</a>. For streaming requests, many providers only include token usage in the final stream event when the client explicitly opts in — for example, OpenAI requires <code>"stream_options": { "include_usage": true }</code> in the request body; check your provider's documentation for the equivalent header or field.</p>
 <h3 id="enforcement-modes">Enforcement modes<a class="headerlink" href="#enforcement-modes" title="Permanent link">&para;</a></h3>
 <p>Because the real token cost of a request is only known <em>after</em> the upstream responds, the gateway has to decide what to do on the way in. This is controlled cluster-wide by the Kuadrant CR field <code>spec.tokenRateLimiting.mode</code>, which applies to every TokenRateLimitPolicy in the cluster:</p>
 <ul>
-<li><strong><code>Reservation</code></strong> (default): On request arrival the gateway <em>reserves</em> an estimated token amount from Limitador. If the reservation would exceed the limit, the request is rejected with <code>429</code> before it ever reaches the upstream. Once the upstream responds, the gateway <em>commits</em> the actual <code>usage.total_tokens</code> and releases the unused portion of the reservation. This closes the race window where many concurrent requests could each pass a zero-cost check before any of them reports usage. The reservation is designed per RFC <a href="https://github.com/Kuadrant/architecture/blob/main/rfcs/0021-token-rate-limit-reservations.md">0021</a>, and the reserved amount / hold time are tuned per limit with <a href="../../reference/tokenratelimitpolicy/#reservation"><code>reservation</code></a>.</li>
+<li><strong><code>Reservation</code></strong> (default): On request arrival the gateway <em>reserves</em> an estimated token amount from Limitador. If the reservation would exceed the limit, the request is rejected with <code>429</code> before it ever reaches the upstream. Once the upstream responds, the gateway <em>commits</em> the actual token usage — resolved via <a href="../../reference/tokenratelimitpolicy/#dataextraction"><code>dataExtraction</code></a> — and releases the unused portion of the reservation. This closes the race window where many concurrent requests could each pass a zero-cost check before any of them reports usage. The reservation is designed per RFC <a href="https://github.com/Kuadrant/architecture/blob/main/rfcs/0021-token-rate-limit-reservations.md">0021</a>, and the reserved amount / hold time are tuned per limit with <a href="../../reference/tokenratelimitpolicy/#reservation"><code>reservation</code></a>.</li>
 </ul>
 <p>Reservation still allows some overshoot, independently of the race above: Limitador caps every <code>Reserve</code> call to at most <code>spec.reservations.maxFraction</code> of a limit's <code>max_value</code> (a Limitador CR field, default <code>0.5</code>). So no single reservation can ever claim the whole limit — it takes at least <code>1/maxFraction</code> requests' worth of held reservations (2, by default) before Limitador itself starts rejecting on capacity. Because each of those holds is only an estimate of real usage, actual consumption can land above what was reserved, so the achievable overshoot scales with the number of concurrent holders allowed under <code>maxFraction</code>. A lower <code>maxFraction</code> permits more concurrent in-flight requests before capacity-rejects kick in but widens that overshoot window; a higher <code>maxFraction</code> tightens the bound at the cost of concurrency headroom.</p>
 <p>Limitador similarly caps how long a reservation may be held: <code>spec.reservations.maxTtl</code> (a Limitador CR field, default <code>60s</code>) is the maximum TTL a <code>Reserve</code> call may request. A <code>reservation.ttl</code> set on the TokenRateLimitPolicy — or the route's <code>backendRequest</code> timeout used as its fallback — longer than <code>maxTtl</code> is silently capped, so a 5-minute route timeout still only holds capacity for 60 seconds by default.</p>
@@ -4423,11 +4465,11 @@
 <h3 id="automatic-token-tracking">Automatic Token Tracking<a class="headerlink" href="#automatic-token-tracking" title="Permanent link">&para;</a></h3>
 <p>TokenRateLimitPolicy automatically extracts token usage from AI/LLM responses without requiring any additional configuration:</p>
 <ul>
-<li><strong>Zero configuration</strong>: Works out-of-the-box with OpenAI-compatible APIs</li>
-<li><strong>Response parsing</strong>: Automatically extracts <code>usage.total_tokens</code> from response bodies</li>
-<li><strong>Provider scope</strong>: Supports any backend returning that field, e.g. OpenAI <code>/v1/chat/completions</code> and <code>/v1/completions</code>, and OpenAI-compatible backends like vLLM, kServe, Ollama, Azure OpenAI, and Gemini's OpenAI-compat endpoint. Anthropic and Gemini's native response formats aren't supported yet — see <a href="https://github.com/Kuadrant/kuadrant-operator/issues/1864">#1864</a></li>
+<li><strong>Zero configuration</strong>: Works out-of-the-box with multiple LLM provider response shapes</li>
+<li><strong>Response parsing</strong>: Tries an ordered list of JSON Pointer candidates against the response body until one resolves to a numeric value (see <a href="../../reference/tokenratelimitpolicy/#dataextraction">Data Extraction</a>)</li>
+<li><strong>Provider scope</strong>: The built-in defaults cover OpenAI, Azure OpenAI, OpenAI-compatible backends (vLLM, kServe, Ollama, etc.), the OpenAI Responses API, Google Gemini, and AWS Bedrock Converse API. <code>spec.dataExtraction.response.totalTokens</code> lets you configure custom pointers for other providers</li>
 <li><strong>Accurate accounting</strong>: Tracks actual token consumption, not estimates</li>
-<li><strong>Graceful fallback</strong>: If token parsing fails, falls back to request counting</li>
+<li><strong>Silent pass-through on failure</strong>: If token parsing fails (missing <code>usage.total_tokens</code> in the response), the report phase fails silently and no tokens are counted. The default <code>failureMode: allow</code> means requests succeed but rate limiting is not applied. Set <code>RATELIMIT_REPORT_SERVICE_FAILURE_MODE=deny</code> to reject requests when usage cannot be extracted</li>
 </ul>
 <h3 id="user-segmentation">User Segmentation<a class="headerlink" href="#user-segmentation" title="Permanent link">&para;</a></h3>
 <p>Create different limits for different user tiers, organisations, or teams:</p>

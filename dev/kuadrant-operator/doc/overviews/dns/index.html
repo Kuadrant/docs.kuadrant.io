@@ -572,6 +572,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#dns-failover-via-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      DNS Failover via Groups
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#known-limitations" class="md-nav__link">
     <span class="md-ellipsis">
       Known limitations
@@ -1752,6 +1761,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../user-guides/egress/token-rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Rate Limiting on Egress
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../user-guides/egress/dns-routing/" class="md-nav__link">
         
   
@@ -1822,6 +1852,27 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../user-guides/misc/external-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Kuadrant with an API outside the cluster
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
     
@@ -1830,10 +1881,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_8" >
         
           
-          <label class="md-nav__link" for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_8" id="__nav_5_8_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1844,8 +1895,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_7">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_8">
             <span class="md-nav__icon md-icon"></span>
             Observability
           </label>
@@ -2083,10 +2134,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_9" >
         
           
-          <label class="md-nav__link" for="__nav_5_8" id="__nav_5_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_9" id="__nav_5_9_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -2097,8 +2148,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_8">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_9">
             <span class="md-nav__icon md-icon"></span>
             Operational Security
           </label>
@@ -4245,6 +4296,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#dns-failover-via-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      DNS Failover via Groups
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#known-limitations" class="md-nav__link">
     <span class="md-ellipsis">
       Known limitations
@@ -4607,6 +4667,24 @@ When providing a credential you should limit that credential down to just have w
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>dig<span class="w"> </span>echo.apps.hcpapps.net<span class="w"> </span>+short
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="m">172</span>.31.201.1
 </span></code></pre></div>
+<h3 id="dns-failover-via-groups">DNS Failover via Groups<a class="headerlink" href="#dns-failover-via-groups" title="Permanent link">&para;</a></h3>
+<p>DNS failover via groups allows you to switch traffic from one set of clusters to another in the event of an outage. Each dns-operator instance can be assigned to a group, and a TXT record in the DNS provider (<code>kuadrant-active-groups.&lt;domain&gt;</code>) determines which groups are currently active. Only records from active groups are published to DNS.</p>
+<p>This feature is useful when you have a replica deployment standing by in a separate group. When the primary group experiences an outage, you update the active groups to include the standby group and remove the failed group. Active controllers then clean up DNS records from the inactive group.</p>
+<p>Key capabilities:</p>
+<ul>
+<li><strong>Group management via CLI</strong>: Use <code>kubectl-kuadrant_dns add-active-group</code> and <code>remove-active-group</code> to manage which groups are active</li>
+<li><strong>Impact preview</strong>: Use <code>--dry-run</code> with <code>remove-active-group</code> to preview which DNS endpoints would be affected before committing</li>
+<li><strong>Observability</strong>: Prometheus metrics expose group assignments, active/inactive state, and cleanup operations per DNSRecord</li>
+<li><strong>Health checks</strong>: Can be combined with groups so that unhealthy endpoints are surfaced in DNSPolicy status even during failover transitions</li>
+</ul>
+<p>For detailed guides on configuring and exercising DNS failover, see the dns-operator documentation:</p>
+<ul>
+<li><a href="https://github.com/Kuadrant/dns-operator/blob/main/docs/migrating_existing_clusters_to_use_groups.md">Migrating existing clusters to use groups</a></li>
+<li><a href="https://github.com/Kuadrant/dns-operator/blob/main/docs/exercising_dns_failover_via_groups.md">Exercising DNS failover via groups</a></li>
+<li><a href="https://github.com/Kuadrant/dns-operator/blob/main/docs/migrating_away_from_dns_groups.md">Migrating away from DNS groups</a></li>
+<li><a href="https://github.com/Kuadrant/dns-operator/blob/main/docs/dns_group_metrics.md">DNS group metrics</a></li>
+<li><a href="https://github.com/Kuadrant/dns-operator/blob/main/docs/cli.md">CLI reference</a></li>
+</ul>
 <h3 id="known-limitations">Known limitations<a class="headerlink" href="#known-limitations" title="Permanent link">&para;</a></h3>
 <ul>
 <li>One Gateway can only be targeted by one DNSPolicy unless subsequent DNSPolicies choose to specific a sectionName in their targetRef.</li>
@@ -4618,12 +4696,12 @@ When providing a credential you should limit that credential down to just have w
 The DNSPolicy conditions: </p>
 <ul>
 <li><code>Accepted</code> indicates that policy was validated and is accepted by the controller for the reconciliation. </li>
-<li><code>Enforced</code> indicates that the controller acted upon the policy. If DNSRecords were created as the result this condition will reflect the <code>Ready</code> condition on the record. This condition is removed if <code>Accepted</code> is false. If partially enforced, the condition will be set to <code>True</code></li>
+<li><code>Enforced</code> indicates that the controller acted upon the policy. If DNSRecords were created as the result this condition will reflect the <code>Ready</code> condition on the record. This condition is removed if <code>Accepted</code> is false. If partially enforced, the condition will be set to <code>True</code>. <strong>Note:</strong> When using DNS failover groups, records in an inactive group will report <code>Enforced</code> as <code>False</code> — this is expected and does not indicate a failure.</li>
 <li><code>SubResourcesHealthy</code> reflects <code>Healthy</code> conditions of sub-resources. This condition is removed if <code>Accepted</code> is false. If partially healthy, the condition will be set to <code>False</code> </li>
 </ul>
 <p>The <code>Status.Conditions</code> on the DNSRecord are as follows: </p>
 <ul>
-<li><code>Ready</code> indicates that the record was successfully published to the provider. </li>
+<li><code>Ready</code> indicates that the record was successfully published to the provider. When using DNS failover groups, records in an inactive group will report <code>Ready</code> as <code>False</code> — this is expected and does not indicate a failure.</li>
 <li><code>Healthy</code> indicates that dnshealthcheckprobes are healthy. If not all probes are healthy, the condition will be set to <code>False</code></li>
 </ul>
 <h3 id="logs">Logs<a class="headerlink" href="#logs" title="Permanent link">&para;</a></h3>
@@ -4664,8 +4742,7 @@ This example indicates that the policy was accepted and one of the DNSRecords - 
 <p><div class="language-shell highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>dnsrecord<span class="w"> </span>&lt;dnsrecord-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;dnspolicy-namespace&gt;<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>yq<span class="w"> </span><span class="s1">'.status'</span>
 </span></code></pre></div>
 Most of the time the <code>conditions</code> will hold all necessary information. 
-However, it is advised to pay attention to the <code>queuedAt</code> and <code>validFor</code> field 
-to understand when the record was processed and when controller expects it to be reconciled again. </p>
+The <code>writeCounter</code> field tracks how many times the record has been written to the DNS provider for the current generation.</p>
 <h4 id="inspect-health-check-probes">Inspect health check probes<a class="headerlink" href="#inspect-health-check-probes" title="Permanent link">&para;</a></h4>
 <p>We create a probe per address per dns record. The name of the probe is DNSRecord name followed by an address. 
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># list probes </span>

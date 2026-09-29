@@ -1,0 +1,73 @@
+## Prerequisites:
+## - Kuadrant and Gateway API installed with Istio as the gateway provider
+##
+## Usage:
+##   export EXTERNAL_HOST=my.api.com
+##   export INTERNAL_HOST=my.api.local
+##   envsubst < examples/external-api-istio.yaml | kubectl apply -n gateway-system -f -
+##
+## See: doc/user-guides/misc/external-api.md
+
+# Step 1: Register the backend API in Istio
+apiVersion: networking.istio.io/v1
+kind: ServiceEntry
+metadata:
+  name: backend-api
+spec:
+  hosts:
+    - ${INTERNAL_HOST}
+  location: MESH_EXTERNAL
+  resolution: DNS
+  ports:
+    - number: 443
+      name: https
+      protocol: HTTPS
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: backend-api
+spec:
+  host: ${INTERNAL_HOST}
+  trafficPolicy:
+    tls:
+      mode: SIMPLE
+      sni: ${INTERNAL_HOST}
+---
+# Step 2: Deploy the ingress Gateway and HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: ingress
+  labels:
+    istio: ingress
+spec:
+  gatewayClassName: istio
+  listeners:
+    - name: ingress-http
+      port: 80
+      hostname: ${EXTERNAL_HOST}
+      protocol: HTTP
+      allowedRoutes:
+        namespaces:
+          from: All
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: external-host
+spec:
+  parentRefs:
+    - name: ingress
+  hostnames:
+    - ${EXTERNAL_HOST}
+  rules:
+    - backendRefs:
+        - name: ${INTERNAL_HOST}
+          kind: Hostname
+          group: networking.istio.io
+          port: 443
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            hostname: ${INTERNAL_HOST}
