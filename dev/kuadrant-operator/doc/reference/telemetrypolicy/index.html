@@ -2237,6 +2237,24 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#loggingspec" class="md-nav__link">
+    <span class="md-ellipsis">
+      LoggingSpec
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loggingconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      LoggingConfig
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#telemetrypolicystatus" class="md-nav__link">
     <span class="md-ellipsis">
       TelemetryPolicyStatus
@@ -4104,6 +4122,24 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#loggingspec" class="md-nav__link">
+    <span class="md-ellipsis">
+      LoggingSpec
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loggingconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      LoggingConfig
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#telemetrypolicystatus" class="md-nav__link">
     <span class="md-ellipsis">
       TelemetryPolicyStatus
@@ -4176,6 +4212,11 @@
 </tbody>
 </table>
 <h2 id="telemetrypolicyspec">TelemetryPolicySpec<a class="headerlink" href="#telemetrypolicyspec" title="Permanent link">&para;</a></h2>
+<p>Custom logging is disabled by default. To enable <code>logging.default.fields</code>, an
+administrator must set <code>spec.enableLoggingFields: true</code> on the Authorino CR.
+Creating a TelemetryPolicy alone does not enable custom logging, and logging
+fields apply only to routes with an AuthPolicy. This requires an Authorino and
+Authorino Operator version supporting custom logging fields.</p>
 <table>
 <thead>
 <tr>
@@ -4195,8 +4236,14 @@
 <tr>
 <td><code>metrics</code></td>
 <td><a href="#metricsspec">MetricsSpec</a></td>
-<td>Yes</td>
-<td>Metrics holds the telemetry metrics configuration</td>
+<td>No</td>
+<td>Metrics holds the telemetry metrics configuration. At least one of <code>metrics</code> or <code>logging</code> must be defined.</td>
+</tr>
+<tr>
+<td><code>logging</code></td>
+<td><a href="#loggingspec">LoggingSpec</a></td>
+<td>No</td>
+<td>Logging holds the custom authorization decision logging configuration. At least one of <code>metrics</code> or <code>logging</code> must be defined.</td>
 </tr>
 </tbody>
 </table>
@@ -4310,6 +4357,44 @@
 <td>Map<String: String></td>
 <td>Yes</td>
 <td>Labels to add to metrics, where keys are label names and values are CEL expressions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="loggingspec">LoggingSpec<a class="headerlink" href="#loggingspec" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>default</code></td>
+<td><a href="#loggingconfig">LoggingConfig</a></td>
+<td>Yes</td>
+<td>Default logging configuration that applies to all requests</td>
+</tr>
+</tbody>
+</table>
+<h3 id="loggingconfig">LoggingConfig<a class="headerlink" href="#loggingconfig" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fields</code></td>
+<td>Map<String: String></td>
+<td>Yes</td>
+<td>Fields to add to authorization decision logs, where keys are field names and values are CEL expressions</td>
 </tr>
 </tbody>
 </table>
