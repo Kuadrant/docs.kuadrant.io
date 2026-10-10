@@ -4027,6 +4027,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Live Playwright journey">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#run-against-an-installed-console-on-an-existing-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run against an installed Console on an existing cluster
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -4240,6 +4255,19 @@ so adding the stateless fixture does not change its catalog. Override
 </span></code></pre></div>
 <p>Use the same stateless arguments with <code>MCP_INSPECTOR_E2E_PROTOCOL=auto</code> to check
 automatic negotiation on the dual-protocol demo. The UI itself still defaults to Auto.</p>
+<h3 id="run-against-an-installed-console-on-an-existing-cluster">Run against an installed Console on an existing cluster<a class="headerlink" href="#run-against-an-installed-console-on-an-existing-cluster" title="Permanent link">&para;</a></h3>
+<p>The installed-console E2E runner skips the live journey unless
+<code>MCP_INSPECTOR_E2E_EXTENSION</code> points to a preexisting, Ready
+MCPGatewayExtension with a reachable MCP server. Set it to the extension's
+<code>namespace/name</code>, then run <code>yarn test:e2e:installed e2e/tests/mcp-inspector.spec.ts
+--grep 'connects to a live gateway'</code>. The runner does not install a live MCP
+target on an existing cluster. The standard <code>kuadrant-test/mcp-gateway-extension</code>
+fixture is for UI coverage and has no backend MCP server.</p>
+<p>Use <code>E2E_CONSOLE_IDENTITY_PROVIDER</code> when the Console has multiple login
+providers; its value must match the displayed provider name. Set
+<code>E2E_IGNORE_HTTPS_ERRORS=true</code> only for a Console route with an untrusted
+certificate; it affects browser TLS checks, while <code>oc</code> and <code>kubectl</code> still
+verify the API server certificate.</p>
 
 
 
