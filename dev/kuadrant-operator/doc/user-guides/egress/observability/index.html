@@ -4926,11 +4926,11 @@
 <tbody>
 <tr>
 <td><code>authorized_calls</code></td>
-<td>Requests allowed by a rate limit check</td>
+<td>Requests admitted on the request phase (the <code>Check</code> call, or the <code>Reserve</code> call when TokenRateLimitPolicy runs in <code>Reservation</code> mode)</td>
 </tr>
 <tr>
 <td><code>limited_calls</code></td>
-<td>Requests rejected by a rate limit check</td>
+<td>Requests rejected on the request phase, by either <code>Check</code> or <code>Reserve</code></td>
 </tr>
 <tr>
 <td><code>authorized_hits</code></td>
@@ -4938,10 +4938,11 @@
 </tr>
 <tr>
 <td><code>report_calls</code></td>
-<td>Calls to the Limitador <code>Report</code> method, which TokenRateLimitPolicy uses to report token usage after the response</td>
+<td>Response-phase calls that settle the counter: the <code>Report</code> call, or the <code>Commit</code> call when TokenRateLimitPolicy runs in <code>Reservation</code> mode</td>
 </tr>
 </tbody>
 </table>
+<p><code>Reservation</code> is the cluster-wide default for TokenRateLimitPolicy, so on a default install the egress token counters are driven by <code>Reserve</code>/<code>Commit</code> rather than <code>Check</code>/<code>Report</code>. The metric names are the same either way. See <a href="../../../overviews/token-rate-limiting/#enforcement-modes">enforcement modes</a> for the difference between the two.</p>
 <p>Each series also carries Limitador's own <code>limitador_namespace</code> label, which identifies the targeted route (for example, <code>gateway-system/ai-mock-external</code>). For the full set of Limitador counters and their built-in labels, see the <a href="../../observability/limitador-metrics/">Limitador metrics guide</a>.</p>
 <p><strong>Authorino</strong> receives the same labels on any route that carries an AuthPolicy, and applies them to its own per-AuthConfig metrics, which it serves on <code>/server-metrics</code> rather than <code>/metrics</code>:</p>
 <table>
@@ -5057,7 +5058,7 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>limited_calls{source_ip="10.244.0.24",workload="system:serviceaccount:egress-test:default",destination="api.ai-mock.local",limitador_namespace="gateway-system/ai-mock-external"} 12
 </span></code></pre></div>
 <h3 id="cel-attributes-available-on-egress">CEL Attributes Available on Egress<a class="headerlink" href="#cel-attributes-available-on-egress" title="Permanent link">&para;</a></h3>
-<p>Each label is attached to both the rate limit check descriptor and the report descriptor. The check runs in the <strong>request</strong> phase, before the external service responds, so every expression must resolve at that point. This is the single most important constraint on egress: response attributes are not available, even for labels that only appear on <code>report_calls</code>.</p>
+<p>Each label is attached to both the request-phase descriptor and the response-phase descriptor (<code>Check</code>/<code>Report</code>, or <code>Reserve</code>/<code>Commit</code> under <code>Reservation</code> mode). The request-phase call runs before the external service responds, so every expression must resolve at that point. This is the single most important constraint on egress: response attributes are not available, even for labels that only appear on <code>report_calls</code>.</p>
 <table>
 <thead>
 <tr>
@@ -5608,7 +5609,7 @@
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../../../overviews/telemetrypolicy/">TelemetryPolicy</a>: the full policy API behind the <a href="#custom-metric-labels-with-telemetrypolicy">custom metric labels</a> described above</li>
-<li><a href="../../../overviews/rate-limiting/">TokenRateLimitPolicy</a>: cap AI inference costs by token consumption per workload</li>
+<li><a href="../../../overviews/token-rate-limiting/">TokenRateLimitPolicy</a>: cap AI inference costs by token consumption per workload</li>
 </ul>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
 <ul>
