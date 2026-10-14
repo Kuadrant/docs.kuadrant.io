@@ -1631,16 +1631,16 @@
           <li class="md-nav__item">
   <a href="#request-flow" class="md-nav__link">
     <span class="md-ellipsis">
-      Request Flow
+      Request flow
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#topology" class="md-nav__link">
+  <a href="#credential-injection-topology" class="md-nav__link">
     <span class="md-ellipsis">
-      Topology
+      Credential injection topology
     </span>
   </a>
   
@@ -1663,26 +1663,26 @@
         <li class="md-nav__item">
   <a href="#credential-injection" class="md-nav__link">
     <span class="md-ellipsis">
-      Credential Injection
+      Credential injection
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Credential Injection">
+    <nav class="md-nav" aria-label="Credential injection">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#step-1-apply-the-authpolicy" class="md-nav__link">
+  <a href="#applying-the-authpolicy" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 1: Apply the AuthPolicy
+      Applying the AuthPolicy
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-2-test" class="md-nav__link">
+  <a href="#testing-credential-injection" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 2: Test
+      Testing credential injection
     </span>
   </a>
   
@@ -1691,7 +1691,7 @@
           <li class="md-nav__item">
   <a href="#per-identity-credentials" class="md-nav__link">
     <span class="md-ellipsis">
-      Per-Identity Credentials
+      Per-identity credentials
     </span>
   </a>
   
@@ -1703,9 +1703,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#security" class="md-nav__link">
+  <a href="#two-layer-security-model" class="md-nav__link">
     <span class="md-ellipsis">
-      Security
+      Two-layer security model
     </span>
   </a>
   
@@ -4120,16 +4120,16 @@
           <li class="md-nav__item">
   <a href="#request-flow" class="md-nav__link">
     <span class="md-ellipsis">
-      Request Flow
+      Request flow
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#topology" class="md-nav__link">
+  <a href="#credential-injection-topology" class="md-nav__link">
     <span class="md-ellipsis">
-      Topology
+      Credential injection topology
     </span>
   </a>
   
@@ -4152,26 +4152,26 @@
         <li class="md-nav__item">
   <a href="#credential-injection" class="md-nav__link">
     <span class="md-ellipsis">
-      Credential Injection
+      Credential injection
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Credential Injection">
+    <nav class="md-nav" aria-label="Credential injection">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#step-1-apply-the-authpolicy" class="md-nav__link">
+  <a href="#applying-the-authpolicy" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 1: Apply the AuthPolicy
+      Applying the AuthPolicy
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-2-test" class="md-nav__link">
+  <a href="#testing-credential-injection" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 2: Test
+      Testing credential injection
     </span>
   </a>
   
@@ -4180,7 +4180,7 @@
           <li class="md-nav__item">
   <a href="#per-identity-credentials" class="md-nav__link">
     <span class="md-ellipsis">
-      Per-Identity Credentials
+      Per-identity credentials
     </span>
   </a>
   
@@ -4192,9 +4192,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#security" class="md-nav__link">
+  <a href="#two-layer-security-model" class="md-nav__link">
     <span class="md-ellipsis">
-      Security
+      Two-layer security model
     </span>
   </a>
   
@@ -4241,11 +4241,11 @@
   
 
 
-<h1 id="egress-gateway-credential-injection">Egress Gateway Credential Injection<a class="headerlink" href="#egress-gateway-credential-injection" title="Permanent link">&para;</a></h1>
+<h1 id="egress-gateway-credential-injection">Egress gateway credential injection<a class="headerlink" href="#egress-gateway-credential-injection" title="Permanent link">&para;</a></h1>
 <p>This guide demonstrates how to use AuthPolicy with an Istio egress gateway to inject credentials into requests to external services using <a href="https://developer.hashicorp.com/vault">HashiCorp Vault</a> as the credential source.</p>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>This guide builds on the <a href="../egress-gateway/#workload-identity">workload identity</a> pattern from the egress gateway setup guide. That pattern uses <code>kubernetesTokenReview</code> to validate workload SA tokens. Credential injection extends it by adding Vault integration - using the validated identity to fetch per-workload credentials and inject them into outbound requests.</p>
-<h3 id="request-flow">Request Flow<a class="headerlink" href="#request-flow" title="Permanent link">&para;</a></h3>
+<h3 id="request-flow">Request flow<a class="headerlink" href="#request-flow" title="Permanent link">&para;</a></h3>
 <ol>
 <li>Internal workload sends an HTTP request to the egress gateway with <code>Authorization: Bearer &lt;sa-token&gt;</code></li>
 <li>The gateway triggers an ext_authz check with Authorino</li>
@@ -4254,7 +4254,7 @@
 <li>Authorino reads the external credential from Vault and overwrites the <code>Authorization</code> header via <code>response.success.headers</code></li>
 <li>The egress gateway originates TLS and forwards the request with the external credential to the external service</li>
 </ol>
-<h3 id="topology">Topology<a class="headerlink" href="#topology" title="Permanent link">&para;</a></h3>
+<h3 id="credential-injection-topology">Credential injection topology<a class="headerlink" href="#credential-injection-topology" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>graph TB
     WL([Internal&lt;br/&gt;Workload])
 
@@ -4291,9 +4291,9 @@
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">EGRESS_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>gtw<span class="w"> </span>kuadrant-egressgateway<span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.addresses[0].value}'</span><span class="k">)</span>
 </span></code></pre></div>
-<h2 id="credential-injection">Credential Injection<a class="headerlink" href="#credential-injection" title="Permanent link">&para;</a></h2>
+<h2 id="credential-injection">Credential injection<a class="headerlink" href="#credential-injection" title="Permanent link">&para;</a></h2>
 <p>The AuthPolicy below authenticates the workload via its Kubernetes service account token, fetches a per-identity credential from Vault, and injects it into the outbound request. The Vault path is constructed dynamically from the workload's namespace and service account name, so different workloads get different credentials. The workload sends <code>Authorization: Bearer &lt;sa-token&gt;</code>; the gateway replaces it with <code>Authorization: Bearer &lt;external-key&gt;</code>.</p>
-<h3 id="step-1-apply-the-authpolicy">Step 1: Apply the AuthPolicy<a class="headerlink" href="#step-1-apply-the-authpolicy" title="Permanent link">&para;</a></h3>
+<h3 id="applying-the-authpolicy">Applying the AuthPolicy<a class="headerlink" href="#applying-the-authpolicy" title="Permanent link">&para;</a></h3>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;'EOF'</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="s">apiVersion: kuadrant.io/v1</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="s">kind: AuthPolicy</span>
@@ -4350,7 +4350,7 @@
 <li><code>authorization.vault_credential_check</code> - verifies the Vault credential fetch succeeded. If the workload's SA isn't authorized by Vault's policy, the request is denied (403).</li>
 <li><code>response.success.headers.authorization</code> - overwrites the <code>Authorization</code> header with the external credential. The workload's SA token never reaches the external service.</li>
 </ul>
-<h3 id="step-2-test">Step 2: Test<a class="headerlink" href="#step-2-test" title="Permanent link">&para;</a></h3>
+<h3 id="testing-credential-injection">Testing credential injection<a class="headerlink" href="#testing-credential-injection" title="Permanent link">&para;</a></h3>
 <p>The setup script stored a test credential at <code>secret/egress/egress-test/default</code> for the test client. Test the three access scenarios:</p>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># No token - denied (401)</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>test-client<span class="w"> </span>-n<span class="w"> </span>egress-test<span class="w"> </span>--<span class="w"> </span>curl<span class="w"> </span>-s<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-w<span class="w"> </span><span class="s2">"%{http_code}"</span><span class="w"> </span><span class="se">\</span>
@@ -4377,7 +4377,7 @@
 </span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="c1"># 403</span>
 </span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>bad-client<span class="w"> </span>-n<span class="w"> </span>default
 </span></code></pre></div>
-<h3 id="per-identity-credentials">Per-Identity Credentials<a class="headerlink" href="#per-identity-credentials" title="Permanent link">&para;</a></h3>
+<h3 id="per-identity-credentials">Per-identity credentials<a class="headerlink" href="#per-identity-credentials" title="Permanent link">&para;</a></h3>
 <p>Different workload identities automatically get different credentials from Vault. The <code>urlExpression</code> constructs the Vault path from the workload's namespace and service account name.</p>
 <p>To verify, store a different credential for another namespace and test:</p>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Add workload-b namespace to the Vault role</span>
@@ -4424,7 +4424,7 @@
 </span><span id="__span-3-42"><a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a><span class="s1">'</span>
 </span><span id="__span-3-43"><a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a><span class="c1"># Authorization: Bearer sk-different-key-for-workload-b</span>
 </span></code></pre></div>
-<h2 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h2>
+<h2 id="two-layer-security-model">Two-layer security model<a class="headerlink" href="#two-layer-security-model" title="Permanent link">&para;</a></h2>
 <p>Access control is enforced at two layers:</p>
 <ol>
 <li><strong>Kubernetes TokenReview</strong> - Authorino validates the workload's SA token. Requests without a valid token are rejected (401).</li>
