@@ -1754,37 +1754,46 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#token-limit-reservations-coming-soon" class="md-nav__link">
+  <a href="#token-limit-reservations" class="md-nav__link">
     <span class="md-ellipsis">
-      Token limit reservations (coming soon)
+      Token limit reservations
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Token limit reservations (coming soon)">
+    <nav class="md-nav" aria-label="Token limit reservations">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#how-it-will-work" class="md-nav__link">
+  <a href="#cluster-wide-mode" class="md-nav__link">
     <span class="md-ellipsis">
-      How it will work
+      Cluster-wide mode
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#policy-changes" class="md-nav__link">
+  <a href="#how-it-works" class="md-nav__link">
     <span class="md-ellipsis">
-      Policy changes
+      How it works
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#cluster-wide-mode-switch" class="md-nav__link">
+  <a href="#set-a-reservation-amount" class="md-nav__link">
     <span class="md-ellipsis">
-      Cluster-wide mode switch
+      Set a reservation amount
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifying-reservation-under-concurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verifying reservation under concurrency
     </span>
   </a>
   
@@ -4411,37 +4420,46 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#token-limit-reservations-coming-soon" class="md-nav__link">
+  <a href="#token-limit-reservations" class="md-nav__link">
     <span class="md-ellipsis">
-      Token limit reservations (coming soon)
+      Token limit reservations
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Token limit reservations (coming soon)">
+    <nav class="md-nav" aria-label="Token limit reservations">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#how-it-will-work" class="md-nav__link">
+  <a href="#cluster-wide-mode" class="md-nav__link">
     <span class="md-ellipsis">
-      How it will work
+      Cluster-wide mode
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#policy-changes" class="md-nav__link">
+  <a href="#how-it-works" class="md-nav__link">
     <span class="md-ellipsis">
-      Policy changes
+      How it works
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#cluster-wide-mode-switch" class="md-nav__link">
+  <a href="#set-a-reservation-amount" class="md-nav__link">
     <span class="md-ellipsis">
-      Cluster-wide mode switch
+      Set a reservation amount
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifying-reservation-under-concurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verifying reservation under concurrency
     </span>
   </a>
   
@@ -4800,22 +4818,25 @@
 </span><span id="__span-15-36"><a id="__codelineno-15-36" name="__codelineno-15-36" href="#__codelineno-15-36"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"gold-tier request: HTTP </span><span class="nv">$CODE</span><span class="s2">"</span>
 </span></code></pre></div>
 <p>The default tier hits its limit, but the gold tier still has remaining budget.</p>
+<p>Clean up before the next section:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>tokenratelimitpolicy<span class="w"> </span>ai-per-tier<span class="w"> </span>-n<span class="w"> </span>gateway-system
+</span></code></pre></div>
 <h2 id="streaming-responses">Streaming responses<a class="headerlink" href="#streaming-responses" title="Permanent link">&para;</a></h2>
 <p>TRLP supports streaming OpenAI-style responses. The request must include <code>"stream": true</code> and <code>"stream_options": { "include_usage": true }</code> for usage to be extracted from the final stream event:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>test-client<span class="w"> </span>-n<span class="w"> </span>egress-test<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="s1">curl -s \</span>
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="s1">    -H "Host: api.ai-mock.local" \</span>
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="s1">    -H "Content-Type: application/json" \</span>
-</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="s1">    -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \</span>
-</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="s1">    -X POST http://'</span><span class="s2">"</span><span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span><span class="s2">"</span><span class="s1">'/v1/chat/completions \</span>
-</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="s1">    -d "{</span>
-</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="s1">          \"model\": \"meta-llama/Llama-3.1-8B-Instruct\",</span>
-</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="s1">          \"messages\": [{\"role\": \"user\", \"content\": \"What is Kubernetes?\"}],</span>
-</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="s1">          \"max_tokens\": 100,</span>
-</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="s1">          \"stream\": true,</span>
-</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="s1">          \"stream_options\": {\"include_usage\": true}</span>
-</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="s1">        }"</span>
-</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="s1">'</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>test-client<span class="w"> </span>-n<span class="w"> </span>egress-test<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="s1">curl -s \</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="s1">    -H "Host: api.ai-mock.local" \</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="s1">    -H "Content-Type: application/json" \</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="s1">    -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="s1">    -X POST http://'</span><span class="s2">"</span><span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span><span class="s2">"</span><span class="s1">'/v1/chat/completions \</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="s1">    -d "{</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="s1">          \"model\": \"meta-llama/Llama-3.1-8B-Instruct\",</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="s1">          \"messages\": [{\"role\": \"user\", \"content\": \"What is Kubernetes?\"}],</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="s1">          \"max_tokens\": 100,</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="s1">          \"stream\": true,</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="s1">          \"stream_options\": {\"include_usage\": true}</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="s1">        }"</span>
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="s1">'</span>
 </span></code></pre></div>
 <p>The final SSE event contains the usage data. Because the counter is updated only after the full response completes, a streaming response delivers all its chunks before the token count is recorded. The updated limit applies to subsequent requests, not the stream already in progress.</p>
 <p>If <code>stream_options.include_usage</code> is omitted when <code>stream: true</code>, token usage cannot be extracted. Depending on the wasm-shim failure mode, the request may be allowed without counting or rejected.</p>
@@ -4823,7 +4844,8 @@
 <h3 id="tls-origination-and-response-body-access">TLS origination and response body access<a class="headerlink" href="#tls-origination-and-response-body-access" title="Permanent link">&para;</a></h3>
 <p>When using a real external AI API (for example, OpenAI), the egress gateway terminates internal mTLS and originates a new TLS connection to the provider. The response body passes through the gateway unencrypted on the internal side, so token extraction from the response body works normally. The mock used in this guide skips TLS origination for simplicity.</p>
 <h3 id="concurrent-request-race-condition">Concurrent request race condition<a class="headerlink" href="#concurrent-request-race-condition" title="Permanent link">&para;</a></h3>
-<p>The current TRLP implementation uses a two-phase protocol: the gateway checks limits before forwarding the request (without consuming tokens), then reports actual usage after receiving the response. Between these two phases, concurrent in-flight requests can race past the limit because nothing holds capacity during model processing. For most use cases this is acceptable because LLM responses are slow enough that burst patterns are uncommon. For strict enforcement under high concurrency, see <a href="#token-limit-reservations-coming-soon">Token Limit Reservations</a> below.</p>
+<p>The Kuadrant CR field <code>spec.tokenRateLimiting.mode</code> controls cluster-wide how TRLP enforces limits: <code>Reservation</code> (the default) or <code>Optimistic</code>. In <code>Optimistic</code> mode, the gateway checks limits before forwarding the request (without consuming tokens), then reports actual usage after receiving the response; between these two phases, concurrent in-flight requests can race past the limit because nothing holds capacity during model processing.</p>
+<p><code>Reservation</code> mode closes this gap by reserving an estimated token amount on request arrival and committing the actual usage once the upstream responds, releasing any unused portion of the reservation. However, <strong><code>reservation.amount</code> defaults to <code>0</code>, which reserves no capacity</strong> — so a TokenRateLimitPolicy that doesn't set <code>amount</code> explicitly behaves like <code>Optimistic</code> even while the cluster is in <code>Reservation</code> mode. See <a href="#token-limit-reservations">Token Limit Reservations</a> below to enable real protection on this egress gateway, and the <a href="../../../overviews/token-rate-limiting/#enforcement-modes">Token Rate Limiting Overview</a> for the full explanation of both modes.</p>
 <h3 id="supported-response-formats">Supported response formats<a class="headerlink" href="#supported-response-formats" title="Permanent link">&para;</a></h3>
 <p>Token extraction works with any back end returning an OpenAI-compatible response body with <code>usage.total_tokens</code>. This includes OpenAI, vLLM, kServe, Ollama, Azure OpenAI, and the Gemini OpenAI-compat endpoint. Anthropic and Gemini native formats are not yet supported. See <a href="https://github.com/Kuadrant/kuadrant-operator/issues/1864">#1864</a> for tracking.</p>
 <h3 id="missing-token-usage-in-responses">Missing token usage in responses<a class="headerlink" href="#missing-token-usage-in-responses" title="Permanent link">&para;</a></h3>
@@ -4832,75 +4854,125 @@
 <p>Verify that your AI provider returns <code>usage.total_tokens</code> in every response before relying on TRLP for enforcement. For streaming, verify that <code>stream_options.include_usage</code> is set to <code>true</code> in requests.</p>
 <h3 id="istio-only-support">Istio-only support<a class="headerlink" href="#istio-only-support" title="Permanent link">&para;</a></h3>
 <p>Egress gateway support targets Istio as the Gateway API provider. Envoy Gateway is not supported for egress at this time.</p>
-<h2 id="token-limit-reservations-coming-soon">Token limit reservations (coming soon)<a class="headerlink" href="#token-limit-reservations-coming-soon" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p>This section describes a planned enhancement. The code does not exist yet. See <a href="https://github.com/Kuadrant/architecture/pull/190">architecture#190</a> for the full RFC.</p>
-</blockquote>
-<p>The current two-phase flow (check then report) has a known race condition: concurrent in-flight requests all pass the check phase before any of them report usage, allowing cumulative consumption to exceed the configured limit. Token limit reservations close this gap by holding estimated capacity at request time.</p>
-<h3 id="how-it-will-work">How it will work<a class="headerlink" href="#how-it-will-work" title="Permanent link">&para;</a></h3>
-<p>When a request arrives, the gateway will reserve an estimated token amount against the limit. If remaining capacity (accounting for all outstanding reservations) is insufficient, the request is rejected immediately. After the model responds, the actual usage is committed and the reservation is released.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Request arrives → Reserve(estimated amount, TTL) → Forward to model → Commit(actual usage) → Release reservation
-</span></code></pre></div>
-<p>If the model call fails or times out, the reservation expires on its own TTL. No cleanup call is needed.</p>
-<h3 id="policy-changes">Policy changes<a class="headerlink" href="#policy-changes" title="Permanent link">&para;</a></h3>
-<p>A new optional <code>reservation</code> block on each limit will allow configuring the estimated amount and hold duration:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Not yet available — requires Limitador and operator support</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant.io/v1alpha1</span>
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TokenRateLimitPolicy</span>
-</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="nt">metadata</span><span class="p">:</span>
-</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ai-token-limit-with-reservations</span>
-</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway-system</span>
-</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="nt">spec</span><span class="p">:</span>
-</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">  </span><span class="nt">targetRef</span><span class="p">:</span>
-</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">    </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io</span>
-</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPRoute</span>
-</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ai-mock-external</span>
-</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="w">  </span><span class="nt">limits</span><span class="p">:</span>
-</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="w">    </span><span class="nt">per-workload</span><span class="p">:</span>
-</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="w">      </span><span class="nt">rates</span><span class="p">:</span>
-</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>
-</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50000</span>
-</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="w">          </span><span class="nt">window</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">24h</span>
-</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="w">      </span><span class="nt">counters</span><span class="p">:</span>
-</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auth.identity.username</span>
-</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="w">      </span><span class="nt">reservation</span><span class="p">:</span>
-</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="w">        </span><span class="nt">amount</span><span class="p">:</span><span class="w"> </span><span class="s">"uint(5000)"</span>
-</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="w">        </span><span class="nt">ttl</span><span class="p">:</span><span class="w"> </span><span class="s">"duration('30s')"</span>
+<h2 id="token-limit-reservations">Token limit reservations<a class="headerlink" href="#token-limit-reservations" title="Permanent link">&para;</a></h2>
+<p>The cluster is already in <code>Reservation</code> mode by default (see <a href="#concurrent-request-race-condition">Concurrent Request Race Condition</a> above), implemented per RFC <a href="https://github.com/Kuadrant/architecture/blob/main/rfcs/0021-token-rate-limit-reservations.md">0021</a>. But without an explicit <code>reservation.amount</code> on a limit, that limit still behaves like <code>Optimistic</code> mode. This section shows how to turn on real reservation-based protection for the per-workload policy from <a href="#per-workload-token-limiting">Per-Workload Token Limiting</a>.</p>
+<h3 id="cluster-wide-mode">Cluster-wide mode<a class="headerlink" href="#cluster-wide-mode" title="Permanent link">&para;</a></h3>
+<p>The Kuadrant CR <code>spec.tokenRateLimiting.mode</code> field controls enforcement behavior cluster-wide, for every TokenRateLimitPolicy:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant.io/v1beta1</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kuadrant</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant-system</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">  </span><span class="nt">tokenRateLimiting</span><span class="p">:</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Reservation</span><span class="w">   </span><span class="c1"># default; set to Optimistic to use check-then-report instead</span>
 </span></code></pre></div>
 <ul>
-<li><code>reservation.amount</code>: CEL expression for estimated tokens to hold. Defaults to <code>uint(5000)</code> when omitted.</li>
-<li><code>reservation.ttl</code>: how long to hold the reservation before auto-releasing. Defaults to the route's backend request timeout.</li>
+<li><code>Reservation</code> (default): uses Reserve/Commit for all TokenRateLimitPolicies, per the per-limit <code>reservation</code> settings described below</li>
+<li><code>Optimistic</code>: uses check-then-report for all TokenRateLimitPolicies, as described in <a href="#concurrent-request-race-condition">Concurrent Request Race Condition</a></li>
 </ul>
-<p>Policies that omit the <code>reservation</code> block automatically get safe defaults. No changes are required to existing TRLP resources.</p>
-<h3 id="cluster-wide-mode-switch">Cluster-wide mode switch<a class="headerlink" href="#cluster-wide-mode-switch" title="Permanent link">&para;</a></h3>
-<p>The Kuadrant CR will gain a <code>tokenRateLimiting.mode</code> field to control the behavior cluster-wide:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Not yet available</span>
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kuadrant.io/v1beta1</span>
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kuadrant</span>
-</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="nt">spec</span><span class="p">:</span>
-</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">  </span><span class="nt">tokenRateLimiting</span><span class="p">:</span>
-</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Reservation</span><span class="w">   </span><span class="c1"># default; set to CheckReport to revert to today's behavior</span>
+<p>See the <a href="../../../overviews/token-rate-limiting/#enforcement-modes">Token Rate Limiting Overview</a> for the full comparison of both modes.</p>
+<h3 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
+<p>When a request arrives, the gateway reserves an estimated token amount against the limit. If remaining capacity (accounting for all outstanding reservations) is insufficient, the request is rejected immediately with <code>429</code>. After the model responds, the actual usage is committed and the unused portion of the reservation is released.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>Request arrives → Reserve(estimated amount, TTL) → Forward to model → Commit(actual usage) → Release unused reservation
+</span></code></pre></div>
+<p>If the model call fails or times out, the reservation is released by committing <code>0</code>, reclaiming capacity without waiting for the counter window to roll over.</p>
+<h3 id="set-a-reservation-amount">Set a reservation amount<a class="headerlink" href="#set-a-reservation-amount" title="Permanent link">&para;</a></h3>
+<p>Add a <code>reservation</code> block to the limit, with an estimated token cost per request and a hold duration:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;'EOF'</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="s">apiVersion: kuadrant.io/v1alpha1</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="s">kind: TokenRateLimitPolicy</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="s">metadata:</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="s">  name: ai-per-workload</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="s">  namespace: gateway-system</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="s">spec:</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="s">  targetRef:</span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="s">    group: gateway.networking.k8s.io</span>
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="s">    kind: HTTPRoute</span>
+</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="s">    name: ai-mock-external</span>
+</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="s">  limits:</span>
+</span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="s">    per-workload:</span>
+</span><span id="__span-20-14"><a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="s">      rates:</span>
+</span><span id="__span-20-15"><a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a>
+</span><span id="__span-20-16"><a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="s">        - limit: 100</span>
+</span><span id="__span-20-17"><a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a><span class="s">          window: 1m</span>
+</span><span id="__span-20-18"><a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a><span class="s">      counters:</span>
+</span><span id="__span-20-19"><a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a><span class="s">        - expression: auth.identity.username</span>
+</span><span id="__span-20-20"><a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a><span class="s">      reservation:</span>
+</span><span id="__span-20-21"><a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a><span class="s">        amount: 10</span>
+</span><span id="__span-20-22"><a id="__codelineno-20-22" name="__codelineno-20-22" href="#__codelineno-20-22"></a><span class="s">        ttl: 'duration("30s")'</span>
+</span><span id="__span-20-23"><a id="__codelineno-20-23" name="__codelineno-20-23" href="#__codelineno-20-23"></a><span class="s">EOF</span>
 </span></code></pre></div>
 <ul>
-<li><code>Reservation</code> (default when available): uses Reserve/Commit for all TokenRateLimitPolicies</li>
-<li><code>CheckReport</code>: reverts to today's Check/Report behavior</li>
+<li><code>reservation.amount</code>: the number of tokens to reserve on request arrival, as a literal integer or a CEL expression. Defaults to <code>0</code> (no capacity reserved) when omitted — set a non-zero estimate to get protection against the concurrent-request race.</li>
+<li><code>reservation.ttl</code>: a CEL expression for how long the reservation is held before it auto-releases. Defaults to the route's <code>backendRequest</code> timeout when available; otherwise, Limitador applies its default.</li>
 </ul>
+<p>See the <a href="../../../reference/tokenratelimitpolicy/#reservation"><code>reservation</code> API reference</a> for full details on the field, and the <a href="../../../overviews/token-rate-limiting/#enforcement-modes">Token Rate Limiting Overview</a> for the Limitador-side caps (<code>spec.reservations.maxFraction</code>, <code>spec.reservations.maxTtl</code>) on how much a single reservation can claim and how long it can be held.</p>
+<h3 id="verifying-reservation-under-concurrency">Verifying reservation under concurrency<a class="headerlink" href="#verifying-reservation-under-concurrency" title="Permanent link">&para;</a></h3>
+<p>The reservation effect is only observable when requests overlap in time. The mock AI API answers in a few milliseconds, so the Reserve/Commit cycle closes before the next request arrives and no two requests are ever in flight together. Add response latency so a burst genuinely overlaps:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>deployment<span class="w"> </span>llm-sim<span class="w"> </span>-n<span class="w"> </span>ai-mock<span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">'[{"op":"replace","path":"/spec/template/spec/containers/0/args","value":["--model","meta-llama/Llama-3.1-8B-Instruct","--port","8000","--time-to-first-token","200","--inter-token-latency","100"]}]'</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span>status<span class="w"> </span>deployment/llm-sim<span class="w"> </span>-n<span class="w"> </span>ai-mock<span class="w"> </span>--timeout<span class="o">=</span>90s
+</span></code></pre></div>
+<p>Reset the counters so the burst starts from a clean window (Limitador uses in-memory storage, so restarting it clears all counters):</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span>restart<span class="w"> </span>deployment/limitador-limitador<span class="w"> </span>-n<span class="w"> </span>kuadrant-system
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span>status<span class="w"> </span>deployment/limitador-limitador<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--timeout<span class="o">=</span>90s
+</span></code></pre></div>
+<p>Fire a burst of 30 concurrent requests from a single identity against the 100-token limit:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>test-client<span class="w"> </span>-n<span class="w"> </span>egress-test<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="s1">TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="s1">seq 30 | xargs -P 30 -I{} curl -s -o /dev/null -w "%{http_code}\n" --max-time 20 \</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="s1">    -H "Host: api.ai-mock.local" \</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="s1">    -H "Content-Type: application/json" \</span>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="s1">    -H "Authorization: Bearer $TOKEN" \</span>
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="s1">    -X POST http://'</span><span class="s2">"</span><span class="si">${</span><span class="nv">EGRESS_IP</span><span class="si">}</span><span class="s2">"</span><span class="s1">'/v1/chat/completions \</span>
+</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="s1">    -d "{</span>
+</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="s1">          \"model\": \"meta-llama/Llama-3.1-8B-Instruct\",</span>
+</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="s1">          \"messages\": [{\"role\": \"user\", \"content\": \"Hello\"}],</span>
+</span><span id="__span-23-11"><a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="s1">          \"max_tokens\": 100,</span>
+</span><span id="__span-23-12"><a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a><span class="s1">          \"stream\": false,</span>
+</span><span id="__span-23-13"><a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a><span class="s1">          \"usage\": true</span>
+</span><span id="__span-23-14"><a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a><span class="s1">        }"</span>
+</span><span id="__span-23-15"><a id="__codelineno-23-15" name="__codelineno-23-15" href="#__codelineno-23-15"></a><span class="s1">'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span>-c
+</span></code></pre></div>
+<p>With <code>reservation.amount: 10</code> against a 100-token limit, only ~10 concurrent requests fit before reserved capacity is exhausted, so roughly 10 succeed and the rest are rejected immediately:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>     10 200
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>     20 429
+</span></code></pre></div>
+<p>To see the race this prevents, switch the cluster to <code>Optimistic</code> mode, reset the counters again, and repeat the burst:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>kuadrant<span class="w"> </span>kuadrant<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--type<span class="w"> </span>merge<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">    </span>-p<span class="w"> </span><span class="s1">'{"spec":{"tokenRateLimiting":{"mode":"Optimistic"}}}'</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span>restart<span class="w"> </span>deployment/limitador-limitador<span class="w"> </span>-n<span class="w"> </span>kuadrant-system
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span>status<span class="w"> </span>deployment/limitador-limitador<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--timeout<span class="o">=</span>90s
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="c1"># (re-run the burst command above)</span>
+</span></code></pre></div>
+<p>In <code>Optimistic</code> mode every request checks the limit before any has reported its usage, so all 30 are admitted — the overshoot that reservations are designed to prevent:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>     30 200
+</span></code></pre></div>
+<p>Restore the cluster mode and remove the mock latency before continuing:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>kuadrant<span class="w"> </span>kuadrant<span class="w"> </span>-n<span class="w"> </span>kuadrant-system<span class="w"> </span>--type<span class="w"> </span>merge<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">    </span>-p<span class="w"> </span><span class="s1">'{"spec":{"tokenRateLimiting":{"mode":"Reservation"}}}'</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>deployment<span class="w"> </span>llm-sim<span class="w"> </span>-n<span class="w"> </span>ai-mock<span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">'[{"op":"replace","path":"/spec/template/spec/containers/0/args","value":["--model","meta-llama/Llama-3.1-8B-Instruct","--port","8000"]}]'</span>
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span>status<span class="w"> </span>deployment/llm-sim<span class="w"> </span>-n<span class="w"> </span>ai-mock<span class="w"> </span>--timeout<span class="o">=</span>90s
+</span></code></pre></div>
+<p>Clean up before the next section:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>tokenratelimitpolicy<span class="w"> </span>ai-per-workload<span class="w"> </span>-n<span class="w"> </span>gateway-system
+</span></code></pre></div>
 <h2 id="cleanup">Cleanup<a class="headerlink" href="#cleanup" title="Permanent link">&para;</a></h2>
 <p>Remove all resources created by this guide:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># Remove policies</span>
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>tokenratelimitpolicy<span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span>ai-token-limit<span class="w"> </span>ai-per-workload<span class="w"> </span>ai-per-tier<span class="w"> </span>--ignore-not-found
-</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>authpolicy<span class="w"> </span>workload-identity<span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span>--ignore-not-found
-</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>
-</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="c1"># Remove AI mock resources</span>
-</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>curl<span class="w"> </span>-sL<span class="w"> </span>https://raw.githubusercontent.com/Kuadrant/kuadrant-operator/refs/heads/main/hack/setup-egress-ai-mock.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash<span class="w"> </span>-s<span class="w"> </span>cleanup
-</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>
-</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="c1"># Optionally remove the base egress gateway</span>
-</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>curl<span class="w"> </span>-sL<span class="w"> </span>https://raw.githubusercontent.com/Kuadrant/kuadrant-operator/refs/heads/main/hack/setup-egress.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash<span class="w"> </span>-s<span class="w"> </span>cleanup
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># Remove policies</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>tokenratelimitpolicy<span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span>ai-token-limit<span class="w"> </span>ai-per-workload<span class="w"> </span>ai-per-tier<span class="w"> </span>--ignore-not-found
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>authpolicy<span class="w"> </span>workload-identity<span class="w"> </span>-n<span class="w"> </span>gateway-system<span class="w"> </span>--ignore-not-found
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="c1"># Remove AI mock resources</span>
+</span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>curl<span class="w"> </span>-sL<span class="w"> </span>https://raw.githubusercontent.com/Kuadrant/kuadrant-operator/refs/heads/main/hack/setup-egress-ai-mock.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash<span class="w"> </span>-s<span class="w"> </span>cleanup
+</span><span id="__span-29-7"><a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>
+</span><span id="__span-29-8"><a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a><span class="c1"># Optionally remove the base egress gateway</span>
+</span><span id="__span-29-9"><a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a>curl<span class="w"> </span>-sL<span class="w"> </span>https://raw.githubusercontent.com/Kuadrant/kuadrant-operator/refs/heads/main/hack/setup-egress.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash<span class="w"> </span>-s<span class="w"> </span>cleanup
 </span></code></pre></div>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://github.com/Kuadrant/architecture/blob/main/rfcs/0013-ai-policies.md">RFC 0013: AI Policies</a></li>
-<li><a href="https://github.com/Kuadrant/architecture/pull/190">RFC: Token Rate Limit Reservations</a> (draft)</li>
+<li><a href="https://github.com/Kuadrant/architecture/blob/main/rfcs/0021-token-rate-limit-reservations.md">RFC 0021: Token Rate Limit Reservations</a></li>
 <li><a href="../../../overviews/token-rate-limiting/">TokenRateLimitPolicy Overview</a></li>
 <li><a href="../../tokenratelimitpolicy/authenticated-token-ratelimiting-tutorial/">Token Rate Limiting Tutorial</a></li>
 <li><a href="../egress-gateway/">Egress Gateway Setup</a></li>
