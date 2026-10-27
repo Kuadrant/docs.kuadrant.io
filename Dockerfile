@@ -21,4 +21,4 @@ VOLUME /docs
 EXPOSE 8000
 
 ENTRYPOINT ["/bin/sh", "-c"]
-CMD ["mkdocs", "serve", "-s", "-a", "0.0.0.0:8000"]
+CMD ["mkdocs serve -s -a 0.0.0.0:8000"]
