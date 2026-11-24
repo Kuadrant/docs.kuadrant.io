@@ -82,7 +82,7 @@ def fetch_latest_tag(repo_url, version_prefix=None):
 def update_mkdocs_yml(version, component_tags):
     """
     update mkdocs.yml with:
-    1. specific tags instead of branch=main
+    1. specific tags instead of the current branch/tag refs
     2. version default
     """
     mkdocs_path = Path('mkdocs.yml')
@@ -90,18 +90,31 @@ def update_mkdocs_yml(version, component_tags):
 
     # update each component's import_url
     for component, tag in component_tags.items():
-        # pattern: import_url: https://github.com/kuadrant/<component>?...&branch=main
-        pattern = f"(import_url: https://github.com/kuadrant/{component}\\?[^&]*&branch=)main"
-        replacement = f"\\1{tag}"
-        content = re.sub(pattern, replacement, content)
-        print(f"  {component}: main -> {tag}")
+        # pattern: import_url: https://github.com/kuadrant/<component>?...&branch=<ref>
+        # match any current ref, not just main, so re-running on a release branch updates it
+        pattern = f"(import_url: https://github.com/kuadrant/{re.escape(component)}\\?[^&\\s]*&branch=)([^&\\s]+)"
+        match = re.search(pattern, content)
+        if not match:
+            print(f"error: import_url for {component} not found in mkdocs.yml")
+            sys.exit(1)
+        content = re.sub(pattern, lambda m: m.group(1) + tag, content)
+        print(f"  {component}: {match.group(2)} -> {tag}")
 
     # update version default
-    # find the extra.version.default section and update it
-    version_pattern = r"(extra:\s+version:\s+provider: mike\s+default:\s+- )latest"
-    version_replacement = r"\g<1>" + version + "\n      - latest"
-    content = re.sub(version_pattern, version_replacement, content)
-    print(f"  version default: latest -> {version}, latest")
+    # replace the whole extra.version.default list, whatever it currently holds
+    version_pattern = r"(extra:\s+version:\s+provider: mike\s+default:\n)((?:[ \t]+- .*\n)+)"
+    match = re.search(version_pattern, content)
+    if not match:
+        print("error: extra.version.default list not found in mkdocs.yml")
+        sys.exit(1)
+    current_default = ", ".join(re.findall(r"- (.*)", match.group(2)))
+    content = re.sub(
+        version_pattern,
+        lambda m: f"{m.group(1)}      - {version}\n      - latest\n",
+        content,
+        count=1,
+    )
+    print(f"  version default: {current_default} -> {version}, latest")
 
     mkdocs_path.write_text(content)
 
@@ -174,7 +187,7 @@ def main():
 
     # check for modified/staged files (ignore untracked)
     result = subprocess.run(
-        "git status --porcelain | grep -E '^[MADRCU]'",
+        "git status --porcelain --untracked-files=no",
         shell=True,
         capture_output=True,
         text=True

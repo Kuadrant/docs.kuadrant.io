@@ -100,8 +100,8 @@ It automatically selects the latest tag (sorted by version), or you can filter b
 ### File updates
 
 Updates `mkdocs.yml`:
-- replaces `branch=main` with `branch=<tag>` for each component
-- adds version to `extra.version.default`
+- sets `branch=<tag>` for each component, replacing `main` or the ref from a previous run
+- sets `extra.version.default` to `<version>` and `latest`
 
 ### Mike deployment
 
